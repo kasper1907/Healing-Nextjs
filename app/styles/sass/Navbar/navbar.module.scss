@@ -1,0 +1,50 @@
+@import "../_base.sass";
+
+.navbar{
+    background-color: $main-background;
+    *{
+        font-family: 'Tajawal';
+    }
+    .navLink{
+        color: $primary-color !important;
+        font-size: 20px;
+        transition: 0.3s ease;
+        position: relative;
+        &:hover{
+            color: $hover-color !important;
+        }
+        &::after{
+            position: absolute;
+            content: "";
+            width: 0%;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: $primary-color;
+            transition: 0.3s ease;
+        }
+        &:hover::after{
+            width: 100%;
+        }
+        &.active::after{
+            width: 100%;
+        }
+        &.active:hover::after{
+            width: 0%;
+        }
+    }
+
+    .NavBarLink{
+        background-color: transparent;
+        color: $primary-color;
+        border: 1px solid $primary-color;
+        border-radius: 10px;
+        transition: 0.3s ease;
+    }
+    .NavBarLink:hover{
+        background-color: $primary-color;
+        color: $btn-hover-color;
+    }
+}
+
+

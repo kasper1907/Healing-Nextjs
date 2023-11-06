@@ -1,0 +1,24 @@
+@import "../_base.sass";
+.therapyCard{
+    height: 100px;
+    width: 85%;
+    position: relative;
+
+    .topSection{
+        background-color: #FFF;
+        .topText{
+            font-size: 16px;
+            color: #838383;
+            font-weight: 500;
+        }
+    }
+    .bottomSection{
+        background-color: $primary-color;
+    }
+    .TherapyCardImg{
+        position: absolute;
+        color: transparent;
+        right: -50px;
+        bottom: 0;
+    }
+}

@@ -1,0 +1,38 @@
+.IndividualSessions{
+    background-color: #F8F8F8;
+    min-height: 954px;
+    width: 100%;
+    height: fit-content;
+    padding-top: 30px;
+    margin-bottom: 30px;
+    padding-bottom: 30px;
+    .container{
+        min-height: 954px;
+    }
+    .DrSessionCard{
+        min-height: 358px;
+        height: fit-content;
+        background-color: #FFFFFF;
+        padding: 50px;
+        gap: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .image img {
+            max-width: 100%;
+        }
+        .text{
+            display: flex;
+            flex-direction: column;
+            gap: 2;
+            max-width: 100%;
+        }
+        .buttonContainer{
+            width: 250px;
+        }
+        .CardP{
+            font-weight: 400;
+            color: #707070;
+        }
+    }
+}

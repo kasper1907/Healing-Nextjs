@@ -1,0 +1,22 @@
+.SessionCard{
+    width: 459px;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #FFF;
+    border-radius: 15px;
+
+    .imageContainer{
+        position: relative;
+        img{
+            width: "100%",
+        }
+        .sessionLogo{
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 40px;        }
+
+    }
+}

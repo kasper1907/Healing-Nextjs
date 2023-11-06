@@ -1,0 +1,18 @@
+@import "../_base.sass";
+.StyledBtn{
+    background-color: transparent;
+    color: $primary-color;
+    border: 1px solid $primary-color;
+    border-radius: 10px;
+    transition: 0.3s ease;
+    width: 90%;
+    padding: 15px;
+    &.isPrimary{
+        background-color: $primary-color;
+        color: $btn-hover-color;
+    }
+}
+.StyledBtn:hover{
+    background-color: $primary-color;
+    color: $btn-hover-color;
+}
