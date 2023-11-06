@@ -8,7 +8,7 @@ const Testimonials = () => {
     <div className={styles.Testimonials}>
       <Container>
         <SectionHeader
-          title="اراء العملاء"
+          Label="اراء العملاء"
           secondary={false}
           isCentered={true}
         />

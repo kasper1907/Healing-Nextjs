@@ -17,8 +17,9 @@ const DrSessionCard = () => {
       </div>
       <div className={styles.text}>
         <SectionHeader
+          Label="جلسات- مع دكتور أحمد الدملاوي"
           isCentered={false}
-          title="جلسات- مع دكتور أحمد الدملاوي"
+          secondary={false}
         />
         <p className={`section-p mb-4 w-[594px] max-w-full ${styles.CardP}`}>
           هي جلسة فردية تسطتيع من خلالها الإفصاح عن معاناتك ومشاعرك بكل حرية

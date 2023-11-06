@@ -23,7 +23,11 @@ const SessionCard = ({ bannerSrc, logoSrc, header, text }: ComponentProps) => {
           className={styles.sessionLogo}
         />
       </div>
-      <SectionHeader title={header} isCentered={true} />
+      <SectionHeader
+        Label={header?.toString()}
+        isCentered={true}
+        secondary={false}
+      />
       <p className=" text-center text-[#A5A5A5] mt-[-10px] mb-4">{text}</p>
       <div className="max-w-full w-[200px]">
         <StyledButton isPrimary={true} label="اشترك الان" />

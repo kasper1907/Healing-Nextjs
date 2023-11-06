@@ -9,7 +9,7 @@ const IndividualSessions = () => {
   return (
     <div className={styles.IndividualSessions}>
       <Container className={styles.container}>
-        <SectionHeader isCentered={true} title="جلسات فرديه" secondary={true} />
+        <SectionHeader Label="جلسات فرديه" isCentered={true} secondary={true} />
         <DrSessionCard />
         <Grid
           container

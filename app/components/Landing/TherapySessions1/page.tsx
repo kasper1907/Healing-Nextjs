@@ -27,15 +27,19 @@ const TherapySession1 = () => {
         }}
       />
       <Container>
-        <SectionHeader isCentered={true} title={"جلسات الاتزان شفاء"} />
+        <SectionHeader
+          Label={"جلسات الاتزان شفاء"}
+          isCentered={true}
+          secondary={false}
+        />
         <p className={`section-p w-full text-center`}>
           نحن في جلسات الاتزان شفاء نقدم لك تدريبات الدعم الشعوري المتخصصة
           لتساعدك على التعافي من الاضطرابات الجسدية والشعورية
         </p>
         <SectionHeader
+          Label={"جلسات جماعية "}
           isCentered={true}
           secondary={true}
-          title={"جلسات جماعية "}
         />
 
         <Grid
