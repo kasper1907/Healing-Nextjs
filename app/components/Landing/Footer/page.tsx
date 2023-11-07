@@ -8,10 +8,10 @@ const Footer = () => {
     <div className={styles.footer}>
       <Container>
         <Grid container className={styles.footerGrid}>
-          <Grid item className={styles.GridItem} xs={5}>
+          <Grid item className={styles.GridItem} xs={3} md={5}>
             <hr />
           </Grid>
-          <Grid item className={styles.GridItem} xs={2}>
+          <Grid item className={styles.GridItem} xs={6} md={2}>
             <Grid container>
               <Grid
                 item
@@ -66,8 +66,16 @@ const Footer = () => {
               </Grid>
             </Grid>
           </Grid>
-          <Grid item className={styles.GridItem} xs={5}>
+          <Grid item className={styles.GridItem} xs={3} md={5}>
             <hr />
+          </Grid>
+          <Grid item xs={12}>
+            <span
+              style={{ direction: "ltr", color: "#616161" }}
+              className="w-full flex justify-center mt-4 mb-4"
+            >
+              © 2023 All Rights Reserved.
+            </span>
           </Grid>
         </Grid>
       </Container>

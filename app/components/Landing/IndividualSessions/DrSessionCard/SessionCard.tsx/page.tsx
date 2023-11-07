@@ -52,7 +52,7 @@ const SessionCard = ({ bannerSrc, logoSrc, header, text }: ComponentProps) => {
           />
         </div>
       </div>
-      <LargeDialog open={openDialog} setOpen={setOpenDialog} item={item} />;
+      <LargeDialog open={openDialog} setOpen={setOpenDialog} item={item} />
     </>
   );
 };

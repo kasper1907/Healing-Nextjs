@@ -29,7 +29,7 @@ const TherapyCard = ({
 
   return (
     <div className={styles.therapyCard} key={idx}>
-      <LargeDialog open={openDialog} setOpen={setOpenDialog} item={item} />;
+      <LargeDialog open={openDialog} setOpen={setOpenDialog} item={item} />
       <Image
         src={img}
         width={99}

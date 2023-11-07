@@ -114,7 +114,7 @@ export default function Navbar(props: Props) {
           }}
         >
           <Container>
-            <Toolbar sx={{ direction: { sm: "rtl", lg: "ltr" } }}>
+            <Toolbar sx={{ direction: { xs: "rtl", sm: "ltr" } }}>
               <IconButton
                 color="inherit"
                 aria-label="open drawer"
