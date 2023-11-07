@@ -5,6 +5,7 @@ import Image from "next/image";
 import SectionHeader from "@/app/components/shared/SectionHeader/page";
 import StyledButton from "@/app/components/shared/StyledButton";
 import SmallDialog from "@/app/components/shared/Dialogs/SmallDialog/page";
+import { Box } from "@mui/material";
 
 const DrSessionCard = () => {
   const [openDialog, setOpenDialog] = useState<boolean>(false);
@@ -14,6 +15,13 @@ const DrSessionCard = () => {
 
   return (
     <div className={styles.DrSessionCard}>
+      <Box sx={{ display: { xs: "block", md: "none" } }}>
+        <SectionHeader
+          Label="جلسات- مع دكتور أحمد الدملاوي"
+          isCentered={true}
+          secondary={true}
+        />
+      </Box>
       <div className={styles.image}>
         <Image
           src={"/images/TherapySessions1/dr-ahmed.svg"}
@@ -23,11 +31,13 @@ const DrSessionCard = () => {
         />
       </div>
       <div className={styles.text}>
-        <SectionHeader
-          Label="جلسات- مع دكتور أحمد الدملاوي"
-          isCentered={false}
-          secondary={false}
-        />
+        <Box sx={{ display: { xs: "none", md: "block" } }}>
+          <SectionHeader
+            Label="جلسات- مع دكتور أحمد الدملاوي"
+            isCentered={false}
+            secondary={false}
+          />
+        </Box>
         <p className={`section-p mb-4 w-[594px] max-w-full ${styles.CardP}`}>
           هي جلسة فردية تسطتيع من خلالها الإفصاح عن معاناتك ومشاعرك بكل حرية
           وإنطلاق وبدون حرج ويساعدك دكتور أحمد على إدراك مشكلتك والمشاعر التي

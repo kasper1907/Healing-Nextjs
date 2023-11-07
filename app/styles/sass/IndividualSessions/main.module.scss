@@ -1,38 +1,47 @@
-.IndividualSessions{
-    background-color: #F8F8F8;
+.IndividualSessions {
+  background-color: #f8f8f8;
+  min-height: 954px;
+  width: 100%;
+  height: fit-content;
+  padding-top: 30px;
+  margin-bottom: 30px;
+  padding-bottom: 30px;
+  .container {
     min-height: 954px;
-    width: 100%;
+  }
+  .DrSessionCard {
+    padding: "0px";
+    min-height: 358px;
     height: fit-content;
-    padding-top: 30px;
-    margin-bottom: 30px;
-    padding-bottom: 30px;
-    .container{
-        min-height: 954px;
+    background-color: #ffffff;
+    padding: 20px;
+    gap: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    @media (max-width: 1200px) {
+      flex-direction: column;
     }
-    .DrSessionCard{
-        min-height: 358px;
-        height: fit-content;
-        background-color: #FFFFFF;
-        padding: 50px;
-        gap: 30px;
+    .image img {
+      max-width: 100%;
+    }
+    .text {
+      display: flex;
+      flex-direction: column;
+      gap: 2;
+      max-width: 100%;
+    }
+    .buttonContainer {
+      width: 250px;
+      @media (max-width: 1200px) {
         display: flex;
-        align-items: center;
         justify-content: center;
-        .image img {
-            max-width: 100%;
-        }
-        .text{
-            display: flex;
-            flex-direction: column;
-            gap: 2;
-            max-width: 100%;
-        }
-        .buttonContainer{
-            width: 250px;
-        }
-        .CardP{
-            font-weight: 400;
-            color: #707070;
-        }
+        width: 100%;
+      }
     }
+    .CardP {
+      font-weight: 400;
+      color: #707070;
+    }
+  }
 }
