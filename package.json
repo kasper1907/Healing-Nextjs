@@ -19,7 +19,8 @@
     "react-dom": "^18",
     "react-icons": "^4.11.0",
     "sass": "^1.69.5",
-    "styled-components": "^6.1.0"
+    "styled-components": "^6.1.0",
+    "swiper": "^11.0.3"
   },
   "devDependencies": {
     "@types/node": "^20",

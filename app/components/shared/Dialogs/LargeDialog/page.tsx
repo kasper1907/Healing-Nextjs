@@ -21,15 +21,7 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="down" ref={ref} {...props} />;
 });
 
-export default function LargeDialog({
-  open,
-  setOpen,
-  item,
-}: {
-  open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  item: any;
-}) {
+export default function LargeDialog({ open, setOpen, item }: any) {
   const handleClickOpen = () => {
     setOpen(true);
   };

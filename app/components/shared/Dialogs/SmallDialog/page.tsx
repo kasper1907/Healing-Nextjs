@@ -21,13 +21,7 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="down" ref={ref} {...props} />;
 });
 
-export default function SmallDialog({
-  open,
-  setOpen,
-}: {
-  open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}) {
+export default function SmallDialog({ open, setOpen }: any) {
   const handleClickOpen = () => {
     setOpen(true);
   };

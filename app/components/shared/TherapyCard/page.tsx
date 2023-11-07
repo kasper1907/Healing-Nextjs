@@ -5,15 +5,7 @@ import { Grid } from "@mui/material";
 import Image from "next/image";
 import LargeDialog from "../Dialogs/LargeDialog/page";
 import { useTransition } from "react";
-const TherapyCard = ({
-  idx,
-  name,
-  img,
-}: {
-  idx: number;
-  name: string;
-  img: string;
-}) => {
+const TherapyCard = ({ idx, name, img }: any) => {
   const [openDialog, setOpenDialog] = useState<boolean>(false);
   const [isPending, startTransition] = useTransition();
   const [item, setItem] = useState<any>({});
@@ -32,9 +24,10 @@ const TherapyCard = ({
       <LargeDialog open={openDialog} setOpen={setOpenDialog} item={item} />
       <Image
         src={img}
-        width={99}
-        height={99}
+        width={100}
+        height={100}
         alt="TherapyCardImg"
+        style={{ width: "100px" }}
         className={styles.TherapyCardImg}
       />
       <Grid container sx={{ height: "100%" }}>
@@ -44,6 +37,7 @@ const TherapyCard = ({
           className={`${styles.topSection} flex items-center justify-center`}
           sx={{
             height: "60%",
+            paddingRight: "30px",
             borderTopRightRadius: "10px",
             borderTopLeftRadius: "10px",
           }}
