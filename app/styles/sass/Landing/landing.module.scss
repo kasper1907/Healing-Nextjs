@@ -1,55 +1,65 @@
 @import "../_base.sass";
 
+.Landing {
+  * {
+    font-family: "Tajawal";
+  }
+  height: fit-content;
+  padding-top: 64px;
 
-.Landing{
-    *{
-        font-family: "Tajawal";
-    }
-    min-height: 100vh;
-    height: fit-content;
-    padding-top: 64px;
+  .LandingText {
+    font-size: 36px;
 
-    .LandingText{
-        font-size: 36px;
-        color: #707070;
-        direction: rtl;
-        margin-bottom: 10px;
-        width: 100%;
-        span{
-            font-size: 35px;
-            color: $primary-color;
-            font-weight: bold;
-            margin-left: 10px;
-  
-        }
-        &:nth-of-type(2){
-            font-size: 20px;
-            span{
-                font-size: 25px;
-            }
-        }
+    color: #707070;
+    direction: rtl;
+    margin-bottom: 10px;
+    width: 100%;
+    span:first-of-type {
+      font-size: 35px;
+      color: $primary-color;
+      font-weight: bold;
+      margin-left: 5px;
     }
-}    .NavBarLink{
-    background-color: transparent;
-    color: $primary-color;
-    border: 1px solid $primary-color;
-    border-radius: 10px;
-    transition: 0.3s ease;
-    width: 90% ;
-    padding: 10px;
-    &.first{
-        background-color: $primary-color;
-        color: $btn-hover-color;
+
+    @media (max-width: 900px) {
+      font-size: 20px;
+
+      span:first-of-type {
+        font-size: 25px;
+      }
     }
-    &.first:hover{
-        background-color: transparent;
-        color: $primary-color;
+  }
+  .Landing_Description {
+    .LandingText {
+      font-size: 20px;
+
+      span:first-of-type {
+        font-size: 25px;
+      }
     }
-    &.fullWidth{
-        width: 100%;
-    }
+  }
 }
-.NavBarLink:hover{
+.NavBarLink {
+  background-color: transparent;
+  color: $primary-color;
+  border: 1px solid $primary-color;
+  border-radius: 10px;
+  transition: 0.3s ease;
+  width: 90%;
+  padding: 10px;
+  &.first {
     background-color: $primary-color;
     color: $btn-hover-color;
+  }
+  &.first:hover {
+    background-color: transparent;
+    color: $primary-color;
+  }
+  &.fullWidth {
+    width: 100%;
+  }
+}
+.NavBarLink:hover {
+  background-color: $primary-color;
+  color: $btn-hover-color;
 }

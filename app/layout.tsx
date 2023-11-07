@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Tajawal } from "next/font/google";
 import "./globals.css";
 import "./styles/sass/main.sass";
 import Navbar from "./components/shared/Navbar";
@@ -25,6 +25,19 @@ export default function RootLayout({
   };
   return (
     <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          //@ts-ignore
+          crossorigin={true}
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap"
+          rel="stylesheet"
+        />
+      </head>
       <body className={inter.className}>
         <Navbar />
         {children}

@@ -8,19 +8,6 @@ import ContactUs from "./components/Landing/ContactUs/page";
 export default async function Home() {
   return (
     <main className="flex h-fit min-h-screen flex-col items-center justify-between bg-[#f5f2ec]">
-      <Image
-        src="/images/Landing-1-bg.svg"
-        alt="landing-background"
-        width={100}
-        height={100}
-        style={{
-          objectFit: "cover",
-          width: "100%",
-          height: "fit-content",
-          position: "absolute",
-        }}
-        className="h-fit"
-      />
       <Landing />
       <TherapySession1 />
       <IndividualSessions />

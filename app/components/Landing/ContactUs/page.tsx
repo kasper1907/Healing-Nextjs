@@ -36,26 +36,30 @@ const ContactUs = () => {
 
             <div className={styles.address}>
               <h4>تواصل معنا علي</h4>
-              <div className="flex flex-row items-center gap-8">
-                <div className={styles.iconAndText}>
-                  <Image
-                    src="/images/phone.svg"
-                    width={24}
-                    height={24}
-                    alt="Location_icon"
-                  />
-                  <span className="mt-1">+21 xxx xxx xxx</span>
-                </div>
-                <div className={styles.iconAndText}>
-                  <Image
-                    src="/images/email.svg"
-                    width={24}
-                    height={24}
-                    alt="Location_icon"
-                  />
-                  <span className="mt-1">info@managethenow.com</span>
-                </div>
-              </div>
+              <Grid container>
+                <Grid item xs={12} md={6}>
+                  <div className={styles.iconAndText}>
+                    <Image
+                      src="/images/phone.svg"
+                      width={24}
+                      height={24}
+                      alt="Location_icon"
+                    />
+                    <span className="mt-1">+21 xxx xxx xxx</span>
+                  </div>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <div className={styles.iconAndText}>
+                    <Image
+                      src="/images/email.svg"
+                      width={24}
+                      height={24}
+                      alt="Location_icon"
+                    />
+                    <span className="mt-1">info@managethenow.com</span>
+                  </div>
+                </Grid>
+              </Grid>
             </div>
           </Grid>
           <Grid item xs={12} md={6}>
