@@ -114,7 +114,7 @@ export default function Navbar(props: Props) {
           }}
         >
           <Container>
-            <Toolbar sx={{ direction: "ltr" }}>
+            <Toolbar sx={{ direction: { sm: "rtl", lg: "ltr" } }}>
               <IconButton
                 color="inherit"
                 aria-label="open drawer"
@@ -122,7 +122,13 @@ export default function Navbar(props: Props) {
                 onClick={handleDrawerToggle}
                 sx={{ mr: 2, display: { sm: "none" } }}
               >
-                <MenuIcon />
+                <Image
+                  style={{ cursor: "pointer" }}
+                  src={"/images/side-minue.svg"}
+                  alt="Side Menu"
+                  width={52}
+                  height={52}
+                />{" "}
               </IconButton>
 
               <Box

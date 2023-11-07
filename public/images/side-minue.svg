@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="84" height="84" viewBox="0 0 84 84">
+  <defs>
+    <filter id="side-minue" x="0" y="0" width="84" height="84" filterUnits="userSpaceOnUse">
+      <feOffset input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feFlood flood-color="#134284" flood-opacity="0.051"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_7" data-name="Rectangle 7" width="24" height="24" fill="#134284"/>
+    </clipPath>
+  </defs>
+  <g id="side-minue-2" data-name="side-minue" transform="translate(-304 1)">
+    <g transform="matrix(1, 0, 0, 1, 304, -1)" filter="url(#side-minue)">
+      <g id="side-minue-3" data-name="side-minue" transform="translate(18 18)" fill="#f5f2ec" stroke="#fff" stroke-width="1">
+        <rect width="48" height="48" rx="4" stroke="none"/>
+        <rect x="0.5" y="0.5" width="47" height="47" rx="3.5" fill="none"/>
+      </g>
+    </g>
+    <g id="humburger-icon" transform="translate(334 29)" clip-path="url(#clip-path)">
+      <path id="Path_50" data-name="Path 50" d="M6,4.8A1.2,1.2,0,0,1,7.2,3.6H22.8a1.2,1.2,0,1,1,0,2.4H7.2A1.2,1.2,0,0,1,6,4.8Zm16.8,6H1.2a1.2,1.2,0,1,0,0,2.4H22.8a1.2,1.2,0,1,0,0-2.4Zm0,7.2H12a1.2,1.2,0,1,0,0,2.4H22.8a1.2,1.2,0,1,0,0-2.4Z" fill="#134284"/>
+    </g>
+  </g>
+</svg>

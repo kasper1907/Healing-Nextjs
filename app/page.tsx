@@ -5,7 +5,7 @@ import IndividualSessions from "./components/Landing/IndividualSessions/page";
 import Testimonials from "./components/Landing/Testimonials/Testimonials";
 import ContactUs from "./components/Landing/ContactUs/page";
 
-export default function Home() {
+export default async function Home() {
   return (
     <main className="flex h-fit min-h-screen flex-col items-center justify-between bg-[#f5f2ec]">
       <Image

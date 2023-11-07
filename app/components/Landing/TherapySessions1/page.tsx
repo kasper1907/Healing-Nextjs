@@ -1,11 +1,16 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import SectionHeader from "../../shared/SectionHeader/page";
 import { Container, Grid } from "@mui/material";
 import TherapyCard from "../../shared/TherapyCard/page";
 import { therapySessions } from "@/app/constants/TherapySessions1";
 import Image from "next/image";
+import { useTransition } from "react";
+import LargeDialog from "../../shared/Dialogs/LargeDialog/page";
 
 const TherapySession1 = () => {
+  const [openDialog, setOpenDialog] = useState<boolean>(false);
+
   return (
     <div
       style={{
