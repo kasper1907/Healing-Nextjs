@@ -7,12 +7,12 @@ import ContactUs from "./components/Landing/ContactUs/page";
 
 export default async function Home() {
   return (
-    <main className="flex h-fit min-h-screen flex-col items-center justify-between bg-[#f5f2ec]">
+    <>
       <Landing />
       <TherapySession1 />
       <IndividualSessions />
       <Testimonials />
       <ContactUs />
-    </main>
+    </>
   );
 }

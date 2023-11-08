@@ -82,7 +82,9 @@ export default function Navbar(props: Props) {
         }}
       >
         <Button className={styles.NavBarLink}>English</Button>
-        <Button className={styles.NavBarLink}>تسجيل الدخول</Button>
+        <Button className={styles.NavBarLink}>
+          <Link href={"/pages/login"}>تسجيل الدخول</Link>
+        </Button>
       </Box>
     </Box>
   );
@@ -139,7 +141,9 @@ export default function Navbar(props: Props) {
                 }}
               >
                 <Button className={styles.NavBarLink}>English</Button>
-                <Button className={styles.NavBarLink}>تسجيل الدخول</Button>
+                <Button className={styles.NavBarLink}>
+                  <Link href={"/pages/login"}>تسجيل الدخول</Link>
+                </Button>{" "}
               </Box>
 
               <Box
