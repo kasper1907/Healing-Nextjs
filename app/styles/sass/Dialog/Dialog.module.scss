@@ -1,6 +1,7 @@
 @import "../_base.sass";
 .smallDialogContent {
-  width: 375px;
+  min-width: 320px;
+  max-width: 375px;
   height: 320px;
   background: #f5f2ec;
   border-radius: 10px;
@@ -20,8 +21,10 @@
       flex: 1;
       justify-content: center;
       align-items: flex-start;
+      text-align: start;
       //   gap: 15px;
-      padding-right: 15px;
+      padding-left: 15px;
+      padding-right: 10px;
       h2 {
         font-size: 20px;
         font-weight: 600;
@@ -37,12 +40,19 @@
   .ListContainer {
     margin-right: 25px;
     margin-top: 15px;
+    padding-left: 20px;
     ul {
       list-style-type: disc;
       color: #838383;
       display: flex;
       flex-direction: column;
       gap: 10px;
+      font-size: 16px;
+      justify-content: flex-start;
+      align-items: flex-start;
+      li {
+        text-align: start;
+      }
     }
   }
 
@@ -56,8 +66,14 @@
 }
 
 .largeDialogContent {
-  width: 450px;
+  min-width: 300px;
+  @media (min-width: 662px) {
+    min-width: 420px;
+  }
+  max-width: 420px;
   min-height: 420px;
+
+  height: fit-content;
   background: #f5f2ec;
   border-radius: 10px;
   .dialogHeader {
@@ -75,8 +91,9 @@
       flex: 1;
       justify-content: center;
       align-items: flex-start;
+      text-align: start;
       //   gap: 15px;
-      padding-right: 15px;
+      // padding-right: 15px;
       h2 {
         font-size: 20px;
         font-weight: 600;
@@ -98,6 +115,12 @@
       display: flex;
       flex-direction: column;
       gap: 10px;
+      font-size: 16px;
+      justify-content: flex-start;
+      align-items: flex-start;
+      li {
+        text-align: start;
+      }
     }
   }
 
