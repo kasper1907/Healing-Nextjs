@@ -54,7 +54,9 @@ export default function RootLayout({
       </head>
       <body className={inter.className}>
         <main className="flex h-fit min-h-screen flex-col items-center justify-between bg-[#f5f2ec]">
-          <FinalLayout>{children}</FinalLayout>
+          <Navbar />
+          {children}
+          <Footer />{" "}
         </main>
       </body>
     </html>

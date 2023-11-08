@@ -6,19 +6,19 @@ import Footer from "./components/Landing/Footer/page";
 
 const FinalLayout = ({ children }: { children: React.ReactNode }) => {
   const pathName = usePathname();
-  return (
-    <>
-      {pathName == "/pages/login" ? (
-        children
-      ) : (
-        <div style={{ direction: "rtl" }}>
-          <Navbar />
-          {children}
-          <Footer />
-        </div>
-      )}
-    </>
-  );
+  if (pathName == "/pages/login") {
+    return children;
+  }
+
+  if (pathName == "/pages/login") {
+    return (
+      <React.Fragment>
+        <Navbar />
+        {children}
+        <Footer />
+      </React.Fragment>
+    );
+  }
 };
 
 export default FinalLayout;
