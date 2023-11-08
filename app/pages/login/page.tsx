@@ -37,7 +37,7 @@ const page = () => {
   });
 
   return (
-    <Grid container sx={{ height: "100vh" }}>
+    <Grid container sx={{ height: "100vh", direction: "ltr" }}>
       <Grid
         item
         xs={12}
