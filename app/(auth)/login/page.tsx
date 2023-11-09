@@ -98,13 +98,25 @@ const page = () => {
                 <Grid item xs={12}>
                   <CssTextField
                     fullWidth
+                    type="password"
                     label="Password"
                     id="custom-css-outlined-input"
                   />
                 </Grid>
 
                 <Grid item xs={12}>
-                  <Button className={styles.signInBtn}>Sign in</Button>
+                  <Button className={styles.signInBtn}>
+                    <Link
+                      style={{
+                        textDecoration: "none",
+                        width: "100%",
+                        height: "100%",
+                      }}
+                      href="/dashboard"
+                    >
+                      Sign in
+                    </Link>
+                  </Button>
                 </Grid>
 
                 <Grid
@@ -118,7 +130,7 @@ const page = () => {
                   }}
                 >
                   <Link className={styles.link} href="/pages/forget-password">
-                    Forgot Password ?
+                    forgot password ?
                   </Link>
                   <div className={styles.singupLink}>
                     <span>Dont have an account ?</span>

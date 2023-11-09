@@ -1,0 +1,85 @@
+@import "../../_base.sass";
+
+.navbar {
+  background-color: $dashboard-background;
+  min-height: 260px;
+  background-image: ("/images/Dashboard/Dashboard-banner.svg");
+  * {
+    font-family: "Popins", sans-serif;
+  }
+  .navLink {
+    color: $primary-color !important;
+    font-size: 20px;
+    transition: 0.3s ease;
+    position: relative;
+    &:hover {
+      color: $hover-color !important;
+    }
+    &::after {
+      position: absolute;
+      content: "";
+      width: 0%;
+      height: 2px;
+      bottom: -5px;
+      left: 0;
+      background-color: $primary-color;
+      transition: 0.3s ease;
+    }
+    &:hover::after {
+      width: 100%;
+    }
+    &.active::after {
+      width: 100%;
+    }
+    &.active:hover::after {
+      width: 0%;
+    }
+  }
+
+  .NavBarLink {
+    background-color: transparent;
+    color: $primary-color;
+    border: 1px solid $primary-color;
+    border-radius: 10px;
+    transition: 0.3s ease;
+  }
+  .NavBarLink:hover {
+    background-color: $primary-color;
+    color: $btn-hover-color;
+  }
+  .NavBarLink__logout {
+    background-color: $red-background;
+    color: #fff;
+    padding: 8px 32px;
+    text-transform: lowercase;
+    font-family: "Poppins", sans-serif;
+    transition: 0.3s ease;
+    border-radius: 10px;
+    position: relative;
+    a {
+      z-index: 3;
+      color: #fff;
+    }
+    &::after {
+      content: "";
+      position: absolute;
+      left: 0px;
+      visibility: hidden;
+      width: 0%;
+      height: 100%;
+      background-color: #fff;
+      top: 0;
+      transition: 0.3s ease;
+      border-radius: 9px;
+      border: 1px solid transparent;
+      z-index: 0;
+    }
+    &:hover::after {
+      visibility: visible;
+      width: 100%;
+    }
+    &:hover a {
+      color: $red-background;
+    }
+  }
+}

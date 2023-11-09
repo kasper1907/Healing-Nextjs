@@ -16,7 +16,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Image from "next/image";
 import Container from "@mui/material/Container";
-import styles from "../../styles/sass/Navbar/navbar.module.scss";
+import styles from "../../../styles/sass/Dashboard/DashboardNavbar/DashboardNavbar.module.scss";
 import Link from "next/link";
 import { NavbarItems } from "@/app/models/Navbar";
 interface Props {
@@ -35,7 +35,7 @@ const navItems = [
   { id: 3, title: "تواصل معنا", url: "#" },
 ];
 
-export default function Navbar(props: Props) {
+export default function DashboardNavbar(props: Props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -96,27 +96,28 @@ export default function Navbar(props: Props) {
     <Box
       sx={{
         display: "flex",
+        height: "260px",
         ".MuiToolbar-root ": {
-          backgroundColor: "#f5f2ec",
+          backgroundColor: "transparent",
           color: "#000",
           padding: "0",
         },
       }}
     >
       <CssBaseline />
-      <Container>
+      <Container sx={{ "& .MuiContainer-root ": { zIndex: 2 } }}>
         <AppBar
           className={styles.navbar}
           component="nav"
           sx={{
             "&.MuiPaper-root": {
               boxShadow: "none",
-              background: "#f5f2ec",
+              background: "transparent",
             },
           }}
         >
           <Container>
-            <Toolbar sx={{ direction: { xs: "rtl", sm: "ltr" } }}>
+            <Toolbar>
               <IconButton
                 color="inherit"
                 aria-label="open drawer"
@@ -133,47 +134,12 @@ export default function Navbar(props: Props) {
                 />{" "}
               </IconButton>
 
-              <Box
-                sx={{
-                  flexGrow: 1,
-                  gap: 2,
-                  display: { xs: "none", sm: "flex" },
-                }}
-              >
-                <Button className={styles.NavBarLink}>English</Button>
-                <Button className={styles.NavBarLink}>
-                  <Link href={"/login"}>تسجيل الدخول</Link>
-                </Button>{" "}
-              </Box>
-
-              <Box
-                sx={{
-                  flexGrow: 1,
-                  gap: "10px",
-                  justifyContent: "center",
-                  flexDirection: "row-reverse",
-                  display: { xs: "none", sm: "flex" },
-                }}
-              >
-                {navItems.map((item: NavbarItems, index: number) => (
-                  <Link
-                    href="#"
-                    className={`${styles.navLink} ${
-                      index == 0 && styles.active
-                    }`}
-                    key={index}
-                    style={{ color: "#000" }}
-                  >
-                    {item?.title}
-                  </Link>
-                ))}
-              </Box>
               <Typography
                 variant="h6"
                 component="div"
                 sx={{
                   flexGrow: 1,
-                  justifyContent: "flex-end",
+                  justifyContent: "flex-start",
                   display: "flex",
                 }}
               >
@@ -184,8 +150,27 @@ export default function Navbar(props: Props) {
                   height={62}
                 />
               </Typography>
+
+              <Box
+                sx={{
+                  flexGrow: 1,
+                  gap: 2,
+                  display: { xs: "none", sm: "flex" },
+                  justifyContent: "flex-end",
+                }}
+              >
+                <Button className={styles.NavBarLink__logout}>
+                  <Link href={"/login"}>Logout</Link>
+                </Button>{" "}
+              </Box>
             </Toolbar>
           </Container>
+          <Image
+            src={"/images/Dashboard/Dashboard-banner.svg"}
+            alt="dashboard-banner"
+            fill
+            style={{ objectFit: "cover" }}
+          />
         </AppBar>
         <nav>
           <Drawer
