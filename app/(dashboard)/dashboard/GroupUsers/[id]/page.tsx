@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect } from "react";
-import styles from "../../../../styles/sass/Dashboard/HomePage/HomePage.module.scss";
+import styles from "@/styles/sass/Dashboard/HomePage/HomePage.module.scss";
 import { Button, Container, Grid } from "@mui/material";
 import { groups } from "@/app/constants/Groups";
 import { GrView } from "react-icons/gr";

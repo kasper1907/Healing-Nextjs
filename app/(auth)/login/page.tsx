@@ -2,7 +2,7 @@
 import { Container, Grid } from "@mui/material";
 import Image from "next/image";
 import React from "react";
-import styles from "../../styles/sass/Pages/Login/Login.module.scss";
+import styles from "@/styles/sass/Pages/Login/Login.module.scss";
 import TextField from "@mui/material/TextField";
 import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
