@@ -5,7 +5,7 @@ import HomeTabs from "@/app/components/Dashboard/HomeTabs/page";
 import React from "react";
 
 const Page = () => {
-  const [value, setValue] = React.useState("1");
+  const [value, setValue] = React.useState<any>("1");
 
   return (
     <div>

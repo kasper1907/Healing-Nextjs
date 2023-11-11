@@ -11,13 +11,14 @@ import PersonPinIcon from "@mui/icons-material/PersonPin";
 import { AiFillHome } from "react-icons/ai";
 import { BsFillCalendarDateFill } from "react-icons/bs";
 import { Box } from "@mui/material";
-const HomeTabs = ({
-  value,
-  setValue,
-}: {
+
+interface Props {
+  setValue: any;
   value: string;
-  setValue: Function;
-}) => {
+}
+
+const HomeTabs = (props: any) => {
+  const { value, setValue } = props;
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };

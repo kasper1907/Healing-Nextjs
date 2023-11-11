@@ -12,7 +12,7 @@ type ComponentProps = {
   header: string;
   text: string;
 };
-const SessionCard = ({ bannerSrc, logoSrc, header, text }: ComponentProps) => {
+const SessionCard = ({ bannerSrc, logoSrc, header, text }: any) => {
   const [openDialog, setOpenDialog] = useState<boolean>(false);
   const [isPending, startTransition] = useTransition();
   const [item, setItem] = useState<any>({});

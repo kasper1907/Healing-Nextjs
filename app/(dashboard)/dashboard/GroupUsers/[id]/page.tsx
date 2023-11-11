@@ -7,14 +7,17 @@ import { GrView } from "react-icons/gr";
 import { AiOutlineEdit, AiOutlineEye } from "react-icons/ai";
 import Image from "next/image";
 import Link from "next/link";
-const Page = (params: any) => {
-  const { id: GroupId } = params.params;
+import { useRouter } from "next/navigation";
+const Page = () => {
+  const router = useRouter();
+  console.log(router);
+  // const { id: GroupId } = params.params;
   console.log();
   const [currentGroup, setCurrentGroup] = React.useState<any>(null);
   useEffect(() => {
-    const currentGroup = groups.find((group) => group.id == GroupId);
+    const currentGroup = groups.find((group) => group.id == 1);
     setCurrentGroup(currentGroup);
-  }, [GroupId]);
+  }, []);
 
   console.log(currentGroup?.groupUsers?.length);
   return (
