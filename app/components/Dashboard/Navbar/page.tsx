@@ -113,27 +113,12 @@ export default function DashboardNavbar(props: Props) {
             "&.MuiPaper-root": {
               boxShadow: "none",
               background: "transparent",
+              position: "absolute",
             },
           }}
         >
-          <Container>
+          <Container sx={{ position: "relative" }}>
             <Toolbar>
-              <IconButton
-                color="inherit"
-                aria-label="open drawer"
-                edge="start"
-                onClick={handleDrawerToggle}
-                sx={{ mr: 0, display: { sm: "none" } }}
-              >
-                <Image
-                  style={{ cursor: "pointer" }}
-                  src={"/images/side-minue.svg"}
-                  alt="Side Menu"
-                  width={72}
-                  height={72}
-                />{" "}
-              </IconButton>
-
               <Typography
                 variant="h6"
                 component="div"
@@ -151,6 +136,22 @@ export default function DashboardNavbar(props: Props) {
                 />
               </Typography>
 
+              <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                edge="start"
+                onClick={handleDrawerToggle}
+                sx={{ mr: 0, display: { sm: "none" } }}
+              >
+                <Image
+                  style={{ cursor: "pointer" }}
+                  src={"/images/side-minue.svg"}
+                  alt="Side Menu"
+                  width={72}
+                  height={72}
+                />{" "}
+              </IconButton>
+
               <Box
                 sx={{
                   flexGrow: 1,
@@ -164,12 +165,25 @@ export default function DashboardNavbar(props: Props) {
                 </Button>{" "}
               </Box>
             </Toolbar>
+            <Box className={styles.userLogo}>
+              <Box
+                sx={{
+                  width: { xs: "100px", md: "156px" },
+                  height: { xs: "100px", md: "156px" },
+                }}
+                className={styles.logoWrapper}
+              ></Box>
+              <div className={styles.textWrapper}>
+                <h2>Dr. Ahmed</h2>
+                <p>@dr.ahmed12</p>
+              </div>
+            </Box>
           </Container>
           <Image
-            src={"/images/Dashboard/Dashboard-banner.svg"}
+            src={"/images/Dashboard-banner.png"}
             alt="dashboard-banner"
             fill
-            style={{ objectFit: "cover" }}
+            style={{ objectFit: "contain", background: "#f8f6ef" }}
           />
         </AppBar>
         <nav>

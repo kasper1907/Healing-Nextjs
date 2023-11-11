@@ -82,4 +82,36 @@
       color: $red-background;
     }
   }
+
+  .userLogo {
+    z-index: 3;
+    position: absolute;
+    border: 0;
+    top: calc(100% + 87px);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    .logoWrapper {
+      background-color: #81f2c2;
+      border-radius: 50%;
+    }
+    .textWrapper {
+      display: flex;
+      flex-direction: column;
+      color: #000;
+      align-items: flex-start;
+      gap: 0;
+      h2 {
+        color: #10458c;
+        font-weight: 300;
+        font-size: 25px;
+      }
+      p {
+        font-size: 15px;
+        font-weight: 200;
+        color: #838383;
+      }
+    }
+  }
 }

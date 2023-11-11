@@ -13,9 +13,23 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <link rel="icon" href="/images/healing-logo.svg" sizes="any" />
+      <head>
+        <link rel="icon" href="/images/healing-logo.svg" sizes="any" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          //@ts-ignore
+          crossorigin={true}
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100&display=swap"
+          rel="stylesheet"
+        />
+      </head>
       <body style={{ padding: "0", margin: "0", background: "#F8F8F8" }}>
         <DashboardNavbar />
+
         {children}
       </body>
     </html>

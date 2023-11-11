@@ -10,6 +10,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import PersonPinIcon from "@mui/icons-material/PersonPin";
 import { AiFillHome } from "react-icons/ai";
 import { BsFillCalendarDateFill } from "react-icons/bs";
+import { Box } from "@mui/material";
 const HomeTabs = ({
   value,
   setValue,
@@ -22,13 +23,13 @@ const HomeTabs = ({
   };
 
   return (
-    <div
+    <Box
+      sx={{ display: { xs: "none", lg: "flex" } }}
       style={{
         background: "#C0F8E0",
         height: "72px",
-        position: "fixed",
+        // position: "fixed",
         width: "100%",
-        display: "flex",
         alignItems: "center",
         justifyContent: "center",
       }}
@@ -60,7 +61,7 @@ const HomeTabs = ({
           />
         </TabList>
       </TabContext>
-    </div>
+    </Box>
   );
 };
 
