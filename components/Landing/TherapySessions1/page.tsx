@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import SectionHeader from "../../shared/SectionHeader/page";
 import { Container, Grid, useMediaQuery } from "@mui/material";
 import TherapyCard from "../../shared/TherapyCard/page";
-import { therapySessions } from "@/app/constants/TherapySessions1";
+import { therapySessions } from "@/constants/TherapySessions1";
 import Image from "next/image";
 import { useTransition } from "react";
 import LargeDialog from "../../shared/Dialogs/LargeDialog/page";

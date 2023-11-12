@@ -2,7 +2,7 @@
 import React, { useEffect } from "react";
 import styles from "@/styles/sass/Dashboard/HomePage/HomePage.module.scss";
 import { Button, Container, Grid } from "@mui/material";
-import { groups } from "@/app/constants/Groups";
+import { groups } from "@/constants/Groups";
 import { GrView } from "react-icons/gr";
 import { AiOutlineEdit, AiOutlineEye } from "react-icons/ai";
 import Image from "next/image";
@@ -10,7 +10,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 const Page = () => {
   const router = useRouter();
-  console.log(router);
   // const { id: GroupId } = params.params;
   console.log();
   const [currentGroup, setCurrentGroup] = React.useState<any>(null);
@@ -19,7 +18,6 @@ const Page = () => {
     setCurrentGroup(currentGroup);
   }, []);
 
-  console.log(currentGroup?.groupUsers?.length);
   return (
     <div className={styles.PageWrapper}>
       <Container sx={{ mt: 10 }}>
@@ -39,8 +37,13 @@ const Page = () => {
                   <h3>{user.name}</h3>
                   <div className={styles.groupButtons}>
                     <Button variant="contained">
-                      <AiOutlineEye />
-                      View
+                      <Link
+                        className="flex w-full h-full items-center justify-center"
+                        href={`/dashboard/users/${user?.id}`}
+                      >
+                        <AiOutlineEye />
+                        View
+                      </Link>
                     </Button>
                     <Button variant="outlined">
                       <AiOutlineEdit />

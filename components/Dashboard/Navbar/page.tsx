@@ -18,7 +18,7 @@ import Image from "next/image";
 import Container from "@mui/material/Container";
 import styles from "@/styles/sass/Dashboard/DashboardNavbar/DashboardNavbar.module.scss";
 import Link from "next/link";
-import { NavbarItems } from "@/app/models/Navbar";
+import { NavbarItems } from "@/models/Navbar";
 interface Props {
   /**
    * Injected by the documentation to work in an iframe.

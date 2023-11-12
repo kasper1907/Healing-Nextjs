@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "@/styles/sass/Dashboard/HomePage/HomePage.module.scss";
 import { Button, Container, Grid } from "@mui/material";
-import { groups } from "@/app/constants/Groups";
+import { groups } from "@/constants/Groups";
 import { GrView } from "react-icons/gr";
 import { AiOutlineEdit, AiOutlineEye } from "react-icons/ai";
 import Link from "next/link";
@@ -25,13 +25,7 @@ const Home = () => {
                 <div className={styles.groupButtons}>
                   <Button variant="contained">
                     <Link
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        width: "100%",
-                        height: "100%",
-                      }}
+                      className="flex items-center justify-center gap-1"
                       href={`/dashboard/GroupUsers/${group.id}`}
                     >
                       <AiOutlineEye />

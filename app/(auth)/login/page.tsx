@@ -7,35 +7,36 @@ import TextField from "@mui/material/TextField";
 import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import Link from "next/link";
-const page = () => {
-  const CssTextField = styled(TextField)({
-    "& label.Mui-focused": {
-      color: "#10458c",
-    },
-    "& .MuiInput-underline:after": {
-      borderBottomColor: "#B2BAC2",
-    },
-    "& .MuiOutlinedInput-root": {
-      "& fieldset": {
-        borderColor: "transparent",
-        backgroundColor: "#FFF !important",
-        borderRadius: "12px",
-        width: "100%",
-      },
-      "&:hover fieldset": {
-        borderColor: "#10458c",
-        color: "#10458c !important",
-      },
-      "&.Mui-focused fieldset": {
-        borderColor: "#10458c",
-        color: "#10458c !important",
-      },
-      "& .MuiInputBase-input": {
-        zIndex: 22,
-      },
-    },
-  });
 
+export const CssTextField = styled(TextField)({
+  "& label.Mui-focused": {
+    color: "#10458c",
+  },
+  "& .MuiInput-underline:after": {
+    borderBottomColor: "#B2BAC2",
+  },
+  "& .MuiOutlinedInput-root": {
+    "& fieldset": {
+      borderColor: "transparent",
+      backgroundColor: "#FFF !important",
+      borderRadius: "12px",
+      width: "100%",
+    },
+    "&:hover fieldset": {
+      borderColor: "#10458c",
+      color: "#10458c !important",
+    },
+    "&.Mui-focused fieldset": {
+      borderColor: "#10458c",
+      color: "#10458c !important",
+    },
+    "& .MuiInputBase-input": {
+      zIndex: 22,
+    },
+  },
+});
+
+const page = () => {
   return (
     <Grid container sx={{ height: "100vh", direction: "ltr" }}>
       <Grid
