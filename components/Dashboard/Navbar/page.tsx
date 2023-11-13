@@ -124,7 +124,18 @@ export default function DashboardNavbar(props: Props) {
           navItems.map((item: NavbarItems) => (
             <ListItem key={item?.title} disablePadding>
               <ListItemButton sx={{ textAlign: "center" }}>
-                <ListItemText primary={item?.title} />
+                <Link
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                  }}
+                  onClick={() => {
+                    handleDrawerToggle();
+                  }}
+                  href={item.url}
+                >
+                  <ListItemText primary={item?.title} />
+                </Link>
               </ListItemButton>
             </ListItem>
           ))}

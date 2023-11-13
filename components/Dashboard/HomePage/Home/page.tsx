@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "@/styles/sass/Dashboard/HomePage/HomePage.module.scss";
-import { Button, Container, Grid } from "@mui/material";
+import { Button, Container, Grid, Typography } from "@mui/material";
 import { groups } from "@/constants/Groups";
 import { GrView } from "react-icons/gr";
 import { AiOutlineEdit, AiOutlineEye } from "react-icons/ai";
@@ -9,6 +9,9 @@ const Home = () => {
   return (
     <div className={styles.PageWrapper}>
       <Container sx={{ mt: 10 }}>
+        <Typography sx={{ mb: 7, ml: 2 }} color={"primary"}>
+          Dashboard / All Groups
+        </Typography>
         <Grid container rowSpacing={7}>
           {groups?.map((group, idx) => (
             <Grid
@@ -25,6 +28,10 @@ const Home = () => {
                 <div className={styles.groupButtons}>
                   <Button variant="contained">
                     <Link
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                      }}
                       className="flex items-center justify-center gap-1"
                       href={`/dashboard/GroupUsers/${group.id}`}
                     >

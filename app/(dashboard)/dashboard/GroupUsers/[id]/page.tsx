@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect } from "react";
 import styles from "@/styles/sass/Dashboard/HomePage/HomePage.module.scss";
-import { Button, Container, Grid } from "@mui/material";
+import { Button, Container, Grid, Typography } from "@mui/material";
 import { groups } from "@/constants/Groups";
 import { GrView } from "react-icons/gr";
 import { AiOutlineEdit, AiOutlineEye } from "react-icons/ai";
@@ -21,6 +21,9 @@ const Page = () => {
   return (
     <div className={styles.PageWrapper}>
       <Container sx={{ mt: 10 }}>
+        <Typography sx={{ mb: 7, ml: 2 }} color={"primary"}>
+          Dashboard / All Groups / Group Users
+        </Typography>
         <Grid container rowSpacing={7}>
           {currentGroup?.groupUsers?.length > 0 ? (
             currentGroup?.groupUsers?.map((user: any, idx: number) => (
@@ -38,6 +41,10 @@ const Page = () => {
                   <div className={styles.groupButtons}>
                     <Button variant="contained">
                       <Link
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                        }}
                         className="flex w-full h-full items-center justify-center"
                         href={`/dashboard/users/${user?.id}`}
                       >

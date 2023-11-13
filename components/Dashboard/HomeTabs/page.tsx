@@ -94,7 +94,7 @@ const HomeTabs = (props: any) => {
   return (
     <Box
       sx={{
-        display: { xs: "none", md: "flex" },
+        display: { xs: "none", sm: "flex" },
       }}
       style={{
         background: "#C0F8E0",
