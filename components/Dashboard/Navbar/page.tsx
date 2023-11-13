@@ -25,6 +25,7 @@ import HomeTabs from "../HomeTabs/page";
 import { dashboardTabs, userTabs } from "@/constants/UserTabs";
 import { useTabsContext } from "../TabsContext";
 import { usePathname } from "next/navigation";
+import { BsFillArrowRightCircleFill } from "react-icons/bs";
 interface Props {
   /**
    * Injected by the documentation to work in an iframe.
@@ -76,22 +77,51 @@ export default function DashboardNavbar(props: Props) {
     </div>
   );
   const renderUserTabs = (
-    <div className={styles.dashboard_sidebar_Tabs}>
-      {userTabs.map((tab: any, idx: number) => (
-        <div
-          className={`${styles.dashboard_sidebar_Tab} ${
-            tab.value == userTabsValue ? styles.active : ""
-          }`}
-          onClick={() => {
-            setUserTabsValue(tab?.value);
-            handleDrawerToggle();
-          }}
-          key={idx}
-        >
-          {tab.icon} {tab?.label}
-        </div>
+    <>
+      <div className={styles.dashboard_sidebar_Tabs}>
+        {userTabs.map((tab: any, idx: number) => (
+          <div
+            className={`${styles.dashboard_sidebar_Tab} ${
+              tab.value == userTabsValue ? styles.active : ""
+            }`}
+            onClick={() => {
+              setUserTabsValue(tab?.value);
+              handleDrawerToggle();
+            }}
+            key={idx}
+          >
+            {tab.icon} {tab?.label}
+          </div>
+        ))}
+      </div>
+
+      {navItems.map((item: NavbarItems) => (
+        <ListItem key={item?.title} disablePadding>
+          <ListItemButton sx={{ textAlign: "center" }}>
+            <Link
+              style={{
+                width: "100%",
+                height: "100%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "#10458C",
+              }}
+              onClick={() => {
+                handleDrawerToggle();
+              }}
+              href={item.url}
+            >
+              <BsFillArrowRightCircleFill />
+              <ListItemText
+                sx={{ textAlign: "left", marginLeft: "15px" }}
+                primary={item?.title}
+              />
+            </Link>
+          </ListItemButton>
+        </ListItem>
       ))}
-    </div>
+    </>
   );
 
   const drawer = (

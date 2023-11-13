@@ -123,6 +123,7 @@ const Dropzone = ({ className }: any) => {
           <Grid
             container
             columnSpacing={2}
+            rowSpacing={1}
             sx={{
               position: "absolute",
               left: "50%",
@@ -181,7 +182,7 @@ const Dropzone = ({ className }: any) => {
           </Grid>
         )}
         {/* Preview */}
-        <section className="mt-20" style={{ marginTop: "84px" }}>
+        <Box className="mt-20" sx={{ marginTop: { xs: "145px", md: "84px" } }}>
           {/* Accepted files */}
 
           <Grid container rowSpacing={2}>
@@ -254,7 +255,7 @@ const Dropzone = ({ className }: any) => {
             </li>
           ))}
         </ul> */}
-        </section>
+        </Box>
       </form>
     </Box>
   );
