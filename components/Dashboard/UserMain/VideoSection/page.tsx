@@ -114,6 +114,8 @@ const VideoSection = () => {
               },
               "& .MuiFormLabel-root": {
                 color: "#92929D",
+                fontSize: { xs: "12px", sm: "14px" },
+                marginTop: "2px",
               },
             }}
           />

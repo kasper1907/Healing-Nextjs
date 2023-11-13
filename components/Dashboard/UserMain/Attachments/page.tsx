@@ -19,7 +19,15 @@ const Attachments = () => {
           {Array.from({ length: 7 }, () => Math.floor(Math.random() * 6))?.map(
             (el, idx) => {
               return (
-                <Grid key={idx} className={styles.userFileWrapper} item xs={12}>
+                <Grid
+                  key={idx}
+                  sx={{
+                    padding: { xs: "15px", md: "20px 80px" },
+                  }}
+                  className={styles.userFileWrapper}
+                  item
+                  xs={12}
+                >
                   <Grid container rowSpacing={1}>
                     <Grid
                       sx={{ display: "flex", alignItems: "center" }}

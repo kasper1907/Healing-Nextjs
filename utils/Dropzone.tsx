@@ -72,114 +72,118 @@ const Dropzone = ({ className }: any) => {
   };
 
   return (
-    <form
-      style={{
-        width: "100%",
-        padding: "0px 40px",
+    <Box
+      sx={{
+        padding: { xs: "15px", md: "0px 40px" },
       }}
-      onSubmit={handleSubmit}
     >
-      <div
-        {...getRootProps({
-          className: className,
-        })}
+      <form
+        style={{
+          width: "100%",
+        }}
+        onSubmit={handleSubmit}
       >
-        <input {...getInputProps()} />
-        <div className="flex flex-col items-center justify-center gap-4">
-          <Image
-            src={"/images/Dashboard/upload-icon.svg"}
-            width={47}
-            height={42}
-            alt="uploadIcon"
-          />
-          {isDragActive ? (
-            <p>Drop the files here ...</p>
-          ) : (
-            <p className={styles.dropZone__text}>
-              <span className={styles.dropZone__mainText}>
-                {" "}
-                Drag & drop files here
-              </span>
-              <span>OR</span>
-              <Button
-                className={styles.browseButton}
-                sx={{ backgroundColor: "#10458C" }}
-              >
-                Browse Files
-              </Button>
-            </p>
-          )}
-        </div>
-      </div>
-      {files?.length > 0 && (
-        <Button
-          type="button"
-          onClick={removeAll}
-          className={styles.browseButton}
-          sx={{ backgroundColor: "#10458C" }}
-          style={{
-            margin: "auto",
-            marginLeft: "auto",
-            position: "absolute",
-            left: "50%",
-            transform: "translateX(-50%)",
-            marginTop: "10px",
-            border: "1px solid #c33a3a",
-            background: "transparent",
-            color: "#c33a3a",
-          }}
+        <div
+          {...getRootProps({
+            className: className,
+          })}
         >
-          Remove All Files
-        </Button>
-      )}
-      {/* Preview */}
-      <section className="mt-20" style={{ marginTop: "84px" }}>
-        {/* Accepted files */}
+          <input {...getInputProps()} />
+          <div className="flex flex-col items-center justify-center gap-4">
+            <Image
+              src={"/images/Dashboard/upload-icon.svg"}
+              width={47}
+              height={42}
+              alt="uploadIcon"
+            />
+            {isDragActive ? (
+              <p>Drop the files here ...</p>
+            ) : (
+              <p className={styles.dropZone__text}>
+                <span className={styles.dropZone__mainText}>
+                  {" "}
+                  Drag & drop files here
+                </span>
+                <span>OR</span>
+                <Button
+                  className={styles.browseButton}
+                  sx={{ backgroundColor: "#10458C" }}
+                >
+                  Browse Files
+                </Button>
+              </p>
+            )}
+          </div>
+        </div>
+        {files?.length > 0 && (
+          <Button
+            type="button"
+            onClick={removeAll}
+            className={styles.browseButton}
+            sx={{ backgroundColor: "#10458C" }}
+            style={{
+              margin: "auto",
+              marginLeft: "auto",
+              position: "absolute",
+              left: "50%",
+              transform: "translateX(-50%)",
+              marginTop: "10px",
+              border: "1px solid #c33a3a",
+              background: "transparent",
+              color: "#c33a3a",
+            }}
+          >
+            Remove All Files
+          </Button>
+        )}
+        {/* Preview */}
+        <section className="mt-20" style={{ marginTop: "84px" }}>
+          {/* Accepted files */}
 
-        <Grid container rowSpacing={2}>
-          {files.map((file: any) => (
-            <Grid
-              className={styles.uploadedImgsGrid}
-              key={file.name}
-              xs={12}
-              md={3}
-              sx={{ boxSizing: "border-box" }}
-            >
-              <Box
-                sx={{
-                  width: { xs: "100%", lg: "95%" },
-                  height: "100%",
-                }}
+          <Grid container rowSpacing={2}>
+            {files.map((file: any) => (
+              <Grid
+                className={styles.uploadedImgsGrid}
+                key={file.name}
+                xs={12}
+                md={3}
+                sx={{ boxSizing: "border-box" }}
               >
-                <Image
-                  src={file.preview}
-                  alt={file.name}
-                  width={150}
-                  height={150}
-                  onLoad={() => {
-                    URL.revokeObjectURL(file.preview);
+                <Box
+                  sx={{
+                    width: { xs: "100%", lg: "95%" },
+                    height: "100%",
                   }}
-                  style={{
-                    width: "150px",
-                    height: "150px",
-                  }}
-                  className="object-contain rounded-md"
-                />
-                <CiCircleRemove
-                  size={25}
-                  className={styles.removeIcon}
-                  onClick={() => removeFile(file.name)}
-                />
+                >
+                  <Image
+                    src={file.preview}
+                    alt={file.name}
+                    width={150}
+                    height={150}
+                    onLoad={() => {
+                      URL.revokeObjectURL(file.preview);
+                    }}
+                    style={{
+                      width: "150px",
+                      height: "150px",
+                    }}
+                    className="object-contain rounded-md"
+                  />
+                  <CiCircleRemove
+                    size={25}
+                    className={styles.removeIcon}
+                    onClick={() => removeFile(file.name)}
+                  />
 
-                <p className="text-center mt-2 text-neutral-500 text-[12px] font-medium">
-                  {file.name}
-                </p>
-              </Box>
-            </Grid>
-          ))}
-        </Grid>
+                  <p className="text-center mt-2 text-neutral-500 text-[12px] font-medium">
+                    {file.name}
+                  </p>
+                </Box>
+              </Grid>
+            ))}
+          </Grid>
 
-        {/* Rejected Files
+          {/* Rejected Files
         <h3 className="title text-lg font-semibold text-neutral-600 mt-24 border-b pb-3">
           Rejected Files
         </h3>
@@ -206,8 +210,9 @@ const Dropzone = ({ className }: any) => {
             </li>
           ))}
         </ul> */}
-      </section>
-    </form>
+        </section>
+      </form>
+    </Box>
   );
 };
 
