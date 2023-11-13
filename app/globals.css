@@ -30,3 +30,11 @@ body {
 
 
 
+.section {
+ padding: "20px"
+}
+
+.title {
+  font-weight: 400;
+  font-size: 2rem;
+}

@@ -93,7 +93,9 @@ const HomeTabs = (props: any) => {
 
   return (
     <Box
-      sx={{ display: { xs: "none", lg: "flex" } }}
+      sx={{
+        display: { xs: "none", lg: "flex" },
+      }}
       style={{
         background: "#C0F8E0",
         flexDirection: "column",
@@ -107,6 +109,12 @@ const HomeTabs = (props: any) => {
       <TabList
         onChange={handleChange}
         sx={{
+          "&.MuiTabs-root .MuiTabs-scroller": {
+            zIndex: 3333,
+          },
+          "&. MuiTabs-root  MuiTabs-scroller": {
+            zIndex: 3333,
+          },
           "& .MuiTabs-root": {
             zIndex: 3333,
           },

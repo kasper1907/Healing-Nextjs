@@ -8,7 +8,7 @@ import { TabContext } from "@mui/lab";
 import { userTabs } from "@/constants/UserTabs";
 
 const Page = ({ params }: any) => {
-  const [value, setValue] = React.useState<string>("1");
+  const [value, setValue] = React.useState<string>("5");
   const currentTab = userTabs.find((tab) => tab.value == value);
 
   return (

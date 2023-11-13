@@ -1,0 +1,118 @@
+@import "../../_base.sass";
+.pageWrapper {
+  .dropZoneWrapper {
+    background-color: rgb(192, 242, 194, 5%);
+    border: 2px dashed rgb(192, 242, 194, 50%);
+    border-spacing: 31px;
+    border-radius: 6px;
+    padding: 20px 10px;
+    padding-bottom: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 241px;
+    height: fit-content;
+    margin-bottom: 64px;
+
+    .browseButton {
+      background-color: $primary-color;
+      color: #fff;
+      text-transform: unset;
+      padding: 10px 20px;
+      border-radius: 10px;
+    }
+  }
+  .dropZone__text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    .dropZone__mainText {
+      font-size: 20px;
+      font-weight: 300;
+      color: #92929d;
+    }
+  }
+
+  .userFileWrapper {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px 80px;
+    min-height: 92px;
+    max-height: 200px;
+    margin-bottom: 20px;
+  }
+
+  .uploadedImgsGrid {
+    margin-bottom: 10px;
+  }
+  .uploadedImgsGrid div {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #cecece;
+    border-radius: 8px;
+    padding: 10px;
+    // margin-right: 10px;
+    // margin-bottom: 10px;
+    position: relative;
+    margin: auto;
+    .removeIcon {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      cursor: pointer;
+    }
+  }
+}
+
+.groupButtons {
+  display: flex;
+  flex-direction: row-reverse;
+  margin-top: 15px;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+
+  button {
+    width: fit-content;
+    box-shadow: none;
+    width: 100%;
+    background-color: transparent;
+    color: $primary-color;
+    border: 1px solid $primary-color;
+    border-radius: 10px;
+    height: 38px;
+    transition: 0.3s ease;
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    gap: 2px;
+    svg {
+      color: $primary-color;
+    }
+    &:hover {
+      background-color: $primary-color;
+      color: $btn-hover-color;
+    }
+    &:hover svg {
+      color: $btn-hover-color;
+    }
+    &:last-child {
+      background-color: $primary-color;
+      color: $btn-hover-color;
+    }
+    &:last-child svg {
+      color: $btn-hover-color;
+    }
+    &:last-child:hover {
+      background-color: $btn-hover-color;
+      color: $primary-color;
+    }
+    &:last-child:hover svg {
+      color: $primary-color;
+    }
+  }
+}
