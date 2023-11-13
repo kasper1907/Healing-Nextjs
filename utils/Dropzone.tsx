@@ -74,6 +74,7 @@ const Dropzone = ({ className }: any) => {
   return (
     <Box
       sx={{
+        width: "100%",
         padding: { xs: "15px", md: "0px 40px" },
       }}
     >
