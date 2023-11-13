@@ -5,6 +5,7 @@ import { ArrowUpTrayIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import { Box, Button, Grid } from "@mui/material";
 import styles from "@/styles/sass/Dashboard/UserMain/attachments.module.scss";
 import { CiCircleRemove } from "react-icons/ci";
+import { toast } from "sonner";
 const Dropzone = ({ className }: any) => {
   const [files, setFiles] = useState<any>([]);
   const [rejected, setRejected] = useState<any>([]);
@@ -45,6 +46,7 @@ const Dropzone = ({ className }: any) => {
   const removeAll = () => {
     setFiles([]);
     setRejected([]);
+    toast.success("All Files Removed Successfully");
   };
 
   const removeRejected = (name: any) => {
@@ -76,6 +78,7 @@ const Dropzone = ({ className }: any) => {
       sx={{
         width: "100%",
         padding: { xs: "15px", md: "0px 40px" },
+        position: "relative",
       }}
     >
       <form
@@ -117,25 +120,65 @@ const Dropzone = ({ className }: any) => {
           </div>
         </div>
         {files?.length > 0 && (
-          <Button
-            type="button"
-            onClick={removeAll}
-            className={styles.browseButton}
-            sx={{ backgroundColor: "#10458C" }}
-            style={{
-              margin: "auto",
-              marginLeft: "auto",
+          <Grid
+            container
+            columnSpacing={2}
+            sx={{
               position: "absolute",
               left: "50%",
               transform: "translateX(-50%)",
               marginTop: "10px",
-              border: "1px solid #c33a3a",
-              background: "transparent",
-              color: "#c33a3a",
             }}
           >
-            Remove All Files
-          </Button>
+            <Grid
+              sx={{
+                display: "flex",
+                justifyContent: { xs: "center", md: "flex-end" },
+              }}
+              item
+              xs={12}
+              md={6}
+            >
+              <Button
+                type="button"
+                onClick={removeAll}
+                className={styles.browseButton}
+                sx={{ backgroundColor: "#10458C" }}
+                style={{
+                  border: "1px solid #c33a3a",
+                  background: "transparent",
+                  color: "#c33a3a",
+                }}
+              >
+                Remove All Files
+              </Button>
+            </Grid>
+            <Grid
+              sx={{
+                display: "flex",
+                justifyContent: { xs: "center", md: "flex-start" },
+              }}
+              item
+              xs={12}
+              md={6}
+            >
+              <Button
+                type="button"
+                onClick={() => {
+                  toast.success("Files Uploaded Successfully");
+                }}
+                className={styles.browseButton}
+                sx={{ backgroundColor: "#10458C" }}
+                style={{
+                  border: "1px solid #10458C",
+                  background: "transparent",
+                  color: "#10458C",
+                }}
+              >
+                Submit And Upload
+              </Button>
+            </Grid>
+          </Grid>
         )}
         {/* Preview */}
         <section className="mt-20" style={{ marginTop: "84px" }}>

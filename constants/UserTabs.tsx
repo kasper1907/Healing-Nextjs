@@ -55,5 +55,4 @@ export const userTabs = [
   RecordedTab,
   AppointmentTab,
   AttachmentsTab,
-  SavedTab,
 ];
