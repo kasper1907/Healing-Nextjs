@@ -1,5 +1,6 @@
 "use client";
 import * as React from "react";
+import { useContext } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -19,6 +20,11 @@ import Container from "@mui/material/Container";
 import styles from "@/styles/sass/Dashboard/DashboardNavbar/DashboardNavbar.module.scss";
 import Link from "next/link";
 import { NavbarItems } from "@/models/Navbar";
+import { TabContext } from "@mui/lab";
+import HomeTabs from "../HomeTabs/page";
+import { dashboardTabs, userTabs } from "@/constants/UserTabs";
+import { useTabsContext } from "../TabsContext";
+import { usePathname } from "next/navigation";
 interface Props {
   /**
    * Injected by the documentation to work in an iframe.
@@ -29,13 +35,16 @@ interface Props {
 // const navItems = ['جلساتي', 'المدونه', 'تواصل معنا'];
 
 const drawerWidth = 300;
-const navItems = [
-  { id: 1, title: "جلساتي", url: "#" },
-  { id: 2, title: "المدونه", url: "#" },
-  { id: 3, title: "تواصل معنا", url: "#" },
-];
+const navItems = [{ id: 1, title: "All Groups", url: "/dashboard" }];
 
 export default function DashboardNavbar(props: Props) {
+  const {
+    dashboardTabsValue,
+    setDashboardTabsValue,
+    userTabsValue,
+    setUserTabsValue,
+  }: any = useTabsContext();
+
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -43,8 +52,50 @@ export default function DashboardNavbar(props: Props) {
     setMobileOpen((prevState) => !prevState);
   };
 
+  const pagePath = usePathname();
+  const isDashboard = pagePath == "/dashboard";
+  const isGroupUsers = pagePath.includes("/dashboard/GroupUsers");
+  const isUserPage = pagePath.includes("/dashboard/users");
+
+  const renderDashboardTabs = (
+    <div className={styles.dashboard_sidebar_Tabs}>
+      {dashboardTabs.map((tab, idx) => (
+        <div
+          className={`${styles.dashboard_sidebar_Tab} ${
+            tab.value == dashboardTabsValue ? styles.active : ""
+          }`}
+          onClick={() => {
+            setDashboardTabsValue(tab?.value);
+            handleDrawerToggle();
+          }}
+          key={idx}
+        >
+          {tab?.icon} {tab?.label}
+        </div>
+      ))}
+    </div>
+  );
+  const renderUserTabs = (
+    <div className={styles.dashboard_sidebar_Tabs}>
+      {userTabs.map((tab: any, idx: number) => (
+        <div
+          className={`${styles.dashboard_sidebar_Tab} ${
+            tab.value == userTabsValue ? styles.active : ""
+          }`}
+          onClick={() => {
+            setUserTabsValue(tab?.value);
+            handleDrawerToggle();
+          }}
+          key={idx}
+        >
+          {tab.icon} {tab?.label}
+        </div>
+      ))}
+    </div>
+  );
+
   const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
+    <Box sx={{ textAlign: "center" }}>
       <Typography
         variant="h6"
         sx={{
@@ -66,14 +117,19 @@ export default function DashboardNavbar(props: Props) {
       </Typography>
       <Divider />
       <List>
-        {navItems.map((item: NavbarItems) => (
-          <ListItem key={item?.title} disablePadding>
-            <ListItemButton sx={{ textAlign: "center" }}>
-              <ListItemText primary={item?.title} />
-            </ListItemButton>
-          </ListItem>
-        ))}
+        {isUserPage && renderUserTabs}
+        {isDashboard && renderDashboardTabs}
+        {!isUserPage &&
+          !isDashboard &&
+          navItems.map((item: NavbarItems) => (
+            <ListItem key={item?.title} disablePadding>
+              <ListItemButton sx={{ textAlign: "center" }}>
+                <ListItemText primary={item?.title} />
+              </ListItemButton>
+            </ListItem>
+          ))}
       </List>
+
       <Box
         sx={{
           flexGrow: 1,
@@ -81,9 +137,11 @@ export default function DashboardNavbar(props: Props) {
           display: { sm: "flex" },
         }}
       >
-        <Button className={styles.NavBarLink}>English</Button>
-        <Button className={styles.NavBarLink}>
-          <Link href={"/login"}>تسجيل الدخول</Link>
+        <Button
+          sx={{ width: "90%", margin: "10px" }}
+          className={styles.NavBarLink__logout}
+        >
+          <Link href={"/login"}>Logout</Link>
         </Button>
       </Box>
     </Box>

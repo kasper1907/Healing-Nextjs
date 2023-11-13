@@ -94,7 +94,7 @@ const HomeTabs = (props: any) => {
   return (
     <Box
       sx={{
-        display: { xs: "none", lg: "flex" },
+        display: { xs: "none", md: "flex" },
       }}
       style={{
         background: "#C0F8E0",
@@ -110,7 +110,7 @@ const HomeTabs = (props: any) => {
         onChange={handleChange}
         sx={{
           "&.MuiTabs-root .MuiTabs-scroller": {
-            zIndex: 3333,
+            zIndex: 33,
           },
           "&. MuiTabs-root  MuiTabs-scroller": {
             zIndex: 3333,

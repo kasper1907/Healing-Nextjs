@@ -8,9 +8,10 @@ import UserMain from "@/components/Dashboard/UserMain/page";
 import Recommended from "@/components/Dashboard/UserMain/Recommended/page";
 import { RiAttachment2 } from "react-icons/ri";
 import Recorded from "@/components/Dashboard/UserMain/Recorded/page";
-import Appointments from "@/components/Dashboard/UserMain/Appointments/page";
 import Attachments from "@/components/Dashboard/UserMain/Attachments/page";
 import Saved from "@/components/Dashboard/UserMain/Saved/page";
+import Appointments from "@/components/Dashboard/HomePage/Appointments/page";
+import Home from "@/components/Dashboard/HomePage/Home/page";
 
 const HomeTab: any = {
   value: "1",
@@ -56,3 +57,18 @@ export const userTabs = [
   AppointmentTab,
   AttachmentsTab,
 ];
+
+const DashboardTab: UserTab = {
+  value: "1",
+  label: "Dashboard",
+  icon: <AiFillHome size={18} />,
+  component: Home,
+};
+const DashboardAppointments: UserTab = {
+  value: "2",
+  label: "Appointments",
+  icon: <BsCalendarDate size={18} />,
+  component: Appointments,
+};
+
+export const dashboardTabs = [DashboardTab, DashboardAppointments];
