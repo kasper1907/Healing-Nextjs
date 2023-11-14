@@ -1,137 +1,478 @@
 {
-    "Users": [
+  "Users": [
+    {
+      "createdAt": "2023-11-11T10:12:49.324Z",
+      "name": "Casey Steuber",
+      "avatar": "https://loremflickr.com/640/480",
+      "lastSession": [],
+      "preparationVideo": "57944",
+      "email": "Eriberto93@hotmail.com",
+      "mobile": "692-589-6406 x073",
+      "relationShip": "relationShip 1",
+      "dateOfBirth": "2058-06-24T05:26:40.672Z",
+      "placeOfBirth": "Longmont",
+      "recommendedVideos": [],
+      "id": 1
+    },
+    {
+      "createdAt": "2023-11-11T22:28:52.263Z",
+      "name": "Ramiro Reichel",
+      "avatar": "https://loremflickr.com/640/480",
+      "lastSession": [],
+      "preparationVideo": "97700",
+      "email": "Gabriel_McDermott51@hotmail.com",
+      "mobile": "505-729-2991 x421",
+      "relationShip": "relationShip 2",
+      "dateOfBirth": "2032-06-24T15:58:12.077Z",
+      "placeOfBirth": "South Kadinfield",
+      "recommendedVideos": [],
+      "id": 2
+    },
+    {
+      "createdAt": "2023-11-12T03:50:30.527Z",
+      "name": "Victor Mayer",
+      "avatar": "https://loremflickr.com/640/480",
+      "lastSession": [],
+      "preparationVideo": "008",
+      "email": "Cielo41@gmail.com",
+      "mobile": "594.212.5130",
+      "relationShip": "relationShip 3",
+      "dateOfBirth": "1997-04-28T05:19:51.839Z",
+      "placeOfBirth": "Fort Coraville",
+      "recommendedVideos": [],
+      "id": 3
+    },
+    {
+      "createdAt": "2023-11-11T23:38:23.912Z",
+      "name": "Herbert Hegmann Sr.",
+      "avatar": "https://loremflickr.com/640/480",
+      "lastSession": [],
+      "preparationVideo": "795",
+      "email": "Evie9@hotmail.com",
+      "mobile": "(321) 735-9750 x76240",
+      "relationShip": "relationShip 4",
+      "dateOfBirth": "2062-02-16T14:36:13.708Z",
+      "placeOfBirth": "D'Amorechester",
+      "recommendedVideos": [],
+      "id": 4
+    },
+    {
+      "createdAt": "2023-11-12T01:53:47.021Z",
+      "name": "Loren Hyatt",
+      "avatar": "https://loremflickr.com/640/480",
+      "lastSession": [],
+      "preparationVideo": "62803",
+      "email": "Jacinthe.Trantow@hotmail.com",
+      "mobile": "1-976-977-5796 x7664",
+      "relationShip": "relationShip 5",
+      "dateOfBirth": "2029-09-24T11:11:48.775Z",
+      "placeOfBirth": "North Manleyberg",
+      "recommendedVideos": [],
+      "id": 5
+    }
+  ],
+  "Groups": [
+    {
+      "id": "1",
+      "createdAt": "2023-11-11T10:12:49.324Z",
+      "name": "DRA_1",
+      "avatar": "/images/TherapySessions1/1.svg",
+      "preparationVideo": "57944",
+      "email": "",
+      "users": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "id": "2",
+      "createdAt": "2023-11-11T10:12:49.324Z",
+      "name": "DRA_2",
+      "avatar": "/images/TherapySessions1/2.svg",
+      "users": [
+        1,
+        2
+      ]
+    },
+    {
+      "id": "3",
+      "createdAt": "2023-11-11T10:12:49.324Z",
+      "name": "DRA_3",
+      "avatar": "/images/TherapySessions1/3.svg",
+      "users": [
+        1,
+        2
+      ]
+    },
+    {
+      "id": "4",
+      "createdAt": "2023-11-11T10:12:49.324Z",
+      "name": "DRA_4",
+      "avatar": "/images/TherapySessions1/4.svg",
+      "users": [
+        3,
+        4,
+        1
+      ]
+    },
+    {
+      "id": "5",
+      "createdAt": "2023-11-11T10:12:49.324Z",
+      "name": "DRA_5",
+      "avatar": "/images/TherapySessions1/5.svg",
+      "users": [
+        3
+      ]
+    },
+    {
+      "id": "6",
+      "createdAt": "2023-11-11T10:12:49.324Z",
+      "name": "DRA_6",
+      "avatar": "/images/TherapySessions1/6.svg",
+      "users": []
+    }
+  ],
+  "Videos": [
+    {
+      "videoId": "57944",
+      "url": "https://customer-7ral3pe3959xe832.cloudflarestream.com/737b67dbf506017e02fd8039f213b5f0/iframe?poster=https%3A%2F%2Fcustomer-7ral3pe3959xe832.cloudflarestream.com%2F737b67dbf506017e02fd8039f213b5f0%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600",
+      "user_id": 1,
+      "comments": [
         {
-            "createdAt": "2023-11-11T10:12:49.324Z",
-            "name": "Casey Steuber",
-            "avatar": "https://loremflickr.com/640/480",
-            "lastSession": [],
-            "preparationVideo": "57944",
-            "email": "Eriberto93@hotmail.com",
-            "mobile": "692-589-6406 x073",
-            "relationShip": "relationShip 1",
-            "dateOfBirth": "2058-06-24T05:26:40.672Z",
-            "placeOfBirth": "Longmont",
-            "recommendedVideos": [],
-            "id": 1
+          "id": "1",
+          "text": "This is Comment For Testing",
+          "createdAt": "2023-11-11T10:12:49.324Z",
+          "user_id": 1,
+          "replies": [
+            {
+              "id": "1",
+              "text": "This is Reply For Testing",
+              "createdAt": "2023-11-11T10:12:49.324Z",
+              "user_id": 1
+            },
+            {
+              "id": "1",
+              "text": "This is Reply For Testing",
+              "createdAt": "2023-11-11T10:12:49.324Z",
+              "user_id": 1
+            }
+          ]
         },
         {
-            "createdAt": "2023-11-11T22:28:52.263Z",
-            "name": "Ramiro Reichel",
-            "avatar": "https://loremflickr.com/640/480",
-            "lastSession": [],
-            "preparationVideo": "97700",
-            "email": "Gabriel_McDermott51@hotmail.com",
-            "mobile": "505-729-2991 x421",
-            "relationShip": "relationShip 2",
-            "dateOfBirth": "2032-06-24T15:58:12.077Z",
-            "placeOfBirth": "South Kadinfield",
-            "recommendedVideos": [],
-            "id": 2
+          "id": "2",
+          "text": "This is Comment For Testing2 ",
+          "createdAt": "2023-11-11T10:12:49.324Z",
+          "user_id": 1,
+          "replies": [
+            {
+              "id": "1",
+              "text": "This is Reply For Testing",
+              "createdAt": "2023-11-11T10:12:49.324Z",
+              "user_id": 1
+            },
+            {
+              "id": "1",
+              "text": "This is Reply For Testing",
+              "createdAt": "2023-11-11T10:12:49.324Z",
+              "user_id": 1
+            }
+          ]
         },
         {
-            "createdAt": "2023-11-12T03:50:30.527Z",
-            "name": "Victor Mayer",
-            "avatar": "https://loremflickr.com/640/480",
-            "lastSession": [],
-            "preparationVideo": "008",
-            "email": "Cielo41@gmail.com",
-            "mobile": "594.212.5130",
-            "relationShip": "relationShip 3",
-            "dateOfBirth": "1997-04-28T05:19:51.839Z",
-            "placeOfBirth": "Fort Coraville",
-            "recommendedVideos": [],
-            "id": 3
+          "id": "3",
+          "text": "This is Comment For Testing3",
+          "createdAt": "2023-11-11T10:12:49.324Z",
+          "user_id": 1,
+          "replies": [
+            {
+              "id": "1",
+              "text": "This is Reply For Testing",
+              "createdAt": "2023-11-11T10:12:49.324Z",
+              "user_id": 1
+            },
+            {
+              "id": "1",
+              "text": "This is Reply For Testing",
+              "createdAt": "2023-11-11T10:12:49.324Z",
+              "user_id": 1
+            }
+          ]
         },
         {
-            "createdAt": "2023-11-11T23:38:23.912Z",
-            "name": "Herbert Hegmann Sr.",
-            "avatar": "https://loremflickr.com/640/480",
-            "lastSession": [],
-            "preparationVideo": "795",
-            "email": "Evie9@hotmail.com",
-            "mobile": "(321) 735-9750 x76240",
-            "relationShip": "relationShip 4",
-            "dateOfBirth": "2062-02-16T14:36:13.708Z",
-            "placeOfBirth": "D'Amorechester",
-            "recommendedVideos": [],
-            "id": 4
+          "id": "4",
+          "text": "This is Comment For Testing4",
+          "createdAt": "2023-11-11T10:12:49.324Z",
+          "user_id": 1,
+          "replies": [
+            {
+              "id": "1",
+              "text": "This is Reply For Testing",
+              "createdAt": "2023-11-11T10:12:49.324Z",
+              "user_id": 1
+            },
+            {
+              "id": "1",
+              "text": "This is Reply For Testing",
+              "createdAt": "2023-11-11T10:12:49.324Z",
+              "user_id": 1
+            }
+          ]
         },
         {
-            "createdAt": "2023-11-12T01:53:47.021Z",
-            "name": "Loren Hyatt",
-            "avatar": "https://loremflickr.com/640/480",
-            "lastSession": [],
-            "preparationVideo": "62803",
-            "email": "Jacinthe.Trantow@hotmail.com",
-            "mobile": "1-976-977-5796 x7664",
-            "relationShip": "relationShip 5",
-            "dateOfBirth": "2029-09-24T11:11:48.775Z",
-            "placeOfBirth": "North Manleyberg",
-            "recommendedVideos": [],
-            "id": 5
+          "id": "5",
+          "text": "This is Comment For Testing5",
+          "createdAt": "2023-11-11T10:12:49.324Z",
+          "user_id": 1,
+          "replies": [
+            {
+              "id": "1",
+              "text": "This is Reply For Testing",
+              "createdAt": "2023-11-11T10:12:49.324Z",
+              "user_id": 1
+            },
+            {
+              "id": "1",
+              "text": "This is Reply For Testing",
+              "createdAt": "2023-11-11T10:12:49.324Z",
+              "user_id": 1
+            }
+          ]
         }
-    ],
-    "Groups": [
+      ]
+    },
+    {
+      "videoId": "57945",
+      "url": "https://customer-7ral3pe3959xe832.cloudflarestream.com/737b67dbf506017e02fd8039f213b5f0/iframe?poster=https%3A%2F%2Fcustomer-7ral3pe3959xe832.cloudflarestream.com%2F737b67dbf506017e02fd8039f213b5f0%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600",
+      "user_id": 1
+    },
+    {
+      "videoId": "57946",
+      "url": "https://customer-7ral3pe3959xe832.cloudflarestream.com/737b67dbf506017e02fd8039f213b5f0/iframe?poster=https%3A%2F%2Fcustomer-7ral3pe3959xe832.cloudflarestream.com%2F737b67dbf506017e02fd8039f213b5f0%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600",
+      "user_id": 1
+    },
+    {
+      "videoId": "57947",
+      "url": "https://customer-7ral3pe3959xe832.cloudflarestream.com/737b67dbf506017e02fd8039f213b5f0/iframe?poster=https%3A%2F%2Fcustomer-7ral3pe3959xe832.cloudflarestream.com%2F737b67dbf506017e02fd8039f213b5f0%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600",
+      "user_id": 1
+    },
+    {
+      "videoId": "57948",
+      "url": "https://customer-7ral3pe3959xe832.cloudflarestream.com/737b67dbf506017e02fd8039f213b5f0/iframe?poster=https%3A%2F%2Fcustomer-7ral3pe3959xe832.cloudflarestream.com%2F737b67dbf506017e02fd8039f213b5f0%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600",
+      "user_id": 1
+    },
+    {
+      "videoId": "57949",
+      "url": "https://customer-7ral3pe3959xe832.cloudflarestream.com/737b67dbf506017e02fd8039f213b5f0/iframe?poster=https%3A%2F%2Fcustomer-7ral3pe3959xe832.cloudflarestream.com%2F737b67dbf506017e02fd8039f213b5f0%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600",
+      "user_id": 1
+    },
+    {
+      "videoId": "57950",
+      "url": "https://customer-7ral3pe3959xe832.cloudflarestream.com/737b67dbf506017e02fd8039f213b5f0/iframe?poster=https%3A%2F%2Fcustomer-7ral3pe3959xe832.cloudflarestream.com%2F737b67dbf506017e02fd8039f213b5f0%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600",
+      "user_id": 2
+    },
+    {
+      "videoId": "57951",
+      "url": "https://customer-7ral3pe3959xe832.cloudflarestream.com/737b67dbf506017e02fd8039f213b5f0/iframe?poster=https%3A%2F%2Fcustomer-7ral3pe3959xe832.cloudflarestream.com%2F737b67dbf506017e02fd8039f213b5f0%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600",
+      "user_id": 2
+    },
+    {
+      "videoId": "57952",
+      "url": "https://customer-7ral3pe3959xe832.cloudflarestream.com/737b67dbf506017e02fd8039f213b5f0/iframe?poster=https%3A%2F%2Fcustomer-7ral3pe3959xe832.cloudflarestream.com%2F737b67dbf506017e02fd8039f213b5f0%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600",
+      "user_id": 2
+    },
+    {
+      "videoId": "57944",
+      "url": "https://customer-7ral3pe3959xe832.cloudflarestream.com/737b67dbf506017e02fd8039f213b5f0/iframe?poster=https%3A%2F%2Fcustomer-7ral3pe3959xe832.cloudflarestream.com%2F737b67dbf506017e02fd8039f213b5f0%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600",
+      "user_id": 2
+    },
+    {
+      "videoId": "57953",
+      "url": "https://customer-7ral3pe3959xe832.cloudflarestream.com/737b67dbf506017e02fd8039f213b5f0/iframe?poster=https%3A%2F%2Fcustomer-7ral3pe3959xe832.cloudflarestream.com%2F737b67dbf506017e02fd8039f213b5f0%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600",
+      "user_id": 2
+    },
+    {
+      "videoId": "57954",
+      "url": "https://customer-7ral3pe3959xe832.cloudflarestream.com/737b67dbf506017e02fd8039f213b5f0/iframe?poster=https%3A%2F%2Fcustomer-7ral3pe3959xe832.cloudflarestream.com%2F737b67dbf506017e02fd8039f213b5f0%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600",
+      "user_id": 2
+    },
+    {
+      "videoId": "57956",
+      "url": "https://customer-7ral3pe3959xe832.cloudflarestream.com/737b67dbf506017e02fd8039f213b5f0/iframe?poster=https%3A%2F%2Fcustomer-7ral3pe3959xe832.cloudflarestream.com%2F737b67dbf506017e02fd8039f213b5f0%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600",
+      "user_id": 3,
+      "comments": [
         {
-            "id": "1",
-            "createdAt": "2023-11-11T10:12:49.324Z",
-            "name": "DRA_1",
-            "avatar": "/images/TherapySessions1/1.svg",
-            "preparationVideo": "57944",
-            "email": "",
-            "users": [
-                1,
-                2,
-                3,
-                4
-            ]
+          "id": "1",
+          "text": "is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambledand typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled ? ",
+          "createdAt": "2023-11-11T10:12:49.324Z",
+          "user_id": 3,
+          "replies": [
+            {
+              "id": "22",
+              "text": "This is Reply For Testing",
+              "createdAt": "2023-11-11T10:12:49.324Z",
+              "user_id": 3
+            },
+            {
+              "id": "1",
+              "text": "This is Reply For Testing",
+              "createdAt": "2023-11-11T10:12:49.324Z",
+              "user_id": 3
+            }
+          ]
         },
         {
-            "id": "2",
-            "createdAt": "2023-11-11T10:12:49.324Z",
-            "name": "DRA_2",
-            "avatar": "/images/TherapySessions1/2.svg",
-            "users": [
-                1,
-                2
-            ]
-        },
-        {
-            "id": "3",
-            "createdAt": "2023-11-11T10:12:49.324Z",
-            "name": "DRA_3",
-            "avatar": "/images/TherapySessions1/3.svg",
-            "users": [
-                1,
-                2
-            ]
-        },
-        {
-            "id": "4",
-            "createdAt": "2023-11-11T10:12:49.324Z",
-            "name": "DRA_4",
-            "avatar": "/images/TherapySessions1/4.svg",
-            "users": [
-                3,
-                4,
-                1
-            ]
-        },
-        {
-            "id": "5",
-            "createdAt": "2023-11-11T10:12:49.324Z",
-            "name": "DRA_5",
-            "avatar": "/images/TherapySessions1/5.svg",
-            "users": [
-                3
-            ]
-        },
-        {
-            "id": "6",
-            "createdAt": "2023-11-11T10:12:49.324Z",
-            "name": "DRA_6",
-            "avatar": "/images/TherapySessions1/6.svg",
-            "users": []
+          "id": "2",
+          "text": "printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy",
+          "createdAt": "2023-11-11T10:12:49.324Z",
+          "user_id": 3,
+          "replies": [
+            {
+              "id": "1",
+              "text": "This is Reply For Testing",
+              "createdAt": "2023-11-11T10:12:49.324Z",
+              "user_id": 3
+            },
+            {
+              "id": "1",
+              "text": "This is Reply For Testing",
+              "createdAt": "2023-11-11T10:12:49.324Z",
+              "user_id": 3
+            }
+          ]
         }
-    ]
+      ]
+    },
+    {
+      "videoId": "579511",
+      "url": "https://customer-7ral3pe3959xe832.cloudflarestream.com/737b67dbf506017e02fd8039f213b5f0/iframe?poster=https%3A%2F%2Fcustomer-7ral3pe3959xe832.cloudflarestream.com%2F737b67dbf506017e02fd8039f213b5f0%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600",
+      "user_id": 4
+    },
+    {
+      "videoId": "579517",
+      "url": "https://customer-7ral3pe3959xe832.cloudflarestream.com/737b67dbf506017e02fd8039f213b5f0/iframe?poster=https%3A%2F%2Fcustomer-7ral3pe3959xe832.cloudflarestream.com%2F737b67dbf506017e02fd8039f213b5f0%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600",
+      "user_id": 5
+    },
+    {
+      "videoId": "57951117",
+      "url": "https://customer-7ral3pe3959xe832.cloudflarestream.com/737b67dbf506017e02fd8039f213b5f0/iframe?poster=https%3A%2F%2Fcustomer-7ral3pe3959xe832.cloudflarestream.com%2F737b67dbf506017e02fd8039f213b5f0%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600",
+      "user_id": 6
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "text": "is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambledand typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled ?",
+      "videoId": "57956"
+    },
+    {
+      "text": "njsklznxnjaslxjas;l",
+      "videoId": "57956",
+      "userId": 3,
+      "id": 2
+    },
+    {
+      "text": "a:Lxkas<x\\",
+      "videoId": "57956",
+      "userId": 3,
+      "id": 3
+    },
+    {
+      "text": "z",
+      "videoId": "57956",
+      "userId": 3,
+      "id": 4
+    },
+    {
+      "text": "4sz",
+      "videoId": "57956",
+      "userId": 3,
+      "id": 5
+    },
+    {
+      "text": "cvgdgdgdgd",
+      "videoId": "57956",
+      "userId": 3,
+      "id": 6
+    },
+    {
+      "text": "ljljljlkljlj",
+      "videoId": "57944",
+      "userId": 3,
+      "id": 7
+    },
+    {
+      "text": "lllllllllll",
+      "videoId": "57945",
+      "userId": 3,
+      "id": 8
+    },
+    {
+      "text": "tesdte",
+      "videoId": "57947",
+      "userId": 3,
+      "id": 9
+    },
+    {
+      "text": "tet2",
+      "videoId": "57948",
+      "userId": 3,
+      "id": 10
+    },
+    {
+      "text": "test2",
+      "videoId": "57948",
+      "userId": 3,
+      "id": 11
+    },
+    {
+      "text": "tesr2",
+      "videoId": "57948",
+      "userId": 3,
+      "id": 12
+    },
+    {
+      "text": "test",
+      "videoId": "57948",
+      "userId": 3,
+      "id": 13
+    },
+    {
+      "text": "4eerer",
+      "videoId": "57948",
+      "userId": 3,
+      "id": 14
+    },
+    {
+      "text": "test",
+      "videoId": "57944",
+      "userId": 3,
+      "id": 15
+    },
+    {
+      "text": "marinaaaaaaaaaaaaaaaaaaaa",
+      "videoId": "57944",
+      "userId": 3,
+      "id": 16
+    },
+    {
+      "text": "hellllllllllllo ya marinaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "videoId": "57944",
+      "userId": 3,
+      "id": 17
+    },
+    {
+      "text": "testttttttttttttttttttttttt",
+      "videoId": "57944",
+      "userId": 3,
+      "id": 18
+    },
+    {
+      "text": "test",
+      "videoId": "57945",
+      "userId": 3,
+      "id": 19
+    }
+  ]
 }

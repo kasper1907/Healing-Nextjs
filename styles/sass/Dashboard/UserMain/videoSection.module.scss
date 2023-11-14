@@ -29,6 +29,14 @@
       flex-direction: column;
       gap: 2px;
     }
+
+    .sessionInfo_videoHeader {
+      cursor: pointer;
+      transition: 0.2s ease;
+      &:hover {
+        color: #6bcca3;
+      }
+    }
   }
 
   .videoContainer {
@@ -38,6 +46,10 @@
       width: 100%;
       height: 100%;
     }
+  }
+
+  .videoContainerFull {
+    height: 480px;
   }
 
   .comments_header {
@@ -84,4 +96,13 @@
       z-index: 23;
     }
   }
+}
+
+.commentsMainWrapper {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
 }

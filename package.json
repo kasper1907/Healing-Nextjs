@@ -16,6 +16,7 @@
     "@mui/icons-material": "^5.14.16",
     "@mui/lab": "^5.0.0-alpha.152",
     "@mui/material": "^5.14.16",
+    "aos": "^3.0.0-beta.6",
     "axios": "^1.6.1",
     "moment": "^2.29.4",
     "next": "14.0.1",
@@ -30,6 +31,7 @@
     "swr": "^2.2.4"
   },
   "devDependencies": {
+    "@types/aos": "^3.0.7",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

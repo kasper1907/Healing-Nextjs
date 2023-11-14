@@ -21,7 +21,9 @@ const Page = () => {
           setValue={setDashboardTabsValue}
         />
       </TabContext>
-      {currentTab?.component && <currentTab.component />}
+      {currentTab?.component && (
+        <currentTab.component value={dashboardTabsValue} />
+      )}
     </div>
   );
 };
