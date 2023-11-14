@@ -24,11 +24,11 @@ const Page = () => {
   }, []);
 
   const { data: Group, isLoading } = useSWR(
-    `http://localhost:3001/Groups/${GroupId}`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}Groups/${GroupId}`,
     fetcher
   );
   const { data: Users, isLoading: UsersLoading } = useSWR(
-    `http://localhost:3001/Users`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}Users`,
     fetcher
   );
   // console.log(Group);

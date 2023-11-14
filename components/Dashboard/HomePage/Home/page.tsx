@@ -20,7 +20,7 @@ const Home = () => {
     data: groups,
     error,
     isLoading,
-  } = useSWR("http://localhost:3001/Groups", fetcher);
+  } = useSWR(`${process.env.NEXT_PUBLIC_BASE_URL}Groups`, fetcher);
 
   return (
     <div className={styles.PageWrapper}>

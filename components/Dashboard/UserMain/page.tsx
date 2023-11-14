@@ -17,7 +17,7 @@ const UserMain = () => {
     data: user,
     error,
     isLoading,
-  } = useSWR(`http://localhost:3001/Users/${userId}`, fetcher);
+  } = useSWR(`${process.env.NEXT_PUBLIC_BASE_URL}Users/${userId}`, fetcher);
   if (isLoading) return <UserMainSkelton />;
   return (
     <Grid container>
