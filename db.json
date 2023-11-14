@@ -1,0 +1,137 @@
+{
+    "Users": [
+        {
+            "createdAt": "2023-11-11T10:12:49.324Z",
+            "name": "Casey Steuber",
+            "avatar": "https://loremflickr.com/640/480",
+            "lastSession": [],
+            "preparationVideo": "57944",
+            "email": "Eriberto93@hotmail.com",
+            "mobile": "692-589-6406 x073",
+            "relationShip": "relationShip 1",
+            "dateOfBirth": "2058-06-24T05:26:40.672Z",
+            "placeOfBirth": "Longmont",
+            "recommendedVideos": [],
+            "id": 1
+        },
+        {
+            "createdAt": "2023-11-11T22:28:52.263Z",
+            "name": "Ramiro Reichel",
+            "avatar": "https://loremflickr.com/640/480",
+            "lastSession": [],
+            "preparationVideo": "97700",
+            "email": "Gabriel_McDermott51@hotmail.com",
+            "mobile": "505-729-2991 x421",
+            "relationShip": "relationShip 2",
+            "dateOfBirth": "2032-06-24T15:58:12.077Z",
+            "placeOfBirth": "South Kadinfield",
+            "recommendedVideos": [],
+            "id": 2
+        },
+        {
+            "createdAt": "2023-11-12T03:50:30.527Z",
+            "name": "Victor Mayer",
+            "avatar": "https://loremflickr.com/640/480",
+            "lastSession": [],
+            "preparationVideo": "008",
+            "email": "Cielo41@gmail.com",
+            "mobile": "594.212.5130",
+            "relationShip": "relationShip 3",
+            "dateOfBirth": "1997-04-28T05:19:51.839Z",
+            "placeOfBirth": "Fort Coraville",
+            "recommendedVideos": [],
+            "id": 3
+        },
+        {
+            "createdAt": "2023-11-11T23:38:23.912Z",
+            "name": "Herbert Hegmann Sr.",
+            "avatar": "https://loremflickr.com/640/480",
+            "lastSession": [],
+            "preparationVideo": "795",
+            "email": "Evie9@hotmail.com",
+            "mobile": "(321) 735-9750 x76240",
+            "relationShip": "relationShip 4",
+            "dateOfBirth": "2062-02-16T14:36:13.708Z",
+            "placeOfBirth": "D'Amorechester",
+            "recommendedVideos": [],
+            "id": 4
+        },
+        {
+            "createdAt": "2023-11-12T01:53:47.021Z",
+            "name": "Loren Hyatt",
+            "avatar": "https://loremflickr.com/640/480",
+            "lastSession": [],
+            "preparationVideo": "62803",
+            "email": "Jacinthe.Trantow@hotmail.com",
+            "mobile": "1-976-977-5796 x7664",
+            "relationShip": "relationShip 5",
+            "dateOfBirth": "2029-09-24T11:11:48.775Z",
+            "placeOfBirth": "North Manleyberg",
+            "recommendedVideos": [],
+            "id": 5
+        }
+    ],
+    "Groups": [
+        {
+            "id": "1",
+            "createdAt": "2023-11-11T10:12:49.324Z",
+            "name": "DRA_1",
+            "avatar": "/images/TherapySessions1/1.svg",
+            "preparationVideo": "57944",
+            "email": "",
+            "users": [
+                1,
+                2,
+                3,
+                4
+            ]
+        },
+        {
+            "id": "2",
+            "createdAt": "2023-11-11T10:12:49.324Z",
+            "name": "DRA_2",
+            "avatar": "/images/TherapySessions1/2.svg",
+            "users": [
+                1,
+                2
+            ]
+        },
+        {
+            "id": "3",
+            "createdAt": "2023-11-11T10:12:49.324Z",
+            "name": "DRA_3",
+            "avatar": "/images/TherapySessions1/3.svg",
+            "users": [
+                1,
+                2
+            ]
+        },
+        {
+            "id": "4",
+            "createdAt": "2023-11-11T10:12:49.324Z",
+            "name": "DRA_4",
+            "avatar": "/images/TherapySessions1/4.svg",
+            "users": [
+                3,
+                4,
+                1
+            ]
+        },
+        {
+            "id": "5",
+            "createdAt": "2023-11-11T10:12:49.324Z",
+            "name": "DRA_5",
+            "avatar": "/images/TherapySessions1/5.svg",
+            "users": [
+                3
+            ]
+        },
+        {
+            "id": "6",
+            "createdAt": "2023-11-11T10:12:49.324Z",
+            "name": "DRA_6",
+            "avatar": "/images/TherapySessions1/6.svg",
+            "users": []
+        }
+    ]
+}

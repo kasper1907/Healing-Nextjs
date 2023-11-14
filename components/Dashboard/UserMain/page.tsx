@@ -7,26 +7,18 @@ import styles from "@/styles/sass/Dashboard/UserMain/usermain.module.scss";
 import Image from "next/image";
 import Link from "next/link";
 import VideoSection from "./VideoSection/page";
+import UserMainSkelton from "../Loading/UserMainSkelton";
+import { useParams } from "next/navigation";
+import moment from "moment";
 const UserMain = () => {
-  // const {
-  //   data: users,
-  //   error,
-  //   isLoading,
-  // } = useSWR("https://655097f67d203ab6626df4e7.mockapi.io/users", fetcher);
-  let isLoading = false;
-  if (isLoading)
-    return (
-      <Container sx={{ mt: 10 }}>
-        <div className="w-full h-full flex items-center justify-center">
-          <CircularProgress
-            value={90}
-            thickness={4}
-            size={26}
-            sx={{ color: "#10458C" }}
-          />
-        </div>
-      </Container>
-    );
+  const params = useParams();
+  const { id: userId } = params;
+  const {
+    data: user,
+    error,
+    isLoading,
+  } = useSWR(`http://localhost:3001/Users/${userId}`, fetcher);
+  if (isLoading) return <UserMainSkelton />;
   return (
     <Grid container>
       <Grid item className={styles.userMainGridItem} xs={12} lg={3}>
@@ -56,32 +48,33 @@ const UserMain = () => {
           <div className={`${styles.row}`}>
             <div className={styles.infoSection}>
               <>
-                <span>Email</span>
-                <span>Abdullah Mohamed</span>
+                <span>Name</span>
+                <span>{user?.name}</span>
               </>
             </div>
             <div className={styles.infoSection}>
               <>
                 <span>Mobile</span>
-                <span>201061023785</span>
+                <span>{user?.mobile}</span>
               </>
             </div>
             <div className={styles.infoSection}>
               <>
                 <span>Relationship</span>
-                <span>Single</span>
+                <span>{user?.relationShip}</span>
               </>
             </div>
             <div className={styles.infoSection}>
               <>
                 <span>Birth date</span>
-                <span>19-07-1991</span>
+
+                <span>{moment(user.dateOfBirth).format("DD-M-YYYY")}</span>
               </>
             </div>
             <div className={styles.infoSection}>
               <>
                 <span>Place Of Birth</span>
-                <span>Cairo</span>
+                <span>{user?.placeOfBirth}</span>
               </>
             </div>
           </div>
