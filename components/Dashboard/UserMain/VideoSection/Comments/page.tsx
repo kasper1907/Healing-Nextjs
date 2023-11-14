@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import styles from "@/styles/sass/Dashboard/UserMain/comment.module.scss";
 import Image from "next/image";
-import { CssTextField } from "@/app/(auth)/login/page";
 import useSWR from "swr";
 import { fetcher } from "@/utils/swr";
 
