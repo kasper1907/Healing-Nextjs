@@ -30,7 +30,7 @@
     min-height: 40px;
     margin-bottom: 4px;
     height: fit-content;
-    font-family: "Roboto" !important;
+    font-family: "Roboto";
     overflow-wrap: anywhere;
   }
   .sendIcon {
@@ -97,4 +97,13 @@
 .replyLabel {
   cursor: pointer;
   user-select: none;
+}
+
+.arabicComment {
+  font-family: "Tajawal", sans-serif !important;
+  text-align: right;
+}
+
+.englishComment {
+  text-align: left;
 }

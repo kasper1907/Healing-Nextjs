@@ -8,6 +8,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import moment from "moment";
 import { toast } from "sonner";
 import { TextField, styled } from "@mui/material";
+import { isArabic } from "@/utils/checkLanguage";
 
 const StyledTextField = styled(TextField)`
   input {
@@ -89,7 +90,6 @@ const Comments = ({
       setCommentsHeight(commentsRef.current.scrollHeight + 100);
       setCommentReplies((prev: any) => [...prev, data]);
       setReplyText("");
-
       setMakeAReply(false);
     }
 
@@ -117,7 +117,15 @@ const Comments = ({
       <div className={styles.write_comment}>
         <div className={styles.userImgWrapper}></div>
         <div className={styles.commentInput}>
-          <div className={styles.comment}>{comment?.text}</div>
+          <div
+            className={`${styles.comment} ${
+              isArabic(comment?.text)
+                ? styles.arabicComment
+                : styles.englishComment
+            }`}
+          >
+            {comment?.text}
+          </div>
           <div className={styles.commentBottom}>
             <span className={styles.replyLabel} onClick={toggleMakeAReply}>
               {makeAReply ? "Cancel" : "Reply"}

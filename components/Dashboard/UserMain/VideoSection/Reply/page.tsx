@@ -25,6 +25,14 @@ const Reply = ({
   const [makeAReply, setMakeAReply] = useState(false);
   const [replyText, setReplyText] = useState("");
 
+  const isArabic = (text: any) => /[\u0600-\u06FF]/.test(text);
+
+  // Function to conditionally apply className based on the language
+  const getLanguageClassName = (text: any) => {
+    console.log(isArabic(text));
+    return isArabic(text) ? styles.arabicComment : styles.englishComment;
+  };
+
   const calculateTimeDifference = (createdAt: string) => {
     const commentTime = moment.utc(createdAt).utcOffset(4); // Adjust the UTC offset for Cairo (UTC+2)
     return commentTime.fromNow();
@@ -77,7 +85,15 @@ const Reply = ({
       <div className={styles.replyWrapper}>
         <div className={styles.userImgWrapper}></div>
         <div className={styles.replyInput}>
-          <div className={styles.reply}>{reply?.text}</div>
+          <div
+            className={`${styles.reply} ${
+              isArabic(reply?.text)
+                ? styles.arabicComment
+                : styles.englishComment
+            }`}
+          >
+            {reply?.text}
+          </div>
           <div className={styles.replyBottom}>
             <span className={styles.replyLabel} onClick={toggleMakeAReply}>
               {makeAReply ? "Cancel" : "Reply"}
