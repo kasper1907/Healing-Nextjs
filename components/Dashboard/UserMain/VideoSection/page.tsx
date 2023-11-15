@@ -50,7 +50,9 @@ const VideoSection = ({
   }, []);
 
   useEffect(() => {
-    setCommentsHeight(isCommentsVisible ? commentsRef.current.scrollHeight : 0);
+    setCommentsHeight(
+      isCommentsVisible ? commentsRef.current.scrollHeight + 100 : 0
+    );
   }, [isCommentsVisible, currentVideoComments]);
 
   useEffect(() => {
@@ -112,7 +114,7 @@ const VideoSection = ({
     mutate(
       `${process.env.NEXT_PUBLIC_BASE_URL}comments`,
       postRequest(`${process.env.NEXT_PUBLIC_BASE_URL}comments`, postData),
-      true
+      false
     );
   };
 
@@ -241,22 +243,12 @@ const VideoSection = ({
               key={idx}
               className={`${commentsStyles.comment} `}
             >
-              <div className={commentsStyles.write_comment}>
-                <div className={commentsStyles.userImgWrapper}></div>
-                <div className={commentsStyles.commentInput}>
-                  <div className={commentsStyles.comment}>{comment?.text}</div>
-                  <div className={commentsStyles.commentBottom}>
-                    <span>Reply</span>
-                    <Image
-                      src="/images/Dashboard/Oval.svg"
-                      alt="oval"
-                      width={4}
-                      height={4}
-                    />
-                    <span>23m</span>
-                  </div>
-                </div>
-              </div>
+              <Comments
+                commentsRef={commentsRef}
+                comment={comment}
+                setCommentsHeight={setCommentsHeight}
+                setCurrentVideoComments={setCurrentVideoComments}
+              />
             </div>
           ))}
         </>
@@ -266,4 +258,3 @@ const VideoSection = ({
 };
 
 export default VideoSection;
-// container.scrollTop = container.scrollHeight;
