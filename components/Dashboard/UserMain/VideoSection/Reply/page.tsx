@@ -1,13 +1,12 @@
-import React, { useEffect, useRef, useState } from "react";
-import styles from "@/styles/sass/Dashboard/UserMain/comment.module.scss";
 import Image from "next/image";
-import useSWR from "swr";
-import { fetcher } from "@/utils/swr";
-import Reply from "../Reply/page";
-import { IoIosArrowDown } from "react-icons/io";
-import moment from "moment";
+import React, { useEffect, useState } from "react";
+import styles from "@/styles/sass/Dashboard/UserMain/replies.module.scss";
+import moment from "moment"; // Import moment from moment-timezone
+import { TextField } from "@mui/material";
+import { styled } from "@mui/system";
+import { FaRegPlayCircle } from "react-icons/fa";
 import { toast } from "sonner";
-import { TextField, styled } from "@mui/material";
+import { mutate } from "swr";
 
 const StyledTextField = styled(TextField)`
   input {
@@ -15,22 +14,19 @@ const StyledTextField = styled(TextField)`
     padding-right: 40px;
   }
 `;
-
-const Comments = ({
-  comment,
+const Reply = ({
+  commentId,
+  reply,
+  idx,
   setCommentsHeight,
   commentsRef,
-  setCurrentVideoComments,
+  setCommentReplies,
 }: any) => {
-  const [commentReplies, setCommentReplies] = useState<any>([]);
-  const [isRepliesVisible, setRepliesVisible] = useState(false);
-  const [repliesHeight, setRepliesHeight] = useState(0);
   const [makeAReply, setMakeAReply] = useState(false);
   const [replyText, setReplyText] = useState("");
-  const repliesRef: any = useRef(null);
 
   const calculateTimeDifference = (createdAt: string) => {
-    const commentTime = moment.utc(createdAt); // Adjust the UTC offset for Cairo (UTC+2)
+    const commentTime = moment.utc(createdAt).utcOffset(4); // Adjust the UTC offset for Cairo (UTC+2)
     return commentTime.fromNow();
   };
 
@@ -38,41 +34,6 @@ const Comments = ({
     setMakeAReply((prev) => !prev);
     setReplyText("@UserName__");
   };
-
-  useEffect(() => {
-    setRepliesHeight(
-      isRepliesVisible ? repliesRef.current.scrollHeight + 200 : 0
-    );
-    setCommentsHeight(
-      commentsRef.current.scrollHeight + repliesRef.current.scrollHeight
-    );
-  }, [
-    isRepliesVisible,
-    commentsRef,
-    repliesRef,
-    setCommentsHeight,
-    commentReplies,
-  ]);
-
-  const { data: Comments, isLoading } = useSWR(
-    `${process.env.NEXT_PUBLIC_BASE_URL}comments`,
-    fetcher
-  );
-
-  const repliesEndpoint = `${process.env.NEXT_PUBLIC_BASE_URL}Replies`;
-
-  const { data: Replies, isLoading: RepliesLoading } = useSWR(
-    repliesEndpoint,
-    fetcher
-  );
-
-  useEffect(() => {
-    const commentReplies =
-      Replies &&
-      Replies?.length > 0 &&
-      Replies?.filter((reply: any) => reply.commentId == comment?.id);
-    setCommentReplies(commentReplies);
-  }, [Replies, comment?.id]);
 
   const postRequest: any = async (url: any, data: any) => {
     const response = await fetch(url, {
@@ -89,7 +50,6 @@ const Comments = ({
       setCommentsHeight(commentsRef.current.scrollHeight + 100);
       setCommentReplies((prev: any) => [...prev, data]);
       setReplyText("");
-
       setMakeAReply(false);
     }
 
@@ -102,7 +62,7 @@ const Comments = ({
 
     const postData = {
       text: replyText,
-      commentId: comment?.id,
+      commentId: 5,
       createdAt: new Date(),
     };
 
@@ -114,21 +74,22 @@ const Comments = ({
 
   return (
     <>
-      <div className={styles.write_comment}>
+      <div className={styles.replyWrapper}>
         <div className={styles.userImgWrapper}></div>
-        <div className={styles.commentInput}>
-          <div className={styles.comment}>{comment?.text}</div>
-          <div className={styles.commentBottom}>
+        <div className={styles.replyInput}>
+          <div className={styles.reply}>{reply?.text}</div>
+          <div className={styles.replyBottom}>
             <span className={styles.replyLabel} onClick={toggleMakeAReply}>
               {makeAReply ? "Cancel" : "Reply"}
-            </span>{" "}
+            </span>
             <Image
               src="/images/Dashboard/Oval.svg"
               alt="oval"
               width={4}
               height={4}
             />
-            <span>{calculateTimeDifference(comment?.createdAt)}</span>
+            {/* <span>{moment(reply?.createdAt).format("YYYY-MM-DD hh:mm A")}</span> */}
+            <span>{calculateTimeDifference(reply?.createdAt)}</span>
           </div>
           <div className={styles.commentInput}>
             <form onSubmit={handleSubmit}>
@@ -173,44 +134,8 @@ const Comments = ({
           </div>
         </div>
       </div>
-      {commentReplies?.length > 0 ? (
-        <div
-          className={`${styles.showAllReplies} ${
-            isRepliesVisible ? styles.visible : ""
-          }`}
-          onClick={() => {
-            setRepliesVisible((prev) => !prev);
-          }}
-        >
-          <IoIosArrowDown />
-          {`${isRepliesVisible ? "Hide" : "Show"} All ${
-            commentReplies?.length
-          } Replies`}
-        </div>
-      ) : null}
-
-      <div
-        className={`${styles.repliesMainWrapper} ${
-          isRepliesVisible ? styles.visible : ""
-        }`}
-        ref={repliesRef}
-        style={{ maxHeight: repliesHeight + "px" }}
-      >
-        {commentReplies?.length > 0
-          ? commentReplies?.map((reply: any, idx: number) => (
-              <Reply
-                setCommentsHeight={setCommentsHeight}
-                commentsRef={commentsRef}
-                setCommentReplies={setCommentReplies}
-                key={idx}
-                reply={reply}
-                idx={idx}
-              />
-            ))
-          : null}
-      </div>
     </>
   );
 };
 
-export default Comments;
+export default Reply;
