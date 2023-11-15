@@ -52,7 +52,7 @@ const Home = () => {
                           height: "100%",
                         }}
                         className="flex items-center justify-center gap-1"
-                        href={`/dashboard/GroupUsers/${group.id}`}
+                        href={`/dashboard/GroupUsers?id=${group.id}`}
                       >
                         <AiOutlineEye />
                         View

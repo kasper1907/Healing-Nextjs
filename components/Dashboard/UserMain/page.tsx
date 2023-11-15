@@ -8,17 +8,23 @@ import Image from "next/image";
 import Link from "next/link";
 import VideoSection from "./VideoSection/page";
 import UserMainSkelton from "../Loading/UserMainSkelton";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import moment from "moment";
 const UserMain = () => {
-  const params = useParams();
-  const { id: userId } = params;
+  const params = useSearchParams();
+  const userId = params.get("id");
   const {
     data: user,
     error,
     isLoading,
   } = useSWR(`${process.env.NEXT_PUBLIC_BASE_URL}Users/${userId}`, fetcher);
+  const { data: Videos } = useSWR(
+    `${process.env.NEXT_PUBLIC_BASE_URL}Videos`,
+    fetcher
+  );
+
   if (isLoading) return <UserMainSkelton />;
+
   return (
     <Grid container>
       <Grid item className={styles.userMainGridItem} xs={12} lg={3}>
@@ -68,7 +74,7 @@ const UserMain = () => {
               <>
                 <span>Birth date</span>
 
-                <span>{moment(user.dateOfBirth).format("DD-M-YYYY")}</span>
+                <span>{moment(user?.dateOfBirth).format("DD-M-YYYY")}</span>
               </>
             </div>
             <div className={styles.infoSection}>
@@ -160,7 +166,9 @@ const UserMain = () => {
               Last Session
             </Typography>
 
-            <VideoSection />
+            {Videos && Videos?.length > 0 ? (
+              <VideoSection video={Videos[0]} isFullVideo={false} />
+            ) : null}
           </div>
           <div className={styles.preparationVideos}>
             <Typography color={"primary"} sx={{ mb: 4 }}>

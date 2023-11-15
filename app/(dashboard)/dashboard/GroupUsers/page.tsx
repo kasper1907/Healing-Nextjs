@@ -7,17 +7,16 @@ import { GrView } from "react-icons/gr";
 import { AiOutlineEdit, AiOutlineEye } from "react-icons/ai";
 import Image from "next/image";
 import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import useSWR from "swr";
 import { fetcher } from "@/utils/swr";
 import CardsSkeleton from "@/components/Dashboard/Loading/CardsSkeleton";
 const Page = () => {
   const router = useRouter();
-  const params = useParams();
-  const { id: GroupId } = params;
-  // const { id: GroupId } = params.params;
-  console.log();
+  const params = useSearchParams();
+  let GroupId = params.get("id");
   const [currentGroup, setCurrentGroup] = React.useState<any>(null);
+
   useEffect(() => {
     const currentGroup = groups.find((group: any) => group.id == 1);
     setCurrentGroup(currentGroup);
@@ -64,7 +63,7 @@ const Page = () => {
                             height: "100%",
                           }}
                           className="flex w-full h-full items-center justify-center"
-                          href={`/dashboard/users/${currentUser?.id}`}
+                          href={`/dashboard/users/userDetails?id=${currentUser?.id}`}
                         >
                           <AiOutlineEye />
                           View

@@ -6,16 +6,19 @@ import { fetcher } from "@/utils/swr";
 import useSWR from "swr";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { FaArrowLeft } from "react-icons/fa";
 
 const Recorded = () => {
+  const [showFullVideo, setShowFullVideo] = React.useState<boolean>(false);
+  const [currentVideo, setCurrentVideo] = React.useState<any>(null);
+  const [_isPending, startTransition] = useTransition();
+  const params = useSearchParams();
+  let userId = params.get("id");
+
   useEffect(() => {
     AOS.init();
   }, []);
-
-  const params = useParams();
-  const { id: userId } = params;
 
   const {
     data: Videos,
@@ -23,18 +26,13 @@ const Recorded = () => {
     isLoading,
   } = useSWR(`${process.env.NEXT_PUBLIC_BASE_URL}Videos`, fetcher);
 
-  const [showFullVideo, setShowFullVideo] = React.useState<boolean>(false);
-  const [currentVideo, setCurrentVideo] = React.useState<any>(null);
-  const [_isPending, startTransition] = useTransition();
-
   const userVideos = Videos?.filter((video: any) => video.user_id == userId);
 
   const VideoHeaderClickHandler = (video: any) => {
-    console.log(video);
     startTransition(() => {
       setCurrentVideo(video);
-      setShowFullVideo((prev) => !prev);
     });
+    setShowFullVideo((prev) => !prev);
   };
   return (
     <div>

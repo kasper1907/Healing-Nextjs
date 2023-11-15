@@ -13,14 +13,14 @@ const UserMainSkelton = () => {
         <div className={`${styles.gridMainChild} ${styles.userInfo}`}>
           <Skeleton variant="circular" sx={{ mb: 2 }} width={40} height={40} />
           {arrayFrom6?.map((_, idx) => (
-            <>
+            <div key={idx}>
               <Skeleton
                 sx={{ mb: 2, borderRadius: "5px" }}
                 variant="rectangular"
                 width={210}
                 height={10}
               />
-            </>
+            </div>
           ))}
           <Skeleton
             sx={{ borderRadius: "10px", width: "90%" }}

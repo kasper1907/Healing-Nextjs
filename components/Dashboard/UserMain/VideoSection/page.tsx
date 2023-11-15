@@ -19,6 +19,14 @@ const VideoSection = ({
   video?: any;
   isFullVideo?: boolean;
 }) => {
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const commentsRef: any = useRef(null);
+  const lastCommentRef: any = useRef(null);
+  const scrollToBottom = () => {
+    const container = commentsRef.current;
+    setScrollPosition(container.scrollHeight);
+  };
+
   // Data Fetching:
   const { data: AllComments, isLoading: AllCommentsLoading } = useSWR(
     `${process.env.NEXT_PUBLIC_BASE_URL}comments`,
@@ -33,8 +41,6 @@ const VideoSection = ({
   const [commentsHeight, setCommentsHeight] = useState(0);
   const [currentVideoComments, setCurrentVideoComments] = useState<any>([]);
   const [text, setText] = useState("");
-  const commentsRef: any = useRef(null);
-  const commentRef: any = useRef(null);
 
   // UseEffects
   useEffect(() => {
@@ -54,7 +60,7 @@ const VideoSection = ({
       );
       setCurrentVideoComments(videoComments);
     }
-  }, [Comments, video?.videoId]);
+  }, [AllComments, video?.videoId]);
 
   // Functions
   const toggleComments = () => {
@@ -74,10 +80,16 @@ const VideoSection = ({
     if (response.status == 201) {
       toast.success("Comment Added Successfully");
       setText("");
-      mutate(`${process.env.NEXT_PUBLIC_BASE_URL}comments`);
+      // mutate(`${process.env.NEXT_PUBLIC_BASE_URL}comments`);
       setCurrentVideoComments((prev: any) => [...prev, data]);
       if (!isCommentsVisible) {
         setCommentsVisible(true);
+      }
+
+      if (lastCommentRef.current) {
+        setTimeout(() => {
+          lastCommentRef.current.scrollIntoView({ behavior: "smooth" });
+        }, 500);
       }
     }
 
@@ -97,7 +109,7 @@ const VideoSection = ({
     };
 
     // Trigger a re-fetch after the POST request is completed
-    const res = await mutate(
+    mutate(
       `${process.env.NEXT_PUBLIC_BASE_URL}comments`,
       postRequest(`${process.env.NEXT_PUBLIC_BASE_URL}comments`, postData),
       true
@@ -222,7 +234,13 @@ const VideoSection = ({
       >
         <>
           {currentVideoComments?.map((comment: any, idx: number) => (
-            <div key={idx} className={commentsStyles.comment}>
+            <div
+              ref={
+                idx + 1 == currentVideoComments?.length ? lastCommentRef : null
+              }
+              key={idx}
+              className={`${commentsStyles.comment} `}
+            >
               <div className={commentsStyles.write_comment}>
                 <div className={commentsStyles.userImgWrapper}></div>
                 <div className={commentsStyles.commentInput}>
@@ -248,3 +266,4 @@ const VideoSection = ({
 };
 
 export default VideoSection;
+// container.scrollTop = container.scrollHeight;
