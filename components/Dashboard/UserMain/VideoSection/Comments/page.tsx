@@ -148,7 +148,16 @@ const Comments = ({
                   />
 
                   {replyText?.length > 0 ? (
-                    <button type="submit">
+                    <button
+                      type="submit"
+                      style={{
+                        position: "absolute",
+                        right: "10px",
+                        width: "100px",
+                        top: "50%",
+                        transform: "translateY(-50%)",
+                      }}
+                    >
                       <Image
                         className={styles.sendIcon}
                         alt="send"
