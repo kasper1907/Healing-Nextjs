@@ -13,6 +13,14 @@ import { IoIosArrowDown } from "react-icons/io";
 import { postRequest } from "@/services/postRequest";
 import { endPoints } from "@/services/endpoints";
 
+export const StyledTextField = styled(TextField)`
+  input {
+    font-size: 17px; // Set your desired font size
+    padding-right: 40px;
+    font-family: Tajawal !important;
+  }
+`;
+
 const VideoSection = ({
   HeaderClickHandler,
   video,
@@ -58,6 +66,7 @@ const VideoSection = ({
       let videoComments = AllComments?.filter(
         (comment: any) => comment.videoId == video?.videoId
       );
+
       setCurrentVideoComments(videoComments);
     }
   }, [AllComments, video?.videoId]);
@@ -91,6 +100,7 @@ const VideoSection = ({
       text: text,
       videoId: video?.videoId,
       userId: 3,
+      createdAt: new Date(),
     };
 
     // Trigger a re-fetch after the POST request is completed
@@ -187,7 +197,6 @@ const VideoSection = ({
                 className="text-[#44444F] text-[15px] hover:text-[#10458C]"
                 onClick={() => {
                   if (commentInputRef.current) {
-                    // Focus the TextField
                     commentInputRef.current.focus();
                   }
                 }}
@@ -213,7 +222,7 @@ const VideoSection = ({
         <div className={styles.userImgWrapper}></div>
         <div className={styles.commentInput}>
           <form onSubmit={handleSubmit}>
-            <TextField
+            <StyledTextField
               label="Ask about this session"
               value={text}
               autoFocus={commentInputFocus}
@@ -257,6 +266,7 @@ const VideoSection = ({
         style={{ maxHeight: commentsHeight + "px" }}
       >
         <>
+          {console.log(currentVideoComments)}
           {currentVideoComments?.map((comment: any, idx: number) => (
             <div
               ref={
@@ -270,6 +280,7 @@ const VideoSection = ({
                 comment={comment}
                 setCommentsHeight={setCommentsHeight}
                 setCurrentVideoComments={setCurrentVideoComments}
+                currentVideoComments={currentVideoComments}
               />
             </div>
           ))}

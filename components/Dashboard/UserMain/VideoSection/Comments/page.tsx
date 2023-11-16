@@ -1,19 +1,23 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "@/styles/sass/Dashboard/UserMain/comment.module.scss";
 import Image from "next/image";
-import useSWR from "swr";
+import useSWR, { mutate } from "swr";
 import { fetcher } from "@/utils/swr";
 import Reply from "../Reply/page";
 import { IoIosArrowDown } from "react-icons/io";
 import moment from "moment";
 import { toast } from "sonner";
-import { TextField, styled } from "@mui/material";
+import { IconButton, Menu, MenuItem, TextField, styled } from "@mui/material";
 import { isArabic } from "@/utils/checkLanguage";
 import { endPoints } from "@/services/endpoints";
-import { postRequest } from "@/services/postRequest";
+import { postRequest, updateRequest } from "@/services/postRequest";
 import { calculateTimeDifference } from "@/utils/calculateTimeDifference";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { MdEditNote } from "react-icons/md";
 
-const StyledTextField = styled(TextField)`
+import { MdOutlinePlaylistRemove } from "react-icons/md";
+
+export const StyledTextField = styled(TextField)`
   input {
     font-size: 13px; // Set your desired font size
     padding-right: 40px;
@@ -25,27 +29,46 @@ const Comments = ({
   setCommentsHeight,
   commentsRef,
   setCurrentVideoComments,
+  currentVideoComments,
 }: any) => {
   // ** States
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [inputEdit, setInputEdit] = useState<boolean>(false);
   const [commentReplies, setCommentReplies] = useState<any>([]);
   const [isRepliesVisible, setRepliesVisible] = useState(false);
   const [repliesHeight, setRepliesHeight] = useState(0);
   const [makeAReply, setMakeAReply] = useState(false);
   const [replyText, setReplyText] = useState("");
   const repliesRef: any = useRef(null);
+  const open = Boolean(anchorEl);
 
   const { data: Comments, isLoading } = useSWR(endPoints.getComments, fetcher);
   const { data: Replies } = useSWR(endPoints.getReplies, fetcher);
 
   // ** Side Effects
   useEffect(() => {
-    setRepliesHeight(
-      isRepliesVisible ? repliesRef.current.scrollHeight + 200 : 0
-    );
-    if (isRepliesVisible) {
-      setCommentsHeight(
-        commentsRef.current.scrollHeight + repliesRef.current.scrollHeight
+    if (commentReplies?.length < 5) {
+      setRepliesVisible(true);
+
+      setRepliesHeight(
+        isRepliesVisible ? repliesRef.current.scrollHeight + 200 : 0
       );
+      if (isRepliesVisible) {
+        setCommentsHeight(
+          commentsRef.current.scrollHeight + repliesRef.current.scrollHeight
+        );
+      }
+    } else {
+      setRepliesVisible(false);
+
+      setRepliesHeight(
+        isRepliesVisible ? repliesRef.current.scrollHeight + 200 : 0
+      );
+      if (isRepliesVisible) {
+        setCommentsHeight(
+          commentsRef.current.scrollHeight + repliesRef.current.scrollHeight
+        );
+      }
     }
   }, [
     isRepliesVisible,
@@ -74,8 +97,9 @@ const Comments = ({
 
     const postData = {
       text: replyText,
-      commentId: comment?.id,
+      commentId: comment?.id || comment?.commentId,
       createdAt: new Date(),
+      videoId: comment?.videoId,
     };
 
     const res = await postRequest(
@@ -84,10 +108,43 @@ const Comments = ({
       handleSuccess
     );
   };
+  const handleSubmitEdit = async (e: any) => {
+    e.preventDefault();
+    console.log(comment);
+    const postData = {
+      text: replyText,
+      id: comment?.id || comment?.commentId,
+      videoId: comment?.videoId,
+      // createdAt: new Date(),
+    };
+
+    const res = await updateRequest({
+      commentId: comment?.id || comment?.commentId,
+      endpoint: endPoints.getComments,
+      data: postData,
+      handleSuccess: handleSuccess,
+    });
+  };
 
   const handleSuccess = (data: any) => {
-    toast.success("Reply Added Successfully");
-    setCommentReplies((prev: any) => [...prev, data]);
+    toast.success(
+      ` ${inputEdit ? "Comment Updated" : "Reply Added"}  Successfully`
+    );
+    if (inputEdit) {
+      const currentComment = Comments?.find(
+        (comment: any) => comment.id == data.commentId
+      );
+      const currentCommentIndex = currentVideoComments?.indexOf(currentComment);
+      const updatedComments = [...currentVideoComments];
+      updatedComments[currentCommentIndex] = data;
+      setCurrentVideoComments(updatedComments);
+      setInputEdit(false);
+      // setCommentReplies((prev: any) => [...prev]);
+      // console.log(commentReplies);
+    } else {
+      setCommentReplies((prev: any) => [...prev, data]);
+    }
+
     setCommentsHeight(
       commentsRef.current.scrollHeight + repliesRef.current.scrollHeight
     );
@@ -95,6 +152,19 @@ const Comments = ({
     setMakeAReply(false);
   };
 
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const PrepareUpdateComment = () => {
+    setInputEdit(true);
+    setMakeAReply((prev) => !prev);
+    setReplyText(comment?.text);
+    handleClose();
+  };
   return (
     <>
       <div className={styles.write_comment}>
@@ -120,9 +190,67 @@ const Comments = ({
               height={4}
             />
             <span>{calculateTimeDifference(comment?.createdAt)}</span>
+            <IconButton
+              aria-label="more"
+              id="long-button"
+              aria-controls={open ? "long-menu" : undefined}
+              aria-expanded={open ? "true" : undefined}
+              aria-haspopup="true"
+              onClick={handleClick}
+            >
+              <MoreVertIcon
+                sx={{
+                  transform: "rotate(90deg)",
+                }}
+              />
+            </IconButton>
+            <Menu
+              id="basic-menu"
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+              MenuListProps={{
+                "aria-labelledby": "basic-button",
+              }}
+            >
+              <MenuItem
+                sx={{
+                  fontSize: "13px",
+                  fontFamily: "Roboto !important",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+                onClick={
+                  makeAReply
+                    ? () => {
+                        handleClose(), setMakeAReply((prev) => !prev);
+                      }
+                    : PrepareUpdateComment
+                }
+              >
+                <MdEditNote />
+                <span style={{ marginTop: "2px", marginLeft: "5px" }}>
+                  {makeAReply ? "Cancel" : "Edit"}
+                </span>
+              </MenuItem>
+              <MenuItem
+                sx={{
+                  fontSize: "13px",
+                  fontFamily: "Roboto !important",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+                onClick={handleClose}
+              >
+                <MdOutlinePlaylistRemove />
+                <span style={{ marginTop: "2px", marginLeft: "5px" }}>
+                  Delete
+                </span>
+              </MenuItem>
+            </Menu>
           </div>
           <div className={styles.commentInput}>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={inputEdit ? handleSubmitEdit : handleSubmit}>
               {makeAReply ? (
                 <>
                   <StyledTextField
