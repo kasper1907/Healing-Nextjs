@@ -1,4 +1,5 @@
 import axios from "axios";
+import { toast } from "sonner";
 import { mutate } from "swr";
 
 export const postRequest: any = async (url: any, data: any, handleSuccess: any,) => {
@@ -18,11 +19,20 @@ export const postRequest: any = async (url: any, data: any, handleSuccess: any,)
     const responseData = await response.json();
     return responseData;
   };
-export const updateRequest: any = async ({commentId,endpoint,data,handleSuccess} : any) => {
-  const res = await axios.put(`${endpoint}/${commentId}`, data);
+export const updateRequest: any = async ({id,endpoint,data,handleSuccess} : any) => {
+  const res = await axios.put(`${endpoint}/${id}`, data);
   console.log(res)
   if (res.status == 200) {
     handleSuccess(data);
+  }
+
+  mutate(endpoint);
+  };
+export const deleteRequest: any = async ({id,endpoint, handleSuccess} : any) => {
+  const res = await axios.delete(`${endpoint}/${id}`);
+  console.log(res)
+  if (res.status == 200) {
+    toast.success("Item deleted successfully");
   }
 
   mutate(endpoint);

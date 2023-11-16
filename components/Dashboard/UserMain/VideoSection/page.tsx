@@ -1,7 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "@/styles/sass/Dashboard/UserMain/videoSection.module.scss";
 import Image from "next/image";
-import { Skeleton, Typography } from "@mui/material";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Skeleton,
+  Typography,
+} from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { styled } from "@mui/material/styles";
 import Comments from "./Comments/page";
@@ -12,6 +18,8 @@ import commentsStyles from "@/styles/sass/Dashboard/UserMain/comment.module.scss
 import { IoIosArrowDown } from "react-icons/io";
 import { postRequest } from "@/services/postRequest";
 import { endPoints } from "@/services/endpoints";
+import { isArabic } from "@/utils/checkLanguage";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 export const StyledTextField = styled(TextField)`
   input {
@@ -36,7 +44,6 @@ const VideoSection = ({
     useState<boolean>(true);
   const [commentText, setCommentText] = useState<string>("");
   const [isCommentsVisible, setCommentsVisible] = useState(false);
-  const [commentsHeight, setCommentsHeight] = useState(0);
   const [currentVideoComments, setCurrentVideoComments] = useState<any>([]);
   const [commentInputFocus, setCommentInputFocus] = useState(false);
   const [text, setText] = useState("");
@@ -56,10 +63,6 @@ const VideoSection = ({
       setVideoLoadingOnStartUp(false);
     }, 2000);
   }, []);
-
-  useEffect(() => {
-    setCommentsHeight(isCommentsVisible ? commentsRef.current.scrollHeight : 0);
-  }, [isCommentsVisible, currentVideoComments]);
 
   useEffect(() => {
     if (AllComments && AllComments?.length > 0) {
@@ -166,107 +169,124 @@ const VideoSection = ({
           ></iframe>
         )}
       </div>
-      <div className={styles.comments_header}>
-        <div className="flex items-center gap-2 cursor-pointer">
-          {currentVideoComments?.length > 0 ? (
-            <>
-              <IoIosArrowDown
-                style={{
-                  transition: "0.2s ease",
-                  transform: isCommentsVisible ? "rotate(180deg)" : "",
-                }}
-              />
-              <span
-                className="text-[#44444F] text-[15px] hover:text-[#10458C]"
-                onClick={toggleComments}
-              >
-                {isCommentsVisible ? <>Hide </> : <>Show </>}
-                {currentVideoComments?.length} Comments
-              </span>
-            </>
-          ) : (
-            <>
-              <Image
-                src={"/images/Dashboard/ic_comment.svg"}
-                width={20}
-                height={20}
-                alt="commentsIcon"
-              />
 
-              <span
-                className="text-[#44444F] text-[15px] hover:text-[#10458C]"
-                onClick={() => {
-                  if (commentInputRef.current) {
-                    commentInputRef.current.focus();
-                  }
-                }}
-              >
-                Write A Comment
-              </span>
-            </>
-          )}
-        </div>
-        <div className="flex items-center gap-2 cursor-pointer">
-          <Image
-            src={"/images/Dashboard/ic_Saved.svg"}
-            width={20}
-            height={20}
-            alt="commentsIcon"
-          />
-          <span className="text-[#44444F] text-[15px] hover:text-[#10458C]">
-            Save
-          </span>
-        </div>{" "}
-      </div>
-      <div className={styles.write_comment}>
-        <div className={styles.userImgWrapper}></div>
-        <div className={styles.commentInput}>
-          <form onSubmit={handleSubmit}>
-            <StyledTextField
-              label="Ask about this session"
-              value={text}
-              autoFocus={commentInputFocus}
-              onChange={(e) => {
-                setText(e.target.value);
-              }}
-              fullWidth
-              sx={{
-                borderRadius: "10px",
-              }}
-              inputRef={commentInputRef}
-            />
-            {text?.length > 0 ? (
-              <button
-                type="submit"
-                style={{
-                  position: "absolute",
-                  right: "10px",
-                  width: "100px",
-                  top: "50%",
-                  transform: "translateY(-50%)",
-                }}
-              >
-                <Image
-                  className={styles.sendIcon}
-                  alt="send"
-                  src={"/images/Dashboard/send.svg"}
-                  width={24}
-                  height={24}
-                />
-              </button>
-            ) : null}
-          </form>
-        </div>
-      </div>
-      <div
-        className={`${styles.commentsMainWrapper} ${
-          isCommentsVisible ? styles.visible : ""
-        }`}
-        ref={commentsRef}
-        style={{ maxHeight: commentsHeight + "px" }}
+      <Accordion
+        sx={{
+          "& .MuiPaper-root.MuiPaper-elevation": {
+            boxShadow: "none !important",
+          },
+          boxShadow: "none !important",
+          backgroundColor: "#FFF !important",
+          padding: "0px !important",
+        }}
+        expanded={isCommentsVisible}
       >
-        <>
-          {console.log(currentVideoComments)}
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1a-content"
+          id="panel1a-header"
+          sx={{
+            background: "#FFF !important",
+            padding: 0,
+          }}
+        >
+          <div className="flex flex-col w-full h-ft">
+            <div style={{ width: "100%" }} className={styles.comments_header}>
+              <div className="flex items-center gap-2 cursor-pointer">
+                {currentVideoComments?.length > 0 ? (
+                  <>
+                    <IoIosArrowDown
+                      style={{
+                        transition: "0.2s ease",
+                        transform: isCommentsVisible ? "rotate(180deg)" : "",
+                      }}
+                    />
+                    <span
+                      className="text-[#44444F] text-[15px] hover:text-[#10458C]"
+                      onClick={toggleComments}
+                    >
+                      {isCommentsVisible ? <>Hide </> : <>Show </>}
+                      {currentVideoComments?.length} Comments
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <Image
+                      src={"/images/Dashboard/ic_comment.svg"}
+                      width={20}
+                      height={20}
+                      alt="commentsIcon"
+                    />
+
+                    <span
+                      className="text-[#44444F] text-[15px] hover:text-[#10458C]"
+                      onClick={() => {
+                        if (commentInputRef.current) {
+                          commentInputRef.current.focus();
+                        }
+                      }}
+                    >
+                      Write A Comment
+                    </span>
+                  </>
+                )}
+              </div>
+              <div className="flex items-center gap-2 cursor-pointer">
+                <Image
+                  src={"/images/Dashboard/ic_Saved.svg"}
+                  width={20}
+                  height={20}
+                  alt="commentsIcon"
+                />
+                <span className="text-[#44444F] text-[15px] hover:text-[#10458C]">
+                  Save
+                </span>
+              </div>{" "}
+            </div>
+            <div className={styles.write_comment}>
+              <div className={styles.userImgWrapper}></div>
+              <div className={styles.commentInput}>
+                <form onSubmit={handleSubmit}>
+                  <StyledTextField
+                    label="Ask about this session"
+                    value={text}
+                    autoFocus={commentInputFocus}
+                    onChange={(e) => {
+                      setText(e.target.value);
+                    }}
+                    fullWidth
+                    sx={{
+                      borderRadius: "10px",
+                    }}
+                    inputRef={commentInputRef}
+                  />
+                  {text?.length > 0 ? (
+                    <button
+                      type="submit"
+                      style={{
+                        position: "absolute",
+                        right: "10px",
+                        width: "100px",
+                        top: "50%",
+                        transform: "translateY(-50%)",
+                      }}
+                    >
+                      <Image
+                        className={styles.sendIcon}
+                        alt="send"
+                        src={"/images/Dashboard/send.svg"}
+                        width={24}
+                        height={24}
+                      />
+                    </button>
+                  ) : null}
+                </form>
+              </div>
+            </div>{" "}
+          </div>
+        </AccordionSummary>
+
+        <AccordionDetails>
           {currentVideoComments?.map((comment: any, idx: number) => (
             <div
               ref={
@@ -276,16 +296,14 @@ const VideoSection = ({
               className={`${commentsStyles.comment} `}
             >
               <Comments
-                commentsRef={commentsRef}
                 comment={comment}
-                setCommentsHeight={setCommentsHeight}
                 setCurrentVideoComments={setCurrentVideoComments}
                 currentVideoComments={currentVideoComments}
               />
             </div>
           ))}
-        </>
-      </div>
+        </AccordionDetails>
+      </Accordion>
     </div>
   );
 };

@@ -7,15 +7,29 @@ import Reply from "../Reply/page";
 import { IoIosArrowDown } from "react-icons/io";
 import moment from "moment";
 import { toast } from "sonner";
-import { IconButton, Menu, MenuItem, TextField, styled } from "@mui/material";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  IconButton,
+  Menu,
+  MenuItem,
+  TextField,
+  styled,
+} from "@mui/material";
 import { isArabic } from "@/utils/checkLanguage";
 import { endPoints } from "@/services/endpoints";
-import { postRequest, updateRequest } from "@/services/postRequest";
+import {
+  deleteRequest,
+  postRequest,
+  updateRequest,
+} from "@/services/postRequest";
 import { calculateTimeDifference } from "@/utils/calculateTimeDifference";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { MdEditNote } from "react-icons/md";
 
 import { MdOutlinePlaylistRemove } from "react-icons/md";
+import DeleteDialog from "@/components/shared/Dialogs/DeleteDialog/page";
 
 export const StyledTextField = styled(TextField)`
   input {
@@ -39,6 +53,7 @@ const Comments = ({
   const [repliesHeight, setRepliesHeight] = useState(0);
   const [makeAReply, setMakeAReply] = useState(false);
   const [replyText, setReplyText] = useState("");
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const repliesRef: any = useRef(null);
   const open = Boolean(anchorEl);
 
@@ -46,37 +61,6 @@ const Comments = ({
   const { data: Replies } = useSWR(endPoints.getReplies, fetcher);
 
   // ** Side Effects
-  useEffect(() => {
-    if (commentReplies?.length < 5) {
-      setRepliesVisible(true);
-
-      setRepliesHeight(
-        isRepliesVisible ? repliesRef.current.scrollHeight + 200 : 0
-      );
-      if (isRepliesVisible) {
-        setCommentsHeight(
-          commentsRef.current.scrollHeight + repliesRef.current.scrollHeight
-        );
-      }
-    } else {
-      setRepliesVisible(false);
-
-      setRepliesHeight(
-        isRepliesVisible ? repliesRef.current.scrollHeight + 200 : 0
-      );
-      if (isRepliesVisible) {
-        setCommentsHeight(
-          commentsRef.current.scrollHeight + repliesRef.current.scrollHeight
-        );
-      }
-    }
-  }, [
-    isRepliesVisible,
-    repliesRef,
-    commentsRef,
-    setCommentsHeight,
-    commentReplies,
-  ]);
 
   useEffect(() => {
     const commentReplies =
@@ -84,6 +68,12 @@ const Comments = ({
       Replies?.length > 0 &&
       Replies?.filter((reply: any) => reply.commentId == comment?.id);
     setCommentReplies(commentReplies);
+
+    if (commentReplies?.length < 5) {
+      setRepliesVisible(true);
+    } else {
+      setRepliesVisible(false);
+    }
   }, [Replies, comment?.id]);
 
   // ** Functions
@@ -119,7 +109,7 @@ const Comments = ({
     };
 
     const res = await updateRequest({
-      commentId: comment?.id || comment?.commentId,
+      id: comment?.id || comment?.commentId,
       endpoint: endPoints.getComments,
       data: postData,
       handleSuccess: handleSuccess,
@@ -145,9 +135,6 @@ const Comments = ({
       setCommentReplies((prev: any) => [...prev, data]);
     }
 
-    setCommentsHeight(
-      commentsRef.current.scrollHeight + repliesRef.current.scrollHeight
-    );
     setReplyText("");
     setMakeAReply(false);
   };
@@ -164,6 +151,13 @@ const Comments = ({
     setMakeAReply((prev) => !prev);
     setReplyText(comment?.text);
     handleClose();
+  };
+
+  const handlePerformDeleteComment = async () => {
+    const res = await deleteRequest({
+      endpoint: endPoints.getComments,
+      id: comment?.id || comment?.commentId,
+    });
   };
   return (
     <>
@@ -240,7 +234,10 @@ const Comments = ({
                   display: "flex",
                   alignItems: "center",
                 }}
-                onClick={handleClose}
+                onClick={() => {
+                  setOpenDeleteDialog(true);
+                  handleClose();
+                }}
               >
                 <MdOutlinePlaylistRemove />
                 <span style={{ marginTop: "2px", marginLeft: "5px" }}>
@@ -302,41 +299,67 @@ const Comments = ({
         </div>
       </div>
       {commentReplies?.length > 0 ? (
-        <div
-          className={`${styles.showAllReplies} ${
-            isRepliesVisible ? styles.visible : ""
-          }`}
-          onClick={() => {
-            setRepliesVisible((prev) => !prev);
+        <Accordion
+          sx={{
+            "& .MuiPaper-root.MuiPaper-elevation": {
+              boxShadow: "none !important",
+            },
+            boxShadow: "none !important",
+            marginTop: "0px !important",
+            backgroundColor: "#FFF !important",
+            padding: "0px !important",
           }}
+          expanded={isRepliesVisible}
         >
-          <IoIosArrowDown />
-          {`${isRepliesVisible ? "Hide" : "Show"} All ${
-            commentReplies?.length
-          } Replies`}
-        </div>
-      ) : null}
+          <AccordionSummary
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+            sx={{
+              background: "#FFF !important",
+              padding: 0,
+              margin: 0,
+              "& .Mui-expanded": {
+                margin: 0,
+              },
+              "& .MuiAccordionSummary-root ": {
+                minHeight: "20px !important",
+              },
+            }}
+          >
+            <div
+              className={`${styles.showAllReplies} ${
+                isRepliesVisible ? styles.visible : ""
+              }`}
+              onClick={() => {
+                setRepliesVisible((prev) => !prev);
+              }}
+            >
+              <IoIosArrowDown />
+              {`${isRepliesVisible ? "Hide" : "Show"} All ${
+                commentReplies?.length
+              } Replies`}
+            </div>
+          </AccordionSummary>
 
-      <div
-        className={`${styles.repliesMainWrapper} ${
-          isRepliesVisible ? styles.visible : ""
-        }`}
-        ref={repliesRef}
-        style={{ maxHeight: repliesHeight + "px" }}
-      >
-        {commentReplies?.length > 0
-          ? commentReplies?.map((reply: any, idx: number) => (
-              <Reply
-                setCommentsHeight={setCommentsHeight}
-                commentsRef={commentsRef}
-                setCommentReplies={setCommentReplies}
-                key={idx}
-                reply={reply}
-                idx={idx}
-              />
-            ))
-          : null}
-      </div>
+          <AccordionDetails>
+            {commentReplies?.length > 0
+              ? commentReplies?.map((reply: any, idx: number) => (
+                  <Reply
+                    setCommentReplies={setCommentReplies}
+                    key={idx}
+                    reply={reply}
+                    idx={idx}
+                  />
+                ))
+              : null}
+          </AccordionDetails>
+        </Accordion>
+      ) : null}
+      <DeleteDialog
+        open={openDeleteDialog}
+        setOpen={setOpenDeleteDialog}
+        deleteAction={handlePerformDeleteComment}
+      />
     </>
   );
 };

@@ -48,3 +48,10 @@ body {
 button{
   position: relative;
 }
+.MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation1.MuiAccordion-root.MuiAccordion-rounded::before{
+  content: "";
+  background-color: transparent;
+}
+.css-b0ldl9-MuiButtonBase-root-MuiAccordionSummary-root.Mui-expanded{
+  min-height: 0;
+}
