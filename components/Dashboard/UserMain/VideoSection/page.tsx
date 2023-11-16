@@ -9,6 +9,9 @@ import useSWR, { mutate } from "swr";
 import { fetcher } from "@/utils/swr";
 import { toast } from "sonner";
 import commentsStyles from "@/styles/sass/Dashboard/UserMain/comment.module.scss";
+import { IoIosArrowDown } from "react-icons/io";
+import { postRequest } from "@/services/postRequest";
+import { endPoints } from "@/services/endpoints";
 
 const VideoSection = ({
   HeaderClickHandler,
@@ -19,28 +22,25 @@ const VideoSection = ({
   video?: any;
   isFullVideo?: boolean;
 }) => {
-  const [scrollPosition, setScrollPosition] = useState(0);
-  const commentsRef: any = useRef(null);
-  const lastCommentRef: any = useRef(null);
-  const scrollToBottom = () => {
-    const container = commentsRef.current;
-    setScrollPosition(container.scrollHeight);
-  };
-
-  // Data Fetching:
-  const { data: AllComments, isLoading: AllCommentsLoading } = useSWR(
-    `${process.env.NEXT_PUBLIC_BASE_URL}comments`,
-    fetcher
-  );
-
   //States
+  const [scrollPosition, setScrollPosition] = useState(0);
   const [videoLoadingOnStartUp, setVideoLoadingOnStartUp] =
     useState<boolean>(true);
   const [commentText, setCommentText] = useState<string>("");
   const [isCommentsVisible, setCommentsVisible] = useState(false);
   const [commentsHeight, setCommentsHeight] = useState(0);
   const [currentVideoComments, setCurrentVideoComments] = useState<any>([]);
+  const [commentInputFocus, setCommentInputFocus] = useState(false);
   const [text, setText] = useState("");
+  const commentInputRef: any = useRef(null);
+  const commentsRef: any = useRef(null);
+  const lastCommentRef: any = useRef(null);
+
+  // Data Fetching:
+  const { data: AllComments, isLoading: AllCommentsLoading } = useSWR(
+    endPoints.getComments,
+    fetcher
+  );
 
   // UseEffects
   useEffect(() => {
@@ -50,9 +50,7 @@ const VideoSection = ({
   }, []);
 
   useEffect(() => {
-    setCommentsHeight(
-      isCommentsVisible ? commentsRef.current.scrollHeight + 100 : 0
-    );
+    setCommentsHeight(isCommentsVisible ? commentsRef.current.scrollHeight : 0);
   }, [isCommentsVisible, currentVideoComments]);
 
   useEffect(() => {
@@ -69,36 +67,21 @@ const VideoSection = ({
     setCommentsVisible((prevVisible) => !prevVisible);
   };
 
-  const postRequest: any = async (url: any, data: any) => {
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        // Add any other headers as needed
-      },
-      body: JSON.stringify(data),
-    });
-
-    if (response.status == 201) {
-      toast.success("Comment Added Successfully");
-      setText("");
-      // mutate(`${process.env.NEXT_PUBLIC_BASE_URL}comments`);
-      setCurrentVideoComments((prev: any) => [...prev, data]);
-      if (!isCommentsVisible) {
-        setCommentsVisible(true);
-      }
-
-      if (lastCommentRef.current) {
-        setTimeout(() => {
-          lastCommentRef.current.scrollIntoView({ behavior: "smooth" });
-        }, 500);
-      }
+  const handleSuccess = (data: any) => {
+    toast.success("Comment Added Successfully");
+    setText("");
+    // mutate(`${process.env.NEXT_PUBLIC_BASE_URL}comments`);
+    setCurrentVideoComments((prev: any) => [...prev, data]);
+    if (!isCommentsVisible) {
+      setCommentsVisible(true);
     }
 
-    const responseData = await response.json();
-    return responseData;
+    if (lastCommentRef.current) {
+      setTimeout(() => {
+        lastCommentRef.current.scrollIntoView({ behavior: "smooth" });
+      }, 500);
+    }
   };
-
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     if (!text) return toast.error("Please enter a comment");
@@ -113,7 +96,11 @@ const VideoSection = ({
     // Trigger a re-fetch after the POST request is completed
     mutate(
       `${process.env.NEXT_PUBLIC_BASE_URL}comments`,
-      postRequest(`${process.env.NEXT_PUBLIC_BASE_URL}comments`, postData),
+      postRequest(
+        `${process.env.NEXT_PUBLIC_BASE_URL}comments`,
+        postData,
+        handleSuccess
+      ),
       false
     );
   };
@@ -162,7 +149,6 @@ const VideoSection = ({
               borderRadius: "16px",
             }}
             className={styles.videoIframe}
-            allowFullScreen
             src={
               video?.url ||
               "https://customer-7ral3pe3959xe832.cloudflarestream.com/737b67dbf506017e02fd8039f213b5f0/iframe?poster=https%3A%2F%2Fcustomer-7ral3pe3959xe832.cloudflarestream.com%2F737b67dbf506017e02fd8039f213b5f0%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600"
@@ -172,19 +158,44 @@ const VideoSection = ({
       </div>
       <div className={styles.comments_header}>
         <div className="flex items-center gap-2 cursor-pointer">
-          <Image
-            src={"/images/Dashboard/ic_comment.svg"}
-            width={20}
-            height={20}
-            alt="commentsIcon"
-          />
-          <span
-            className="text-[#44444F] text-[15px] hover:text-[#10458C]"
-            onClick={toggleComments}
-          >
-            {isCommentsVisible ? <>Hide </> : <>Show </>}
-            {currentVideoComments?.length} Comments
-          </span>
+          {currentVideoComments?.length > 0 ? (
+            <>
+              <IoIosArrowDown
+                style={{
+                  transition: "0.2s ease",
+                  transform: isCommentsVisible ? "rotate(180deg)" : "",
+                }}
+              />
+              <span
+                className="text-[#44444F] text-[15px] hover:text-[#10458C]"
+                onClick={toggleComments}
+              >
+                {isCommentsVisible ? <>Hide </> : <>Show </>}
+                {currentVideoComments?.length} Comments
+              </span>
+            </>
+          ) : (
+            <>
+              <Image
+                src={"/images/Dashboard/ic_comment.svg"}
+                width={20}
+                height={20}
+                alt="commentsIcon"
+              />
+
+              <span
+                className="text-[#44444F] text-[15px] hover:text-[#10458C]"
+                onClick={() => {
+                  if (commentInputRef.current) {
+                    // Focus the TextField
+                    commentInputRef.current.focus();
+                  }
+                }}
+              >
+                Write A Comment
+              </span>
+            </>
+          )}
         </div>
         <div className="flex items-center gap-2 cursor-pointer">
           <Image
@@ -205,6 +216,7 @@ const VideoSection = ({
             <TextField
               label="Ask about this session"
               value={text}
+              autoFocus={commentInputFocus}
               onChange={(e) => {
                 setText(e.target.value);
               }}
@@ -212,9 +224,19 @@ const VideoSection = ({
               sx={{
                 borderRadius: "10px",
               }}
+              inputRef={commentInputRef}
             />
             {text?.length > 0 ? (
-              <button type="submit">
+              <button
+                type="submit"
+                style={{
+                  position: "absolute",
+                  right: "10px",
+                  width: "100px",
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                }}
+              >
                 <Image
                   className={styles.sendIcon}
                   alt="send"

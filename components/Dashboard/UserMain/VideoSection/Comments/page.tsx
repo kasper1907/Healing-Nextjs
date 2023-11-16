@@ -9,6 +9,9 @@ import moment from "moment";
 import { toast } from "sonner";
 import { TextField, styled } from "@mui/material";
 import { isArabic } from "@/utils/checkLanguage";
+import { endPoints } from "@/services/endpoints";
+import { postRequest } from "@/services/postRequest";
+import { calculateTimeDifference } from "@/utils/calculateTimeDifference";
 
 const StyledTextField = styled(TextField)`
   input {
@@ -23,6 +26,7 @@ const Comments = ({
   commentsRef,
   setCurrentVideoComments,
 }: any) => {
+  // ** States
   const [commentReplies, setCommentReplies] = useState<any>([]);
   const [isRepliesVisible, setRepliesVisible] = useState(false);
   const [repliesHeight, setRepliesHeight] = useState(0);
@@ -30,42 +34,26 @@ const Comments = ({
   const [replyText, setReplyText] = useState("");
   const repliesRef: any = useRef(null);
 
-  const calculateTimeDifference = (createdAt: string) => {
-    const commentTime = moment.utc(createdAt); // Adjust the UTC offset for Cairo (UTC+2)
-    return commentTime.fromNow();
-  };
+  const { data: Comments, isLoading } = useSWR(endPoints.getComments, fetcher);
+  const { data: Replies } = useSWR(endPoints.getReplies, fetcher);
 
-  const toggleMakeAReply = () => {
-    setMakeAReply((prev) => !prev);
-    setReplyText("@UserName__");
-  };
-
+  // ** Side Effects
   useEffect(() => {
     setRepliesHeight(
       isRepliesVisible ? repliesRef.current.scrollHeight + 200 : 0
     );
-    setCommentsHeight(
-      commentsRef.current.scrollHeight + repliesRef.current.scrollHeight
-    );
+    if (isRepliesVisible) {
+      setCommentsHeight(
+        commentsRef.current.scrollHeight + repliesRef.current.scrollHeight
+      );
+    }
   }, [
     isRepliesVisible,
-    commentsRef,
     repliesRef,
+    commentsRef,
     setCommentsHeight,
     commentReplies,
   ]);
-
-  const { data: Comments, isLoading } = useSWR(
-    `${process.env.NEXT_PUBLIC_BASE_URL}comments`,
-    fetcher
-  );
-
-  const repliesEndpoint = `${process.env.NEXT_PUBLIC_BASE_URL}Replies`;
-
-  const { data: Replies, isLoading: RepliesLoading } = useSWR(
-    repliesEndpoint,
-    fetcher
-  );
 
   useEffect(() => {
     const commentReplies =
@@ -75,26 +63,10 @@ const Comments = ({
     setCommentReplies(commentReplies);
   }, [Replies, comment?.id]);
 
-  const postRequest: any = async (url: any, data: any) => {
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        // Add any other headers as needed
-      },
-      body: JSON.stringify(data),
-    });
-
-    if (response.status == 201) {
-      toast.success("Reply Added Successfully");
-      setCommentsHeight(commentsRef.current.scrollHeight + 100);
-      setCommentReplies((prev: any) => [...prev, data]);
-      setReplyText("");
-      setMakeAReply(false);
-    }
-
-    const responseData = await response.json();
-    return responseData;
+  // ** Functions
+  const toggleMakeAReply = () => {
+    setMakeAReply((prev) => !prev);
+    setReplyText("@UserName__");
   };
 
   const handleSubmit = async (e: any) => {
@@ -107,9 +79,20 @@ const Comments = ({
     };
 
     const res = await postRequest(
-      `${process.env.NEXT_PUBLIC_BASE_URL}Replies`,
-      postData
+      endPoints.getReplies,
+      postData,
+      handleSuccess
     );
+  };
+
+  const handleSuccess = (data: any) => {
+    toast.success("Reply Added Successfully");
+    setCommentReplies((prev: any) => [...prev, data]);
+    setCommentsHeight(
+      commentsRef.current.scrollHeight + repliesRef.current.scrollHeight
+    );
+    setReplyText("");
+    setMakeAReply(false);
   };
 
   return (

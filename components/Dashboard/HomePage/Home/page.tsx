@@ -8,6 +8,7 @@ import Link from "next/link";
 import { fetcher } from "@/utils/swr";
 import useSWR from "swr";
 import CardsSkeleton from "../../Loading/CardsSkeleton";
+import Error from "@/components/shared/Error/page";
 
 type Group = {
   id: number;
@@ -21,7 +22,9 @@ const Home = () => {
     error,
     isLoading,
   } = useSWR(`${process.env.NEXT_PUBLIC_BASE_URL}Groups`, fetcher);
-
+  if (error) {
+    return <Error />;
+  }
   return (
     <div className={styles.PageWrapper}>
       <Container sx={{ mt: 10 }}>
