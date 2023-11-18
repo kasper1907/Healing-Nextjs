@@ -56,13 +56,23 @@ const VideoSection = ({
     endPoints.getComments,
     fetcher
   );
+  const { data: Replies } = useSWR(endPoints.getReplies, fetcher, {
+    onSuccess: (data) => {
+      data &&
+        data?.length > 0 &&
+        data?.filter((reply: any) => reply.videoId == video?.videoId);
+    },
+  });
 
-  // UseEffects
-  useEffect(() => {
-    setTimeout(() => {
-      setVideoLoadingOnStartUp(false);
-    }, 2000);
-  }, []);
+  console.log(Replies);
+
+  const commentReplies =
+    // UseEffects
+    useEffect(() => {
+      setTimeout(() => {
+        setVideoLoadingOnStartUp(false);
+      }, 2000);
+    }, []);
 
   useEffect(() => {
     if (AllComments && AllComments?.length > 0) {
@@ -175,6 +185,9 @@ const VideoSection = ({
           "& .MuiPaper-root.MuiPaper-elevation": {
             boxShadow: "none !important",
           },
+          "& .MuiAccordionSummary-expandIconWrapper": {
+            display: "none !important",
+          },
           boxShadow: "none !important",
           backgroundColor: "#FFF !important",
           padding: "0px !important",
@@ -206,7 +219,7 @@ const VideoSection = ({
                       onClick={toggleComments}
                     >
                       {isCommentsVisible ? <>Hide </> : <>Show </>}
-                      {currentVideoComments?.length} Comments
+                      {currentVideoComments?.length + Replies?.length} Comments
                     </span>
                   </>
                 ) : (

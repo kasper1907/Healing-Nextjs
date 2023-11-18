@@ -1,6 +1,7 @@
 export interface UserTab{
     value: string;
     label: string;
-    icon: any;
+    icon?: any;
     component: any;
+    isHidden?:boolean
 }

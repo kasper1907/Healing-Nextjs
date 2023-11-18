@@ -37,7 +37,7 @@ export default function RootLayout({
         <TabsContextComponent>
           <ThemeProvider theme={theme}>
             <DashboardNavbar />
-            <Toaster />
+            <Toaster richColors={true} />
             {children}
           </ThemeProvider>
         </TabsContextComponent>

@@ -10,7 +10,9 @@ import VideoSection from "./VideoSection/page";
 import UserMainSkelton from "../Loading/UserMainSkelton";
 import { useParams, useSearchParams } from "next/navigation";
 import moment from "moment";
+import { useTabsContext } from "../TabsContext";
 const UserMain = () => {
+  const { userTabsValue, setUserTabsValue }: any = useTabsContext();
   const params = useSearchParams();
   const userId = params.get("id");
   const {
@@ -89,6 +91,10 @@ const UserMain = () => {
               className={"styledLink"}
               href="*"
               style={{ fontWeight: "300", fontSize: "14px", color: "#10458C" }}
+              onClick={(e) => {
+                e.preventDefault();
+                setUserTabsValue(6);
+              }}
             >
               view more
             </Link>

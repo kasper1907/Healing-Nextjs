@@ -79,6 +79,7 @@ import { AiFillHome } from "react-icons/ai";
 import { BsFillCalendarDateFill } from "react-icons/bs";
 import { Box } from "@mui/material";
 import { resolveString } from "@/utils/resolveString";
+import { UserTab } from "@/models/User";
 
 interface Props {
   setValue: any;
@@ -135,14 +136,16 @@ const HomeTabs = (props: any) => {
         aria-label="lab API tabs example"
       >
         {tabs?.length
-          ? tabs?.map((tab: any, idx: number) => (
-              <Tab
-                key={idx}
-                icon={tab.icon}
-                value={tab.value}
-                label={resolveString(tab.label)}
-              />
-            ))
+          ? tabs?.map((tab: UserTab, idx: number) =>
+              tab?.isHidden ? null : (
+                <Tab
+                  key={idx}
+                  icon={tab.icon}
+                  value={tab.value}
+                  label={resolveString(tab.label)}
+                />
+              )
+            )
           : "No Tabs Provided"}
       </TabList>
     </Box>

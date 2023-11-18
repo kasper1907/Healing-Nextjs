@@ -12,6 +12,7 @@ import Attachments from "@/components/Dashboard/UserMain/Attachments/page";
 import Saved from "@/components/Dashboard/UserMain/Saved/page";
 import Appointments from "@/components/Dashboard/HomePage/Appointments/page";
 import Home from "@/components/Dashboard/HomePage/Home/page";
+import ProfileDetails from "@/components/Dashboard/profileDetails/page";
 
 const HomeTab: any = {
   value: "1",
@@ -43,11 +44,11 @@ const AttachmentsTab: UserTab = {
   icon: <RiAttachment2 size={18} />,
   component: Attachments,
 };
-const SavedTab: UserTab = {
+const ProfileTab: UserTab = {
   value: "6",
-  label: "Saved",
-  icon: <CiSaveDown2 size={18} />,
-  component: Saved,
+  label: "Profile",
+  isHidden: true,
+  component: ProfileDetails,
 };
 
 export const userTabs = [
@@ -56,6 +57,7 @@ export const userTabs = [
   RecordedTab,
   AppointmentTab,
   AttachmentsTab,
+  ProfileTab,
 ];
 
 const DashboardTab: UserTab = {
