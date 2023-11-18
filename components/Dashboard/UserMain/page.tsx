@@ -49,6 +49,10 @@ const UserMain = () => {
                 fontWeight: "400",
                 fontSize: "12px",
               }}
+              onClick={() => {
+                //set the current tab value to 7 which is the edit profile tab
+                setUserTabsValue(7);
+              }}
             >
               Edit Profile
             </Button>

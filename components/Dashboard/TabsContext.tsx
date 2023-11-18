@@ -10,7 +10,7 @@ export default function TabsContextComponent({
   children: React.ReactNode;
 }) {
   const [dashboardTabsValue, setDashboardTabsValue] = useState<any>("1");
-  const [userTabsValue, setUserTabsValue] = useState<any>("6");
+  const [userTabsValue, setUserTabsValue] = useState<any>("7");
 
   return (
     <TabsContext.Provider

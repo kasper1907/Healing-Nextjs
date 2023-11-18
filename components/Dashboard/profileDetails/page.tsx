@@ -4,7 +4,10 @@ import "aos/dist/aos.css";
 import styles from "@/styles/sass/Dashboard/Profile/Profile.module.scss";
 import { Button, Grid, Typography } from "@mui/material";
 import { ProfileData } from "@/constants/ProfileData";
+import { useTabsContext } from "../TabsContext";
 const ProfileDetails = () => {
+  const { userTabsValue, setUserTabsValue }: any = useTabsContext();
+
   useEffect(() => {
     AOS.init();
   }, []);
@@ -47,6 +50,10 @@ const ProfileDetails = () => {
               borderRadius: "8px",
               fontWeight: "400",
               fontSize: "12px",
+            }}
+            onClick={() => {
+              //set the current tab value to 7 which is the edit profile tab
+              setUserTabsValue(7);
             }}
           >
             Edit Profile

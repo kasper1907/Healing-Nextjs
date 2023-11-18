@@ -13,6 +13,7 @@ import Saved from "@/components/Dashboard/UserMain/Saved/page";
 import Appointments from "@/components/Dashboard/HomePage/Appointments/page";
 import Home from "@/components/Dashboard/HomePage/Home/page";
 import ProfileDetails from "@/components/Dashboard/profileDetails/page";
+import EditProfile from "@/components/Dashboard/UserMain/EditProfile/page";
 
 const HomeTab: any = {
   value: "1",
@@ -50,6 +51,12 @@ const ProfileTab: UserTab = {
   isHidden: true,
   component: ProfileDetails,
 };
+const EditProfileTab: UserTab = {
+  value: "7",
+  label: "EditProfile",
+  isHidden: true,
+  component: EditProfile,
+};
 
 export const userTabs = [
   HomeTab,
@@ -58,6 +65,7 @@ export const userTabs = [
   AppointmentTab,
   AttachmentsTab,
   ProfileTab,
+  EditProfileTab,
 ];
 
 const DashboardTab: UserTab = {
