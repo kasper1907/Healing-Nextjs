@@ -1,9 +1,8 @@
 import { fetcher } from "@/utils/swr";
 import { Button, CircularProgress, Container, Typography } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import useSWR from "swr";
 import { Grid } from "@mui/material";
-import styles from "@/styles/sass/Dashboard/UserMain/usermain.module.scss";
 import Image from "next/image";
 import Link from "next/link";
 import VideoSection from "./VideoSection/page";
@@ -11,7 +10,12 @@ import UserMainSkelton from "../Loading/UserMainSkelton";
 import { useParams, useSearchParams } from "next/navigation";
 import moment from "moment";
 import { useTabsContext } from "../TabsContext";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import styles from "@/styles/sass/Dashboard/UserMain/usermain.module.scss";
+import AllGroups from "./AllGroups/page";
 const UserMain = () => {
+  const [viewAllGroups, setViewAllGroups] = React.useState(false);
   const { userTabsValue, setUserTabsValue }: any = useTabsContext();
   const params = useSearchParams();
   const userId = params.get("id");
@@ -20,6 +24,11 @@ const UserMain = () => {
     error,
     isLoading,
   } = useSWR(`${process.env.NEXT_PUBLIC_BASE_URL}Users/${userId}`, fetcher);
+
+  useEffect(() => {
+    AOS.init();
+  }, []);
+
   const { data: Videos } = useSWR(
     `${process.env.NEXT_PUBLIC_BASE_URL}Videos`,
     fetcher
@@ -140,6 +149,11 @@ const UserMain = () => {
               color: "#10458C",
             }}
             href={"*"}
+            onClick={(e) => {
+              e.preventDefault();
+              setViewAllGroups(true);
+              // setUserTabsValue(8);
+            }}
           >
             View all groups
           </Link>
@@ -169,102 +183,112 @@ const UserMain = () => {
           </div>
         </div>
       </Grid>
-      <Grid item className={styles.userMainGridItem} xs={12} lg={9}>
-        <div className={styles.gridMainChild}>
-          <div className={styles.lastSession}>
-            <Typography color={"primary"} sx={{ mb: 4 }}>
-              Last Session
-            </Typography>
-
-            {Videos && Videos?.length > 0 ? (
-              <VideoSection video={Videos[0]} isFullVideo={false} />
-            ) : null}
-          </div>
-          <div className={styles.preparationVideos}>
-            <Typography color={"primary"} sx={{ mb: 4 }}>
-              Preparation Videos
-            </Typography>
-
-            <Grid container spacing={2}>
-              <Grid item xs={12} lg={6} sx={{ height: "336px" }}>
-                <iframe
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    borderRadius: "16px",
-                  }}
-                  className={styles.videoIframe}
-                  allowFullScreen
-                  src="https://customer-7ral3pe3959xe832.cloudflarestream.com/737b67dbf506017e02fd8039f213b5f0/iframe?poster=https%3A%2F%2Fcustomer-7ral3pe3959xe832.cloudflarestream.com%2F737b67dbf506017e02fd8039f213b5f0%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600"
-                ></iframe>
-              </Grid>
-              <Grid item xs={12} lg={6} sx={{ height: "336px" }}>
-                <iframe
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    borderRadius: "16px",
-                  }}
-                  className={styles.videoIframe}
-                  allowFullScreen
-                  src="https://customer-7ral3pe3959xe832.cloudflarestream.com/737b67dbf506017e02fd8039f213b5f0/iframe?poster=https%3A%2F%2Fcustomer-7ral3pe3959xe832.cloudflarestream.com%2F737b67dbf506017e02fd8039f213b5f0%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600"
-                ></iframe>
-              </Grid>
-            </Grid>
-          </div>
-
-          <div className={styles.recommendedVideos}>
-            <div className="flex items-center justify-between ">
-              <Typography color={"primary"} sx={{ mb: 3 }}>
-                Recommended Videos
+      {viewAllGroups ? (
+        <AllGroups setViewAllGroups={setViewAllGroups} />
+      ) : (
+        <Grid
+          data-aos="fade-left"
+          item
+          className={styles.userMainGridItem}
+          xs={12}
+          lg={9}
+        >
+          <div className={styles.gridMainChild}>
+            <div className={styles.lastSession}>
+              <Typography color={"primary"} sx={{ mb: 4 }}>
+                Last Session
               </Typography>
-              <Link
-                className={"styledLink"}
-                style={{
-                  fontWeight: "300",
-                  fontSize: "13px",
-                  color: "#10458C",
-                }}
-                href={"*"}
-              >
-                See all
-              </Link>
+
+              {Videos && Videos?.length > 0 ? (
+                <VideoSection video={Videos[0]} isFullVideo={false} />
+              ) : null}
             </div>
-            <Grid container spacing={2}>
-              <Grid item xs={12} lg={6} sx={{ height: "370px" }}>
-                <Typography color={"#838383"} sx={{ ml: 2, mb: 2 }}>
-                  Healing from diabetes1
-                </Typography>
-                <iframe
-                  style={{
-                    width: "100%",
-                    height: "90%",
-                    borderRadius: "16px",
-                  }}
-                  className={styles.videoIframe}
-                  allowFullScreen
-                  src="https://customer-7ral3pe3959xe832.cloudflarestream.com/737b67dbf506017e02fd8039f213b5f0/iframe?poster=https%3A%2F%2Fcustomer-7ral3pe3959xe832.cloudflarestream.com%2F737b67dbf506017e02fd8039f213b5f0%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600"
-                ></iframe>
+            <div className={styles.preparationVideos}>
+              <Typography color={"primary"} sx={{ mb: 4 }}>
+                Preparation Videos
+              </Typography>
+
+              <Grid container spacing={2}>
+                <Grid item xs={12} lg={6} sx={{ height: "336px" }}>
+                  <iframe
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      borderRadius: "16px",
+                    }}
+                    className={styles.videoIframe}
+                    allowFullScreen
+                    src="https://customer-7ral3pe3959xe832.cloudflarestream.com/737b67dbf506017e02fd8039f213b5f0/iframe?poster=https%3A%2F%2Fcustomer-7ral3pe3959xe832.cloudflarestream.com%2F737b67dbf506017e02fd8039f213b5f0%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600"
+                  ></iframe>
+                </Grid>
+                <Grid item xs={12} lg={6} sx={{ height: "336px" }}>
+                  <iframe
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      borderRadius: "16px",
+                    }}
+                    className={styles.videoIframe}
+                    allowFullScreen
+                    src="https://customer-7ral3pe3959xe832.cloudflarestream.com/737b67dbf506017e02fd8039f213b5f0/iframe?poster=https%3A%2F%2Fcustomer-7ral3pe3959xe832.cloudflarestream.com%2F737b67dbf506017e02fd8039f213b5f0%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600"
+                  ></iframe>
+                </Grid>
               </Grid>
-              <Grid item xs={12} lg={6} sx={{ height: "370px" }}>
-                <Typography color={"#838383"} sx={{ ml: 2, mb: 2 }}>
-                  Healing from diabetes2
+            </div>
+
+            <div className={styles.recommendedVideos}>
+              <div className="flex items-center justify-between ">
+                <Typography color={"primary"} sx={{ mb: 3 }}>
+                  Recommended Videos
                 </Typography>
-                <iframe
+                <Link
+                  className={"styledLink"}
                   style={{
-                    width: "100%",
-                    height: "90%",
-                    borderRadius: "16px",
+                    fontWeight: "300",
+                    fontSize: "13px",
+                    color: "#10458C",
                   }}
-                  className={styles.videoIframe}
-                  allowFullScreen
-                  src="https://customer-7ral3pe3959xe832.cloudflarestream.com/737b67dbf506017e02fd8039f213b5f0/iframe?poster=https%3A%2F%2Fcustomer-7ral3pe3959xe832.cloudflarestream.com%2F737b67dbf506017e02fd8039f213b5f0%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600"
-                ></iframe>
+                  href={"*"}
+                >
+                  See all
+                </Link>
+              </div>
+              <Grid container spacing={2}>
+                <Grid item xs={12} lg={6} sx={{ height: "370px" }}>
+                  <Typography color={"#838383"} sx={{ ml: 2, mb: 2 }}>
+                    Healing from diabetes1
+                  </Typography>
+                  <iframe
+                    style={{
+                      width: "100%",
+                      height: "90%",
+                      borderRadius: "16px",
+                    }}
+                    className={styles.videoIframe}
+                    allowFullScreen
+                    src="https://customer-7ral3pe3959xe832.cloudflarestream.com/737b67dbf506017e02fd8039f213b5f0/iframe?poster=https%3A%2F%2Fcustomer-7ral3pe3959xe832.cloudflarestream.com%2F737b67dbf506017e02fd8039f213b5f0%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600"
+                  ></iframe>
+                </Grid>
+                <Grid item xs={12} lg={6} sx={{ height: "370px" }}>
+                  <Typography color={"#838383"} sx={{ ml: 2, mb: 2 }}>
+                    Healing from diabetes2
+                  </Typography>
+                  <iframe
+                    style={{
+                      width: "100%",
+                      height: "90%",
+                      borderRadius: "16px",
+                    }}
+                    className={styles.videoIframe}
+                    allowFullScreen
+                    src="https://customer-7ral3pe3959xe832.cloudflarestream.com/737b67dbf506017e02fd8039f213b5f0/iframe?poster=https%3A%2F%2Fcustomer-7ral3pe3959xe832.cloudflarestream.com%2F737b67dbf506017e02fd8039f213b5f0%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600"
+                  ></iframe>
+                </Grid>
               </Grid>
-            </Grid>
+            </div>
           </div>
-        </div>
-      </Grid>
+        </Grid>
+      )}
     </Grid>
   );
 };
