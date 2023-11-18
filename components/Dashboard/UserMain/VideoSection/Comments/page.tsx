@@ -334,7 +334,7 @@ const Comments = ({
                 setRepliesVisible((prev) => !prev);
               }}
             >
-              <IoIosArrowDown />
+              {/* <IoIosArrowDown /> */}
               {`${isRepliesVisible ? "Hide" : "Show"} All ${
                 commentReplies?.length
               } Replies`}

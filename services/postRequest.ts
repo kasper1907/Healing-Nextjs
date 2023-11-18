@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { toast } from "sonner";
 import { mutate } from "swr";
 
@@ -20,20 +20,33 @@ export const postRequest: any = async (url: any, data: any, handleSuccess: any,)
     return responseData;
   };
 export const updateRequest: any = async ({id,endpoint,data,handleSuccess} : any) => {
-  const res = await axios.put(`${endpoint}/${id}`, data);
-  console.log(res)
-  if (res.status == 200) {
-    handleSuccess(data);
+  try{
+    const res = await axios.put(`${endpoint}/${id}`, data);
+    console.log(res)
+    if (res.status == 200) {
+      handleSuccess(data);
+      mutate(endpoint);
+    }
+  
+  }catch(e:any){
+    return toast.error(e.message)
   }
 
-  mutate(endpoint);
+
   };
 export const deleteRequest: any = async ({id,endpoint, handleSuccess} : any) => {
-  const res = await axios.delete(`${endpoint}/${id}`);
-  console.log(res)
-  if (res.status == 200) {
-    toast.success("Item deleted successfully");
-  }
+  try{
+    const res = await axios.delete(`${endpoint}/${id}`);
+    if (res.status == 200) {
+      toast.success("Item deleted successfully");
+      mutate(endpoint);
+    }else{
+      toast.error("Something went wrong");
+    }
+  }catch(e:any){
+    return toast.error(e.message)
 
-  mutate(endpoint);
+  }
+  
+
   };

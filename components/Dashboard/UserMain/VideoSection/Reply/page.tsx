@@ -244,7 +244,15 @@ const Reply = ({ commentId, reply, idx, setCommentReplies }: any) => {
                   />
 
                   {replyText?.length > 0 ? (
-                    <button type="submit">
+                    <button
+                      type="submit"
+                      style={{
+                        width: "100px",
+                        position: "absolute",
+                        right: "0px",
+                        top: "50%",
+                      }}
+                    >
                       <Image
                         className={styles.sendIcon}
                         alt="send"

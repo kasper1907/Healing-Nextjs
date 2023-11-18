@@ -163,3 +163,47 @@ export const groups = [
         courseId: 7
     }
 ]
+
+
+export const userGroups = [
+    {
+        id: 1,
+        imageSrc: "/images/Dashboard/Groups/1 (1).svg"
+    },
+    {
+        id: 2,
+        imageSrc: "/images/Dashboard/Groups/1 (2).svg"
+    },
+    {
+        id: 3,
+        imageSrc: "/images/Dashboard/Groups/1 (3).svg"
+    },
+    {
+        id: 4,
+        imageSrc: "/images/Dashboard/Groups/1 (4).svg"
+    },
+    {
+        id: 5,
+        imageSrc: "/images/Dashboard/Groups/1 (5).svg"
+    },
+    {
+        id: 6,
+        imageSrc: "/images/Dashboard/Groups/1 (6).svg"
+    },
+    {
+        id: 7,
+        imageSrc: "/images/Dashboard/Groups/1 (7).svg"
+    },
+    {
+        id: 8,
+        imageSrc: "/images/Dashboard/Groups/1 (8).svg"
+    },
+    {
+        id: 9,
+        imageSrc: "/images/Dashboard/Groups/1 (9).svg"
+    },
+    {
+        id: 10,
+        imageSrc: "/images/Dashboard/Groups/1 (10).svg"
+    },
+]

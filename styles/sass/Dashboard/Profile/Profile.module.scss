@@ -1,0 +1,59 @@
+@import "../../_base.sass";
+.profilePageWrapper {
+  min-height: 600px;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif !important;
+}
+
+.detailsCard {
+  background: #ffffff;
+  border: 1px solid #81f2c2;
+  border-radius: 8px;
+  width: 100%;
+  padding: 20px;
+  min-height: 100px;
+  height: fit-content;
+  position: relative;
+  display: flex;
+  align-items: center;
+  box-shadow: 0px 0px 12px #f8f8f8;
+
+  .header {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+    background-color: #fff;
+    z-index: 2;
+    padding: 10px;
+    top: -23px;
+    color: $primary-color;
+  }
+
+  .detailsWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    p:first-of-type {
+      font-size: 14px;
+    }
+    p:last-of-type {
+      font-size: 13px;
+      color: #92929d;
+      font-weight: 300;
+    }
+  }
+}
+
+//Edit Profile Styles
+
+.EditProfilePage {
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif !important;
+  min-height: 800px;
+  height: fit-content;
+  background-color: transparent;
+  border-radius: 10px;
+  padding: 40px;
+}
