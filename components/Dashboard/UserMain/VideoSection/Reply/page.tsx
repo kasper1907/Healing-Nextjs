@@ -2,11 +2,17 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import styles from "@/styles/sass/Dashboard/UserMain/replies.module.scss";
 import moment from "moment"; // Import moment from moment-timezone
-import { TextField } from "@mui/material";
+import { IconButton, Menu, MenuItem, TextField } from "@mui/material";
 import { styled } from "@mui/system";
 import { FaRegPlayCircle } from "react-icons/fa";
 import { toast } from "sonner";
-import { mutate } from "swr";
+import { calculateTimeDifference } from "@/utils/calculateTimeDifference";
+import { MdOutlinePlaylistRemove } from "react-icons/md";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { MdEditNote } from "react-icons/md";
+import { deleteRequest, updateRequest } from "@/services/postRequest";
+import { endPoints } from "@/services/endpoints";
+import DeleteDialog from "@/components/shared/Dialogs/DeleteDialog/page";
 
 const StyledTextField = styled(TextField)`
   input {
@@ -14,16 +20,14 @@ const StyledTextField = styled(TextField)`
     padding-right: 40px;
   }
 `;
-const Reply = ({
-  commentId,
-  reply,
-  idx,
-  setCommentsHeight,
-  commentsRef,
-  setCommentReplies,
-}: any) => {
+const Reply = ({ commentId, reply, idx, setCommentReplies }: any) => {
   const [makeAReply, setMakeAReply] = useState(false);
   const [replyText, setReplyText] = useState("");
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [inputEdit, setInputEdit] = useState<boolean>(false);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+
+  const open = Boolean(anchorEl);
 
   const isArabic = (text: any) => /[\u0600-\u06FF]/.test(text);
 
@@ -31,11 +35,6 @@ const Reply = ({
   const getLanguageClassName = (text: any) => {
     console.log(isArabic(text));
     return isArabic(text) ? styles.arabicComment : styles.englishComment;
-  };
-
-  const calculateTimeDifference = (createdAt: string) => {
-    const commentTime = moment.utc(createdAt).utcOffset(4); // Adjust the UTC offset for Cairo (UTC+2)
-    return commentTime.fromNow();
   };
 
   const toggleMakeAReply = () => {
@@ -55,7 +54,6 @@ const Reply = ({
 
     if (response.status == 201) {
       toast.success("Reply Added Successfully");
-      setCommentsHeight(commentsRef.current.scrollHeight + 100);
       setCommentReplies((prev: any) => [...prev, data]);
       setReplyText("");
       setMakeAReply(false);
@@ -78,6 +76,56 @@ const Reply = ({
       `${process.env.NEXT_PUBLIC_BASE_URL}Replies`,
       postData
     );
+  };
+
+  const handleSubmitEdit = async (e: any) => {
+    e.preventDefault();
+    const postData = {
+      text: replyText,
+      id: reply?.id || reply?.replyId,
+      commentId: reply?.commentId,
+      videoId: reply?.videoId,
+      // createdAt: new Date(),
+    };
+    console.log(reply);
+    const res = await updateRequest({
+      id: reply?.id || reply?.replyId,
+      endpoint: endPoints.getReplies,
+      data: postData,
+      handleSuccess: handleSuccess,
+    });
+  };
+
+  const handleSuccess = () => {
+    setInputEdit(false);
+    setMakeAReply(false);
+    setCommentReplies((prev: any) => {
+      const newReplies = [...prev];
+      newReplies[idx].text = replyText;
+      return newReplies;
+    });
+    toast.success("Reply Updated Successfully");
+  };
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const PrepareUpdateComment = () => {
+    setInputEdit(true);
+    setMakeAReply((prev) => !prev);
+    setReplyText(reply?.text);
+    handleClose();
+  };
+
+  const handlePerformDeleteComment = async () => {
+    const res = await deleteRequest({
+      endpoint: endPoints.getReplies,
+      id: reply?.id || reply?.commentId,
+    });
   };
 
   return (
@@ -106,9 +154,71 @@ const Reply = ({
             />
             {/* <span>{moment(reply?.createdAt).format("YYYY-MM-DD hh:mm A")}</span> */}
             <span>{calculateTimeDifference(reply?.createdAt)}</span>
+
+            <IconButton
+              aria-label="more"
+              id="long-button"
+              aria-controls={open ? "long-menu" : undefined}
+              aria-expanded={open ? "true" : undefined}
+              aria-haspopup="true"
+              onClick={handleClick}
+            >
+              <MoreVertIcon
+                sx={{
+                  transform: "rotate(90deg)",
+                }}
+              />
+            </IconButton>
+            <Menu
+              id="basic-menu"
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+              MenuListProps={{
+                "aria-labelledby": "basic-button",
+              }}
+            >
+              <MenuItem
+                sx={{
+                  fontSize: "13px",
+                  fontFamily: "Roboto !important",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+                onClick={
+                  makeAReply
+                    ? () => {
+                        handleClose(), setMakeAReply((prev) => !prev);
+                      }
+                    : PrepareUpdateComment
+                }
+              >
+                <MdEditNote />
+                <span style={{ marginTop: "2px", marginLeft: "5px" }}>
+                  {makeAReply ? "Cancel" : "Edit"}
+                </span>
+              </MenuItem>
+              <MenuItem
+                sx={{
+                  fontSize: "13px",
+                  fontFamily: "Roboto !important",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+                onClick={() => {
+                  setOpenDeleteDialog(true);
+                  handleClose();
+                }}
+              >
+                <MdOutlinePlaylistRemove />
+                <span style={{ marginTop: "2px", marginLeft: "5px" }}>
+                  Delete
+                </span>
+              </MenuItem>
+            </Menu>
           </div>
           <div className={styles.commentInput}>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={inputEdit ? handleSubmitEdit : handleSubmit}>
               {makeAReply ? (
                 <>
                   <StyledTextField
@@ -150,6 +260,12 @@ const Reply = ({
           </div>
         </div>
       </div>
+
+      <DeleteDialog
+        open={openDeleteDialog}
+        setOpen={setOpenDeleteDialog}
+        deleteAction={handlePerformDeleteComment}
+      />
     </>
   );
 };

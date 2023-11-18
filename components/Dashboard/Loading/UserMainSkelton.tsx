@@ -15,15 +15,14 @@ const UserMainSkelton = () => {
           {arrayFrom6?.map((_, idx) => (
             <div key={idx}>
               <Skeleton
-                sx={{ mb: 2, borderRadius: "5px" }}
+                sx={{ mb: 2, borderRadius: "5px", width: "100%" }}
                 variant="rectangular"
-                width={210}
                 height={10}
               />
             </div>
           ))}
           <Skeleton
-            sx={{ borderRadius: "10px", width: "90%" }}
+            sx={{ borderRadius: "10px", width: "100%" }}
             variant="rounded"
             height={80}
           />{" "}
@@ -31,27 +30,25 @@ const UserMainSkelton = () => {
         <div className={`${styles.gridMainChild} ${styles.therapyGroups}`}>
           <Skeleton variant="circular" sx={{ mb: 2 }} width={40} height={40} />
           {Array.from({ length: 4 })?.map((_, idx) => (
-            <>
+            <div key={idx}>
               <Skeleton
-                sx={{ mb: 2, borderRadius: "5px" }}
+                sx={{ mb: 2, borderRadius: "5px", width: "100%" }}
                 variant="rectangular"
-                width={210}
                 height={10}
               />
-            </>
+            </div>
           ))}
         </div>
         <div className={`${styles.gridMainChild} ${styles.lucherDates}`}>
           <Skeleton variant="circular" sx={{ mb: 2 }} width={40} height={40} />
           {Array.from({ length: 8 })?.map((_, idx) => (
-            <>
+            <div key={idx}>
               <Skeleton
-                sx={{ mb: 2, borderRadius: "5px" }}
+                sx={{ mb: 2, borderRadius: "5px", width: "100%" }}
                 variant="rectangular"
-                width={210}
                 height={10}
               />
-            </>
+            </div>
           ))}
         </div>
       </Grid>
@@ -66,9 +63,8 @@ const UserMainSkelton = () => {
                 height={40}
               />
               <Skeleton
-                sx={{ mb: 2, borderRadius: "5px" }}
+                sx={{ mb: 2, borderRadius: "5px", width: "100%" }}
                 variant="rectangular"
-                width={210}
                 height={10}
               />
             </div>
@@ -84,9 +80,8 @@ const UserMainSkelton = () => {
               </div>
               <div className="ml-4">
                 <Skeleton
-                  sx={{ mb: 2, borderRadius: "5px" }}
+                  sx={{ mb: 2, borderRadius: "5px", width: "100%" }}
                   variant="rectangular"
-                  width={210}
                   height={10}
                 />
                 <Skeleton
