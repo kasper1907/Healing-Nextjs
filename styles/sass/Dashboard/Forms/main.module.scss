@@ -1,0 +1,22 @@
+@import "../../_base.sass";
+.main {
+  min-height: 215px;
+  height: fit-content;
+  padding: 10px;
+
+  .inputWrapper {
+    width: 100%;
+  }
+}
+
+.nextBtn {
+  background-color: $primary-color !important;
+  color: #fff;
+  border-radius: 8px;
+  padding: 8px 32px;
+}
+.backBtn {
+  background-color: transparent;
+  border-radius: 8px;
+  padding: 8px 32px;
+}
