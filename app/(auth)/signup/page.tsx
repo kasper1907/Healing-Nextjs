@@ -177,7 +177,7 @@ export default function Page() {
             display: "flex",
             flexDirection: { xs: "column", md: "row" },
             width: "100%",
-            alignItems: { xs: "flex-start", md: "" },
+            alignItems: { xs: "flex-start", md: "center" },
             gap: { xs: "3px", md: "" },
           }}
           activeStep={activeStep}
@@ -240,7 +240,7 @@ export default function Page() {
           </Typography>
         </div>
         {activeStep === steps2.length ? (
-          <React.Fragment data-aos="fade-right">
+          <React.Fragment data-aos="fadef-right">
             <Typography sx={{ mt: 2, mb: 1 }}>
               All steps completed - you&apos;re finished
             </Typography>
