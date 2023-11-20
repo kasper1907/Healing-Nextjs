@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "@/styles/sass/Dashboard/Forms/main.module.scss";
-import { Button, Grid, InputLabel } from "@mui/material";
+import { Button, Grid, InputLabel, TextField } from "@mui/material";
 import { CssTextField } from "@/components/Dashboard/UserMain/EditProfile/page";
 import ReactFlagsSelect from "react-flags-select";
 import Aos from "aos";
@@ -45,7 +45,7 @@ const ContactInfo = ({
       <Grid
         alignContent={"center"}
         rowSpacing={4}
-        spacing={4}
+        spacing={{ xs: 0, md: 4 }}
         container
         sx={{
           margin: "0 !important",
@@ -56,20 +56,23 @@ const ContactInfo = ({
             <InputLabel sx={{ fontSize: "0.9rem", ml: 1, mb: 1 }}>
               First Name
             </InputLabel>
-            <CssTextField
+            <TextField
+              autoComplete="off"
+              sx={{
+                backgroundColor: "#FFF !important",
+                borderRadius: "12px",
+                border: "none !important",
+                "& .MuiOutlinedInput-notchedOutline": {
+                  border: "none !important",
+                  borderRadius: "10px",
+                },
+              }}
+              fullWidth
+              variant="outlined"
+              placeholder="Enter Your First Name"
               value={formData.firstName}
               onChange={(e: any) => {
                 setFormData({ ...formData, firstName: e.target.value });
-              }}
-              fullWidth
-              label="Enter First Name
-"
-              id="custom-css-outlined-input"
-              sx={{
-                "& .MuiFormControl-root ": {
-                  backgroundColor: "#FFF !important",
-                  borderRadius: "12px",
-                },
               }}
             />
           </div>
@@ -79,19 +82,23 @@ const ContactInfo = ({
             <InputLabel sx={{ fontSize: "0.9rem", ml: 1, mb: 1 }}>
               Last Name
             </InputLabel>
-            <CssTextField
+            <TextField
+              autoComplete="off"
+              sx={{
+                backgroundColor: "#FFF !important",
+                borderRadius: "12px",
+                border: "none !important",
+                "& .MuiOutlinedInput-notchedOutline": {
+                  border: "none !important",
+                  borderRadius: "10px",
+                },
+              }}
+              fullWidth
+              variant="outlined"
+              placeholder="Enter Your Last Name"
               value={formData.lastName}
               onChange={(e: any) => {
                 setFormData({ ...formData, lastName: e.target.value });
-              }}
-              fullWidth
-              label="Enter Last Name"
-              id="custom-css-outlined-input"
-              sx={{
-                "& .MuiFormControl-root ": {
-                  backgroundColor: "#FFF !important",
-                  borderRadius: "12px",
-                },
               }}
             />
           </div>{" "}
@@ -101,19 +108,23 @@ const ContactInfo = ({
             <InputLabel sx={{ fontSize: "0.9rem", ml: 1, mb: 1 }}>
               Email
             </InputLabel>
-            <CssTextField
+            <TextField
+              autoComplete="off"
+              sx={{
+                backgroundColor: "#FFF !important",
+                borderRadius: "12px",
+                border: "none !important",
+                "& .MuiOutlinedInput-notchedOutline": {
+                  border: "none !important",
+                  borderRadius: "10px",
+                },
+              }}
+              fullWidth
+              variant="outlined"
+              placeholder="Enter Your Email"
               value={formData.email}
               onChange={(e: any) => {
                 setFormData({ ...formData, email: e.target.value });
-              }}
-              fullWidth
-              label="Enter Email"
-              id="custom-css-outlined-input"
-              sx={{
-                "& .MuiFormControl-root ": {
-                  backgroundColor: "#FFF !important",
-                  borderRadius: "12px",
-                },
               }}
             />
           </div>{" "}
@@ -139,8 +150,24 @@ const ContactInfo = ({
               customLabels={customLabels}
               className="codeSelect"
             />
-            <CssTextField
+
+            <TextField
+              autoComplete="off"
+              sx={{
+                backgroundColor: "#FFF !important",
+                borderRadius: "12px",
+                border: "none !important",
+                "& .MuiOutlinedInput-notchedOutline": {
+                  border: "none !important",
+                  borderRadius: "10px",
+                },
+                "& .MuiInputBase-input": {
+                  paddingLeft: selected ? "140px" : "170px",
+                },
+              }}
               fullWidth
+              variant="outlined"
+              placeholder="Enter Your Phone Number"
               value={formData?.phone}
               onChange={(e: any) => {
                 if (isNaN(e.target.value)) {
@@ -150,17 +177,6 @@ const ContactInfo = ({
                     ? setFormData({ ...formData, phone: e.target.value })
                     : null;
                 }
-              }}
-              autoComplete={"off"}
-              id="custom-css-outlined-input"
-              sx={{
-                "& .MuiFormControl-root ": {
-                  backgroundColor: "#FFF !important",
-                  borderRadius: "12px",
-                },
-                "& .MuiInputBase-input": {
-                  paddingLeft: selected ? "140px" : "170px",
-                },
               }}
             />
           </div>
@@ -174,7 +190,7 @@ const ContactInfo = ({
             justifyContent: "flex-end",
           }}
           item
-          xs={12}
+          xs={6}
           md={6}
         >
           <Button
@@ -194,7 +210,7 @@ const ContactInfo = ({
             justifyContent: "flex-start",
           }}
           item
-          xs={12}
+          xs={6}
           md={6}
         >
           <Button onClick={handleSubmit} className={styles.nextBtn}>

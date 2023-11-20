@@ -167,12 +167,18 @@ export default function Page() {
             background: `#FFF`,
             position: "fixed",
             left: "0",
-            width: "100%",
             top: "0",
             padding: "20px 0px",
             maxWidth: "100vw",
             boxShadow: "0px 0px 20px #10458c1f",
             zIndex: "2",
+
+            overflow: { xs: "scroll", md: "unset" },
+            display: "flex",
+            flexDirection: { xs: "column", md: "row" },
+            width: "100%",
+            alignItems: { xs: "flex-start", md: "" },
+            gap: { xs: "3px", md: "" },
           }}
           activeStep={activeStep}
         >
@@ -206,15 +212,18 @@ export default function Page() {
             width: "100%",
           }}
         >
-          <Image
-            src="/images/Dashboard/brain ct.svg"
-            width={200}
-            height={150}
-            style={{
-              marginTop: "60px",
+          <Box
+            sx={{
+              marginTop: { xs: "250px", md: "60px" },
             }}
-            alt="page-header_img"
-          />
+          >
+            <Image
+              src="/images/Dashboard/brain ct.svg"
+              width={200}
+              height={150}
+              alt="page-header_img"
+            />
+          </Box>
           <Typography
             variant="h4"
             fontSize={29}
@@ -225,7 +234,7 @@ export default function Page() {
           </Typography>
           <Typography
             variant="body2"
-            sx={{ mb: 2, color: "#92929d", fontSize: "19px" }}
+            sx={{ mb: 2, color: "#92929d", fontSize: "19px", margin: "0" }}
           >
             Enter your personal information
           </Typography>

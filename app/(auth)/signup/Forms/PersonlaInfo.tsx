@@ -70,7 +70,7 @@ const PersonalInfo = ({
       <Grid
         alignContent={"center"}
         rowSpacing={4}
-        spacing={4}
+        spacing={{ xs: 0, md: 4 }}
         container
         sx={{
           margin: "0 !important",
@@ -225,7 +225,7 @@ const PersonalInfo = ({
                   setFormData({ ...formData, maritalStatus: e.target.value });
                 }}
                 autoWidth
-                label="Select Your Gender"
+                label="Select Your Marital Status"
               >
                 <MenuItem value="">
                   <em>None</em>
@@ -372,7 +372,7 @@ const PersonalInfo = ({
             justifyContent: "flex-end",
           }}
           item
-          xs={12}
+          xs={6}
           md={6}
         >
           <Button
@@ -392,7 +392,7 @@ const PersonalInfo = ({
             justifyContent: "flex-start",
           }}
           item
-          xs={12}
+          xs={6}
           md={6}
         >
           <Button onClick={handleSubmit} className={styles.nextBtn}>

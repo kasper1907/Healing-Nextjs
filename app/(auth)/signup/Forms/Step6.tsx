@@ -30,7 +30,7 @@ const Step6 = ({
             justifyContent: "flex-end",
           }}
           item
-          xs={12}
+          xs={6}
           md={6}
         >
           <Button
@@ -50,7 +50,7 @@ const Step6 = ({
             justifyContent: "flex-start",
           }}
           item
-          xs={12}
+          xs={6}
           md={6}
         >
           <Button onClick={handleSubmit} className={styles.nextBtn}>

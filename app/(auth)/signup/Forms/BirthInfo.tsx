@@ -60,7 +60,7 @@ const BirthInfo = ({
       <Grid
         alignContent={"center"}
         rowSpacing={4}
-        spacing={4}
+        spacing={{ xs: 0, md: 4 }}
         container
         sx={{
           margin: "0 !important",
@@ -77,7 +77,10 @@ const BirthInfo = ({
                 onChange={(e: any) => {
                   setFormData({ ...formData, dateOfBirth: e });
                 }}
-                sx={{ width: "100%" }}
+                sx={{
+                  width: "100%",
+                  "& .MuiOutlinedInput-notchedOutline": { padding: "0" },
+                }}
                 fullWidth
               />
             </LocalizationProvider>
@@ -96,6 +99,7 @@ const BirthInfo = ({
                 }}
                 sx={{
                   width: "100%",
+                  "& .MuiOutlinedInput-notchedOutline": { padding: "0" },
                 }}
                 defaultValue={dayjs("2022-04-17T15:30")}
               />
@@ -162,7 +166,7 @@ const BirthInfo = ({
             justifyContent: "flex-end",
           }}
           item
-          xs={12}
+          xs={6}
           md={6}
         >
           <Button
@@ -182,7 +186,7 @@ const BirthInfo = ({
             justifyContent: "flex-start",
           }}
           item
-          xs={12}
+          xs={6}
           md={6}
         >
           <Button onClick={handleSubmit} className={styles.nextBtn}>

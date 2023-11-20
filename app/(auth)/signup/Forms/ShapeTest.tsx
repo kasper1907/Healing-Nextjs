@@ -79,7 +79,7 @@ const ShapeTest = ({
             justifyContent: "flex-end",
           }}
           item
-          xs={12}
+          xs={6}
           md={6}
         >
           <Button
@@ -99,7 +99,7 @@ const ShapeTest = ({
             justifyContent: "flex-start",
           }}
           item
-          xs={12}
+          xs={6}
           md={6}
         >
           <Button

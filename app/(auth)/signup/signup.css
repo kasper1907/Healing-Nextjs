@@ -8,6 +8,7 @@
 
 .ReactFlagsSelect-module_flagsSelect__2pfa2.codeSelect button{
     border: none !important;
+    outline: none !important;
 }
 .ReactFlagsSelect-module_flagsSelect__2pfa2.NationalitiesSelect{
     width: 100%;
@@ -17,6 +18,8 @@
 }
 .ReactFlagsSelect-module_flagsSelect__2pfa2.NationalitiesSelect button{
     border: none !important;
+    outline: none !important;
+
 }
 
 .styles_react-code-input__CRulA input{
