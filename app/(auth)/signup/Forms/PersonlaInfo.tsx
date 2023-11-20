@@ -7,6 +7,7 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  TextField,
 } from "@mui/material";
 import {
   CssTextField,
@@ -60,7 +61,7 @@ const PersonalInfo = ({
       steps[currentIndex].isCompleted = true;
       handleNext();
     } else {
-      toast.warning("Please fill all the fields");
+      toast.warning("Please fill all fields");
     }
   };
 
@@ -73,15 +74,14 @@ const PersonalInfo = ({
         container
         sx={{
           margin: "0 !important",
+          maxWidth: "100%",
         }}
       >
         <Grid item xs={12} md={6}>
           <div className={styles.inputWrapper}>
-            <InputLabel sx={{ fontSize: "0.9rem", ml: 1, mb: 1 }}>
-              Gender
-            </InputLabel>
             <FormControl fullWidth>
-              <StyledSelect
+              <InputLabel id="select-label">Select Your Gender</InputLabel>
+              <Select
                 sx={{
                   backgroundColor: "#FFF !important",
                   borderRadius: "12px",
@@ -90,27 +90,31 @@ const PersonalInfo = ({
                     border: "none",
                   },
                 }}
-                // labelId="demo-simple-select-label"
-                id="demo-simple-select"
+                labelId="select-label"
+                id="demo-simple-select-autowidth"
                 value={formData?.gender}
-                // label="Age"
-                onChange={(e: any) => {
+                onChange={(e) => {
                   setFormData({ ...formData, gender: e.target.value });
                 }}
+                autoWidth
+                label="Select Your Gender"
               >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
                 <MenuItem value={"Male"}>Male</MenuItem>
                 <MenuItem value={"Female"}>Female</MenuItem>
-              </StyledSelect>
+              </Select>
             </FormControl>
           </div>
         </Grid>
         <Grid item xs={12} md={6}>
           <div className={styles.inputWrapper}>
-            <InputLabel sx={{ fontSize: "0.9rem", ml: 1, mb: 1 }}>
-              Special Hand
-            </InputLabel>
             <FormControl fullWidth>
-              <StyledSelect
+              <InputLabel id="select-label">
+                Select Your Special Hand
+              </InputLabel>
+              <Select
                 sx={{
                   backgroundColor: "#FFF !important",
                   borderRadius: "12px",
@@ -119,17 +123,21 @@ const PersonalInfo = ({
                     border: "none",
                   },
                 }}
-                // labelId="demo-simple-select-label"
-                id="demo-simple-select"
+                labelId="select-label"
+                id="demo-simple-select-autowidth"
                 value={formData?.hand}
-                // label="Age"
-                onChange={(e: any) => {
+                onChange={(e) => {
                   setFormData({ ...formData, hand: e.target.value });
                 }}
+                autoWidth
+                label="Select Your Special Hand"
               >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
                 <MenuItem value={"Right"}>Right</MenuItem>
                 <MenuItem value={"Left"}>Left</MenuItem>
-              </StyledSelect>
+              </Select>
             </FormControl>
           </div>{" "}
         </Grid>
@@ -138,18 +146,24 @@ const PersonalInfo = ({
             <InputLabel sx={{ fontSize: "0.9rem", ml: 1, mb: 1 }}>
               Height (cm)
             </InputLabel>
-            <CssTextField
+
+            <TextField
+              autoComplete="off"
+              sx={{
+                backgroundColor: "#FFF !important",
+                borderRadius: "12px",
+                border: "none !important",
+                "& .MuiOutlinedInput-notchedOutline": {
+                  border: "none !important",
+                  borderRadius: "10px",
+                },
+              }}
+              fullWidth
+              variant="outlined"
+              placeholder="Enter Your Height in (cm)"
               value={formData.height}
               onChange={(e: any) => {
                 setFormData({ ...formData, height: e.target.value });
-              }}
-              fullWidth
-              id="custom-css-outlined-input"
-              sx={{
-                "& .MuiFormControl-root ": {
-                  backgroundColor: "#FFF !important",
-                  borderRadius: "12px",
-                },
               }}
             />
           </div>{" "}
@@ -164,18 +178,23 @@ const PersonalInfo = ({
             <InputLabel sx={{ fontSize: "0.9rem", ml: 1, mb: 1 }}>
               Weight (kg)
             </InputLabel>
-            <CssTextField
+            <TextField
+              autoComplete="off"
+              sx={{
+                backgroundColor: "#FFF !important",
+                borderRadius: "12px",
+                border: "none !important",
+                "& .MuiOutlinedInput-notchedOutline": {
+                  border: "none !important",
+                  borderRadius: "10px",
+                },
+              }}
+              fullWidth
+              variant="outlined"
+              placeholder="Enter Your Weight in (kg)"
               value={formData.weight}
               onChange={(e: any) => {
                 setFormData({ ...formData, weight: e.target.value });
-              }}
-              fullWidth
-              id="custom-css-outlined-input"
-              sx={{
-                "& .MuiFormControl-root ": {
-                  backgroundColor: "#FFF !important",
-                  borderRadius: "12px",
-                },
               }}
             />
           </div>
@@ -187,7 +206,10 @@ const PersonalInfo = ({
               Marital Status
             </InputLabel>
             <FormControl fullWidth>
-              <StyledSelect
+              <InputLabel id="select-label">
+                Select Your Marital Status
+              </InputLabel>
+              <Select
                 sx={{
                   backgroundColor: "#FFF !important",
                   borderRadius: "12px",
@@ -196,17 +218,23 @@ const PersonalInfo = ({
                     border: "none",
                   },
                 }}
-                id="demo-simple-select"
+                labelId="select-label"
+                id="demo-simple-select-autowidth"
                 value={formData?.maritalStatus}
                 onChange={(e: any) => {
                   setFormData({ ...formData, maritalStatus: e.target.value });
                 }}
+                autoWidth
+                label="Select Your Gender"
               >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
                 <MenuItem value={"Single"}>Single</MenuItem>
                 <MenuItem value={"Engaged"}>Engaged</MenuItem>
                 <MenuItem value={"Married"}>Married</MenuItem>
                 <MenuItem value={"Divorced"}>Divorced</MenuItem>
-              </StyledSelect>
+              </Select>
             </FormControl>
           </div>
         </Grid>
@@ -221,18 +249,24 @@ const PersonalInfo = ({
             <InputLabel sx={{ fontSize: "0.9rem", ml: 1, mb: 1 }}>
               Job Title
             </InputLabel>
-            <CssTextField
+
+            <TextField
+              autoComplete="off"
+              sx={{
+                backgroundColor: "#FFF !important",
+                borderRadius: "12px",
+                border: "none !important",
+                "& .MuiOutlinedInput-notchedOutline": {
+                  border: "none !important",
+                  borderRadius: "10px",
+                },
+              }}
+              fullWidth
+              variant="outlined"
+              placeholder="Enter Your Job Title"
               value={formData.jobTitle}
               onChange={(e: any) => {
                 setFormData({ ...formData, jobTitle: e.target.value });
-              }}
-              fullWidth
-              id="custom-css-outlined-input"
-              sx={{
-                "& .MuiFormControl-root ": {
-                  backgroundColor: "#FFF !important",
-                  borderRadius: "12px",
-                },
               }}
             />
           </div>
@@ -274,18 +308,24 @@ const PersonalInfo = ({
             <InputLabel sx={{ fontSize: "0.9rem", ml: 1, mb: 1 }}>
               Number Of Boys (if Exist)
             </InputLabel>
-            <CssTextField
+
+            <TextField
+              autoComplete="off"
+              sx={{
+                backgroundColor: "#FFF !important",
+                borderRadius: "12px",
+                border: "none !important",
+                "& .MuiOutlinedInput-notchedOutline": {
+                  border: "none !important",
+                  borderRadius: "10px",
+                },
+              }}
+              placeholder="Enter Number Of Boys (if Exist)"
+              fullWidth
+              variant="outlined"
               value={formData.boys}
               onChange={(e: any) => {
                 setFormData({ ...formData, boys: e.target.value });
-              }}
-              fullWidth
-              id="custom-css-outlined-input"
-              sx={{
-                "& .MuiFormControl-root ": {
-                  backgroundColor: "#FFF !important",
-                  borderRadius: "12px",
-                },
               }}
             />
           </div>
@@ -301,18 +341,24 @@ const PersonalInfo = ({
             <InputLabel sx={{ fontSize: "0.9rem", ml: 1, mb: 1 }}>
               Number Of Girls
             </InputLabel>
-            <CssTextField
+
+            <TextField
+              autoComplete="off"
+              sx={{
+                backgroundColor: "#FFF !important",
+                borderRadius: "12px",
+                border: "none !important",
+                "& .MuiOutlinedInput-notchedOutline": {
+                  border: "none !important",
+                  borderRadius: "10px",
+                },
+              }}
+              placeholder="Enter Number Of Girls (if Exist)"
+              fullWidth
+              variant="outlined"
               value={formData.girls}
               onChange={(e: any) => {
                 setFormData({ ...formData, girls: e.target.value });
-              }}
-              fullWidth
-              id="custom-css-outlined-input"
-              sx={{
-                "& .MuiFormControl-root ": {
-                  backgroundColor: "#FFF !important",
-                  borderRadius: "12px",
-                },
               }}
             />
           </div>

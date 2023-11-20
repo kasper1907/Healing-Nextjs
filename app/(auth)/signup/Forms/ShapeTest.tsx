@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import Aos from "aos";
 import "aos/dist/aos.css";
 
-const Test1 = ({
+const ShapeTest = ({
   handleNext,
   steps,
   setSteps,
@@ -53,13 +53,13 @@ const Test1 = ({
         رتب أرقام المربعات من المفضل للأقل تفضيلاً
       </Typography>
       <Image
-        src={"/images/Dashboard/color_test.jpg"}
+        src={"/images/Dashboard/shape_test.jpg"}
         width={400}
-        height={400}
-        alt="Color-Test1"
+        height={600}
+        alt="Shape-Test"
       />
       <ReactCodeInput
-        fields={5}
+        fields={7}
         className="custom-class"
         onComplete={(e) => {
           // console.log(e);
@@ -115,4 +115,4 @@ const Test1 = ({
   );
 };
 
-export default Test1;
+export default ShapeTest;

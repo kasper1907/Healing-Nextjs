@@ -8,6 +8,7 @@ import "aos/dist/aos.css";
 import "../signup.css";
 import { customLabels } from "@/constants/Countries";
 import { toast } from "sonner";
+import { checkPhoneNumberLength } from "@/utils/validPhoneNumber";
 
 const ContactInfo = ({
   handleNext,
@@ -29,12 +30,13 @@ const ContactInfo = ({
       formData.firstName !== "" &&
       formData.lastName !== "" &&
       formData.email !== "" &&
+      selected !== "" &&
       formData.phone !== ""
     ) {
       steps[currentIndex].isCompleted = true;
       handleNext();
     } else {
-      toast.warning("Please fill all the fields");
+      toast.warning("Please fill all fields");
     }
   };
 
@@ -142,9 +144,11 @@ const ContactInfo = ({
               value={formData?.phone}
               onChange={(e: any) => {
                 if (isNaN(e.target.value)) {
-                  toast.warning("Please enter a valid phone number");
+                  toast.warning("Please enter numbers only");
                 } else {
-                  setFormData({ ...formData, phone: e.target.value });
+                  checkPhoneNumberLength(e.target.value)
+                    ? setFormData({ ...formData, phone: e.target.value })
+                    : null;
                 }
               }}
               autoComplete={"off"}
@@ -155,7 +159,7 @@ const ContactInfo = ({
                   borderRadius: "12px",
                 },
                 "& .MuiInputBase-input": {
-                  paddingLeft: "170px",
+                  paddingLeft: selected ? "140px" : "170px",
                 },
               }}
             />

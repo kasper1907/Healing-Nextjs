@@ -7,13 +7,18 @@ import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { Container } from "@mui/material";
-import { toast } from "sonner";
 import BirthInfo from "./Forms/BirthInfo";
 import ContactInfo from "./Forms/ContactInfo";
 import Image from "next/image";
 import styles from "@/styles/sass/Dashboard/Forms/main.module.scss";
 import PersonalInfo from "./Forms/PersonlaInfo";
 import Test1 from "./Forms/Test1";
+import dayjs from "dayjs";
+import ColorTest2 from "./Forms/ShapeTest";
+import ShapeTest from "./Forms/ShapeTest";
+import Step6 from "./Forms/Step6";
+import Aos from "aos";
+import "aos/dist/aos.css";
 
 const steps = [
   "Contact",
@@ -45,25 +50,27 @@ const steps2Array = [
     component: Test1,
   },
   {
-    label: "Boxes Arrangement 2",
-    component: BirthInfo,
+    label: "Shape Test",
+    component: ShapeTest,
   },
   {
     label: "Medical data",
-    component: BirthInfo,
+    component: Step6,
   },
   {
     label: "Upload Documents",
-    component: BirthInfo,
+    component: Step6,
   },
 ];
 
 export default function Page() {
   // console.log("steps", steps2Array);
-
-  const [activeStep, setActiveStep] = React.useState(3);
+  React.useEffect(() => {
+    Aos.init();
+  }, []);
+  const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set<number>());
-  const [currentStep, setCurrentStep] = React.useState<any>(3);
+  const [currentStep, setCurrentStep] = React.useState<any>(0);
   const [steps2, setSteps2] = React.useState<any>(steps2Array);
   const [formData, setFormData] = React.useState<any>({
     firstName: "",
@@ -71,6 +78,8 @@ export default function Page() {
     email: "",
     country: "",
     phone: "",
+    // dateOfBirth: dayjs("2022-04-17"),
+    // timeOfBirth: dayjs("2022-04-17T15:30"),
     dateOfBirth: "",
     timeOfBirth: "",
     placeOfBirth: "",
@@ -94,7 +103,7 @@ export default function Page() {
     complaint_start_date: "",
   });
   const isStepOptional = (step: number) => {
-    return step === 1;
+    return false;
   };
 
   const isStepSkipped = (step: number) => {
@@ -102,7 +111,7 @@ export default function Page() {
   };
 
   React.useEffect(() => {
-    setCurrentStep(steps2[3]);
+    setCurrentStep(steps2[0]);
   }, [steps2]);
 
   const handleNext = () => {
@@ -138,6 +147,7 @@ export default function Page() {
 
   const handleReset = () => {
     setActiveStep(0);
+    setCurrentStep(steps2[0]);
   };
 
   // console.log("activeStep", activeStep);
@@ -145,7 +155,7 @@ export default function Page() {
   return (
     <div
       style={{
-        padding: "60px",
+        // padding: "60px",
         background: "#F8F8F8",
         minHeight: "100vh",
         height: "fit-content",
@@ -154,7 +164,15 @@ export default function Page() {
       <Box sx={{ width: "100%" }}>
         <Stepper
           sx={{
-            display: "none",
+            background: `#FFF`,
+            position: "fixed",
+            left: "0",
+            width: "100%",
+            top: "0",
+            padding: "20px 0px",
+            maxWidth: "100vw",
+            boxShadow: "0px 0px 20px #10458c1f",
+            zIndex: "2",
           }}
           activeStep={activeStep}
         >
@@ -191,7 +209,10 @@ export default function Page() {
           <Image
             src="/images/Dashboard/brain ct.svg"
             width={200}
-            height={200}
+            height={150}
+            style={{
+              marginTop: "60px",
+            }}
             alt="page-header_img"
           />
           <Typography
@@ -210,7 +231,7 @@ export default function Page() {
           </Typography>
         </div>
         {activeStep === steps2.length ? (
-          <React.Fragment>
+          <React.Fragment data-aos="fade-right">
             <Typography sx={{ mt: 2, mb: 1 }}>
               All steps completed - you&apos;re finished
             </Typography>
@@ -221,9 +242,9 @@ export default function Page() {
           </React.Fragment>
         ) : (
           <React.Fragment>
-            <Container sx={{ margin: "auto" }}>
+            <Container sx={{ margin: "auto", padding: "0 !important" }}>
               <Typography sx={{ mt: 2, mb: 1 }}>
-                Step {activeStep + 1}
+                {/* Step {activeStep + 1} */}
                 {currentStep?.component && (
                   <currentStep.component
                     steps={steps2}

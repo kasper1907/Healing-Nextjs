@@ -51,7 +51,7 @@ const BirthInfo = ({
       steps[currentIndex].isCompleted = true;
       handleNext();
     } else {
-      toast.warning("Please fill all the fields");
+      toast.warning("Please fill all fields");
     }
   };
 
