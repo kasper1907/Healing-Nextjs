@@ -19,6 +19,8 @@ import ShapeTest from "./Forms/ShapeTest";
 import Step6 from "./Forms/Step6";
 import Aos from "aos";
 import "aos/dist/aos.css";
+import useSWR from "swr";
+import { fetcher } from "@/utils/swr";
 
 const steps = [
   "Contact",
@@ -46,7 +48,7 @@ const steps2Array = [
     component: PersonalInfo,
   },
   {
-    label: "Boxes Arrangement 1",
+    label: "Color Test",
     component: Test1,
   },
   {
@@ -68,6 +70,9 @@ export default function Page() {
   React.useEffect(() => {
     Aos.init();
   }, []);
+
+  // console.log("countriesData", countriesData);
+
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set<number>());
   const [currentStep, setCurrentStep] = React.useState<any>(0);

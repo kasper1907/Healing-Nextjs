@@ -9,6 +9,8 @@ import "../signup.css";
 import { customLabels } from "@/constants/Countries";
 import { toast } from "sonner";
 import { checkPhoneNumberLength } from "@/utils/validPhoneNumber";
+import { fetcher } from "@/utils/swr";
+import useSWR from "swr";
 
 const ContactInfo = ({
   handleNext,

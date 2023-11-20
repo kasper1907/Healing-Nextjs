@@ -30,7 +30,15 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="down" ref={ref} {...props} />;
 });
 
-export default function LargeDialog({ open, setOpen, item }: any) {
+export default function LargeDialog({
+  open,
+  setOpen,
+  item,
+  linkUrl,
+  query,
+  isBtnLink,
+  sessionId,
+}: any) {
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -106,6 +114,9 @@ export default function LargeDialog({ open, setOpen, item }: any) {
                   </div>
                   <div className={styles.buttonContainer}>
                     <StyledButton
+                      isLink={isBtnLink}
+                      url={linkUrl}
+                      query={query}
                       isPrimary={true}
                       label="اشترك الأن"
                       fullWidth={false}
@@ -152,6 +163,9 @@ export default function LargeDialog({ open, setOpen, item }: any) {
                   </div>
                   <div className={styles.buttonContainer}>
                     <StyledButton
+                      isLink={isBtnLink}
+                      url={linkUrl}
+                      query={query}
                       isPrimary={true}
                       label="اشترك الأن"
                       fullWidth={false}
@@ -205,6 +219,9 @@ export default function LargeDialog({ open, setOpen, item }: any) {
               </div>
               <div className={styles.buttonContainer}>
                 <StyledButton
+                  isLink={true}
+                  query={query}
+                  url="/signup"
                   isPrimary={true}
                   label="اشترك الأن"
                   fullWidth={false}
@@ -248,6 +265,9 @@ export default function LargeDialog({ open, setOpen, item }: any) {
               </div>
               <div className={styles.buttonContainer}>
                 <StyledButton
+                  isLink={true}
+                  query={query}
+                  url="/signup"
                   isPrimary={true}
                   label="اشترك الأن"
                   fullWidth={false}
