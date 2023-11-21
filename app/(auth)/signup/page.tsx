@@ -6,21 +6,29 @@ import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { Container } from "@mui/material";
-import BirthInfo from "./Forms/BirthInfo";
-import ContactInfo from "./Forms/ContactInfo";
+import { Container, Grid, Skeleton } from "@mui/material";
+import BirthInfo from "../../../components/Signup/BirthInfo";
+import ContactInfo from "../../../components/Signup/ContactInfo";
 import Image from "next/image";
 import styles from "@/styles/sass/Dashboard/Forms/main.module.scss";
-import PersonalInfo from "./Forms/PersonlaInfo";
-import Test1 from "./Forms/Test1";
+import PersonalInfo from "../../../components/Signup/PersonlaInfo";
+import Test1 from "../../../components/Signup/Test1";
 import dayjs from "dayjs";
-import ColorTest2 from "./Forms/ShapeTest";
-import ShapeTest from "./Forms/ShapeTest";
-import Step6 from "./Forms/Step6";
+import ColorTest2 from "../../../components/Signup/ShapeTest";
+import ShapeTest from "../../../components/Signup/ShapeTest";
+import Step6 from "../../../components/Signup/Step6";
 import Aos from "aos";
 import "aos/dist/aos.css";
 import useSWR from "swr";
 import { fetcher } from "@/utils/swr";
+import { useSearchParams } from "next/navigation";
+import { sessions } from "@/constants/Sessions";
+import { Error as ErrorComponent } from "@/components/shared/Error/page";
+import Upload from "../../../components/Signup/Upload";
+import BrainCTQuestions from "@/components/Signup/BrainCTQuestions/page";
+import { useTranslation } from "react-i18next";
+import { SignUpForm } from "@/models/SignUp";
+import CardsSkeleton from "@/components/Dashboard/Loading/CardsSkeleton";
 
 const steps = [
   "Contact",
@@ -32,7 +40,7 @@ const steps = [
   "Upload Documents",
 ];
 
-const steps2Array = [
+const steps2Array = (sessionId: string | null) => [
   {
     label: "Contact",
     component: ContactInfo,
@@ -57,36 +65,57 @@ const steps2Array = [
   },
   {
     label: "Medical data",
-    component: Step6,
+    component: sessionId == "1" ? BrainCTQuestions : Step6,
   },
   {
     label: "Upload Documents",
-    component: Step6,
+    component: Upload,
   },
 ];
 
+type Session = {
+  ar_name: string;
+  en_name: string;
+  type: string;
+  id: string | number;
+  image: string;
+};
+
 export default function Page() {
   // console.log("steps", steps2Array);
+  const { t, i18n } = useTranslation();
+  const searchParams = useSearchParams();
+  const sessionId: string | null = searchParams.get("sessionId");
+  const currentSession: Session | undefined = sessions.find(
+    (s: any) => s.id == sessionId
+  )!;
   React.useEffect(() => {
     Aos.init();
   }, []);
 
-  // console.log("countriesData", countriesData);
+  const handleLangItemClick = (lang: "en" | "ar") => {
+    i18n.changeLanguage(lang);
+  };
 
-  const [activeStep, setActiveStep] = React.useState(0);
+  const currentTime = new Date();
+
+  // Set the time part of the date
+  currentTime.setHours(dayjs().hour());
+  currentTime.setMinutes(dayjs().minute());
+  currentTime.setSeconds(dayjs().second());
+
+  const [activeStep, setActiveStep] = React.useState(5);
   const [skipped, setSkipped] = React.useState(new Set<number>());
-  const [currentStep, setCurrentStep] = React.useState<any>(0);
-  const [steps2, setSteps2] = React.useState<any>(steps2Array);
-  const [formData, setFormData] = React.useState<any>({
+  const [currentStep, setCurrentStep] = React.useState<any>(5);
+  const [steps2, setSteps2] = React.useState<any>(steps2Array(sessionId));
+  const [formData, setFormData] = React.useState<SignUpForm>({
     firstName: "",
     lastName: "",
     email: "",
     country: "",
     phone: "",
-    // dateOfBirth: dayjs("2022-04-17"),
-    // timeOfBirth: dayjs("2022-04-17T15:30"),
-    dateOfBirth: "",
-    timeOfBirth: "",
+    dateOfBirth: dayjs(),
+    timeOfBirth: currentTime,
     placeOfBirth: "",
     Nationality: "",
     gender: "",
@@ -102,10 +131,14 @@ export default function Page() {
     boxes2: [],
     sessionType: "",
     expectations: "",
+    //Medical Data:
+    organic_Psychological_complaint: "",
+    date_of_Organic_Psychological_complaint: dayjs(),
+    medical_diagnosis: "",
     type_of_complaint: "",
-    description_of_complaint: "",
-    symptoms_of_complaint: "",
-    complaint_start_date: "",
+    // description_of_complaint: "",
+    // symptoms_of_complaint: "",
+    // complaint_start_date: "",
   });
   const isStepOptional = (step: number) => {
     return false;
@@ -116,7 +149,7 @@ export default function Page() {
   };
 
   React.useEffect(() => {
-    setCurrentStep(steps2[0]);
+    setCurrentStep(steps2[5]);
   }, [steps2]);
 
   const handleNext = () => {
@@ -155,7 +188,13 @@ export default function Page() {
     setCurrentStep(steps2[0]);
   };
 
-  // console.log("activeStep", activeStep);
+  if (!sessionId || !currentSession) {
+    return (
+      <div className="flex flex-row items-center justify-center w-full h-screen bg-[#F8F8F8]">
+        <ErrorComponent msg={`No Session Found With ID: ${sessionId}`} />
+      </div>
+    );
+  }
 
   return (
     <div
@@ -219,23 +258,33 @@ export default function Page() {
         >
           <Box
             sx={{
-              marginTop: { xs: "250px", md: "60px" },
+              marginTop: { xs: "250px", md: "80px" },
             }}
           >
             <Image
-              src="/images/Dashboard/brain ct.svg"
-              width={200}
+              src={currentSession?.image?.toString()}
+              width={150}
               height={150}
               alt="page-header_img"
             />
           </Box>
+          {/* <button
+            style={{
+              background: "#FFF",
+              padding: "20px",
+            }}
+            onClick={() => handleLangItemClick("ar")}
+          >
+            العربية
+          </button> */}
+
           <Typography
             variant="h4"
             fontSize={29}
             color={"primary"}
             sx={{ mb: 1 }}
           >
-            Create An Account
+            {t("Create An Account")}
           </Typography>
           <Typography
             variant="body2"
@@ -245,7 +294,7 @@ export default function Page() {
           </Typography>
         </div>
         {activeStep === steps2.length ? (
-          <React.Fragment data-aos="fadef-right">
+          <React.Fragment data-aos="fade-right">
             <Typography sx={{ mt: 2, mb: 1 }}>
               All steps completed - you&apos;re finished
             </Typography>
@@ -257,9 +306,9 @@ export default function Page() {
         ) : (
           <React.Fragment>
             <Container sx={{ margin: "auto", padding: "0 !important" }}>
-              <Typography sx={{ mt: 2, mb: 1 }}>
+              <Box sx={{ mt: 2, mb: 1 }}>
                 {/* Step {activeStep + 1} */}
-                {currentStep?.component && (
+                {currentStep?.component ? (
                   <currentStep.component
                     steps={steps2}
                     setSteps={setSteps2}
@@ -269,8 +318,60 @@ export default function Page() {
                     formData={formData}
                     setFormData={setFormData}
                   />
+                ) : (
+                  <Grid sx={{ mt: 4 }} spacing={4} container>
+                    <Grid item xs={12} md={6}>
+                      <Skeleton
+                        variant="rectangular"
+                        sx={{ borderRadius: "10px", mb: 2, width: "100%" }}
+                        height={10}
+                      />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                      <Skeleton
+                        variant="rectangular"
+                        sx={{ borderRadius: "10px", mb: 2, width: "100%" }}
+                        height={10}
+                      />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                      <Skeleton
+                        variant="rectangular"
+                        sx={{ borderRadius: "10px", mb: 2, width: "100%" }}
+                        height={10}
+                      />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                      <Skeleton
+                        variant="rectangular"
+                        sx={{ borderRadius: "10px", mb: 2, width: "100%" }}
+                        height={10}
+                      />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                      <Skeleton
+                        variant="rectangular"
+                        sx={{ borderRadius: "10px", mb: 2, width: "100%" }}
+                        height={10}
+                      />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                      <Skeleton
+                        variant="rectangular"
+                        sx={{ borderRadius: "10px", mb: 2, width: "100%" }}
+                        height={10}
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Skeleton
+                        variant="rectangular"
+                        sx={{ borderRadius: "10px", mb: 2, width: "100%" }}
+                        height={10}
+                      />
+                    </Grid>
+                  </Grid>
                 )}
-              </Typography>
+              </Box>
               {/* <Box
                 sx={{
                   display: "flex",

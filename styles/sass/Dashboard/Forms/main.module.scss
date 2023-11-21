@@ -11,18 +11,18 @@
 
 .nextBtn {
   background-color: $primary-color !important;
-  color: #fff;
-  border-radius: 8px;
-  padding: 8px 32px;
+  color: #fff !important;
+  border-radius: 8px !important;
+  padding: 8px 32px !important;
 
   &:disabled {
     background-color: $primary-color !important;
-    color: #fff;
-    opacity: 0.5;
+    color: #fff !important;
+    opacity: 0.5 !important;
   }
 }
 .backBtn {
   background-color: transparent;
-  border-radius: 8px;
-  padding: 8px 32px;
+  border-radius: 8px !important;
+  padding: 8px 32px !important;
 }

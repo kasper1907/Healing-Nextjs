@@ -5,7 +5,7 @@ import { CssTextField } from "@/components/Dashboard/UserMain/EditProfile/page";
 import ReactFlagsSelect from "react-flags-select";
 import Aos from "aos";
 import "aos/dist/aos.css";
-import "../signup.css";
+import "./signup.css";
 import { customLabels } from "@/constants/Countries";
 import { toast } from "sonner";
 import { checkPhoneNumberLength } from "@/utils/validPhoneNumber";

@@ -45,6 +45,7 @@ const DrSessionCard = () => {
         </p>
         <div className={styles.buttonContainer}>
           <StyledButton
+            isLink={false}
             label="اشترك الان"
             isPrimary={true}
             onClick={handleOpenDialog}

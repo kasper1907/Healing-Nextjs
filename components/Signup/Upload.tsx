@@ -1,9 +1,13 @@
-import { Button, Grid } from "@mui/material";
+import Dropzone from "@/utils/Dropzone";
 import React, { useEffect } from "react";
-import styles from "@/styles/sass/Dashboard/Forms/main.module.scss";
 import Aos from "aos";
 import "aos/dist/aos.css";
-const Step6 = ({
+import styles from "@/styles/sass/Dashboard/UserMain/attachments.module.scss";
+import signUpStyles from "@/styles/sass/Dashboard/Forms/main.module.scss";
+
+import { Button, Grid } from "@mui/material";
+
+const Upload = ({
   handleNext,
   steps,
   setSteps,
@@ -20,9 +24,13 @@ const Step6 = ({
     steps[currentIndex].isCompleted = true;
     handleNext();
   };
+
   return (
-    <div data-aos="fade-right">
-      Step6
+    <div data-aos="fade-right" className={styles.pageWrapper}>
+      <div className={styles.dropZoneWrapper}>
+        <Dropzone />
+      </div>
+
       <Grid container sx={{ mt: 4 }}>
         <Grid
           sx={{
@@ -38,7 +46,7 @@ const Step6 = ({
             disabled={currentIndex === 0}
             onClick={handleBack}
             sx={{ mr: 1 }}
-            className={styles.backBtn}
+            className={signUpStyles.backBtn}
             variant="outlined"
           >
             Back
@@ -53,7 +61,7 @@ const Step6 = ({
           xs={6}
           md={6}
         >
-          <Button onClick={handleSubmit} className={styles.nextBtn}>
+          <Button onClick={handleSubmit} className={signUpStyles.nextBtn}>
             {currentIndex === steps.length - 1 ? "Finish" : "Next"}
           </Button>
         </Grid>
@@ -62,4 +70,4 @@ const Step6 = ({
   );
 };
 
-export default Step6;
+export default Upload;
