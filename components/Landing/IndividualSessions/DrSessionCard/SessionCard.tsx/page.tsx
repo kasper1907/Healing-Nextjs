@@ -12,7 +12,7 @@ type ComponentProps = {
   header: string;
   text: string;
 };
-const SessionCard = ({ bannerSrc, logoSrc, header, text }: any) => {
+const SessionCard = ({ bannerSrc, logoSrc, header, text, sessionId }: any) => {
   const [openDialog, setOpenDialog] = useState<boolean>(false);
   const [isPending, startTransition] = useTransition();
   const [item, setItem] = useState<any>({});
@@ -46,13 +46,21 @@ const SessionCard = ({ bannerSrc, logoSrc, header, text }: any) => {
         <p className=" text-center text-[#A5A5A5] mt-[-10px] mb-4">{text}</p>
         <div className="max-w-full w-[200px]">
           <StyledButton
+            isLink={false}
             isPrimary={true}
             label="اشترك الان"
             onClick={handleClickSubscribe}
           />
         </div>
       </div>
-      <LargeDialog open={openDialog} setOpen={setOpenDialog} item={item} />
+      <LargeDialog
+        open={openDialog}
+        setOpen={setOpenDialog}
+        item={item}
+        isBtnLink={true}
+        linkUrl={"/signup"}
+        query={{ sessionId: sessionId }}
+      />
     </>
   );
 };

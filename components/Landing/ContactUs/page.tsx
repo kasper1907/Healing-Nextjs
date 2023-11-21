@@ -73,6 +73,7 @@ const ContactUs = () => {
                 <Grid container spacing={3}>
                   <Grid item xs={12} md={6}>
                     <TextField
+                      autoComplete="off"
                       id="outlined-basic"
                       dir="rtl"
                       lang="en"
@@ -83,6 +84,7 @@ const ContactUs = () => {
                   </Grid>
                   <Grid item xs={12} md={6}>
                     <TextField
+                      autoComplete="off"
                       id="outlined-basic"
                       dir="rtl"
                       lang="en"
@@ -93,6 +95,7 @@ const ContactUs = () => {
                   </Grid>
                   <Grid item xs={12}>
                     <TextField
+                      autoComplete="off"
                       id="outlined-basic"
                       dir="rtl"
                       lang="en"
@@ -106,6 +109,7 @@ const ContactUs = () => {
 
                   <Grid item xs={12} className="flex justify-center">
                     <StyledButton
+                      isLink={false}
                       isPrimary={true}
                       label="إرسال"
                       fullWidth={true}

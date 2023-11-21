@@ -17,7 +17,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import Image from "next/image";
 
-const CssTextField: any = styled(TextField as any)({
+export const CssTextField: any = styled(TextField as any)({
   "& label.Mui-focused": {
     color: "#10458c",
   },
@@ -45,41 +45,42 @@ const CssTextField: any = styled(TextField as any)({
   },
 });
 
-const EditProfile = () => {
-  const StyledDatePicker: any = styled(DatePicker as any)({
-    "& .MuiSvgIcon-root": {
+export const StyledDatePicker: any = styled(DatePicker as any)({
+  "& .MuiSvgIcon-root": {
+    zIndex: 22,
+  },
+  "& .MuiTextField-root": {
+    width: "100%",
+  },
+  "& label.Mui-focused": {
+    color: "#10458c",
+  },
+  "& .MuiInput-underline:after": {
+    borderBottomColor: "#B2BAC2",
+  },
+  "& .MuiOutlinedInput-root": {
+    "& fieldset": {
+      borderColor: "transparent",
+      backgroundColor: "#FFF !important",
+      borderRadius: "12px",
+      width: "100%",
+      maxWidth: "100%",
+    },
+    "&:hover fieldset": {
+      borderColor: "#10458c",
+      color: "#10458c !important",
+    },
+    "&.Mui-focused fieldset": {
+      borderColor: "#10458c",
+      color: "#10458c !important",
+    },
+    "& .MuiInputBase-input": {
       zIndex: 22,
     },
-    "& .MuiTextField-root": {
-      width: "100%",
-    },
-    "& label.Mui-focused": {
-      color: "#10458c",
-    },
-    "& .MuiInput-underline:after": {
-      borderBottomColor: "#B2BAC2",
-    },
-    "& .MuiOutlinedInput-root": {
-      "& fieldset": {
-        borderColor: "transparent",
-        backgroundColor: "#FFF !important",
-        borderRadius: "12px",
-        width: "100%",
-      },
-      "&:hover fieldset": {
-        borderColor: "#10458c",
-        color: "#10458c !important",
-      },
-      "&.Mui-focused fieldset": {
-        borderColor: "#10458c",
-        color: "#10458c !important",
-      },
-      "& .MuiInputBase-input": {
-        zIndex: 22,
-      },
-    },
-  });
+  },
+});
 
+const EditProfile = () => {
   const { userTabsValue, setUserTabsValue }: any = useTabsContext();
 
   useEffect(() => {
@@ -147,7 +148,7 @@ const EditProfile = () => {
 
         <Grid item xs={12} md={6} sx={{ position: "relative" }}>
           <Image
-            src={"/images/Dashboard/Vector-phone.svg"}
+            src={"/images/Dashboard/Vector-Phone.svg"}
             width={20}
             height={20}
             alt={"sms"}

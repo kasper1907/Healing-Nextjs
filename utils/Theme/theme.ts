@@ -7,5 +7,8 @@ export const theme = createTheme({
     primary: {
         main: '#10458C',
     },
+    error: {
+        main: '#FF0000',
+    }
   },
 });
