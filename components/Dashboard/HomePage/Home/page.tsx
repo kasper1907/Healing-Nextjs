@@ -8,7 +8,7 @@ import Link from "next/link";
 import { fetcher } from "@/utils/swr";
 import useSWR from "swr";
 import CardsSkeleton from "../../Loading/CardsSkeleton";
-import Error from "@/components/shared/Error/page";
+import { Error } from "@/components/shared/Error/page";
 
 type Group = {
   id: number;

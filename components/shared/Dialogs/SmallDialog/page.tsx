@@ -98,6 +98,7 @@ export default function SmallDialog({ open, setOpen }: any) {
                   </div>
                   <div className={styles.buttonContainer}>
                     <StyledButton
+                      isLink={false}
                       isPrimary={true}
                       label="اشترك الأن"
                       fullWidth={false}
@@ -139,6 +140,7 @@ export default function SmallDialog({ open, setOpen }: any) {
                   </div>
                   <div className={styles.buttonContainer}>
                     <StyledButton
+                      isLink={false}
                       isPrimary={true}
                       label="اشترك الأن"
                       fullWidth={false}
@@ -188,6 +190,7 @@ export default function SmallDialog({ open, setOpen }: any) {
               </div>
               <div className={styles.buttonContainer}>
                 <StyledButton
+                  isLink={false}
                   isPrimary={true}
                   label="اشترك الأن"
                   fullWidth={false}
@@ -227,6 +230,7 @@ export default function SmallDialog({ open, setOpen }: any) {
               </div>
               <div className={styles.buttonContainer}>
                 <StyledButton
+                  isLink={false}
                   isPrimary={true}
                   label="اشترك الأن"
                   fullWidth={false}

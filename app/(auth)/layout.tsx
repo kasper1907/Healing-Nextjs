@@ -1,6 +1,8 @@
 import { ThemeProvider } from "@mui/material";
 import { Toaster } from "sonner";
 import { theme } from "@/utils/Theme/theme";
+import "../globals.css";
+import FinalLayout from "./FinalLayout";
 
 export const metadata = {
   title: "Healing Dashboard",
@@ -18,7 +20,7 @@ export default function RootLayout({
       <body style={{ padding: "0", margin: "0" }}>
         <ThemeProvider theme={theme}>
           <Toaster />
-          {children}
+          <FinalLayout>{children}</FinalLayout>
         </ThemeProvider>
       </body>
     </html>

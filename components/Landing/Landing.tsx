@@ -91,10 +91,18 @@ const Landing = () => {
 
               <Grid container sx={{ mt: 6 }} rowSpacing={2}>
                 <Grid item xs={12} md={6} className="flex justify-center ">
-                  <StyledButton label="اكتشف المزيد" isPrimary={true} />
+                  <StyledButton
+                    isLink={false}
+                    label="اكتشف المزيد"
+                    isPrimary={true}
+                  />
                 </Grid>
                 <Grid item xs={12} md={6} className="flex justify-center">
-                  <StyledButton label="طلب المساعده" isPrimary={false} />
+                  <StyledButton
+                    isLink={false}
+                    label="طلب المساعده"
+                    isPrimary={false}
+                  />
                 </Grid>
               </Grid>
             </Box>
@@ -138,10 +146,18 @@ const Landing = () => {
 
             <Grid container sx={{ mt: { xs: 2, lg: 6 }, mb: 2 }} rowSpacing={2}>
               <Grid item xs={6} className="flex justify-center ">
-                <StyledButton label="اكتشف المزيد" isPrimary={true} />
+                <StyledButton
+                  isLink={false}
+                  label="اكتشف المزيد"
+                  isPrimary={true}
+                />
               </Grid>
               <Grid item xs={6} className="flex justify-center">
-                <StyledButton label="طلب المساعده" isPrimary={false} />
+                <StyledButton
+                  isLink={false}
+                  label="طلب المساعده"
+                  isPrimary={false}
+                />
               </Grid>
             </Grid>
           </Grid>
