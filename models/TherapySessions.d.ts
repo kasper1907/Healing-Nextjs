@@ -1,5 +1,6 @@
 type TherapySession = {
-    id: number;
-    name: string;
-    imgSrc: string;
-}
+  id: number;
+  name: string;
+  imgSrc: string;
+  sessionId?: number;
+};

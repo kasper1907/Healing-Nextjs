@@ -14,15 +14,5 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <html lang="en">
-      <link rel="icon" href="/images/healing-logo.svg" sizes="any" />
-      <body style={{ padding: "0", margin: "0" }}>
-        <ThemeProvider theme={theme}>
-          <Toaster />
-          <FinalLayout>{children}</FinalLayout>
-        </ThemeProvider>
-      </body>
-    </html>
-  );
+  return <FinalLayout>{children}</FinalLayout>;
 }

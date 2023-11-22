@@ -101,6 +101,7 @@ const TherapySession1 = () => {
                       >
                         <TherapyCard
                           idx={index}
+                          sessionId={therapySession?.sessionId}
                           name={therapySession?.name}
                           img={therapySession?.imgSrc}
                         />
