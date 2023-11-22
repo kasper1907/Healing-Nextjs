@@ -45,31 +45,38 @@ const steps2Array = (sessionId: string | null) => [
     label: "Contact",
     component: ContactInfo,
     isCompleted: false,
+    sectionText: "Enter your contact information",
   },
   {
     label: "Birth Info",
     component: BirthInfo,
     isCompleted: false,
+    sectionText: "Enter your birth information",
   },
   {
     label: "Personal info",
     component: PersonalInfo,
+    sectionText: "Enter your personal information",
   },
   {
     label: "Color Test",
     component: Test1,
+    sectionText: "Solve This Color Test",
   },
   {
     label: "Shape Test",
     component: ShapeTest,
+    sectionText: "Solve This Shape Test",
   },
   {
     label: "Medical data",
     component: sessionId == "1" ? BrainCTQuestions : Step6,
+    sectionText: "Enter your medical information",
   },
   {
     label: "Upload Documents",
     component: Upload,
+    sectionText: "Upload your documents",
   },
 ];
 
@@ -79,6 +86,7 @@ type Session = {
   type: string;
   id: string | number;
   image: string;
+  sessionId?: string | any;
 };
 
 export default function Page() {
@@ -87,7 +95,7 @@ export default function Page() {
   const searchParams = useSearchParams();
   const sessionId: string | null = searchParams.get("sessionId");
   const currentSession: Session | undefined = sessions.find(
-    (s: any) => s.id == sessionId
+    (s: Session) => s.id == sessionId
   )!;
   React.useEffect(() => {
     Aos.init();
@@ -290,7 +298,7 @@ export default function Page() {
             variant="body2"
             sx={{ mb: 2, color: "#92929d", fontSize: "19px", margin: "0" }}
           >
-            Enter your personal information
+            {currentStep?.sectionText ? currentStep?.sectionText : ""}
           </Typography>
         </div>
         {activeStep === steps2.length ? (

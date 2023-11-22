@@ -5,7 +5,7 @@ import { Grid } from "@mui/material";
 import Image from "next/image";
 import LargeDialog from "../Dialogs/LargeDialog/page";
 import { useTransition } from "react";
-const TherapyCard = ({ idx, name, img }: any) => {
+const TherapyCard = ({ idx, name, img, sessionId }: any) => {
   const [openDialog, setOpenDialog] = useState<boolean>(false);
   const [isPending, startTransition] = useTransition();
   const [item, setItem] = useState<any>({});
@@ -21,7 +21,14 @@ const TherapyCard = ({ idx, name, img }: any) => {
 
   return (
     <div className={styles.therapyCard} key={idx}>
-      <LargeDialog open={openDialog} setOpen={setOpenDialog} item={item} />
+      <LargeDialog
+        open={openDialog}
+        setOpen={setOpenDialog}
+        item={item}
+        linkUrl={"/signup"}
+        query={{ sessionId: sessionId }}
+        isBtnLink={true}
+      />
       <Image
         src={img}
         width={100}

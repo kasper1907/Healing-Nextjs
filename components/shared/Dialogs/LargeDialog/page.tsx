@@ -37,7 +37,6 @@ export default function LargeDialog({
   linkUrl,
   query,
   isBtnLink,
-  sessionId,
 }: any) {
   const handleClickOpen = () => {
     setOpen(true);
@@ -48,7 +47,6 @@ export default function LargeDialog({
   };
 
   const isSmallScreen = useMediaQuery("(max-width: 900px)");
-
   return (
     <React.Fragment>
       <Dialog
