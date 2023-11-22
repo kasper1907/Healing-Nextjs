@@ -6,7 +6,7 @@ import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { Container, Grid, Skeleton } from "@mui/material";
+import { Container, Grid, Link, Skeleton } from "@mui/material";
 import BirthInfo from "../../../components/Signup/BirthInfo";
 import ContactInfo from "../../../components/Signup/ContactInfo";
 import Image from "next/image";
@@ -29,6 +29,7 @@ import BrainCTQuestions from "@/components/Signup/BrainCTQuestions/page";
 import { useTranslation } from "react-i18next";
 import { SignUpForm } from "@/models/SignUp";
 import CardsSkeleton from "@/components/Dashboard/Loading/CardsSkeleton";
+import { TfiWorld } from "react-icons/tfi";
 
 const steps = [
   "Contact",
@@ -40,12 +41,12 @@ const steps = [
   "Upload Documents",
 ];
 
-const steps2Array = (sessionId: string | null) => [
+const steps2Array = (sessionId: string | null, t: any) => [
   {
     label: "Contact",
     component: ContactInfo,
     isCompleted: false,
-    sectionText: "Enter your contact information",
+    sectionText: t("Enter your contact information"),
   },
   {
     label: "Birth Info",
@@ -92,6 +93,10 @@ type Session = {
 export default function Page() {
   // console.log("steps", steps2Array);
   const { t, i18n } = useTranslation();
+  const Languages: any = {
+    en: { nativeName: "English" },
+    ar: { nativeName: "Arabic" },
+  };
   const searchParams = useSearchParams();
   const sessionId: string | null = searchParams.get("sessionId");
   const currentSession: Session | undefined = sessions.find(
@@ -112,10 +117,10 @@ export default function Page() {
   currentTime.setMinutes(dayjs().minute());
   currentTime.setSeconds(dayjs().second());
 
-  const [activeStep, setActiveStep] = React.useState(5);
+  const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set<number>());
-  const [currentStep, setCurrentStep] = React.useState<any>(5);
-  const [steps2, setSteps2] = React.useState<any>(steps2Array(sessionId));
+  const [currentStep, setCurrentStep] = React.useState<any>(0);
+  const [steps2, setSteps2] = React.useState<any>(steps2Array(sessionId, t));
   const [formData, setFormData] = React.useState<SignUpForm>({
     firstName: "",
     lastName: "",
@@ -157,7 +162,7 @@ export default function Page() {
   };
 
   React.useEffect(() => {
-    setCurrentStep(steps2[5]);
+    setCurrentStep(steps2[0]);
   }, [steps2]);
 
   const handleNext = () => {
@@ -254,6 +259,7 @@ export default function Page() {
             );
           })}
         </Stepper>
+
         <div
           style={{
             display: "flex",
@@ -264,17 +270,37 @@ export default function Page() {
             width: "100%",
           }}
         >
-          <Box
-            sx={{
-              marginTop: { xs: "250px", md: "80px" },
-            }}
-          >
-            <Image
-              src={currentSession?.image?.toString()}
-              width={150}
-              height={150}
-              alt="page-header_img"
-            />
+          <Box sx={{ width: "100%" }}>
+            <Container
+              sx={{
+                marginTop: { xs: "250px", md: "80px" },
+                position: "relative",
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <Image
+                src={currentSession?.image?.toString()}
+                width={150}
+                height={150}
+                alt="page-header_img"
+              />
+
+              <Button
+                className={styles.langBtn}
+                onClick={() =>
+                  i18n.resolvedLanguage == "en"
+                    ? handleLangItemClick("ar")
+                    : handleLangItemClick("en")
+                }
+              >
+                <TfiWorld />
+
+                {i18n.resolvedLanguage == "en" && "Ar"}
+                {i18n.resolvedLanguage == "ar" && "En"}
+              </Button>
+            </Container>
           </Box>
           {/* <button
             style={{
@@ -285,12 +311,27 @@ export default function Page() {
           >
             العربية
           </button> */}
+          {/* {Object.keys(Languages).map((lang) => (
+            <button
+              key={lang}
+              style={{
+                fontWeight: i18n.language === lang ? "bold" : "normal",
+              }}
+              type="submit"
+              onClick={() => {
+                i18n.changeLanguage(lang);
+              }}
+              disabled={i18n.resolvedLanguage === lang}
+            >
+              {Languages[lang].nativeName}
+            </button>
+          ))} */}
 
           <Typography
             variant="h4"
             fontSize={29}
             color={"primary"}
-            sx={{ mb: 1 }}
+            sx={{ mb: 1, fontFamily: "unset" }}
           >
             {t("Create An Account")}
           </Typography>
@@ -302,15 +343,41 @@ export default function Page() {
           </Typography>
         </div>
         {activeStep === steps2.length ? (
-          <React.Fragment data-aos="fade-right">
-            <Typography sx={{ mt: 2, mb: 1 }}>
-              All steps completed - you&apos;re finished
+          // <React.Fragment data-aos="fade-right">
+          //   <Typography sx={{ mt: 2, mb: 1 }}>
+          //     All steps completed - you&apos;re finished
+          //   </Typography>
+          //   <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+          //     <Box sx={{ flex: "1 1 auto" }} />
+          //     <Button onClick={handleReset}>Reset</Button>
+          //   </Box>
+          // </React.Fragment>
+          <div
+            data-aos="zoom-in"
+            className="flex items-center flex-col gap-2 w-full h-full"
+          >
+            <Typography sx={{ mt: 1, mb: 2 }} color={"primary"}>
+              Registeration Completed!{" "}
             </Typography>
-            <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-              <Box sx={{ flex: "1 1 auto" }} />
-              <Button onClick={handleReset}>Reset</Button>
-            </Box>
-          </React.Fragment>
+            <Typography sx={{ mt: 1, mb: 2 }} color={"primary"}>
+              You will Receive A Whatsapp Message Soon With Your Username and
+              Password :
+            </Typography>
+            <Image
+              style={{
+                marginLeft: "120px",
+              }}
+              src={"/images/Dashboard/steps_completed.svg"}
+              width={250}
+              height={250}
+              alt="Done"
+            />
+            <Button variant="outlined" sx={{ mb: 10 }}>
+              <Link href="/" sx={{ textDecoration: "none" }}>
+                Go Back
+              </Link>
+            </Button>
+          </div>
         ) : (
           <React.Fragment>
             <Container sx={{ margin: "auto", padding: "0 !important" }}>
