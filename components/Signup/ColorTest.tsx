@@ -6,8 +6,11 @@ import styles from "@/styles/sass/Dashboard/Forms/main.module.scss";
 import { toast } from "sonner";
 import Aos from "aos";
 import "aos/dist/aos.css";
+import ActionsButtons from "./ActionsButtons";
+import VerificationCodeInput from "../shared/VerficationInput/page";
+import { useTranslation } from "react-i18next";
 
-const Test1 = ({
+const ColorTest = ({
   handleNext,
   steps,
   setSteps,
@@ -17,7 +20,8 @@ const Test1 = ({
   setFormData,
 }: any) => {
   const [showNext, setShowNext] = React.useState(false);
-
+  const { i18n, t } = useTranslation();
+  const lang = i18n.resolvedLanguage;
   useEffect(() => {
     Aos.init();
   }, []);
@@ -58,7 +62,7 @@ const Test1 = ({
         height={400}
         alt="Color-Test1"
       />
-      <ReactCodeInput
+      {/* <ReactCodeInput
         fields={5}
         className="custom-class"
         onComplete={(e) => {
@@ -70,13 +74,31 @@ const Test1 = ({
             setShowNext(false);
           }
         }}
+      /> */}
+      <VerificationCodeInput
+        setShowNext={setShowNext}
+        code={formData?.colorTest}
+        formData={formData}
+        setCode={setFormData}
+        type="colorTest"
       />
+      {/* <ActionsButtons
+        handleBack={handleBack}
+        handleSubmit={handleSubmit}
+        currentIndex={currentIndex}
+        steps={steps}
+      /> */}
 
-      <Grid container sx={{ mt: 4 }}>
+      <Grid
+        container
+        flexDirection={lang == "en" ? "row" : "row-reverse"}
+        sx={{ mt: 4 }}
+      >
         <Grid
           sx={{
             display: "flex",
-            justifyContent: "flex-end",
+            justifyContent: lang == "en" ? "flex-end" : "flex-start",
+            padding: "5px",
           }}
           item
           xs={6}
@@ -90,13 +112,14 @@ const Test1 = ({
             className={styles.backBtn}
             variant="outlined"
           >
-            Back
+            {t("Back")}
           </Button>
         </Grid>
         <Grid
           sx={{
             display: "flex",
-            justifyContent: "flex-start",
+            justifyContent: lang == "en" ? "flex-start" : "flex-end",
+            padding: "5px",
           }}
           item
           xs={6}
@@ -107,7 +130,7 @@ const Test1 = ({
             onClick={handleSubmit}
             className={styles.nextBtn}
           >
-            {currentIndex === steps.length - 1 ? "Finish" : "Next"}
+            {currentIndex === steps.length - 1 ? t("Finish") : t("Next")}
           </Button>
         </Grid>
       </Grid>
@@ -115,4 +138,4 @@ const Test1 = ({
   );
 };
 
-export default Test1;
+export default ColorTest;

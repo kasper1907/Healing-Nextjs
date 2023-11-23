@@ -1,4 +1,15 @@
 {
-    "Welcome to React": "Welcome to React and react-i18next",
-    "description": "Edit <code>src/App.js</code> and save to reload."
+    "Create An Account": "Create An Account",
+    "Enter your contact information": "Enter your contact information",
+    "Enter your birth information": "Enter your birth information",
+    "Enter your personal information": "Enter your personal information",
+    "Solve This Color Test": "Solve This Color Test",
+    "Solve This Shape Test": "Solve This Shape Test",
+    "Enter your medical information": "Enter your medical information",
+    "Upload your documents": "Upload your documents",
+    "First Name": "First Name",
+    "Last Name": "Last Name",
+    "Email": "Email",
+    "Country": "Country",
+    "Select Country": "Select Country"
 }

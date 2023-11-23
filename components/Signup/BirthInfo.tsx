@@ -20,6 +20,8 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import { StyledTimePicker } from "@/components/shared/DateTimePickers/TimePicker";
+import { useTranslation } from "react-i18next";
+import ActionsButtons from "./ActionsButtons";
 
 const BirthInfo = ({
   handleNext,
@@ -32,7 +34,7 @@ const BirthInfo = ({
 }: any) => {
   const [selected, setSelected] = useState("");
   const [phone, setPhone] = useState("");
-
+  const { t } = useTranslation();
   useEffect(() => {
     Aos.init();
   }, []);
@@ -43,10 +45,11 @@ const BirthInfo = ({
     console.log(formData.placeOfBirth);
     console.log(formData.Nationality);
     if (
-      formData.dateOfBirth !== "" &&
-      formData.timeOfBirth !== "" &&
-      formData.placeOfBirth !== "" &&
-      formData.Nationality !== ""
+      formData.dateOfBirth !== ""
+      //  &&
+      // formData.timeOfBirth !== "" &&
+      // formData.placeOfBirth !== "" &&
+      // formData.Nationality !== ""
     ) {
       steps[currentIndex].isCompleted = true;
       handleNext();
@@ -64,12 +67,13 @@ const BirthInfo = ({
         container
         sx={{
           margin: "0 !important",
+          maxWidth: "100%",
         }}
       >
         <Grid item xs={12} md={6}>
           <div className={styles.inputWrapper}>
             <InputLabel sx={{ fontSize: "0.9rem", ml: 1, mb: 1 }}>
-              Date Of Birth
+              {t("Date Of Birth")}
             </InputLabel>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <StyledDatePicker
@@ -89,7 +93,7 @@ const BirthInfo = ({
         <Grid item xs={12} md={6}>
           <div className={styles.inputWrapper}>
             <InputLabel sx={{ fontSize: "0.9rem", ml: 1, mb: 1 }}>
-              Time Of Birth
+              {t("Time Of Birth")}
             </InputLabel>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <StyledTimePicker
@@ -114,7 +118,7 @@ const BirthInfo = ({
             className={styles.inputWrapper}
           >
             <InputLabel sx={{ fontSize: "0.9rem", ml: 1, mb: 1 }}>
-              Place Of Birth
+              {t("Place Of Birth")}
             </InputLabel>
             <ReactFlagsSelect
               selected={formData?.placeOfBirth}
@@ -122,7 +126,7 @@ const BirthInfo = ({
                 setFormData({ ...formData, placeOfBirth: code })
               }
               searchable={true}
-              placeholder="Select Place Of Birth"
+              placeholder={t("Select Place Of Birth")}
               showOptionLabel={true}
               showSecondaryOptionLabel={true}
               showSecondarySelectedLabel={true}
@@ -139,7 +143,7 @@ const BirthInfo = ({
             className={styles.inputWrapper}
           >
             <InputLabel sx={{ fontSize: "0.9rem", ml: 1, mb: 1 }}>
-              Nationality
+              {t("Nationality")}
             </InputLabel>
             <ReactFlagsSelect
               selected={formData?.Nationality}
@@ -148,7 +152,7 @@ const BirthInfo = ({
               }
               countries={["US", "GB", "FR", "DE", "IT", "ES"]}
               searchable={true}
-              placeholder="Select Your Nationality"
+              placeholder={t("Select Your Nationality")}
               showOptionLabel={true}
               showSecondaryOptionLabel={true}
               showSecondarySelectedLabel={true}
@@ -159,41 +163,12 @@ const BirthInfo = ({
         </Grid>
       </Grid>
 
-      <Grid container sx={{ mt: 4 }}>
-        <Grid
-          sx={{
-            display: "flex",
-            justifyContent: "flex-end",
-          }}
-          item
-          xs={6}
-          md={6}
-        >
-          <Button
-            color="error"
-            disabled={currentIndex === 0}
-            onClick={handleBack}
-            sx={{ mr: 1 }}
-            className={styles.backBtn}
-            variant="outlined"
-          >
-            Back
-          </Button>
-        </Grid>
-        <Grid
-          sx={{
-            display: "flex",
-            justifyContent: "flex-start",
-          }}
-          item
-          xs={6}
-          md={6}
-        >
-          <Button onClick={handleSubmit} className={styles.nextBtn}>
-            {currentIndex === steps.length - 1 ? "Finish" : "Next"}
-          </Button>
-        </Grid>
-      </Grid>
+      <ActionsButtons
+        handleBack={handleBack}
+        handleSubmit={handleSubmit}
+        currentIndex={currentIndex}
+        steps={steps}
+      />
     </div>
   );
 };

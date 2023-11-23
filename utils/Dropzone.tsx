@@ -6,10 +6,11 @@ import { Box, Button, Grid } from "@mui/material";
 import styles from "@/styles/sass/Dashboard/UserMain/attachments.module.scss";
 import { CiCircleRemove } from "react-icons/ci";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 const Dropzone = ({ className }: any) => {
   const [files, setFiles] = useState<any>([]);
   const [rejected, setRejected] = useState<any>([]);
-
+  const { t } = useTranslation();
   const onDrop = useCallback((acceptedFiles: any, rejectedFiles: any) => {
     if (acceptedFiles?.length) {
       setFiles((previousFiles: any) => [
@@ -106,14 +107,14 @@ const Dropzone = ({ className }: any) => {
               <p className={styles.dropZone__text}>
                 <span className={styles.dropZone__mainText}>
                   {" "}
-                  Drag & drop files here
+                  {t("Drag & drop files here")}
                 </span>
-                <span>OR</span>
+                <span>{t("OR")}</span>
                 <Button
                   className={styles.browseButton}
                   sx={{ backgroundColor: "#10458C" }}
                 >
-                  Browse Files
+                  {t("Browse Files")}
                 </Button>
               </p>
             )}

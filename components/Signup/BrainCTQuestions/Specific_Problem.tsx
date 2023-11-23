@@ -15,6 +15,7 @@ import { SignUpForm } from "@/models/SignUp";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { StyledDatePicker } from "@/components/Dashboard/UserMain/EditProfile/page";
+import { useTranslation } from "react-i18next";
 
 const Specific_Problem = ({
   formData,
@@ -23,6 +24,7 @@ const Specific_Problem = ({
   formData: SignUpForm;
   setFormData: any;
 }) => {
+  const { t } = useTranslation();
   useEffect(() => {
     Aos.init();
   }, []);
@@ -35,7 +37,9 @@ const Specific_Problem = ({
           className={styles.inputWrapper}
         >
           <FormControl fullWidth>
-            <InputLabel id="select-label">Select Complaint Type</InputLabel>
+            <InputLabel id="select-label">
+              {t("Select Complaint Type")}
+            </InputLabel>
             <Select
               sx={{
                 backgroundColor: "#FFF !important",
@@ -56,14 +60,14 @@ const Specific_Problem = ({
                 setFormData({ ...formData, type_of_complaint: e.target.value });
               }}
               autoWidth
-              label="Select Complaint Type"
+              label={t("Select Complaint Type")}
             >
               <MenuItem value="">
-                <em>None</em>
+                <em>{t("None")}</em>
               </MenuItem>
-              <MenuItem value={"Organic"}>Organic</MenuItem>
-              <MenuItem value={"Psychological"}>Psychological</MenuItem>
-              <MenuItem value={"Relations"}>Relations</MenuItem>
+              <MenuItem value={"Organic"}>{t("Organic")}</MenuItem>
+              <MenuItem value={"Psychological"}>{t("Psychological")}</MenuItem>
+              <MenuItem value={"Relations"}>{t("Relations")}</MenuItem>
             </Select>
           </FormControl>
         </div>
@@ -71,7 +75,7 @@ const Specific_Problem = ({
         <Grid container sx={{ width: "100%", mt: 4 }}>
           <Grid xs={12}>
             <InputLabel sx={{ fontSize: "0.9rem", ml: 1, mb: 1 }}>
-              Date Of Birth
+              {t("Date Of Complaint")}
             </InputLabel>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <StyledDatePicker
@@ -103,7 +107,7 @@ const Specific_Problem = ({
               multiline
               rows={5}
               fullWidth
-              label="Description of the complaint"
+              label={t("Description of the complaint")}
             />
           </Grid>
           <Grid xs={12}>
@@ -121,7 +125,7 @@ const Specific_Problem = ({
               multiline
               fullWidth
               rows={5}
-              label="Symptoms of complaint"
+              label={t("Symptoms of complaint")}
             />
           </Grid>
 
@@ -141,7 +145,7 @@ const Specific_Problem = ({
                 multiline
                 rows={2}
                 fullWidth
-                label="Is there a medical diagnosis?"
+                label={t("Is there a medical diagnosis?")}
               />
             </Grid>
           ) : null}

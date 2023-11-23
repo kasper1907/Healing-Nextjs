@@ -29,6 +29,9 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import { StyledTimePicker } from "@/components/shared/DateTimePickers/TimePicker";
 import { StyledSelect } from "@/components/shared/DateTimePickers/StyledSelect";
+import ActionsButtons from "./ActionsButtons";
+import CountrySelect from "../shared/Select/SelectCountry";
+import { useTranslation } from "react-i18next";
 
 const PersonalInfo = ({
   handleNext,
@@ -41,27 +44,28 @@ const PersonalInfo = ({
 }: any) => {
   const [selected, setSelected] = useState("");
   const [phone, setPhone] = useState("");
-
+  const { t } = useTranslation();
   useEffect(() => {
     Aos.init();
   }, []);
 
   const handleSubmit = () => {
     if (
-      formData.gender !== "" &&
-      formData.hand !== "" &&
-      formData.height !== "" &&
-      formData.weight !== "" &&
-      formData.maritalStatus !== "" &&
-      formData.jobTitle !== "" &&
-      formData.countryOfLiving !== "" &&
-      formData.boys !== "" &&
-      formData.girls
+      formData.gender !== ""
+      //&&
+      // formData.hand !== "" &&
+      // formData.height !== "" &&
+      // formData.weight !== "" &&
+      // formData.maritalStatus !== "" &&
+      // formData.jobTitle !== "" &&
+      // formData.countryOfLiving !== "" &&
+      // formData.boys !== "" &&
+      // formData.girls !== ""
     ) {
       steps[currentIndex].isCompleted = true;
       handleNext();
     } else {
-      toast.warning("Please fill all fields");
+      toast.warning(t("Please fill all fields"));
     }
   };
 
@@ -80,7 +84,9 @@ const PersonalInfo = ({
         <Grid item xs={12} md={6}>
           <div className={styles.inputWrapper}>
             <FormControl fullWidth>
-              <InputLabel id="select-label">Select Your Gender</InputLabel>
+              <InputLabel id="select-label">
+                {t("Select Your Gender")}
+              </InputLabel>
               <Select
                 sx={{
                   backgroundColor: "#FFF !important",
@@ -97,13 +103,13 @@ const PersonalInfo = ({
                   setFormData({ ...formData, gender: e.target.value });
                 }}
                 autoWidth
-                label="Select Your Gender"
+                label={t("Select Your Gender")}
               >
                 <MenuItem value="">
-                  <em>None</em>
+                  <em>{t("None")}</em>
                 </MenuItem>
-                <MenuItem value={"Male"}>Male</MenuItem>
-                <MenuItem value={"Female"}>Female</MenuItem>
+                <MenuItem value={"Male"}>{t("Male")}</MenuItem>
+                <MenuItem value={"Female"}>{t("Female")}</MenuItem>
               </Select>
             </FormControl>
           </div>
@@ -112,7 +118,7 @@ const PersonalInfo = ({
           <div className={styles.inputWrapper}>
             <FormControl fullWidth>
               <InputLabel id="select-label">
-                Select Your Special Hand
+                {t("Select Your Special Hand")}
               </InputLabel>
               <Select
                 sx={{
@@ -130,13 +136,13 @@ const PersonalInfo = ({
                   setFormData({ ...formData, hand: e.target.value });
                 }}
                 autoWidth
-                label="Select Your Special Hand"
+                label={t("Select Your Special Hand")}
               >
                 <MenuItem value="">
-                  <em>None</em>
+                  <em>{t("None")}</em>
                 </MenuItem>
-                <MenuItem value={"Right"}>Right</MenuItem>
-                <MenuItem value={"Left"}>Left</MenuItem>
+                <MenuItem value={"Right"}>{t("Right")}</MenuItem>
+                <MenuItem value={"Left"}>{t("Left")}</MenuItem>
               </Select>
             </FormControl>
           </div>{" "}
@@ -144,7 +150,7 @@ const PersonalInfo = ({
         <Grid item xs={12} md={6}>
           <div className={styles.inputWrapper}>
             <InputLabel sx={{ fontSize: "0.9rem", ml: 1, mb: 1 }}>
-              Height (cm)
+              {t("Height (cm)")}
             </InputLabel>
 
             <TextField
@@ -160,7 +166,7 @@ const PersonalInfo = ({
               }}
               fullWidth
               variant="outlined"
-              placeholder="Enter Your Height in (cm)"
+              placeholder={t("Enter Your Height in (cm)")}
               value={formData.height}
               onChange={(e: any) => {
                 setFormData({ ...formData, height: e.target.value });
@@ -176,7 +182,7 @@ const PersonalInfo = ({
             className={styles.inputWrapper}
           >
             <InputLabel sx={{ fontSize: "0.9rem", ml: 1, mb: 1 }}>
-              Weight (kg)
+              {t("Weight (kg)")}
             </InputLabel>
             <TextField
               autoComplete="off"
@@ -191,7 +197,7 @@ const PersonalInfo = ({
               }}
               fullWidth
               variant="outlined"
-              placeholder="Enter Your Weight in (kg)"
+              placeholder={t("Enter Your Weight in (kg)")}
               value={formData.weight}
               onChange={(e: any) => {
                 setFormData({ ...formData, weight: e.target.value });
@@ -203,11 +209,11 @@ const PersonalInfo = ({
         <Grid item xs={12} md={6}>
           <div className={styles.inputWrapper}>
             <InputLabel sx={{ fontSize: "0.9rem", ml: 1, mb: 1 }}>
-              Marital Status
+              {t("Marital Status")}
             </InputLabel>
             <FormControl fullWidth>
               <InputLabel id="select-label">
-                Select Your Marital Status
+                {t("Select Your Marital Status")}
               </InputLabel>
               <Select
                 sx={{
@@ -225,15 +231,15 @@ const PersonalInfo = ({
                   setFormData({ ...formData, maritalStatus: e.target.value });
                 }}
                 autoWidth
-                label="Select Your Marital Status"
+                label={t("Select Your Marital Status")}
               >
                 <MenuItem value="">
-                  <em>None</em>
+                  <em>{t("None")}</em>
                 </MenuItem>
-                <MenuItem value={"Single"}>Single</MenuItem>
-                <MenuItem value={"Engaged"}>Engaged</MenuItem>
-                <MenuItem value={"Married"}>Married</MenuItem>
-                <MenuItem value={"Divorced"}>Divorced</MenuItem>
+                <MenuItem value={"Single"}>{t("Single")}</MenuItem>
+                <MenuItem value={"Engaged"}>{t("Engaged")}</MenuItem>
+                <MenuItem value={"Married"}>{t("Married")}</MenuItem>
+                <MenuItem value={"Divorced"}>{t("Divorced")}</MenuItem>
               </Select>
             </FormControl>
           </div>
@@ -247,7 +253,7 @@ const PersonalInfo = ({
             className={styles.inputWrapper}
           >
             <InputLabel sx={{ fontSize: "0.9rem", ml: 1, mb: 1 }}>
-              Job Title
+              {t("Job Title")}
             </InputLabel>
 
             <TextField
@@ -263,7 +269,7 @@ const PersonalInfo = ({
               }}
               fullWidth
               variant="outlined"
-              placeholder="Enter Your Job Title"
+              placeholder={t("Enter Your Job Title")}
               value={formData.jobTitle}
               onChange={(e: any) => {
                 setFormData({ ...formData, jobTitle: e.target.value });
@@ -280,9 +286,9 @@ const PersonalInfo = ({
             className={styles.inputWrapper}
           >
             <InputLabel sx={{ fontSize: "0.9rem", ml: 1, mb: 1 }}>
-              Country Of Living
+              {t("Country Of Living")}
             </InputLabel>
-            <ReactFlagsSelect
+            {/* <ReactFlagsSelect
               selected={formData?.countryOfLiving}
               onSelect={(code) =>
                 setFormData({ ...formData, countryOfLiving: code })
@@ -294,7 +300,8 @@ const PersonalInfo = ({
               showSecondarySelectedLabel={true}
               customLabels={placeOfBirthObject}
               className="NationalitiesSelect"
-            />
+            /> */}
+            <CountrySelect />
           </div>
         </Grid>
 
@@ -306,7 +313,7 @@ const PersonalInfo = ({
             className={styles.inputWrapper}
           >
             <InputLabel sx={{ fontSize: "0.9rem", ml: 1, mb: 1 }}>
-              Number Of Boys (if Exist)
+              {t("Number Of Boys (if Exist)")}
             </InputLabel>
 
             <TextField
@@ -320,7 +327,7 @@ const PersonalInfo = ({
                   borderRadius: "10px",
                 },
               }}
-              placeholder="Enter Number Of Boys (if Exist)"
+              placeholder={t("Enter Number Of Boys (if Exist)")}
               fullWidth
               variant="outlined"
               value={formData.boys}
@@ -339,7 +346,7 @@ const PersonalInfo = ({
             className={styles.inputWrapper}
           >
             <InputLabel sx={{ fontSize: "0.9rem", ml: 1, mb: 1 }}>
-              Number Of Girls
+              {t("Number Of Girls")}
             </InputLabel>
 
             <TextField
@@ -353,7 +360,7 @@ const PersonalInfo = ({
                   borderRadius: "10px",
                 },
               }}
-              placeholder="Enter Number Of Girls (if Exist)"
+              placeholder={t("Enter Number Of Girls (if Exist)")}
               fullWidth
               variant="outlined"
               value={formData.girls}
@@ -365,41 +372,12 @@ const PersonalInfo = ({
         </Grid>
       </Grid>
 
-      <Grid container sx={{ mt: 4 }}>
-        <Grid
-          sx={{
-            display: "flex",
-            justifyContent: "flex-end",
-          }}
-          item
-          xs={6}
-          md={6}
-        >
-          <Button
-            color="error"
-            disabled={currentIndex === 0}
-            onClick={handleBack}
-            sx={{ mr: 1 }}
-            className={styles.backBtn}
-            variant="outlined"
-          >
-            Back
-          </Button>
-        </Grid>
-        <Grid
-          sx={{
-            display: "flex",
-            justifyContent: "flex-start",
-          }}
-          item
-          xs={6}
-          md={6}
-        >
-          <Button onClick={handleSubmit} className={styles.nextBtn}>
-            {currentIndex === steps.length - 1 ? "Finish" : "Next"}
-          </Button>
-        </Grid>
-      </Grid>
+      <ActionsButtons
+        handleBack={handleBack}
+        handleSubmit={handleSubmit}
+        currentIndex={currentIndex}
+        steps={steps}
+      />
     </div>
   );
 };

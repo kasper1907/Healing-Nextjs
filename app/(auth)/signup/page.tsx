@@ -12,7 +12,7 @@ import ContactInfo from "../../../components/Signup/ContactInfo";
 import Image from "next/image";
 import styles from "@/styles/sass/Dashboard/Forms/main.module.scss";
 import PersonalInfo from "../../../components/Signup/PersonlaInfo";
-import Test1 from "../../../components/Signup/Test1";
+import Test1 from "../../../components/Signup/ColorTest";
 import dayjs from "dayjs";
 import ColorTest2 from "../../../components/Signup/ShapeTest";
 import ShapeTest from "../../../components/Signup/ShapeTest";
@@ -30,56 +30,7 @@ import { useTranslation } from "react-i18next";
 import { SignUpForm } from "@/models/SignUp";
 import CardsSkeleton from "@/components/Dashboard/Loading/CardsSkeleton";
 import { TfiWorld } from "react-icons/tfi";
-
-const steps = [
-  "Contact",
-  "Birth Info",
-  "Personal info",
-  "Boxes Arrangement 1",
-  "Boxes Arrangement 2",
-  "Medical data",
-  "Upload Documents",
-];
-
-const steps2Array = (sessionId: string | null, t: any) => [
-  {
-    label: "Contact",
-    component: ContactInfo,
-    isCompleted: false,
-    sectionText: t("Enter your contact information"),
-  },
-  {
-    label: "Birth Info",
-    component: BirthInfo,
-    isCompleted: false,
-    sectionText: "Enter your birth information",
-  },
-  {
-    label: "Personal info",
-    component: PersonalInfo,
-    sectionText: "Enter your personal information",
-  },
-  {
-    label: "Color Test",
-    component: Test1,
-    sectionText: "Solve This Color Test",
-  },
-  {
-    label: "Shape Test",
-    component: ShapeTest,
-    sectionText: "Solve This Shape Test",
-  },
-  {
-    label: "Medical data",
-    component: sessionId == "1" ? BrainCTQuestions : Step6,
-    sectionText: "Enter your medical information",
-  },
-  {
-    label: "Upload Documents",
-    component: Upload,
-    sectionText: "Upload your documents",
-  },
-];
+import ColorTest from "../../../components/Signup/ColorTest";
 
 type Session = {
   ar_name: string;
@@ -91,7 +42,7 @@ type Session = {
 };
 
 export default function Page() {
-  // console.log("steps", steps2Array);
+  // console.log("steps", steps);
   const { t, i18n } = useTranslation();
   const Languages: any = {
     en: { nativeName: "English" },
@@ -117,10 +68,50 @@ export default function Page() {
   currentTime.setMinutes(dayjs().minute());
   currentTime.setSeconds(dayjs().second());
 
+  const steps = (sessionId: string | null) => [
+    {
+      label: "Contact",
+      component: ContactInfo,
+      isCompleted: false,
+      sectionText: "Enter your contact information",
+    },
+    {
+      label: "Birth Info",
+      component: BirthInfo,
+      isCompleted: false,
+      sectionText: "Enter your birth information",
+    },
+    {
+      label: "Personal info",
+      component: PersonalInfo,
+      sectionText: "Enter your personal information",
+    },
+    {
+      label: "Color Test",
+      component: ColorTest,
+      sectionText: "Solve This Color Test",
+    },
+    {
+      label: "Shape Test",
+      component: ShapeTest,
+      sectionText: "Solve This Shape Test",
+    },
+    {
+      label: "Medical Info",
+      component: sessionId == "1" ? BrainCTQuestions : Step6,
+      sectionText: "Enter your medical information",
+    },
+    {
+      label: "Upload Documents",
+      component: Upload,
+      sectionText: "Upload your documents",
+    },
+  ];
+
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set<number>());
   const [currentStep, setCurrentStep] = React.useState<any>(0);
-  const [steps2, setSteps2] = React.useState<any>(steps2Array(sessionId, t));
+  const [steps2, setSteps2] = React.useState<any>(steps(sessionId));
   const [formData, setFormData] = React.useState<SignUpForm>({
     firstName: "",
     lastName: "",
@@ -140,8 +131,8 @@ export default function Page() {
     countryOfLiving: "",
     boys: "",
     girls: "",
-    boxes1: [],
-    boxes2: [],
+    colorTest: ["", "", "", "", ""],
+    shapeTest: ["", "", "", "", "", "", ""],
     sessionType: "",
     expectations: "",
     //Medical Data:
@@ -221,6 +212,9 @@ export default function Page() {
       <Box sx={{ width: "100%" }}>
         <Stepper
           sx={{
+            "& .MuiStepLabel-root ": {
+              gap: "5px",
+            },
             background: `#FFF`,
             position: "fixed",
             left: "0",
@@ -254,7 +248,7 @@ export default function Page() {
             }
             return (
               <Step key={label?.label} {...stepProps}>
-                <StepLabel {...labelProps}>{label?.label}</StepLabel>
+                <StepLabel {...labelProps}>{t(label?.label)}</StepLabel>
               </Step>
             );
           })}
@@ -333,13 +327,15 @@ export default function Page() {
             color={"primary"}
             sx={{ mb: 1, fontFamily: "unset" }}
           >
-            {t("Create An Account")}
+            {activeStep === steps2.length
+              ? t("Registeration is Done!")
+              : t("Create An Account")}
           </Typography>
           <Typography
             variant="body2"
             sx={{ mb: 2, color: "#92929d", fontSize: "19px", margin: "0" }}
           >
-            {currentStep?.sectionText ? currentStep?.sectionText : ""}
+            {currentStep?.sectionText ? t(currentStep?.sectionText) : ""}
           </Typography>
         </div>
         {activeStep === steps2.length ? (
@@ -357,11 +353,12 @@ export default function Page() {
             className="flex items-center flex-col gap-2 w-full h-full"
           >
             <Typography sx={{ mt: 1, mb: 2 }} color={"primary"}>
-              Registeration Completed!{" "}
+              {t("Registeration Completed!")}
             </Typography>
             <Typography sx={{ mt: 1, mb: 2 }} color={"primary"}>
-              You will Receive A Whatsapp Message Soon With Your Username and
-              Password :
+              {t(
+                "You will Receive A Whatsapp Message Soon With Your Username and Password"
+              )}
             </Typography>
             <Image
               style={{
@@ -374,7 +371,7 @@ export default function Page() {
             />
             <Button variant="outlined" sx={{ mb: 10 }}>
               <Link href="/" sx={{ textDecoration: "none" }}>
-                Go Back
+                {t("Go Back")}
               </Link>
             </Button>
           </div>
