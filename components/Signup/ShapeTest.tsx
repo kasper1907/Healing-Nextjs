@@ -6,18 +6,23 @@ import styles from "@/styles/sass/Dashboard/Forms/main.module.scss";
 import { toast } from "sonner";
 import Aos from "aos";
 import "aos/dist/aos.css";
+import ActionsButtons from "./ActionsButtons";
+import { useTranslation } from "react-i18next";
+import VerificationCodeInput from "../shared/VerficationInput/page";
+import InputForShapeTest from "../shared/VerficationInput/VerficationForShapeTest";
 
 const ShapeTest = ({
   handleNext,
   steps,
+  formData,
   setSteps,
   currentIndex,
   handleBack,
-  formData,
   setFormData,
 }: any) => {
   const [showNext, setShowNext] = React.useState(false);
-
+  const { t, i18n } = useTranslation();
+  const lang = i18n.resolvedLanguage;
   useEffect(() => {
     Aos.init();
   }, []);
@@ -27,7 +32,7 @@ const ShapeTest = ({
       steps[currentIndex].isCompleted = true;
       handleNext();
     } else {
-      toast.warning("Please fill all fields");
+      toast.warning(t("Please fill all fields"));
     }
   };
 
@@ -58,25 +63,23 @@ const ShapeTest = ({
         height={600}
         alt="Shape-Test"
       />
-      <ReactCodeInput
-        fields={7}
-        className="custom-class"
-        onComplete={(e) => {
-          // console.log(e);
-          setShowNext(true);
-        }}
-        onChange={(e) => {
-          if (e.length == 0) {
-            setShowNext(false);
-          }
-        }}
-      />
 
-      <Grid container sx={{ mt: 4 }}>
+      <InputForShapeTest
+        setShowNext={setShowNext}
+        code={formData?.shapeTest}
+        formData={formData}
+        setCode={setFormData}
+      />
+      <Grid
+        container
+        flexDirection={lang == "en" ? "row" : "row-reverse"}
+        sx={{ mt: 4 }}
+      >
         <Grid
           sx={{
             display: "flex",
-            justifyContent: "flex-end",
+            justifyContent: lang == "en" ? "flex-end" : "flex-start",
+            padding: "5px",
           }}
           item
           xs={6}
@@ -90,13 +93,14 @@ const ShapeTest = ({
             className={styles.backBtn}
             variant="outlined"
           >
-            Back
+            {t("Back")}
           </Button>
         </Grid>
         <Grid
           sx={{
             display: "flex",
-            justifyContent: "flex-start",
+            justifyContent: lang == "en" ? "flex-start" : "flex-end",
+            padding: "5px",
           }}
           item
           xs={6}
@@ -107,7 +111,7 @@ const ShapeTest = ({
             onClick={handleSubmit}
             className={styles.nextBtn}
           >
-            {currentIndex === steps.length - 1 ? "Finish" : "Next"}
+            {currentIndex === steps.length - 1 ? t("Finish") : t("Next")}
           </Button>
         </Grid>
       </Grid>

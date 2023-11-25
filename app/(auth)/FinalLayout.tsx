@@ -35,7 +35,9 @@ const FinalLayout = ({ children }: { children: React.ReactNode }) => {
       <body style={{ padding: "0", margin: "0" }}>
         <ThemeProvider theme={theme}>
           <Toaster />
-          {children}
+          <React.Suspense fallback={<div>Loading...</div>}>
+            {children}
+          </React.Suspense>
         </ThemeProvider>
       </body>
     </html>

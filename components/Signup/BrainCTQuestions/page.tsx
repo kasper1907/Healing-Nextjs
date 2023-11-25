@@ -19,6 +19,8 @@ import { StyledDatePicker } from "@/components/Dashboard/UserMain/EditProfile/pa
 import { SignUpForm } from "@/models/SignUp";
 import { FcInfo } from "react-icons/fc";
 import Specific_Problem from "./Specific_Problem";
+import { t } from "i18next";
+import ActionsButtons from "../ActionsButtons";
 
 const BrainCTQuestions = ({
   handleNext,
@@ -51,7 +53,9 @@ const BrainCTQuestions = ({
         <Grid item xs={12}>
           <div style={{ width: "100%" }} className={styles.inputWrapper}>
             <FormControl fullWidth>
-              <InputLabel id="select-label">Select Session type</InputLabel>
+              <InputLabel id="select-label">
+                {t("Select Session type")}
+              </InputLabel>
               <Select
                 sx={{
                   backgroundColor: "#FFF !important",
@@ -72,13 +76,15 @@ const BrainCTQuestions = ({
                   setFormData({ ...formData, sessionType: e.target.value });
                 }}
                 autoWidth
-                label="Select Session type"
+                label={t("Select Session type")}
               >
                 <MenuItem value="">
-                  <em>None</em>
+                  <em>{t("None")}</em>
                 </MenuItem>
-                <MenuItem value={"Exploratory"}>Exploratory</MenuItem>
-                <MenuItem value={"Specific_Problem"}>Specific Problem</MenuItem>
+                <MenuItem value={"Exploratory"}>{t("Exploratory")}</MenuItem>
+                <MenuItem value={"Specific_Problem"}>
+                  {t("Specific Problem")}
+                </MenuItem>
               </Select>
             </FormControl>
           </div>
@@ -92,9 +98,9 @@ const BrainCTQuestions = ({
               >
                 <FcInfo />
                 <Typography color={"primary"}>
-                  A general reading of the layers of the brain that control your
-                  choices and behaviors, and providing an appropriate treatment
-                  proposal
+                  {t(
+                    "A general reading of the layers of the brain that control your choices and behaviors, and providing an appropriate treatment proposal"
+                  )}
                 </Typography>
               </Box>
 
@@ -111,7 +117,9 @@ const BrainCTQuestions = ({
                 }}
                 multiline
                 rows={5}
-                label="What are your expectations for the results of the session ? (your goals from the session)"
+                label={t(
+                  "What are your expectations for the results of the session ? (your goals from the session)"
+                )}
               />
             </div>
           ) : null}
@@ -121,41 +129,12 @@ const BrainCTQuestions = ({
           )}
         </Grid>
       </Grid>
-      <Grid container sx={{ mt: 4 }}>
-        <Grid
-          sx={{
-            display: "flex",
-            justifyContent: "flex-end",
-          }}
-          item
-          xs={6}
-          md={6}
-        >
-          <Button
-            color="error"
-            disabled={currentIndex === 0}
-            onClick={handleBack}
-            sx={{ mr: 1 }}
-            className={styles.backBtn}
-            variant="outlined"
-          >
-            Back
-          </Button>
-        </Grid>
-        <Grid
-          sx={{
-            display: "flex",
-            justifyContent: "flex-start",
-          }}
-          item
-          xs={6}
-          md={6}
-        >
-          <Button onClick={handleSubmit} className={styles.nextBtn}>
-            {currentIndex === steps.length - 1 ? "Finish" : "Next"}
-          </Button>
-        </Grid>
-      </Grid>
+      <ActionsButtons
+        handleBack={handleBack}
+        handleSubmit={handleSubmit}
+        currentIndex={currentIndex}
+        steps={steps}
+      />
     </div>
   );
 };

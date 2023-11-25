@@ -11,6 +11,8 @@ import { toast } from "sonner";
 import { checkPhoneNumberLength } from "@/utils/validPhoneNumber";
 import { fetcher } from "@/utils/swr";
 import useSWR from "swr";
+import { useTranslation } from "react-i18next";
+import ActionsButtons from "./ActionsButtons";
 
 const ContactInfo = ({
   handleNext,
@@ -22,23 +24,25 @@ const ContactInfo = ({
 }: any) => {
   const [selected, setSelected] = useState("");
   const [phone, setPhone] = useState("");
-
+  const { t, i18n } = useTranslation();
+  const lang = i18n.resolvedLanguage;
   useEffect(() => {
     Aos.init();
   }, []);
 
   const handleSubmit = () => {
     if (
-      formData.firstName !== "" &&
-      formData.lastName !== "" &&
-      formData.email !== "" &&
-      selected !== "" &&
-      formData.phone !== ""
+      formData.firstName !== ""
+      // &&
+      // formData.lastName !== "" &&
+      // formData.email !== "" &&
+      // selected !== "" &&
+      // formData.phone !== ""
     ) {
       steps[currentIndex].isCompleted = true;
       handleNext();
     } else {
-      toast.warning("Please fill all fields");
+      toast.warning(t("Please fill all fields"));
     }
   };
 
@@ -51,12 +55,13 @@ const ContactInfo = ({
         container
         sx={{
           margin: "0 !important",
+          maxWidth: "100%",
         }}
       >
         <Grid item xs={12} md={6}>
           <div className={styles.inputWrapper}>
             <InputLabel sx={{ fontSize: "0.9rem", ml: 1, mb: 1 }}>
-              First Name
+              {t("First Name")}
             </InputLabel>
             <TextField
               autoComplete="off"
@@ -71,7 +76,7 @@ const ContactInfo = ({
               }}
               fullWidth
               variant="outlined"
-              placeholder="Enter Your First Name"
+              placeholder={`${t("Enter Your First Name")}`}
               value={formData.firstName}
               onChange={(e: any) => {
                 setFormData({ ...formData, firstName: e.target.value });
@@ -82,7 +87,7 @@ const ContactInfo = ({
         <Grid item xs={12} md={6}>
           <div className={styles.inputWrapper}>
             <InputLabel sx={{ fontSize: "0.9rem", ml: 1, mb: 1 }}>
-              Last Name
+              {t("Last Name")}
             </InputLabel>
             <TextField
               autoComplete="off"
@@ -97,7 +102,7 @@ const ContactInfo = ({
               }}
               fullWidth
               variant="outlined"
-              placeholder="Enter Your Last Name"
+              placeholder={`${t(`Enter Your Last Name`)}`}
               value={formData.lastName}
               onChange={(e: any) => {
                 setFormData({ ...formData, lastName: e.target.value });
@@ -108,7 +113,7 @@ const ContactInfo = ({
         <Grid item xs={12} md={6}>
           <div className={styles.inputWrapper}>
             <InputLabel sx={{ fontSize: "0.9rem", ml: 1, mb: 1 }}>
-              Email
+              {t("Email")}
             </InputLabel>
             <TextField
               autoComplete="off"
@@ -123,7 +128,7 @@ const ContactInfo = ({
               }}
               fullWidth
               variant="outlined"
-              placeholder="Enter Your Email"
+              placeholder={t("Enter Your Email")}
               value={formData.email}
               onChange={(e: any) => {
                 setFormData({ ...formData, email: e.target.value });
@@ -139,7 +144,7 @@ const ContactInfo = ({
             className={styles.inputWrapper}
           >
             <InputLabel sx={{ fontSize: "0.9rem", ml: 1, mb: 1 }}>
-              Country
+              {t("Country")}
             </InputLabel>
 
             <ReactFlagsSelect
@@ -151,7 +156,9 @@ const ContactInfo = ({
               showSecondarySelectedLabel={true}
               customLabels={customLabels}
               className="codeSelect"
+              placeholder={t("Select Country")}
             />
+            {/* <CountryCodeSelect /> */}
 
             <TextField
               autoComplete="off"
@@ -164,16 +171,18 @@ const ContactInfo = ({
                   borderRadius: "10px",
                 },
                 "& .MuiInputBase-input": {
+                  paddingRight:
+                    i18n.resolvedLanguage === "ar" ? "140px" : "130px",
                   paddingLeft: selected ? "140px" : "170px",
                 },
               }}
               fullWidth
               variant="outlined"
-              placeholder="Enter Your Phone Number"
+              placeholder={t("Enter Your Phone Number")}
               value={formData?.phone}
               onChange={(e: any) => {
                 if (isNaN(e.target.value)) {
-                  toast.warning("Please enter numbers only");
+                  toast.warning(t("Please enter numbers only"));
                 } else {
                   checkPhoneNumberLength(e.target.value)
                     ? setFormData({ ...formData, phone: e.target.value })
@@ -184,42 +193,12 @@ const ContactInfo = ({
           </div>
         </Grid>
       </Grid>
-
-      <Grid container sx={{ mt: 4 }}>
-        <Grid
-          sx={{
-            display: "flex",
-            justifyContent: "flex-end",
-          }}
-          item
-          xs={6}
-          md={6}
-        >
-          <Button
-            color="error"
-            disabled={currentIndex === 0}
-            // onClick={handleBack}
-            sx={{ mr: 1 }}
-            className={styles.backBtn}
-            variant="outlined"
-          >
-            Back
-          </Button>
-        </Grid>
-        <Grid
-          sx={{
-            display: "flex",
-            justifyContent: "flex-start",
-          }}
-          item
-          xs={6}
-          md={6}
-        >
-          <Button onClick={handleSubmit} className={styles.nextBtn}>
-            {currentIndex === steps.length - 1 ? "Finish" : "Next"}
-          </Button>
-        </Grid>
-      </Grid>
+      <ActionsButtons
+        handleSubmit={handleSubmit}
+        // handleBack={handleBack}
+        currentIndex={currentIndex}
+        steps={steps}
+      />
     </div>
   );
 };

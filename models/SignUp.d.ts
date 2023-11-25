@@ -19,8 +19,8 @@ type SignUpForm = {
   countryOfLiving: string;
   boys: string;
   girls: string;
-  boxes1: string[];
-  boxes2: string[];
+  colorTest: string[];
+  shapeTest: string[];
   sessionType: string;
   expectations: string;
   //Medical Data:

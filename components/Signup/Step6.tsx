@@ -6,6 +6,8 @@ import "aos/dist/aos.css";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { StyledDatePicker } from "@/components/Dashboard/UserMain/EditProfile/page";
+import { useTranslation } from "react-i18next";
+import ActionsButtons from "./ActionsButtons";
 const Step6 = ({
   handleNext,
   steps,
@@ -15,6 +17,7 @@ const Step6 = ({
   formData,
   setFormData,
 }: any) => {
+  const { t } = useTranslation();
   useEffect(() => {
     Aos.init();
   }, []);
@@ -29,7 +32,7 @@ const Step6 = ({
         <Grid item xs={12}>
           <div className={styles.inputWrapper}>
             <InputLabel sx={{ fontSize: "0.9rem", ml: 1, mb: 1 }}>
-              Organic / Psychological Complaint
+              {t("Organic / Psychological Complaint")}
             </InputLabel>
             <TextField
               autoComplete="off"
@@ -44,7 +47,7 @@ const Step6 = ({
               }}
               fullWidth
               variant="outlined"
-              placeholder="Enter Your Organic / Psychological Complaint"
+              placeholder={t("Enter Your Organic / Psychological Complaint")}
               value={formData.organic_Psychological_complaint}
               onChange={(e: any) => {
                 setFormData({
@@ -59,7 +62,7 @@ const Step6 = ({
         <Grid item xs={12} sx={{ mt: 2 }}>
           <div className={styles.inputWrapper}>
             <InputLabel sx={{ fontSize: "0.9rem", ml: 1, mb: 1 }}>
-              Date of Organic / Psychological complaint
+              {t("Date of Organic / Psychological complaint")}
             </InputLabel>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <StyledDatePicker
@@ -83,7 +86,7 @@ const Step6 = ({
         <Grid item xs={12} sx={{ mt: 2 }}>
           <div className={styles.inputWrapper}>
             <InputLabel sx={{ fontSize: "0.9rem", ml: 1, mb: 1 }}>
-              Medical diagnosis (optional)
+              {t("Medical diagnosis (optional)")}
             </InputLabel>
             <TextField
               autoComplete="off"
@@ -98,7 +101,7 @@ const Step6 = ({
               }}
               fullWidth
               variant="outlined"
-              placeholder="Enter Your Organic / Psychological Complaint"
+              placeholder={t("Enter Your Organic / Psychological Complaint")}
               value={formData.medical_diagnosis}
               onChange={(e: any) => {
                 setFormData({
@@ -110,41 +113,12 @@ const Step6 = ({
           </div>
         </Grid>
       </Grid>
-      <Grid container sx={{ mt: 4 }}>
-        <Grid
-          sx={{
-            display: "flex",
-            justifyContent: "flex-end",
-          }}
-          item
-          xs={6}
-          md={6}
-        >
-          <Button
-            color="error"
-            disabled={currentIndex === 0}
-            onClick={handleBack}
-            sx={{ mr: 1 }}
-            className={styles.backBtn}
-            variant="outlined"
-          >
-            Back
-          </Button>
-        </Grid>
-        <Grid
-          sx={{
-            display: "flex",
-            justifyContent: "flex-start",
-          }}
-          item
-          xs={6}
-          md={6}
-        >
-          <Button onClick={handleSubmit} className={styles.nextBtn}>
-            {currentIndex === steps.length - 1 ? "Finish" : "Next"}
-          </Button>
-        </Grid>
-      </Grid>
+      <ActionsButtons
+        handleBack={handleBack}
+        handleSubmit={handleSubmit}
+        currentIndex={currentIndex}
+        steps={steps}
+      />
     </div>
   );
 };
