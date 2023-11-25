@@ -71,7 +71,7 @@ const Dropzone = ({ className }: any) => {
       body: formData,
     }).then((res) => res.json());
 
-    console.log(data);
+    // console.log(data);
   };
 
   return (

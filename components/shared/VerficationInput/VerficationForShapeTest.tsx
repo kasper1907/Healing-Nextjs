@@ -87,7 +87,7 @@ const InputForShapeTest = ({
         }
       }
 
-      console.log("index", index);
+      // console.log("index", index);
       //@ts-ignore
       if (index == 6 && event.target.value != "") {
         setShowNext(true);

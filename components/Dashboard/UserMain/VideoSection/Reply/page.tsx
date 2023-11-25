@@ -33,7 +33,7 @@ const Reply = ({ commentId, reply, idx, setCommentReplies }: any) => {
 
   // Function to conditionally apply className based on the language
   const getLanguageClassName = (text: any) => {
-    console.log(isArabic(text));
+    // console.log(isArabic(text));
     return isArabic(text) ? styles.arabicComment : styles.englishComment;
   };
 
@@ -87,7 +87,7 @@ const Reply = ({ commentId, reply, idx, setCommentReplies }: any) => {
       videoId: reply?.videoId,
       // createdAt: new Date(),
     };
-    console.log(reply);
+    // console.log(reply);
     const res = await updateRequest({
       id: reply?.id || reply?.replyId,
       endpoint: endPoints.getReplies,
