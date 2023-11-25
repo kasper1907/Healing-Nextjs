@@ -100,7 +100,7 @@ const Comments = ({
   };
   const handleSubmitEdit = async (e: any) => {
     e.preventDefault();
-    console.log(comment);
+    // console.log(comment);
     const postData = {
       text: replyText,
       id: comment?.id || comment?.commentId,

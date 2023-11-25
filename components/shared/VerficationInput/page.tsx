@@ -95,7 +95,7 @@ const VerificationCodeInput = ({
         }
       }
 
-      console.log("index", index);
+      // console.log("index", index);
       //@ts-ignore
       if (index == 4 && event.target.value != "") {
         setShowNext(true);

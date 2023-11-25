@@ -64,7 +64,7 @@ const VideoSection = ({
     },
   });
 
-  console.log(Replies);
+  // console.log(Replies);
 
   const commentReplies =
     // UseEffects

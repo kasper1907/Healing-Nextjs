@@ -22,7 +22,7 @@ export const postRequest: any = async (url: any, data: any, handleSuccess: any,)
 export const updateRequest: any = async ({id,endpoint,data,handleSuccess} : any) => {
   try{
     const res = await axios.put(`${endpoint}/${id}`, data);
-    console.log(res)
+    // console.log(res)
     if (res.status == 200) {
       handleSuccess(data);
       mutate(endpoint);
