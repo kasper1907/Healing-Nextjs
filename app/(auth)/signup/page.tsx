@@ -119,7 +119,7 @@ export default function Page() {
     country: "",
     phone: "",
     dateOfBirth: dayjs(),
-    timeOfBirth: currentTime,
+    timeOfBirth: dayjs(),
     placeOfBirth: "",
     Nationality: "",
     gender: "",
