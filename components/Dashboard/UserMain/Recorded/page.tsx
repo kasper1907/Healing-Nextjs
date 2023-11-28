@@ -8,6 +8,8 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import { useParams, useSearchParams } from "next/navigation";
 import { FaArrowLeft } from "react-icons/fa";
+import { getOne } from "@/services/service";
+import { endPoints } from "@/services/endpoints";
 
 const Recorded = () => {
   const [showFullVideo, setShowFullVideo] = React.useState<boolean>(false);
@@ -15,18 +17,18 @@ const Recorded = () => {
   const [_isPending, startTransition] = useTransition();
   const params = useSearchParams();
   let userId = params.get("id");
+  let groupId = params.get("groupId");
 
   useEffect(() => {
     AOS.init();
   }, []);
 
-  const {
-    data: Videos,
-    error,
-    isLoading,
-  } = useSWR(`${process.env.NEXT_PUBLIC_BASE_URL}Videos`, fetcher);
-
-  const userVideos = Videos?.filter((video: any) => video.user_id == userId);
+  const { data, error, isLoading } = useSWR(
+    endPoints.getSessionsByGroupId(groupId),
+    getOne
+  );
+  const Videos: any = data?.data;
+  const userVideos: any = [];
 
   const VideoHeaderClickHandler = (video: any) => {
     startTransition(() => {
@@ -48,7 +50,7 @@ const Recorded = () => {
                   />
                 </Grid>
               ))
-            : userVideos?.map((el: any, idx: number) => {
+            : Videos?.map((el: any, idx: number) => {
                 return (
                   <Grid item xs={12} md={6} lg={4} key={idx}>
                     <VideoSection

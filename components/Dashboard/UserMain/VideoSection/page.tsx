@@ -16,7 +16,7 @@ import { fetcher } from "@/utils/swr";
 import { toast } from "sonner";
 import commentsStyles from "@/styles/sass/Dashboard/UserMain/comment.module.scss";
 import { IoIosArrowDown } from "react-icons/io";
-import { postRequest } from "@/services/postRequest";
+import { postRequest } from "@/services/service";
 import { endPoints } from "@/services/endpoints";
 import { isArabic } from "@/utils/checkLanguage";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -51,18 +51,21 @@ const VideoSection = ({
   const commentsRef: any = useRef(null);
   const lastCommentRef: any = useRef(null);
 
+  console.log("Video Details", video);
   // Data Fetching:
-  const { data: AllComments, isLoading: AllCommentsLoading } = useSWR(
-    endPoints.getComments,
-    fetcher
-  );
-  const { data: Replies } = useSWR(endPoints.getReplies, fetcher, {
-    onSuccess: (data) => {
-      data &&
-        data?.length > 0 &&
-        data?.filter((reply: any) => reply.videoId == video?.videoId);
-    },
-  });
+  // const { data: AllComments, isLoading: AllCommentsLoading } = useSWR(
+  //   endPoints.getComments,
+  //   fetcher
+  // );
+  // const { data: Replies } = useSWR(endPoints.getReplies, fetcher, {
+  //   onSuccess: (data) => {
+  //     data &&
+  //       data?.length > 0 &&
+  //       data?.filter((reply: any) => reply.videoId == video?.videoId);
+  //   },
+  // });
+
+  const Replies: any = [];
 
   // console.log(Replies);
 
@@ -74,15 +77,15 @@ const VideoSection = ({
       }, 2000);
     }, []);
 
-  useEffect(() => {
-    if (AllComments && AllComments?.length > 0) {
-      let videoComments = AllComments?.filter(
-        (comment: any) => comment.videoId == video?.videoId
-      );
+  // useEffect(() => {
+  //   if (AllComments && AllComments?.length > 0) {
+  //     let videoComments = AllComments?.filter(
+  //       (comment: any) => comment.videoId == video?.videoId
+  //     );
 
-      setCurrentVideoComments(videoComments);
-    }
-  }, [AllComments, video?.videoId]);
+  //     setCurrentVideoComments(videoComments);
+  //   }
+  // }, [AllComments, video?.videoId]);
 
   // Functions
   const toggleComments = () => {
@@ -150,10 +153,10 @@ const VideoSection = ({
               }
             }}
           >
-            Session 3
+            {video?.video_name}
           </Typography>
           <Typography variant="body2" color={"#92929D"}>
-            12 April at 09.28 PM
+            {video?.video_date}
           </Typography>
         </div>
       </div>
@@ -172,10 +175,7 @@ const VideoSection = ({
               borderRadius: "16px",
             }}
             className={styles.videoIframe}
-            src={
-              video?.url ||
-              "https://customer-7ral3pe3959xe832.cloudflarestream.com/737b67dbf506017e02fd8039f213b5f0/iframe?poster=https%3A%2F%2Fcustomer-7ral3pe3959xe832.cloudflarestream.com%2F737b67dbf506017e02fd8039f213b5f0%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600"
-            }
+            src={video?.link}
           ></iframe>
         )}
       </div>

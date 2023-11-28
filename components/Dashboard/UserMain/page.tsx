@@ -1,5 +1,11 @@
 import { fetcher } from "@/utils/swr";
-import { Button, CircularProgress, Container, Typography } from "@mui/material";
+import {
+  Button,
+  CircularProgress,
+  Container,
+  Typography,
+  useMediaQuery,
+} from "@mui/material";
 import React, { useEffect } from "react";
 import useSWR from "swr";
 import { Grid } from "@mui/material";
@@ -14,26 +20,36 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import styles from "@/styles/sass/Dashboard/UserMain/usermain.module.scss";
 import AllGroups from "./AllGroups/page";
+import { getOne } from "@/services/service";
+import { UserDetails } from "@/models/User";
+import { checkLength } from "@/utils/checkLength";
+import { SessionDetails } from "@/models/Sessions";
 const UserMain = () => {
   const [viewAllGroups, setViewAllGroups] = React.useState(false);
   const { userTabsValue, setUserTabsValue }: any = useTabsContext();
   const params = useSearchParams();
   const userId = params.get("id");
-  const {
-    data: user,
-    error,
-    isLoading,
-  } = useSWR(`${process.env.NEXT_PUBLIC_BASE_URL}Users/${userId}`, fetcher);
-
+  const groupId = params.get("groupId");
+  const { data, error, isLoading } = useSWR(`users/getOne/${userId}`, getOne);
+  const { data: LastSession } = useSWR(
+    `videos/getLastSession/${groupId}`,
+    getOne
+  );
+  const LastSessionVideo: SessionDetails = LastSession?.data;
+  console.log(LastSessionVideo);
   useEffect(() => {
     AOS.init();
   }, []);
 
-  const { data: Videos } = useSWR(
-    `${process.env.NEXT_PUBLIC_BASE_URL}Videos`,
-    fetcher
-  );
+  // const { data: Videos } = useSWR(
+  //   `${process.env.NEXT_PUBLIC_BASE_URL}Videos`,
+  //   fetcher
+  // );
 
+  let Videos: any = [];
+
+  const user: UserDetails = data?.data;
+  // console.log(user);
   if (isLoading) return <UserMainSkelton />;
 
   return (
@@ -70,32 +86,32 @@ const UserMain = () => {
             <div className={styles.infoSection}>
               <>
                 <span>Name</span>
-                <span>{user?.name}</span>
+                <span>{checkLength(user?.full_name + "", 18)}</span>
               </>
             </div>
             <div className={styles.infoSection}>
               <>
                 <span>Mobile</span>
-                <span>{user?.mobile}</span>
+                <span>{user?.phone}</span>
               </>
             </div>
             <div className={styles.infoSection}>
               <>
                 <span>Relationship</span>
-                <span>{user?.relationShip}</span>
+                <span>{user?.social_status}</span>
               </>
             </div>
             <div className={styles.infoSection}>
               <>
                 <span>Birth date</span>
 
-                <span>{moment(user?.dateOfBirth).format("DD-M-YYYY")}</span>
+                <span>{moment(user?.date_of_birth).format("DD-M-YYYY")}</span>
               </>
             </div>
             <div className={styles.infoSection}>
               <>
                 <span>Place Of Birth</span>
-                <span>{user?.placeOfBirth}</span>
+                <span>{user?.place_of_birth}</span>
               </>
             </div>
           </div>
@@ -199,8 +215,8 @@ const UserMain = () => {
                 Last Session
               </Typography>
 
-              {Videos && Videos?.length > 0 ? (
-                <VideoSection video={Videos[0]} isFullVideo={false} />
+              {LastSessionVideo ? (
+                <VideoSection video={LastSessionVideo} isFullVideo={false} />
               ) : null}
             </div>
             <div className={styles.preparationVideos}>

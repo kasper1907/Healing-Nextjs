@@ -7,6 +7,7 @@ import signUpStyles from "@/styles/sass/Dashboard/Forms/main.module.scss";
 
 import { Button, Grid } from "@mui/material";
 import ActionsButtons from "./ActionsButtons";
+import AttachFiles from "./AttachFiles";
 
 const Upload = ({
   handleNext,
@@ -29,7 +30,7 @@ const Upload = ({
   return (
     <div data-aos="fade-right" className={styles.pageWrapper}>
       <div className={styles.dropZoneWrapper}>
-        <Dropzone />
+        <AttachFiles />
       </div>
 
       <ActionsButtons

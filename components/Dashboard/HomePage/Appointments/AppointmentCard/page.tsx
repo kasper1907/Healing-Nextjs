@@ -2,7 +2,9 @@ import React from "react";
 import styles from "@/styles/sass/Dashboard/HomePage/AppointmentCard.module.scss";
 import { Grid, Button } from "@mui/material";
 import StyledButton from "@/components/shared/StyledButton";
-const AppointmentCard = () => {
+import Link from "next/link";
+const AppointmentCard = ({ appointment }: any) => {
+  console.log(appointment);
   return (
     <div className={styles.appointmentCard}>
       <div className={styles.left}>
@@ -13,12 +15,12 @@ const AppointmentCard = () => {
       <div className={styles.right}>
         <Grid rowSpacing={2} container className={styles.rightGrid}>
           <Grid item xs={12} sm={6} className={styles.right_LeftGrid}>
-            <h3>Session 3 for diabetes 1</h3>
+            <h3>Session #{appointment ? appointment?.id : ""}</h3>
             <span>
-              Date: <span>1/7/2024</span>
+              Date: <span>{appointment.session_date}</span>
             </span>
             <span>
-              Assistant: <span>Dr.Eyman</span>
+              Assistant: <span>{appointment.assistant_id}</span>
             </span>
           </Grid>
           <Grid
@@ -31,7 +33,11 @@ const AppointmentCard = () => {
             className={styles.right_RightGrid}
           >
             <Button>Members</Button>
-            <Button>Join</Button>
+            <Button>
+              <Link target="_blank" href={appointment.meeting_link}>
+                Join
+              </Link>
+            </Button>
           </Grid>
         </Grid>
       </div>

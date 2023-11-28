@@ -1,41 +1,46 @@
 "use client";
 import { Container, Grid } from "@mui/material";
 import Image from "next/image";
-import React from "react";
+import React, { FormEvent, FormEventHandler, use, useState } from "react";
 import styles from "@/styles/sass/Pages/Login/Login.module.scss";
 import TextField from "@mui/material/TextField";
 import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import Link from "next/link";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { AiOutlineEyeInvisible } from "react-icons/ai";
+import { FaRegEye } from "react-icons/fa";
+import { postRequest } from "@/services/service";
+import { endPoints } from "@/services/endpoints";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const Page = () => {
-  const CssTextField: any = styled(TextField as any)({
-    "& label.Mui-focused": {
-      color: "#10458c",
-    },
-    "& .MuiInput-underline:after": {
-      borderBottomColor: "#B2BAC2",
-    },
-    "& .MuiOutlinedInput-root": {
-      "& fieldset": {
-        borderColor: "transparent",
-        backgroundColor: "#FFF !important",
-        borderRadius: "12px",
-        width: "100%",
-      },
-      "&:hover fieldset": {
-        borderColor: "#10458c",
-        color: "#10458c !important",
-      },
-      "&.Mui-focused fieldset": {
-        borderColor: "#10458c",
-        color: "#10458c !important",
-      },
-      "& .MuiInputBase-input": {
-        zIndex: 22,
-      },
-    },
+  const router = useRouter();
+  const [showPassword, setShowPassword] = React.useState(false);
+  const [loading, setLoading] = useState(false);
+  const [userData, setUserData] = React.useState({
+    username: "",
+    password: "",
   });
+
+  const handleLogin = async (e: FormEvent) => {
+    e.preventDefault();
+    if (!userData.username || !userData.password)
+      return toast.warning("Please fill all fields");
+    setLoading(true);
+    const res = await postRequest(endPoints.auth, userData);
+    if (res.status == "success" && res.statusCode == 200) {
+      toast.success("Login Successfully");
+      document.cookie = `accessToken=${res.accessToken}`;
+      router.push("/dashboard");
+    }
+    if (res.status == "error" && res.statusCode == 400) {
+      toast.error("Invalid username or password");
+    }
+    setLoading(false);
+  };
   return (
     <Grid container sx={{ height: "100vh", direction: "ltr" }}>
       <Grid
@@ -73,7 +78,7 @@ const Page = () => {
 
         <div style={{ width: "100%" }}>
           <Container>
-            <form className={styles.formWrapper}>
+            <form className={styles.formWrapper} onSubmit={handleLogin}>
               <span className={styles.formText}>Welcome Back</span>
 
               <div className={styles.welcomeText}>
@@ -83,11 +88,21 @@ const Page = () => {
 
               <Grid container rowSpacing={3}>
                 <Grid item xs={12}>
-                  <CssTextField
+                  <TextField
+                    value={userData.username}
+                    onChange={(e: any) =>
+                      setUserData({ ...userData, username: e.target.value })
+                    }
                     fullWidth
+                    autoFocus
                     label="Email"
-                    id="custom-css-outlined-input"
+                    id="custom-css-outlined-input1"
                     sx={{
+                      "& .MuiInputBase-root": {
+                        background: "#FFF",
+                        borderRadius: "10px",
+                        border: "none",
+                      },
                       "& .MuiFormControl-root ": {
                         backgroundColor: "#FFF !important",
                         borderRadius: "12px",
@@ -95,27 +110,58 @@ const Page = () => {
                     }}
                   />
                 </Grid>
-                <Grid item xs={12}>
-                  <CssTextField
+                <Grid
+                  item
+                  xs={12}
+                  style={{
+                    position: "relative",
+                  }}
+                >
+                  <TextField
                     fullWidth
-                    type="password"
                     label="Password"
                     id="custom-css-outlined-input"
+                    type={showPassword ? "text" : "password"}
+                    value={userData.password}
+                    onChange={(e: any) =>
+                      setUserData({ ...userData, password: e.target.value })
+                    }
+                    sx={{
+                      "& .MuiInputBase-root": {
+                        background: "#FFF",
+                        borderRadius: "10px",
+                        border: "none",
+                      },
+                    }}
                   />
+                  {showPassword ? (
+                    <AiOutlineEyeInvisible
+                      style={{
+                        position: "absolute",
+                        right: "20px",
+                        top: "50%",
+                        transform: "translateY(30%)",
+                        cursor: "pointer",
+                      }}
+                      onClick={() => setShowPassword(!showPassword)}
+                    />
+                  ) : (
+                    <FaRegEye
+                      style={{
+                        position: "absolute",
+                        right: "20px",
+                        top: "50%",
+                        transform: "translateY(30%)",
+                        cursor: "pointer",
+                      }}
+                      onClick={() => setShowPassword(!showPassword)}
+                    />
+                  )}
                 </Grid>
 
                 <Grid item xs={12}>
-                  <Button className={styles.signInBtn}>
-                    <Link
-                      style={{
-                        textDecoration: "none",
-                        width: "100%",
-                        height: "100%",
-                      }}
-                      href="/dashboard"
-                    >
-                      Sign in
-                    </Link>
+                  <Button type="submit" className={styles.signInBtn}>
+                    {loading ? "Loading ..." : "Sign in"}
                   </Button>
                 </Grid>
 

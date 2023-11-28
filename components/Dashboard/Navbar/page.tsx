@@ -24,7 +24,7 @@ import { TabContext } from "@mui/lab";
 import HomeTabs from "../HomeTabs/page";
 import { dashboardTabs, userTabs } from "@/constants/UserTabs";
 import { useTabsContext } from "../TabsContext";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { BsFillArrowRightCircleFill } from "react-icons/bs";
 interface Props {
   /**
@@ -48,9 +48,14 @@ export default function DashboardNavbar(props: Props) {
 
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
-
+  const router = useRouter();
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
+  };
+
+  const handleLogout = () => {
+    document.cookie = `accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+    router.push("/login");
   };
 
   const pagePath = usePathname();
@@ -181,8 +186,11 @@ export default function DashboardNavbar(props: Props) {
         <Button
           sx={{ width: "90%", margin: "10px" }}
           className={styles.NavBarLink__logout}
+          onClick={() => {
+            // handleLogout();
+          }}
         >
-          <Link href={"/login"}>Logout</Link>
+          Logout
         </Button>
       </Box>
     </Box>
@@ -260,7 +268,15 @@ export default function DashboardNavbar(props: Props) {
                 }}
               >
                 <Button className={styles.NavBarLink__logout}>
-                  <Link href={"/login"}>Logout</Link>
+                  <Link
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleLogout();
+                    }}
+                    href={"*"}
+                  >
+                    Logout
+                  </Link>
                 </Button>{" "}
               </Box>
             </Toolbar>

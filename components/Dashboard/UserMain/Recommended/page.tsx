@@ -1,9 +1,11 @@
 import React from "react";
 import { Box, Grid, Skeleton, Typography } from "@mui/material";
 import styles from "@/styles/sass/Dashboard/UserMain/usermain.module.scss";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { fetcher } from "@/utils/swr";
 import useSWR from "swr";
+import { endPoints } from "@/services/endpoints";
+import { getOne } from "@/services/service";
 
 const Recommended = ({
   dashboardTabsValue,
@@ -15,15 +17,18 @@ const Recommended = ({
   );
 
   const params = useParams();
+  const searchParams = useSearchParams();
   const { id: userId } = params;
+  const groupId = searchParams.get("groupId");
   const {
-    data: Videos,
+    data: RecommendedVideos,
     error,
     isLoading,
-  } = useSWR(`${process.env.NEXT_PUBLIC_BASE_URL}Videos`, fetcher);
-
-  const userVideos = Videos?.filter((video: any) => video.user_id == userId);
+  } = useSWR(endPoints.getRecommendedVideos(groupId), getOne);
+  console.log(RecommendedVideos);
+  // const userVideos = Videos?.filter((video: any) => video.user_id == userId);
   // console.log(userVideos
+
   return (
     <div>
       <Grid container spacing={2}>
@@ -37,7 +42,8 @@ const Recommended = ({
                 />
               </Grid>
             ))
-          : randomArray?.map((item, index) => (
+          : RecommendedVideos?.data?.length &&
+            RecommendedVideos?.data?.map((item: any, index: any) => (
               <Grid key={index} item xs={12} lg={4}>
                 <Box
                   sx={{
@@ -49,7 +55,7 @@ const Recommended = ({
                   }}
                 >
                   <Typography color={"#838383"} sx={{ ml: 2, mb: 2 }}>
-                    Healing from diabetes1
+                    {item?.video_name}
                   </Typography>
                   <iframe
                     style={{
@@ -59,7 +65,7 @@ const Recommended = ({
                     }}
                     className={styles.videoIframe}
                     allowFullScreen
-                    src="https://customer-7ral3pe3959xe832.cloudflarestream.com/737b67dbf506017e02fd8039f213b5f0/iframe?poster=https%3A%2F%2Fcustomer-7ral3pe3959xe832.cloudflarestream.com%2F737b67dbf506017e02fd8039f213b5f0%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600"
+                    src={item.url}
                   ></iframe>
                 </Box>
               </Grid>

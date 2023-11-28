@@ -19,11 +19,7 @@ import {
 } from "@mui/material";
 import { isArabic } from "@/utils/checkLanguage";
 import { endPoints } from "@/services/endpoints";
-import {
-  deleteRequest,
-  postRequest,
-  updateRequest,
-} from "@/services/postRequest";
+import { deleteRequest, postRequest, updateRequest } from "@/services/service";
 import { calculateTimeDifference } from "@/utils/calculateTimeDifference";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { MdEditNote } from "react-icons/md";

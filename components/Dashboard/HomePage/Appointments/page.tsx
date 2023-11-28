@@ -2,8 +2,15 @@ import React from "react";
 import styles from "@/styles/sass/Dashboard/HomePage/HomePage.module.scss";
 import { Box, Button, Container, Grid, Typography } from "@mui/material";
 import AppointmentCard from "./AppointmentCard/page";
+import useSWR from "swr";
+import { fetcher } from "@/utils/swr";
+import { getOne } from "@/services/service";
 
 const Appointments = () => {
+  const { data, error, isLoading } = useSWR(`appointments`, getOne);
+
+  console.log(data);
+  const Appointments = data?.data;
   return (
     <div className={styles.PageWrapper}>
       <Container
@@ -28,12 +35,22 @@ const Appointments = () => {
           }}
           className="flex flex-col items-center"
         >
-          <AppointmentCard />
-          <AppointmentCard />
-          <AppointmentCard />
-          <AppointmentCard />
-          <AppointmentCard />
-          <AppointmentCard />
+          {Appointments?.length > 0 ? (
+            Appointments?.map((appointment: any, idx: any) => (
+              <AppointmentCard key={idx} appointment={appointment} />
+            ))
+          ) : (
+            <Typography
+              sx={{
+                mt: 5,
+                color: "#10458C",
+                fontSize: "1.2rem",
+                fontWeight: "bold",
+              }}
+            >
+              You have no upcoming sessions
+            </Typography>
+          )}
         </Box>
       </Container>
     </div>

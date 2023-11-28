@@ -11,10 +11,22 @@ import { useParams, useRouter, useSearchParams } from "next/navigation";
 import useSWR from "swr";
 import { fetcher } from "@/utils/swr";
 import CardsSkeleton from "@/components/Dashboard/Loading/CardsSkeleton";
+import { endPoints } from "@/services/endpoints";
+import { getOne } from "@/services/service";
 const Page = () => {
   const router = useRouter();
   const params = useSearchParams();
   let GroupId = params.get("id");
+  const courseId = params.get("courseId");
+  const groupId = params.get("groupId");
+
+  const { data, isLoading } = useSWR(
+    endPoints.getGroupUsers(groupId, courseId),
+    getOne
+  );
+
+  // console.log(data);
+  const GroupUsers = data?.data;
   const [currentGroup, setCurrentGroup] = React.useState<any>(null);
 
   useEffect(() => {
@@ -22,14 +34,6 @@ const Page = () => {
     setCurrentGroup(currentGroup);
   }, []);
 
-  const { data: Group, isLoading } = useSWR(
-    `${process.env.NEXT_PUBLIC_BASE_URL}Groups/${GroupId}`,
-    fetcher
-  );
-  const { data: Users, isLoading: UsersLoading } = useSWR(
-    `${process.env.NEXT_PUBLIC_BASE_URL}Users`,
-    fetcher
-  );
   // console.log(Group);
   return (
     <div className={styles.PageWrapper}>
@@ -40,9 +44,8 @@ const Page = () => {
         <Grid container rowSpacing={7}>
           {isLoading ? (
             <CardsSkeleton />
-          ) : Group?.users?.length > 0 ? (
-            Group?.users?.map((user: any, idx: number) => {
-              const currentUser = Users?.find((u: any) => u.id == user);
+          ) : GroupUsers?.length > 0 ? (
+            GroupUsers?.map((user: any, idx: number) => {
               return (
                 <Grid
                   item
@@ -53,8 +56,17 @@ const Page = () => {
                   sx={{ display: "flex", justifyContent: "center" }}
                 >
                   <div className={styles.groupCard}>
-                    <div className={styles.img_place}></div>
-                    <h3>{currentUser?.name}</h3>
+                    <div className={styles.img_place}>
+                      <Image
+                        src={`https://mtnhealingcenter.com/healing-center/${user.image}`}
+                        fill
+                        alt="userImage"
+                        style={{
+                          borderRadius: "50%",
+                        }}
+                      />
+                    </div>
+                    <h3>{user?.full_name}</h3>
                     <div className={styles.groupButtons}>
                       <Button variant="contained">
                         <Link
@@ -63,7 +75,14 @@ const Page = () => {
                             height: "100%",
                           }}
                           className="flex w-full h-full items-center justify-center"
-                          href={`/dashboard/users/userDetails?id=${currentUser?.id}`}
+                          // href={`/dashboard/users/userDetails?id=${user?.id}`}
+                          href={{
+                            pathname: "/dashboard/users/userDetails",
+                            query: {
+                              id: user?.id,
+                              groupId: groupId,
+                            },
+                          }}
                         >
                           <AiOutlineEye />
                           View

@@ -10,7 +10,7 @@ import { calculateTimeDifference } from "@/utils/calculateTimeDifference";
 import { MdOutlinePlaylistRemove } from "react-icons/md";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { MdEditNote } from "react-icons/md";
-import { deleteRequest, updateRequest } from "@/services/postRequest";
+import { deleteRequest, updateRequest } from "@/services/service";
 import { endPoints } from "@/services/endpoints";
 import DeleteDialog from "@/components/shared/Dialogs/DeleteDialog/page";
 

@@ -9,19 +9,19 @@ import { fetcher } from "@/utils/swr";
 import useSWR from "swr";
 import CardsSkeleton from "../../Loading/CardsSkeleton";
 import { Error } from "@/components/shared/Error/page";
+import { getOne } from "@/services/service";
 
 type Group = {
   id: number;
   name: string;
+  group_name: string;
+  course_id: string;
   users: any[];
   image: string;
 };
 const Home = () => {
-  const {
-    data: groups,
-    error,
-    isLoading,
-  } = useSWR(`${process.env.NEXT_PUBLIC_BASE_URL}Groups`, fetcher);
+  const { data, error, isLoading } = useSWR(`groups`, getOne);
+  const Groups: any = data?.data;
   if (error) {
     return <Error />;
   }
@@ -35,7 +35,8 @@ const Home = () => {
           {isLoading ? (
             <CardsSkeleton />
           ) : (
-            groups?.map((group: Group, idx: any) => (
+            Groups?.length > 0 &&
+            Groups.map((group: Group, idx: any) => (
               <Grid
                 item
                 xs={12}
@@ -46,7 +47,7 @@ const Home = () => {
               >
                 <div className={styles.groupCard}>
                   <div className={styles.img_place}></div>
-                  <h3>{group.name}</h3>
+                  <h3>{group.group_name}</h3>
                   <div className={styles.groupButtons}>
                     <Button variant="contained">
                       <Link
@@ -55,7 +56,13 @@ const Home = () => {
                           height: "100%",
                         }}
                         className="flex items-center justify-center gap-1"
-                        href={`/dashboard/GroupUsers?id=${group.id}`}
+                        href={{
+                          pathname: "/dashboard/GroupUsers",
+                          query: {
+                            groupId: group.id,
+                            courseId: group.course_id,
+                          },
+                        }}
                       >
                         <AiOutlineEye />
                         View

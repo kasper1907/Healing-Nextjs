@@ -16,10 +16,17 @@ const FinalLayout = ({ children }: { children: React.ReactNode }) => {
     ar: "Tajawal, sans-serif !important",
     en: "Roboto, sans-serif !important",
   };
+
   return (
     <html
       lang={i18n.resolvedLanguage}
-      dir={i18n.resolvedLanguage == "en" ? "ltr" : "rtl"}
+      dir={
+        i18n.resolvedLanguage == "en"
+          ? "ltr"
+          : i18n.resolvedLanguage == "ar"
+          ? "rtl"
+          : ""
+      }
       style={{
         fontFamily: languagesFonts[i18n.resolvedLanguage],
       }}
@@ -34,7 +41,7 @@ const FinalLayout = ({ children }: { children: React.ReactNode }) => {
       <link rel="icon" href="/images/healing-logo.svg" sizes="any" />
       <body style={{ padding: "0", margin: "0" }}>
         <ThemeProvider theme={theme}>
-          <Toaster />
+          <Toaster richColors={true} />
           <React.Suspense fallback={<div>Loading...</div>}>
             {children}
           </React.Suspense>
