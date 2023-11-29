@@ -16,7 +16,7 @@ import { fetcher } from "@/utils/swr";
 import { toast } from "sonner";
 import commentsStyles from "@/styles/sass/Dashboard/UserMain/comment.module.scss";
 import { IoIosArrowDown } from "react-icons/io";
-import { postRequest } from "@/services/service";
+import { getOne, postRequest } from "@/services/service";
 import { endPoints } from "@/services/endpoints";
 import { isArabic } from "@/utils/checkLanguage";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -50,42 +50,26 @@ const VideoSection = ({
   const commentInputRef: any = useRef(null);
   const commentsRef: any = useRef(null);
   const lastCommentRef: any = useRef(null);
+  const userData = JSON.parse(window?.localStorage.getItem("userData") || "{}");
+  const { data: VideoComments, isLoading } = useSWR(
+    endPoints.getCommentByVideoId(video?.id),
+    getOne
+  );
 
-  console.log("Video Details", video);
-  // Data Fetching:
-  // const { data: AllComments, isLoading: AllCommentsLoading } = useSWR(
-  //   endPoints.getComments,
-  //   fetcher
-  // );
-  // const { data: Replies } = useSWR(endPoints.getReplies, fetcher, {
-  //   onSuccess: (data) => {
-  //     data &&
-  //       data?.length > 0 &&
-  //       data?.filter((reply: any) => reply.videoId == video?.videoId);
-  //   },
-  // });
+  useEffect(() => {
+    VideoComments?.data?.length > 0 &&
+      setCurrentVideoComments(VideoComments?.data);
+  }, [VideoComments]);
 
   const Replies: any = [];
 
-  // console.log(Replies);
-
-  const commentReplies =
-    // UseEffects
-    useEffect(() => {
-      setTimeout(() => {
-        setVideoLoadingOnStartUp(false);
-      }, 2000);
-    }, []);
-
-  // useEffect(() => {
-  //   if (AllComments && AllComments?.length > 0) {
-  //     let videoComments = AllComments?.filter(
-  //       (comment: any) => comment.videoId == video?.videoId
-  //     );
-
-  //     setCurrentVideoComments(videoComments);
-  //   }
-  // }, [AllComments, video?.videoId]);
+  // const commentReplies =
+  // UseEffects
+  useEffect(() => {
+    setTimeout(() => {
+      setVideoLoadingOnStartUp(false);
+    }, 2000);
+  }, []);
 
   // Functions
   const toggleComments = () => {
@@ -93,6 +77,7 @@ const VideoSection = ({
   };
 
   const handleSuccess = (data: any) => {
+    console.log(data);
     toast.success("Comment Added Successfully");
     setText("");
     // mutate(`${process.env.NEXT_PUBLIC_BASE_URL}comments`);
@@ -113,22 +98,13 @@ const VideoSection = ({
     // Example data to be sent in the POST request
 
     const postData = {
-      text: text,
-      videoId: video?.videoId,
-      userId: 3,
-      createdAt: new Date(),
+      comment_text: text,
+      video_id: video?.id,
+      user_id: userData?.user_id,
     };
 
     // Trigger a re-fetch after the POST request is completed
-    mutate(
-      `${process.env.NEXT_PUBLIC_BASE_URL}comments`,
-      postRequest(
-        `${process.env.NEXT_PUBLIC_BASE_URL}comments`,
-        postData,
-        handleSuccess
-      ),
-      false
-    );
+    postRequest(`comments/createComment`, postData, handleSuccess(postData));
   };
 
   return (
@@ -300,21 +276,24 @@ const VideoSection = ({
         </AccordionSummary>
 
         <AccordionDetails>
-          {currentVideoComments?.map((comment: any, idx: number) => (
-            <div
-              ref={
-                idx + 1 == currentVideoComments?.length ? lastCommentRef : null
-              }
-              key={idx}
-              className={`${commentsStyles.comment} `}
-            >
-              <Comments
-                comment={comment}
-                setCurrentVideoComments={setCurrentVideoComments}
-                currentVideoComments={currentVideoComments}
-              />
-            </div>
-          ))}
+          {currentVideoComments?.length > 0 &&
+            currentVideoComments?.map((comment: any, idx: number) => (
+              <div
+                ref={
+                  idx + 1 == currentVideoComments?.length
+                    ? lastCommentRef
+                    : null
+                }
+                key={idx}
+                className={`${commentsStyles.comment} `}
+              >
+                <Comments
+                  comment={comment}
+                  setCurrentVideoComments={setCurrentVideoComments}
+                  currentVideoComments={currentVideoComments}
+                />
+              </div>
+            ))}
         </AccordionDetails>
       </Accordion>
     </div>

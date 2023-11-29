@@ -1,5 +1,6 @@
 "use client";
 import * as React from "react";
+import { useEffect, useState } from "react";
 import { useContext } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -26,18 +27,16 @@ import { dashboardTabs, userTabs } from "@/constants/UserTabs";
 import { useTabsContext } from "../TabsContext";
 import { usePathname, useRouter } from "next/navigation";
 import { BsFillArrowRightCircleFill } from "react-icons/bs";
-interface Props {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
-  window?: () => Window;
-}
+import { Logout } from "@/utils/Logout";
+
 // const navItems = ['جلساتي', 'المدونه', 'تواصل معنا'];
 
 const drawerWidth = 300;
 const navItems = [{ id: 1, title: "All Groups", url: "/dashboard" }];
 
+interface Props {
+  window?: () => Window;
+}
 export default function DashboardNavbar(props: Props) {
   const {
     dashboardTabsValue,
@@ -46,22 +45,27 @@ export default function DashboardNavbar(props: Props) {
     setUserTabsValue,
   }: any = useTabsContext();
 
-  const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [userData, setUserData] = React.useState<any>({});
+
+  useEffect(() => {
+    typeof localStorage !== "undefined" &&
+      setUserData(JSON.parse(localStorage.getItem("userData") || "{}"));
+  }, []);
   const router = useRouter();
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
 
   const handleLogout = () => {
-    document.cookie = `accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+    Logout();
     router.push("/login");
   };
-
   const pagePath = usePathname();
   const isDashboard = pagePath == "/dashboard";
   const isGroupUsers = pagePath.includes("/dashboard/GroupUsers");
   const isUserPage = pagePath.includes("/dashboard/users");
+  const { window } = props;
 
   const renderDashboardTabs = (
     <div className={styles.dashboard_sidebar_Tabs}>
@@ -289,8 +293,8 @@ export default function DashboardNavbar(props: Props) {
                 className={styles.logoWrapper}
               ></Box>
               <div className={styles.textWrapper}>
-                <h2>Dr. Ahmed</h2>
-                <p>@dr.ahmed12</p>
+                <h2>{userData?.user_name ? userData?.user_name : ""}</h2>
+                <p>@{userData?.user_name ? userData?.user_name : ""}</p>
               </div>
             </Box>
           </Container>

@@ -12,8 +12,12 @@ export const postRequest: any = async (
     const res = await axios.post(`${baseUrl}${url}`, data, {
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${document.cookie}`,
       },
     });
+    if (res.status == 201) {
+      handleSuccess ? handleSuccess(res.data) : "";
+    }
     const result = await res.data;
     return result;
   } catch (e: any) {

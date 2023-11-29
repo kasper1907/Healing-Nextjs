@@ -53,9 +53,13 @@ const Comments = ({
   const repliesRef: any = useRef(null);
   const open = Boolean(anchorEl);
 
-  const { data: Comments, isLoading } = useSWR(endPoints.getComments, fetcher);
-  const { data: Replies } = useSWR(endPoints.getReplies, fetcher);
+  // const { data: Comments, isLoading } = useSWR(endPoints.getComments, fetcher);
+  // const { data: Replies } = useSWR(endPoints.getReplies, fetcher);
 
+  const Comments: any = [];
+  const Replies: any = [];
+
+  const userData = JSON.parse(window?.localStorage.getItem("userData") || "{}");
   // ** Side Effects
 
   useEffect(() => {
@@ -155,6 +159,8 @@ const Comments = ({
       id: comment?.id || comment?.commentId,
     });
   };
+
+  // console.log(comment.user_id == userData?.user_id);
   return (
     <>
       <div className={styles.write_comment}>
@@ -167,7 +173,7 @@ const Comments = ({
                 : styles.englishComment
             }`}
           >
-            {comment?.text}
+            {comment?.comment_text}
           </div>
           <div className={styles.commentBottom}>
             <span className={styles.replyLabel} onClick={toggleMakeAReply}>
@@ -179,68 +185,72 @@ const Comments = ({
               width={4}
               height={4}
             />
-            <span>{calculateTimeDifference(comment?.createdAt)}</span>
-            <IconButton
-              aria-label="more"
-              id="long-button"
-              aria-controls={open ? "long-menu" : undefined}
-              aria-expanded={open ? "true" : undefined}
-              aria-haspopup="true"
-              onClick={handleClick}
-            >
-              <MoreVertIcon
-                sx={{
-                  transform: "rotate(90deg)",
-                }}
-              />
-            </IconButton>
-            <Menu
-              id="basic-menu"
-              anchorEl={anchorEl}
-              open={open}
-              onClose={handleClose}
-              MenuListProps={{
-                "aria-labelledby": "basic-button",
-              }}
-            >
-              <MenuItem
-                sx={{
-                  fontSize: "13px",
-                  fontFamily: "Roboto !important",
-                  display: "flex",
-                  alignItems: "center",
-                }}
-                onClick={
-                  makeAReply
-                    ? () => {
-                        handleClose(), setMakeAReply((prev) => !prev);
-                      }
-                    : PrepareUpdateComment
-                }
-              >
-                <MdEditNote />
-                <span style={{ marginTop: "2px", marginLeft: "5px" }}>
-                  {makeAReply ? "Cancel" : "Edit"}
-                </span>
-              </MenuItem>
-              <MenuItem
-                sx={{
-                  fontSize: "13px",
-                  fontFamily: "Roboto !important",
-                  display: "flex",
-                  alignItems: "center",
-                }}
-                onClick={() => {
-                  setOpenDeleteDialog(true);
-                  handleClose();
-                }}
-              >
-                <MdOutlinePlaylistRemove />
-                <span style={{ marginTop: "2px", marginLeft: "5px" }}>
-                  Delete
-                </span>
-              </MenuItem>
-            </Menu>
+            <span>{calculateTimeDifference(comment?.created_at)}</span>
+            {comment?.user_id == userData?.user_id ? (
+              <>
+                <IconButton
+                  aria-label="more"
+                  id="long-button"
+                  aria-controls={open ? "long-menu" : undefined}
+                  aria-expanded={open ? "true" : undefined}
+                  aria-haspopup="true"
+                  onClick={handleClick}
+                >
+                  <MoreVertIcon
+                    sx={{
+                      transform: "rotate(90deg)",
+                    }}
+                  />
+                </IconButton>
+                <Menu
+                  id="basic-menu"
+                  anchorEl={anchorEl}
+                  open={open}
+                  onClose={handleClose}
+                  MenuListProps={{
+                    "aria-labelledby": "basic-button",
+                  }}
+                >
+                  <MenuItem
+                    sx={{
+                      fontSize: "13px",
+                      fontFamily: "Roboto !important",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                    onClick={
+                      makeAReply
+                        ? () => {
+                            handleClose(), setMakeAReply((prev) => !prev);
+                          }
+                        : PrepareUpdateComment
+                    }
+                  >
+                    <MdEditNote />
+                    <span style={{ marginTop: "2px", marginLeft: "5px" }}>
+                      {makeAReply ? "Cancel" : "Edit"}
+                    </span>
+                  </MenuItem>
+                  <MenuItem
+                    sx={{
+                      fontSize: "13px",
+                      fontFamily: "Roboto !important",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                    onClick={() => {
+                      setOpenDeleteDialog(true);
+                      handleClose();
+                    }}
+                  >
+                    <MdOutlinePlaylistRemove />
+                    <span style={{ marginTop: "2px", marginLeft: "5px" }}>
+                      Delete
+                    </span>
+                  </MenuItem>
+                </Menu>
+              </>
+            ) : null}
           </div>
           <div className={styles.commentInput}>
             <form onSubmit={inputEdit ? handleSubmitEdit : handleSubmit}>

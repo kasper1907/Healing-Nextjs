@@ -12,4 +12,6 @@ export const endPoints = {
     `videos/getSessionsByGroupId/${groupId}`,
   getRecommendedVideos: (groupId: string | null) =>
     `videos/getAllRecommended/${groupId}`,
+  getCommentByVideoId: (videoId: string | null) =>
+    `comments/getCommentsByVideoId/${videoId}`,
 };

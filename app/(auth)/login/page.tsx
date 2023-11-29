@@ -34,6 +34,7 @@ const Page = () => {
     if (res.status == "success" && res.statusCode == 200) {
       toast.success("Login Successfully");
       document.cookie = `accessToken=${res.accessToken}`;
+      window.localStorage.setItem("userData", JSON.stringify(res.data));
       router.push("/dashboard");
     }
     if (res.status == "error" && res.statusCode == 400) {

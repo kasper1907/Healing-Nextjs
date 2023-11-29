@@ -40,26 +40,35 @@ const Recorded = () => {
     <div>
       {!showFullVideo ? (
         <Grid container spacing={1}>
-          {isLoading
-            ? Array.from({ length: 6 }).map((_, idx) => (
-                <Grid key={idx} item xs={12} md={4}>
-                  <Skeleton
-                    sx={{ width: "100%", mb: 2, borderRadius: "5px" }}
-                    variant="rectangular"
-                    height={300}
+          {isLoading ? (
+            Array.from({ length: 6 }).map((_, idx) => (
+              <Grid key={idx} item xs={12} md={4}>
+                <Skeleton
+                  sx={{ width: "100%", mb: 2, borderRadius: "5px" }}
+                  variant="rectangular"
+                  height={300}
+                />
+              </Grid>
+            ))
+          ) : Videos?.length ? (
+            Videos?.map((el: any, idx: number) => {
+              return (
+                <Grid item xs={12} md={6} lg={4} key={idx}>
+                  <VideoSection
+                    HeaderClickHandler={VideoHeaderClickHandler}
+                    video={el}
                   />
                 </Grid>
-              ))
-            : Videos?.map((el: any, idx: number) => {
-                return (
-                  <Grid item xs={12} md={6} lg={4} key={idx}>
-                    <VideoSection
-                      HeaderClickHandler={VideoHeaderClickHandler}
-                      video={el}
-                    />
-                  </Grid>
-                );
-              })}
+              );
+            })
+          ) : (
+            <Typography
+              sx={{ width: "100%", textAlign: "center" }}
+              color={"primary"}
+            >
+              No Recorded Videos Found for This Group
+            </Typography>
+          )}
         </Grid>
       ) : (
         <div data-aos="fade-right" style={{ marginBottom: "50px" }}>
