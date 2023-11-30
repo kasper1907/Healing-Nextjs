@@ -32,6 +32,12 @@
     height: fit-content;
     font-family: "Roboto";
     overflow-wrap: anywhere;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    span:first-of-type {
+      color: #5e5e5e;
+    }
   }
   .sendIcon {
     position: absolute;

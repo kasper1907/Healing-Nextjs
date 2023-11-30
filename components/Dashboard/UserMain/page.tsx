@@ -174,7 +174,7 @@ const UserMain = () => {
             View all groups
           </Link>
         </div>
-        <div className={`${styles.gridMainChild} ${styles.lucherDates}`}>
+        {/* <div className={`${styles.gridMainChild} ${styles.lucherDates}`}>
           <div className={styles.row}>
             <div className="flex items-center gap-2 pl-[4px]">
               <Image
@@ -197,7 +197,7 @@ const UserMain = () => {
             <Button variant="outlined">11/6/2023</Button>
             <Button variant="outlined">11/7/2023</Button>
           </div>
-        </div>
+        </div> */}
       </Grid>
       {viewAllGroups ? (
         <AllGroups setViewAllGroups={setViewAllGroups} />
@@ -211,15 +211,16 @@ const UserMain = () => {
         >
           <div className={styles.gridMainChild}>
             <div className={styles.lastSession}>
-              <Typography color={"primary"} sx={{ mb: 4 }}>
+              <Typography color={"primary"} sx={{ mb: 2 }}>
                 Last Session
               </Typography>
-
               {LastSessionVideo ? (
                 <VideoSection video={LastSessionVideo} isFullVideo={false} />
-              ) : null}
+              ) : (
+                "No Session Found"
+              )}
             </div>
-            <div className={styles.preparationVideos}>
+            {/* <div className={styles.preparationVideos}>
               <Typography color={"primary"} sx={{ mb: 4 }}>
                 Preparation Videos
               </Typography>
@@ -250,7 +251,7 @@ const UserMain = () => {
                   ></iframe>
                 </Grid>
               </Grid>
-            </div>
+            </div> */}
 
             <div className={styles.recommendedVideos}>
               <div className="flex items-center justify-between ">

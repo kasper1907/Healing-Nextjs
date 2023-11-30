@@ -87,9 +87,12 @@ interface Props {
 }
 
 const HomeTabs = (props: any) => {
+  const [_isPending, startTransition] = React.useTransition();
   const { tabs, value, setValue } = props;
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
-    setValue(newValue);
+    startTransition(() => {
+      setValue(newValue);
+    });
   };
 
   return (

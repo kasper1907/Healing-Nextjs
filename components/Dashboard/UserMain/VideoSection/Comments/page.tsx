@@ -173,6 +173,7 @@ const Comments = ({
                 : styles.englishComment
             }`}
           >
+            <span> @{comment?.user_name}</span>
             {comment?.comment_text}
           </div>
           <div className={styles.commentBottom}>

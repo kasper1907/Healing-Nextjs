@@ -77,11 +77,10 @@ const VideoSection = ({
   };
 
   const handleSuccess = (data: any) => {
-    console.log(data);
     toast.success("Comment Added Successfully");
     setText("");
-    // mutate(`${process.env.NEXT_PUBLIC_BASE_URL}comments`);
-    setCurrentVideoComments((prev: any) => [...prev, data]);
+    let newData = { ...data, user_name: userData?.user_name };
+    setCurrentVideoComments((prev: any) => [...prev, newData, ,]);
     if (!isCommentsVisible) {
       setCommentsVisible(true);
     }
@@ -89,7 +88,7 @@ const VideoSection = ({
     if (lastCommentRef.current) {
       setTimeout(() => {
         lastCommentRef.current.scrollIntoView({ behavior: "smooth" });
-      }, 500);
+      }, 2000);
     }
   };
   const handleSubmit = async (e: any) => {
