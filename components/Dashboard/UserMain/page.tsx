@@ -1,5 +1,6 @@
 import { fetcher } from "@/utils/swr";
 import {
+  Box,
   Button,
   CircularProgress,
   Container,
@@ -24,6 +25,7 @@ import { getOne } from "@/services/service";
 import { UserDetails } from "@/models/User";
 import { checkLength } from "@/utils/checkLength";
 import { SessionDetails } from "@/models/Sessions";
+import { endPoints } from "@/services/endpoints";
 const UserMain = () => {
   const [viewAllGroups, setViewAllGroups] = React.useState(false);
   const { userTabsValue, setUserTabsValue }: any = useTabsContext();
@@ -35,6 +37,10 @@ const UserMain = () => {
     `videos/getLastSession/${groupId}`,
     getOne
   );
+  const { data: RecommendedVideos, isLoading: LoadingRecommendedVideos } =
+    useSWR(endPoints.getRecommendedVideos(groupId), getOne, {
+      revalidateOnMount: false,
+    });
   const LastSessionVideo: SessionDetails = LastSession?.data;
   console.log(LastSessionVideo);
   useEffect(() => {
@@ -253,56 +259,97 @@ const UserMain = () => {
               </Grid>
             </div> */}
 
-            <div className={styles.recommendedVideos}>
-              <div className="flex items-center justify-between ">
-                <Typography color={"primary"} sx={{ mb: 3 }}>
-                  Recommended Videos
-                </Typography>
-                <Link
-                  className={"styledLink"}
-                  style={{
-                    fontWeight: "300",
-                    fontSize: "13px",
-                    color: "#10458C",
-                  }}
-                  href={"*"}
-                >
-                  See all
-                </Link>
+            {LoadingRecommendedVideos ? (
+              <CircularProgress color="primary" />
+            ) : (
+              <div className={styles.recommendedVideos}>
+                <div className="flex items-center justify-between ">
+                  <Typography color={"primary"} sx={{ mb: 3 }}>
+                    Recommended Videos
+                  </Typography>
+                  {RecommendedVideos?.data?.length > 0 ? (
+                    <Link
+                      className={"styledLink"}
+                      style={{
+                        fontWeight: "300",
+                        fontSize: "13px",
+                        color: "#10458C",
+                      }}
+                      href={"*"}
+                    >
+                      See all
+                    </Link>
+                  ) : null}
+                </div>
+                <Grid container spacing={2}>
+                  {RecommendedVideos?.data?.length ? (
+                    RecommendedVideos?.data?.map((item: any, index: any) => (
+                      <Grid key={index} item xs={12} lg={4}>
+                        <Box
+                          sx={{
+                            height: "370px",
+                            background: "#FFF",
+                            borderRadius: "10px",
+                            padding: "15px",
+                            width: "100%",
+                          }}
+                        >
+                          <Typography color={"#838383"} sx={{ ml: 2, mb: 2 }}>
+                            {item?.video_name}
+                          </Typography>
+                          <iframe
+                            style={{
+                              width: "100%",
+                              height: "90%",
+                              borderRadius: "16px",
+                            }}
+                            className={styles.videoIframe}
+                            allowFullScreen
+                            src={item.url}
+                          />
+                        </Box>
+                      </Grid>
+                    ))
+                  ) : (
+                    <Typography
+                      sx={{ width: "100%", textAlign: "left", ml: 2, mt: 2 }}
+                    >
+                      No Recommended Videos Found For This Group !
+                    </Typography>
+                  )}
+                  {/* <Grid item xs={12} lg={6} sx={{ height: "370px" }}>
+                    <Typography color={"#838383"} sx={{ ml: 2, mb: 2 }}>
+                      Healing from diabetes1
+                    </Typography>
+                    <iframe
+                      style={{
+                        width: "100%",
+                        height: "90%",
+                        borderRadius: "16px",
+                      }}
+                      className={styles.videoIframe}
+                      allowFullScreen
+                      src="https://customer-7ral3pe3959xe832.cloudflarestream.com/737b67dbf506017e02fd8039f213b5f0/iframe?poster=https%3A%2F%2Fcustomer-7ral3pe3959xe832.cloudflarestream.com%2F737b67dbf506017e02fd8039f213b5f0%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600"
+                    ></iframe>
+                  </Grid> */}
+                  {/* <Grid item xs={12} lg={6} sx={{ height: "370px" }}>
+                    <Typography color={"#838383"} sx={{ ml: 2, mb: 2 }}>
+                      Healing from diabetes2
+                    </Typography>
+                    <iframe
+                      style={{
+                        width: "100%",
+                        height: "90%",
+                        borderRadius: "16px",
+                      }}
+                      className={styles.videoIframe}
+                      allowFullScreen
+                      src="https://customer-7ral3pe3959xe832.cloudflarestream.com/737b67dbf506017e02fd8039f213b5f0/iframe?poster=https%3A%2F%2Fcustomer-7ral3pe3959xe832.cloudflarestream.com%2F737b67dbf506017e02fd8039f213b5f0%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600"
+                    ></iframe>
+                  </Grid> */}
+                </Grid>
               </div>
-              <Grid container spacing={2}>
-                <Grid item xs={12} lg={6} sx={{ height: "370px" }}>
-                  <Typography color={"#838383"} sx={{ ml: 2, mb: 2 }}>
-                    Healing from diabetes1
-                  </Typography>
-                  <iframe
-                    style={{
-                      width: "100%",
-                      height: "90%",
-                      borderRadius: "16px",
-                    }}
-                    className={styles.videoIframe}
-                    allowFullScreen
-                    src="https://customer-7ral3pe3959xe832.cloudflarestream.com/737b67dbf506017e02fd8039f213b5f0/iframe?poster=https%3A%2F%2Fcustomer-7ral3pe3959xe832.cloudflarestream.com%2F737b67dbf506017e02fd8039f213b5f0%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600"
-                  ></iframe>
-                </Grid>
-                <Grid item xs={12} lg={6} sx={{ height: "370px" }}>
-                  <Typography color={"#838383"} sx={{ ml: 2, mb: 2 }}>
-                    Healing from diabetes2
-                  </Typography>
-                  <iframe
-                    style={{
-                      width: "100%",
-                      height: "90%",
-                      borderRadius: "16px",
-                    }}
-                    className={styles.videoIframe}
-                    allowFullScreen
-                    src="https://customer-7ral3pe3959xe832.cloudflarestream.com/737b67dbf506017e02fd8039f213b5f0/iframe?poster=https%3A%2F%2Fcustomer-7ral3pe3959xe832.cloudflarestream.com%2F737b67dbf506017e02fd8039f213b5f0%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600"
-                  ></iframe>
-                </Grid>
-              </Grid>
-            </div>
+            )}
           </div>
         </Grid>
       )}

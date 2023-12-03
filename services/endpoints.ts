@@ -14,4 +14,5 @@ export const endPoints = {
     `videos/getAllRecommended/${groupId}`,
   getCommentByVideoId: (videoId: string | null) =>
     `comments/getCommentsByVideoId/${videoId}`,
+  getUser: (userId: string | null) => `users/getOne/${userId}`,
 };

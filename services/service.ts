@@ -67,6 +67,6 @@ export const getOne: any = async (endPoint: any) => {
     });
     return res.data;
   } catch (e: any) {
-    return toast.error(e.message);
+    return e.message;
   }
 };

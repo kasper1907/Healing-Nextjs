@@ -25,9 +25,13 @@ import { TabContext } from "@mui/lab";
 import HomeTabs from "../HomeTabs/page";
 import { dashboardTabs, userTabs } from "@/constants/UserTabs";
 import { useTabsContext } from "../TabsContext";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { BsFillArrowRightCircleFill } from "react-icons/bs";
 import { Logout } from "@/utils/Logout";
+import jwt from "jsonwebtoken";
+import { getOne } from "@/services/service";
+import { endPoints } from "@/services/endpoints";
+import useSWR from "swr";
 
 // const navItems = ['جلساتي', 'المدونه', 'تواصل معنا'];
 
@@ -47,6 +51,45 @@ export default function DashboardNavbar(props: Props) {
 
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [userData, setUserData] = React.useState<any>({});
+  const [currentPageUser, setCurrentPageUser] = React.useState<any>({});
+
+  const userToken = document.cookie
+    .split(";")
+    .find((row) => row.startsWith("accessToken"))
+    ?.split("=")[1];
+
+  const decodedToken = jwt.decode(userToken?.toString() || "");
+  console.log(decodedToken);
+
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  console.log(pathname);
+
+  const userId = searchParams.get("id");
+  const isInUserPage =
+    pathname == "/dashboard/users/userDetails" ? true : false;
+  const {
+    data: user,
+    error,
+    isLoading,
+  } = useSWR(endPoints.getUser(userId), getOne, {
+    onSuccess: (data) => {
+      if (isInUserPage) {
+        setCurrentPageUser(data?.data);
+      } else {
+        setCurrentPageUser({});
+      }
+    },
+  });
+
+  console.log(currentPageUser);
+  // useEffect(() => {
+  //   if(pathname == `/dashboard/users/userDetails`){
+
+  //   }else{
+
+  //   }
+  // },[pathname])
 
   useEffect(() => {
     typeof localStorage !== "undefined" &&
@@ -291,10 +334,35 @@ export default function DashboardNavbar(props: Props) {
                   height: { xs: "100px", md: "156px" },
                 }}
                 className={styles.logoWrapper}
-              ></Box>
+              >
+                {currentPageUser && isInUserPage ? (
+                  <Image
+                    src={`https://mtnhealingcenter.com/healing-center/${currentPageUser.image}`}
+                    width={156}
+                    height={156}
+                    alt="userImage"
+                    style={{
+                      borderRadius: "50%",
+                    }}
+                  />
+                ) : null}
+              </Box>
               <div className={styles.textWrapper}>
-                <h2>{userData?.user_name ? userData?.user_name : ""}</h2>
-                <p>@{userData?.user_name ? userData?.user_name : ""}</p>
+                <h2>
+                  {currentPageUser && isInUserPage
+                    ? currentPageUser?.full_name
+                    : userData?.user_name
+                    ? userData?.user_name
+                    : ""}
+                </h2>
+                <p>
+                  @
+                  {currentPageUser && isInUserPage
+                    ? currentPageUser?.user_name
+                    : userData?.user_name
+                    ? userData?.user_name
+                    : ""}
+                </p>
               </div>
             </Box>
           </Container>

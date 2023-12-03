@@ -27,8 +27,6 @@ const Recommended = ({
   } = useSWR(endPoints.getRecommendedVideos(groupId), getOne, {
     revalidateOnMount: false,
   });
-  // const userVideos = Videos?.filter((video: any) => video.user_id == userId);
-  // console.log(userVideos
 
   return (
     <div>
