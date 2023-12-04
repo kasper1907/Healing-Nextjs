@@ -33,8 +33,6 @@ import { getOne } from "@/services/service";
 import { endPoints } from "@/services/endpoints";
 import useSWR from "swr";
 
-// const navItems = ['جلساتي', 'المدونه', 'تواصل معنا'];
-
 const drawerWidth = 300;
 const navItems = [{ id: 1, title: "All Groups", url: "/dashboard" }];
 
@@ -48,24 +46,26 @@ export default function DashboardNavbar(props: Props) {
     userTabsValue,
     setUserTabsValue,
   }: any = useTabsContext();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
+  const userId = searchParams.get("id");
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [userData, setUserData] = React.useState<any>({});
   const [currentPageUser, setCurrentPageUser] = React.useState<any>({});
+  const [loggedUserToken, setLoggedUserToken] = React.useState<any>("");
 
-  const userToken = document.cookie
-    .split(";")
-    .find((row) => row.startsWith("accessToken"))
-    ?.split("=")[1];
+  useEffect(() => {
+    const userToken: any = document?.cookie
+      .split(";")
+      .find((row) => row.startsWith("accessToken"))
+      ?.split("=")[1];
 
-  const decodedToken = jwt.decode(userToken?.toString() || "");
-  console.log(decodedToken);
+    setLoggedUserToken(userToken);
+  }, []);
 
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  console.log(pathname);
+  const decodedToken = jwt.decode(loggedUserToken?.toString() || "");
 
-  const userId = searchParams.get("id");
   const isInUserPage =
     pathname == "/dashboard/users/userDetails" ? true : false;
   const {
@@ -81,15 +81,6 @@ export default function DashboardNavbar(props: Props) {
       }
     },
   });
-
-  console.log(currentPageUser);
-  // useEffect(() => {
-  //   if(pathname == `/dashboard/users/userDetails`){
-
-  //   }else{
-
-  //   }
-  // },[pathname])
 
   useEffect(() => {
     typeof localStorage !== "undefined" &&

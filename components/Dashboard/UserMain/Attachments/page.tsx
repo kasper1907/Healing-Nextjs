@@ -6,18 +6,72 @@ import Image from "next/image";
 import Link from "next/link";
 import { AiOutlineDownload, AiOutlineEdit, AiOutlineEye } from "react-icons/ai";
 import { BsDownload } from "react-icons/bs";
-
+import jwt from "jsonwebtoken";
+import { useSearchParams } from "next/navigation";
+import { getOne } from "@/services/service";
+import { endPoints } from "@/services/endpoints";
+import useSWR from "swr";
 const Attachments = () => {
+  const token = document?.cookie.split("=")[1];
+  const decodedToken = jwt.decode(token?.toString()) as any;
+  const searchParams = useSearchParams();
+  const userId = searchParams.get("id");
+
+  const isParamsUserIdEqualDecodedTokenUserId =
+    userId == decodedToken?.data?.id;
+
+  const { data: UserFiles, isLoading } = useSWR(
+    endPoints.getUserAttachments(decodedToken?.data?.id),
+    getOne
+  );
+
+  const handleDownloadFile = (url: string, fileName: string) => () => {
+    const proxyUrl =
+      "http://localhost/healing-backend/proxy.php?url=" +
+      encodeURIComponent(url);
+
+    window.open(proxyUrl);
+
+    // Fetch the file content from the server
+    // fetch(proxyUrl, {
+    //   method: "GET",
+    //   headers: {
+    //     "Access-Control-Allow-Origin": "*",
+    //     "Content-Type": "application/pdf",
+    //   },
+    // })
+    //   .then((response) => response.blob())
+    //   .then((blob) => {
+    //     // Create a Blob with the file content
+    //     const fileUrl = window.URL.createObjectURL(blob);
+
+    //     // Create a link element and trigger a download
+    //     const fileLink = document.createElement("a");
+    //     fileLink.href = fileUrl;
+    //     fileLink.setAttribute("download", fileName);
+    //     document.body.appendChild(fileLink);
+    //     fileLink.click();
+
+    //     // Clean up: remove the link and revoke the Blob URL
+    //     document.body.removeChild(fileLink);
+    //     window.URL.revokeObjectURL(fileUrl);
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error downloading file:", error);
+    //   });
+  };
   return (
     <div className={styles.pageWrapper}>
       <Container sx={{ mt: 10 }}>
-        <div className={styles.dropZoneWrapper}>
-          <Dropzone />
-        </div>
+        {isParamsUserIdEqualDecodedTokenUserId ? (
+          <div className={styles.dropZoneWrapper}>
+            <Dropzone />
+          </div>
+        ) : null}
 
         <Grid container rowSpacing={2}>
-          {Array.from({ length: 7 }, () => Math.floor(Math.random() * 6))?.map(
-            (el, idx) => {
+          {UserFiles?.data?.length &&
+            UserFiles?.data?.map((el: any, idx: number) => {
               return (
                 <Grid
                   key={idx}
@@ -44,7 +98,7 @@ const Attachments = () => {
                           height={20}
                           alt="attachment"
                         />
-                        <span>Instruction(1).word</span>
+                        <span>{el?.name}</span>
                       </span>
                     </Grid>
                     <Grid
@@ -58,10 +112,30 @@ const Attachments = () => {
                     >
                       <div className={styles.groupButtons}>
                         <Button variant="outlined">
-                          <AiOutlineEye />
-                          View
+                          <Link
+                            style={{
+                              width: "100%",
+                              height: "100%",
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 2,
+                            }}
+                            target="_blank"
+                            href={`${process.env.NEXT_PUBLIC_BASE_URL}${el?.attachment_name}`}
+                            rel="noopener noreferrer"
+                            download
+                          >
+                            <AiOutlineEye />
+                            View
+                          </Link>
                         </Button>
-                        <Button variant="contained">
+                        <Button
+                          variant="contained"
+                          onClick={handleDownloadFile(
+                            `${process.env.NEXT_PUBLIC_BASE_URL}${el?.attachment_name}`,
+                            el?.name
+                          )}
+                        >
                           <BsDownload />
                           <span style={{ marginTop: "3px", marginLeft: "3px" }}>
                             Download
@@ -72,8 +146,7 @@ const Attachments = () => {
                   </Grid>
                 </Grid>
               );
-            }
-          )}
+            })}
         </Grid>
       </Container>
     </div>

@@ -16,7 +16,14 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import Image from "next/image";
-
+import { useSearchParams } from "next/navigation";
+import useSWR from "swr";
+import { endPoints } from "@/services/endpoints";
+import { getOne } from "@/services/service";
+import { UserDetails } from "@/models/User";
+import dayjs from "dayjs";
+import { FaArrowLeft } from "react-icons/fa";
+import jwt from "jsonwebtoken";
 export const CssTextField: any = styled(TextField as any)({
   "& label.Mui-focused": {
     color: "#10458c",
@@ -82,14 +89,42 @@ export const StyledDatePicker: any = styled(DatePicker as any)({
 
 const EditProfile = () => {
   const { userTabsValue, setUserTabsValue }: any = useTabsContext();
+  const [userData, setUserData] = React.useState({} as UserDetails);
+  const [newData, setNewData] = React.useState({} as UserDetails);
+
+  const searchParams = useSearchParams();
+  const token = document?.cookie.split("=")[1];
+  const decodedToken = jwt.decode(token?.toString()) as any;
+  const { data, isLoading } = useSWR(
+    endPoints.getUser(decodedToken?.data?.id as string),
+    getOne
+  );
+
+  const user: UserDetails = data?.data;
 
   useEffect(() => {
     Aos.init();
   }, []);
 
+  useEffect(() => {
+    setUserData(user);
+  }, [user]);
+
   return (
     <div data-aos="fade-right" className={styles.EditProfilePage}>
-      <Typography sx={{ fontSize: "1.2rem" }} color={"primary"}>
+      <Typography
+        sx={{
+          gap: 1,
+          fontSize: "1.2rem",
+          display: "flex",
+          alignItems: "center",
+        }}
+        color={"primary"}
+      >
+        <FaArrowLeft
+          style={{ cursor: "pointer" }}
+          onClick={() => setUserTabsValue(1)}
+        />
         Account Information
       </Typography>
       <Typography
@@ -100,29 +135,20 @@ const EditProfile = () => {
       </Typography>
 
       <Grid container sx={{ mt: 4 }} spacing={2}>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12}>
           <InputLabel sx={{ fontSize: "0.9rem", ml: 1, mb: 1 }}>
-            First Name
+            Full Name
           </InputLabel>
           <CssTextField
-            fullWidth
-            label="Enter First Name"
-            id="custom-css-outlined-input"
-            sx={{
-              "& .MuiFormControl-root ": {
-                backgroundColor: "#FFF !important",
-                borderRadius: "12px",
-              },
+            value={userData?.full_name}
+            onChange={(e: any) => {
+              setUserData((prev) => ({
+                ...prev,
+                full_name: e.target.value,
+              }));
             }}
-          />
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <InputLabel sx={{ fontSize: "0.9rem", ml: 1, mb: 1 }}>
-            Last Name
-          </InputLabel>
-          <CssTextField
             fullWidth
-            label="Enter Last Name"
+            placeholder="Enter First Name"
             id="custom-css-outlined-input"
             sx={{
               "& .MuiFormControl-root ": {
@@ -134,13 +160,20 @@ const EditProfile = () => {
         </Grid>
 
         <Grid item xs={12} md={6}>
-          <InputLabel sx={{ fontSize: "0.9rem", ml: 1 }}>Email</InputLabel>
+          <InputLabel sx={{ fontSize: "0.9rem", ml: 1 }}>Birth Date</InputLabel>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DemoContainer components={["DatePicker"]}>
               <StyledDatePicker
+                value={dayjs(userData?.date_of_birth)}
+                onChange={(e: any) => {
+                  setUserData((prev) => ({
+                    ...prev,
+                    date_of_birth: e,
+                  }));
+                }}
                 sx={{ width: "100%" }}
                 fullWidth
-                label="Birth Date"
+                placeholder="Birth Date"
               />
             </DemoContainer>
           </LocalizationProvider>
@@ -164,9 +197,16 @@ const EditProfile = () => {
             Phone
           </InputLabel>
           <CssTextField
+            value={userData?.phone}
+            onChange={(e: any) => {
+              setUserData((prev) => ({
+                ...prev,
+                phone: e.target.value,
+              }));
+            }}
             fullWidth
             type="tel"
-            label="Enter Phone Number"
+            placeholder="Enter Phone Number"
             id="custom-css-outlined-input"
             sx={{
               "& .MuiFormControl-root ": {
@@ -195,8 +235,15 @@ const EditProfile = () => {
             Email
           </InputLabel>
           <CssTextField
+            value={userData?.email}
+            onChange={(e: any) => {
+              setUserData((prev) => ({
+                ...prev,
+                email: e.target.value,
+              }));
+            }}
             fullWidth
-            label="Enter Email"
+            placeholder="Enter Email"
             id="custom-css-outlined-input"
             sx={{
               "& .MuiFormControl-root ": {
@@ -212,8 +259,15 @@ const EditProfile = () => {
             Country
           </InputLabel>
           <CssTextField
+            value={userData?.country}
+            onChange={(e: any) => {
+              setUserData((prev) => ({
+                ...prev,
+                country: e.target.value,
+              }));
+            }}
             fullWidth
-            label="Enter Country"
+            placeholder="Enter Country"
             id="custom-css-outlined-input"
             sx={{
               "& .MuiFormControl-root ": {
@@ -228,9 +282,16 @@ const EditProfile = () => {
             Weight
           </InputLabel>
           <CssTextField
+            value={userData?.weight}
+            onChange={(e: any) => {
+              setUserData((prev) => ({
+                ...prev,
+                weight: e.target.value,
+              }));
+            }}
             fullWidth
             type="number"
-            label="Enter Weight"
+            placeholder="Enter Weight"
             id="custom-css-outlined-input"
             sx={{
               "& .MuiFormControl-root ": {
@@ -246,8 +307,15 @@ const EditProfile = () => {
             Marital Status
           </InputLabel>
           <CssTextField
+            value={userData?.social_status}
+            onChange={(e: any) => {
+              setUserData((prev) => ({
+                ...prev,
+                social_status: e.target.value,
+              }));
+            }}
             fullWidth
-            label="Enter Marital Status"
+            placeholder="Enter Marital Status"
             id="custom-css-outlined-input"
             sx={{
               "& .MuiFormControl-root ": {
@@ -263,8 +331,15 @@ const EditProfile = () => {
             Job Title
           </InputLabel>
           <CssTextField
+            value={userData?.job_title}
+            onChange={(e: any) => {
+              setUserData((prev) => ({
+                ...prev,
+                job_title: e.target.value,
+              }));
+            }}
             fullWidth
-            label="Enter Job Title"
+            placeholder="Enter Job Title"
             id="custom-css-outlined-input"
             sx={{
               "& .MuiFormControl-root ": {
@@ -280,8 +355,15 @@ const EditProfile = () => {
             Boys Number
           </InputLabel>
           <CssTextField
+            value={userData?.number_of_boys}
+            onChange={(e: any) => {
+              setUserData((prev) => ({
+                ...prev,
+                number_of_boys: e.target.value,
+              }));
+            }}
             fullWidth
-            label="Enter Boys Number"
+            placeholder="Enter Boys Number"
             id="custom-css-outlined-input"
             sx={{
               "& .MuiFormControl-root ": {
@@ -297,8 +379,15 @@ const EditProfile = () => {
             Girls Number
           </InputLabel>
           <CssTextField
+            value={userData?.number_of_girls}
+            onChange={(e: any) => {
+              setUserData((prev) => ({
+                ...prev,
+                number_of_girls: e.target.value,
+              }));
+            }}
             fullWidth
-            label="Enter Girls Number"
+            placeholder="Enter Girls Number"
             id="custom-css-outlined-input"
             sx={{
               "& .MuiFormControl-root ": {
@@ -310,7 +399,19 @@ const EditProfile = () => {
         </Grid>
       </Grid>
 
-      <div className="w-full mt-8 flex items-center justify-center">
+      <div className="w-full mt-8 flex gap-2 items-center justify-center">
+        <Button
+          sx={{
+            backgroundColor: "transparent !important",
+            color: "#10458c !important",
+            padding: "8px 32px",
+            borderRadius: "8px",
+            border: "1px solid #10458c !important",
+          }}
+          onClick={() => setUserTabsValue(1)}
+        >
+          Cancel
+        </Button>
         <Button
           sx={{
             backgroundColor: "#10458c !important",
@@ -318,6 +419,8 @@ const EditProfile = () => {
             padding: "8px 32px",
             borderRadius: "8px",
           }}
+          className="main-btn"
+          disabled={JSON.stringify(userData) === JSON.stringify(user)}
         >
           Update
         </Button>

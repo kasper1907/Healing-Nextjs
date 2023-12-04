@@ -4,6 +4,7 @@ import {
   Button,
   CircularProgress,
   Container,
+  Tooltip,
   Typography,
   useMediaQuery,
 } from "@mui/material";
@@ -26,9 +27,11 @@ import { UserDetails } from "@/models/User";
 import { checkLength } from "@/utils/checkLength";
 import { SessionDetails } from "@/models/Sessions";
 import { endPoints } from "@/services/endpoints";
+import jwt from "jsonwebtoken";
 const UserMain = () => {
   const [viewAllGroups, setViewAllGroups] = React.useState(false);
   const { userTabsValue, setUserTabsValue }: any = useTabsContext();
+  const [loggedUserToken, setLoggedUserToken] = React.useState<any>("");
   const params = useSearchParams();
   const userId = params.get("id");
   const groupId = params.get("groupId");
@@ -42,20 +45,32 @@ const UserMain = () => {
       revalidateOnMount: false,
     });
   const LastSessionVideo: SessionDetails = LastSession?.data;
-  console.log(LastSessionVideo);
   useEffect(() => {
     AOS.init();
   }, []);
 
-  // const { data: Videos } = useSWR(
-  //   `${process.env.NEXT_PUBLIC_BASE_URL}Videos`,
-  //   fetcher
-  // );
+  const User: UserDetails | any = data?.data;
 
-  let Videos: any = [];
+  let userGroupId: any = `group_id_${User?.course_id}` || undefined;
 
-  const user: UserDetails = data?.data;
-  // console.log(user);
+  const { data: UserGroup, isLoading: LoadingUserGroup } = useSWR(
+    `groups/getOne/${User?.course_id ? User[userGroupId] : groupId}`,
+    getOne
+  );
+
+  const group: Group = UserGroup?.data;
+
+  useEffect(() => {
+    const userToken: any = document?.cookie
+      .split(";")
+      .find((row) => row.startsWith("accessToken"))
+      ?.split("=")[1];
+
+    setLoggedUserToken(userToken);
+  }, []);
+
+  const decodedToken: any = jwt.decode(loggedUserToken?.toString() || "");
+
   if (isLoading) return <UserMainSkelton />;
 
   return (
@@ -72,52 +87,54 @@ const UserMain = () => {
               />
               <span className="mt-[1px] text-[#10458C]">About</span>
             </div>
-            <Button
-              variant="outlined"
-              sx={{
-                textTransform: "unset",
-                borderRadius: "8px",
-                fontWeight: "400",
-                fontSize: "12px",
-              }}
-              onClick={() => {
-                //set the current tab value to 7 which is the edit profile tab
-                setUserTabsValue(7);
-              }}
-            >
-              Edit Profile
-            </Button>
+            {decodedToken?.data?.id == User?.id ? (
+              <Button
+                variant="outlined"
+                sx={{
+                  textTransform: "unset",
+                  borderRadius: "8px",
+                  fontWeight: "400",
+                  fontSize: "12px",
+                }}
+                onClick={() => {
+                  //set the current tab value to 7 which is the edit profile tab
+                  setUserTabsValue(7);
+                }}
+              >
+                Edit Profile
+              </Button>
+            ) : null}
           </div>
           <div className={`${styles.row}`}>
             <div className={styles.infoSection}>
               <>
                 <span>Name</span>
-                <span>{checkLength(user?.full_name + "", 18)}</span>
+                <span>{checkLength(User?.full_name + "", 18)}</span>
               </>
             </div>
             <div className={styles.infoSection}>
               <>
                 <span>Mobile</span>
-                <span>{user?.phone}</span>
+                <span>{User?.phone}</span>
               </>
             </div>
             <div className={styles.infoSection}>
               <>
                 <span>Relationship</span>
-                <span>{user?.social_status}</span>
+                <span>{User?.social_status}</span>
               </>
             </div>
             <div className={styles.infoSection}>
               <>
                 <span>Birth date</span>
 
-                <span>{moment(user?.date_of_birth).format("DD-M-YYYY")}</span>
+                <span>{moment(User?.date_of_birth).format("DD-M-YYYY")}</span>
               </>
             </div>
             <div className={styles.infoSection}>
               <>
                 <span>Place Of Birth</span>
-                <span>{user?.place_of_birth}</span>
+                <span>{User?.place_of_birth}</span>
               </>
             </div>
           </div>
@@ -144,23 +161,23 @@ const UserMain = () => {
                 height={16}
                 alt="userIcon"
               />
-              <span className="mt-[1px] text-[#10458C]">Therapy Groups</span>
+              <span className="mt-[1px] text-[#10458C]">Therapy Group</span>
             </div>
           </div>
 
           <div className="flex items-start  flex-wrap gap-2">
-            <Image
-              src={"/images/Dashboard/TherapyGroup (1).svg"}
-              width={50}
-              height={50}
-              alt="TherapyGroup"
-            />
-            <Image
-              src={"/images/Dashboard/TherapyGroup (2).svg"}
-              width={50}
-              height={50}
-              alt="TherapyGroup"
-            />
+            {LoadingUserGroup ? (
+              <CircularProgress color="primary" />
+            ) : (
+              <Tooltip title={group.group_name}>
+                <Image
+                  src={`${process.env.NEXT_PUBLIC_BASE_URL2}${group?.logo}`}
+                  width={50}
+                  height={50}
+                  alt="TherapyGroup"
+                />
+              </Tooltip>
+            )}
           </div>
 
           <Link
@@ -174,10 +191,9 @@ const UserMain = () => {
             onClick={(e) => {
               e.preventDefault();
               setViewAllGroups(true);
-              // setUserTabsValue(8);
             }}
           >
-            View all groups
+            View all courses
           </Link>
         </div>
         {/* <div className={`${styles.gridMainChild} ${styles.lucherDates}`}>

@@ -15,4 +15,7 @@ export const endPoints = {
   getCommentByVideoId: (videoId: string | null) =>
     `comments/getCommentsByVideoId/${videoId}`,
   getUser: (userId: string | null) => `users/getOne/${userId}`,
+  getUserProfile: (userId: string | null) => `users/getProfile/${userId}`,
+  getUserAttachments: (userId: string | null) =>
+    `attachments/getUserFiles/${userId}`,
 };

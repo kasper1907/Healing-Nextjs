@@ -15,7 +15,7 @@ const AppointmentCard = ({ appointment }: any) => {
       <div className={styles.right}>
         <Grid rowSpacing={2} container className={styles.rightGrid}>
           <Grid item xs={12} sm={6} className={styles.right_LeftGrid}>
-            <h3>Session #{appointment ? appointment?.id : ""}</h3>
+            <h3>Appointment #{appointment ? appointment?.id : ""}</h3>
             <span>
               Date: <span>{appointment.session_date}</span>
             </span>

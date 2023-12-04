@@ -5,8 +5,24 @@ import styles from "@/styles/sass/Dashboard/Profile/Profile.module.scss";
 import { Button, Grid, Typography } from "@mui/material";
 import { ProfileData } from "@/constants/ProfileData";
 import { useTabsContext } from "../TabsContext";
+import { useSearchParams } from "next/navigation";
+import { getOne } from "@/services/service";
+import useSWR from "swr";
+import { endPoints } from "@/services/endpoints";
+import { UserDetails } from "@/models/User";
+import { FaArrowLeft } from "react-icons/fa";
 const ProfileDetails = () => {
   const { userTabsValue, setUserTabsValue }: any = useTabsContext();
+  const searchParams = useSearchParams();
+  const userId = searchParams.get("id");
+  const { data, isLoading } = useSWR(
+    endPoints.getUserProfile(userId as string),
+    getOne
+  );
+
+  const user: UserDetails = data?.data;
+
+  console.log(user);
 
   useEffect(() => {
     AOS.init();
@@ -27,12 +43,19 @@ const ProfileDetails = () => {
     1: 12,
   };
 
-  const ProfileDataArray = Object?.entries(ProfileData);
+  const ProfileDataArray = Object?.entries(user ? user : {});
   return (
     <div className={styles.profilePageWrapper} data-aos="fade-right">
       <Grid container>
         <Grid item xs={12} md={6}>
-          <Typography color={"primary"}>Profile Details</Typography>
+          <Typography
+            color={"primary"}
+            sx={{ display: "flex", alignItems: "center", gap: 2 }}
+          >
+            {" "}
+            <FaArrowLeft onClick={() => setUserTabsValue(1)} />
+            Profile Details
+          </Typography>
         </Grid>
         <Grid
           className="flex items-center"

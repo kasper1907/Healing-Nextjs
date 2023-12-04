@@ -55,3 +55,19 @@ button{
 .css-b0ldl9-MuiButtonBase-root-MuiAccordionSummary-root.Mui-expanded{
   min-height: 0;
 }
+
+.main-btn{
+    background-color: #10458c !important;
+    color: #FFF;
+    padding: 8px 32px;
+    border-radius: 8px;
+    transition: 0.3s ease-in-out;
+}
+
+.main-btn:disabled{
+  background-color: #10458c !important;
+  color: #FFF;
+  padding: 8px 32px;
+  border-radius: 8px;
+  opacity: 0.5;
+}
