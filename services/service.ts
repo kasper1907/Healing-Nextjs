@@ -8,10 +8,19 @@ export const postRequest: any = async (
   data: any,
   handleSuccess: any
 ) => {
+  let body;
+  let contentType;
+  if (data instanceof FormData) {
+    body = data;
+    contentType = "multipart/form-data";
+  } else {
+    body = JSON.stringify(data);
+    contentType = "application/json";
+  }
   try {
     const res = await axios.post(`${baseUrl}${url}`, data, {
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": contentType,
         Authorization: `Bearer ${document.cookie}`,
       },
     });

@@ -1,21 +1,33 @@
 import Dropzone from "@/utils/Dropzone";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "@/styles/sass/Dashboard/UserMain/attachments.module.scss";
-import { Button, Container, Grid } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Container,
+  Grid,
+  LinearProgress,
+  Typography,
+} from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
 import { AiOutlineDownload, AiOutlineEdit, AiOutlineEye } from "react-icons/ai";
 import { BsDownload } from "react-icons/bs";
 import jwt from "jsonwebtoken";
 import { useSearchParams } from "next/navigation";
-import { getOne } from "@/services/service";
+import { getOne, postRequest } from "@/services/service";
 import { endPoints } from "@/services/endpoints";
-import useSWR from "swr";
+import useSWR, { mutate } from "swr";
+import { toast } from "sonner";
+import DownloadComponenet from "./DownloadComponenet";
 const Attachments = () => {
   const token = document?.cookie.split("=")[1];
   const decodedToken = jwt.decode(token?.toString()) as any;
   const searchParams = useSearchParams();
   const userId = searchParams.get("id");
+  const [files, setFiles] = useState<any>([]);
+  const [loading, setLoading] = useState(false);
 
   const isParamsUserIdEqualDecodedTokenUserId =
     userId == decodedToken?.data?.id;
@@ -25,47 +37,40 @@ const Attachments = () => {
     getOne
   );
 
-  const handleDownloadFile = (url: string, fileName: string) => () => {
-    const proxyUrl =
-      "http://localhost/healing-backend/proxy.php?url=" +
-      encodeURIComponent(url);
-
-    window.open(proxyUrl);
-
-    // Fetch the file content from the server
-    // fetch(proxyUrl, {
-    //   method: "GET",
-    //   headers: {
-    //     "Access-Control-Allow-Origin": "*",
-    //     "Content-Type": "application/pdf",
-    //   },
-    // })
-    //   .then((response) => response.blob())
-    //   .then((blob) => {
-    //     // Create a Blob with the file content
-    //     const fileUrl = window.URL.createObjectURL(blob);
-
-    //     // Create a link element and trigger a download
-    //     const fileLink = document.createElement("a");
-    //     fileLink.href = fileUrl;
-    //     fileLink.setAttribute("download", fileName);
-    //     document.body.appendChild(fileLink);
-    //     fileLink.click();
-
-    //     // Clean up: remove the link and revoke the Blob URL
-    //     document.body.removeChild(fileLink);
-    //     window.URL.revokeObjectURL(fileUrl);
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error downloading file:", error);
-    //   });
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    setLoading(true);
+    const formData = new FormData();
+    formData.append("file", files[0]);
+    const res = await postRequest(
+      `attachments/uploadFiles/${decodedToken?.data?.id}`,
+      formData,
+      () => {
+        toast.success("File Uploaded Successfully");
+        setFiles([]);
+        setLoading(false);
+        mutate(endPoints.getUserAttachments(decodedToken?.data?.id));
+      }
+    );
   };
+
+  const filesExtensionsImg: any = {
+    pdf: "/images/Dashboard/file-icon (2).svg",
+    doc: "/images/Dashboard/file-icon (1).svg",
+    docx: "/images/Dashboard/file-icon (1).svg",
+  };
+
   return (
     <div className={styles.pageWrapper}>
       <Container sx={{ mt: 10 }}>
         {isParamsUserIdEqualDecodedTokenUserId ? (
           <div className={styles.dropZoneWrapper}>
-            <Dropzone />
+            <Dropzone
+              files={files}
+              setFiles={setFiles}
+              loading={loading}
+              handleSubmit={handleSubmit}
+            />
           </div>
         ) : null}
 
@@ -91,9 +96,11 @@ const Attachments = () => {
                     >
                       <span className="flex items-center gap-2">
                         <Image
-                          src={`/images/Dashboard/file-icon (${
-                            Math.floor(Math.random() * 2) + 1
-                          }).svg`}
+                          src={`${
+                            filesExtensionsImg[
+                              el?.attachment_name.split(".")[1]
+                            ]
+                          }`}
                           width={20}
                           height={20}
                           alt="attachment"
@@ -129,18 +136,7 @@ const Attachments = () => {
                             View
                           </Link>
                         </Button>
-                        <Button
-                          variant="contained"
-                          onClick={handleDownloadFile(
-                            `${process.env.NEXT_PUBLIC_BASE_URL}${el?.attachment_name}`,
-                            el?.name
-                          )}
-                        >
-                          <BsDownload />
-                          <span style={{ marginTop: "3px", marginLeft: "3px" }}>
-                            Download
-                          </span>
-                        </Button>
+                        <DownloadComponenet file={el} />
                       </div>
                     </Grid>
                   </Grid>

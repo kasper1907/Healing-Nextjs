@@ -2,13 +2,18 @@ import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { ArrowUpTrayIcon, XMarkIcon } from "@heroicons/react/24/solid";
-import { Box, Button, Grid } from "@mui/material";
+import { Box, Button, CircularProgress, Grid } from "@mui/material";
 import styles from "@/styles/sass/Dashboard/UserMain/attachments.module.scss";
 import { CiCircleRemove } from "react-icons/ci";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
-const Dropzone = ({ className }: any) => {
-  const [files, setFiles] = useState<any>([]);
+const Dropzone = ({
+  className,
+  files,
+  setFiles,
+  loading,
+  handleSubmit,
+}: any) => {
   const [rejected, setRejected] = useState<any>([]);
   const { t } = useTranslation();
   const onDrop = useCallback((acceptedFiles: any, rejectedFiles: any) => {
@@ -28,9 +33,9 @@ const Dropzone = ({ className }: any) => {
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: {
-      "image/": [".svg"],
+      "image/": [".pdf"],
     },
-    maxSize: 1024 * 1000,
+    maxSize: 60 * 1024 * 1024, // 50 megabytes in bytes
     onDrop,
   });
 
@@ -54,24 +59,6 @@ const Dropzone = ({ className }: any) => {
     setRejected((files: any) =>
       files.filter(({ file }: any) => file.name !== name)
     );
-  };
-
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
-
-    if (!files?.length) return;
-
-    const formData = new FormData();
-    files.forEach((file: any) => formData.append("file", file));
-    formData.append("upload_preset", "friendsbook");
-
-    const URL: any = process.env.NEXT_PUBLIC_CLOUDINARY_URL;
-    const data = await fetch(URL, {
-      method: "POST",
-      body: formData,
-    }).then((res) => res.json());
-
-    // console.log(data);
   };
 
   return (
@@ -165,10 +152,7 @@ const Dropzone = ({ className }: any) => {
               md={6}
             >
               <Button
-                type="button"
-                onClick={() => {
-                  toast.success("Files Uploaded Successfully");
-                }}
+                type="submit"
                 className={styles.browseButton}
                 sx={{ backgroundColor: "#10458C" }}
                 style={{
@@ -177,7 +161,13 @@ const Dropzone = ({ className }: any) => {
                   color: "#10458C",
                 }}
               >
-                Submit And Upload
+                {loading ? (
+                  <>
+                    <CircularProgress size={20} color="primary" /> Loading...
+                  </>
+                ) : (
+                  "Submit And Upload"
+                )}
               </Button>
             </Grid>
           </Grid>
@@ -186,7 +176,7 @@ const Dropzone = ({ className }: any) => {
         <Box className="mt-20" sx={{ marginTop: { xs: "145px", md: "84px" } }}>
           {/* Accepted files */}
 
-          <Grid container rowSpacing={2}>
+          <Grid container rowSpacing={2} sx={{ mt: 8 }}>
             {files.map((file: any) => (
               <Grid
                 className={styles.uploadedImgsGrid}
@@ -202,16 +192,20 @@ const Dropzone = ({ className }: any) => {
                   }}
                 >
                   <Image
-                    src={file.preview}
+                    src={
+                      file.type == "application/pdf"
+                        ? "/images/Dashboard/pdf-file.svg"
+                        : file.preview
+                    }
                     alt={file.name}
-                    width={150}
-                    height={150}
+                    width={80}
+                    height={80}
                     onLoad={() => {
                       URL.revokeObjectURL(file.preview);
                     }}
                     style={{
-                      width: "150px",
-                      height: "150px",
+                      width: "80px",
+                      height: "80px",
                     }}
                     className="object-contain rounded-md"
                   />
