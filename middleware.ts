@@ -31,10 +31,11 @@ import { withAuthorization } from "@/middlewares/withAuthorization";
 import { withLogging } from "@/middlewares/withLogging";
 import { withErrorHandler } from "./middlewares/withErrorHandler";
 import { withHeaderParams } from "./middlewares/withHeaderParameters";
+import { withRolesAndPermissions } from "./middlewares/withRolesAndPermissions";
 
 export default stackMiddlewares([
+  withRolesAndPermissions,
   withAuthorization,
-  withLogging,
   withHeaderParams,
 ]);
 export const config = {

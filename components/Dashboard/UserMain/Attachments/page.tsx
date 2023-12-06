@@ -60,6 +60,7 @@ const Attachments = () => {
     docx: "/images/Dashboard/file-icon (1).svg",
   };
 
+  
   return (
     <div className={styles.pageWrapper}>
       <Container sx={{ mt: 10 }}>
