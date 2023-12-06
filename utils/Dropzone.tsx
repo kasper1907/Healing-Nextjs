@@ -2,7 +2,7 @@ import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { ArrowUpTrayIcon, XMarkIcon } from "@heroicons/react/24/solid";
-import { Box, Button, CircularProgress, Grid } from "@mui/material";
+import { Box, Button, CircularProgress, Grid, Typography } from "@mui/material";
 import styles from "@/styles/sass/Dashboard/UserMain/attachments.module.scss";
 import { CiCircleRemove } from "react-icons/ci";
 import { toast } from "sonner";
@@ -16,27 +16,35 @@ const Dropzone = ({
 }: any) => {
   const [rejected, setRejected] = useState<any>([]);
   const { t } = useTranslation();
-  const onDrop = useCallback((acceptedFiles: any, rejectedFiles: any) => {
-    if (acceptedFiles?.length) {
-      setFiles((previousFiles: any) => [
-        ...previousFiles,
-        ...acceptedFiles.map((file: any) =>
-          Object.assign(file, { preview: URL.createObjectURL(file) })
-        ),
-      ]);
-    }
+  const onDrop = useCallback(
+    (acceptedFiles: any, rejectedFiles: any) => {
+      if (acceptedFiles?.length) {
+        setFiles((previousFiles: any) => [
+          ...previousFiles,
+          ...acceptedFiles.map((file: any) =>
+            Object.assign(file, { preview: URL.createObjectURL(file) })
+          ),
+        ]);
+      }
 
-    if (rejectedFiles?.length) {
-      setRejected((previousFiles: any) => [...previousFiles, ...rejectedFiles]);
-    }
-  }, []);
+      if (rejectedFiles?.length) {
+        setRejected((previousFiles: any) => [
+          ...previousFiles,
+          ...rejectedFiles,
+        ]);
+      }
+    },
+    [setFiles]
+  );
 
+  let acceptedFiles = [".pdf"];
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: {
-      "image/": [".pdf"],
+      "image/": acceptedFiles.map((type) => type + ", "),
     },
     maxSize: 60 * 1024 * 1024, // 50 megabytes in bytes
     onDrop,
+    multiple: false,
   });
 
   useEffect(() => {
@@ -103,6 +111,9 @@ const Dropzone = ({
                 >
                   Browse Files
                 </Button>
+                <Typography color={"primary"} sx={{ fontSize: "15px" }}>
+                  *You can upload {acceptedFiles?.map((el) => el)} files only
+                </Typography>
               </p>
             )}
           </div>
@@ -116,10 +127,10 @@ const Dropzone = ({
               position: "absolute",
               left: "50%",
               transform: "translateX(-50%)",
-              marginTop: "10px",
+              marginTop: "30px",
             }}
           >
-            <Grid
+            {/* <Grid
               sx={{
                 display: "flex",
                 justifyContent: { xs: "center", md: "flex-end" },
@@ -141,15 +152,15 @@ const Dropzone = ({
               >
                 Remove All Files
               </Button>
-            </Grid>
+            </Grid> */}
             <Grid
               sx={{
                 display: "flex",
-                justifyContent: { xs: "center", md: "flex-start" },
+                justifyContent: { xs: "center" },
               }}
               item
               xs={12}
-              md={6}
+              md={12}
             >
               <Button
                 type="submit"
@@ -173,10 +184,10 @@ const Dropzone = ({
           </Grid>
         )}
         {/* Preview */}
-        <Box className="mt-20" sx={{ marginTop: { xs: "145px", md: "84px" } }}>
+        <Box sx={{ marginTop: { xs: "145px", md: "84px" } }}>
           {/* Accepted files */}
 
-          <Grid container rowSpacing={2} sx={{ mt: 8 }}>
+          <Grid container rowSpacing={2} sx={{ mt: 12 }}>
             {files.map((file: any) => (
               <Grid
                 className={styles.uploadedImgsGrid}
