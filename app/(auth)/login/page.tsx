@@ -21,8 +21,8 @@ const Page = () => {
   const [showPassword, setShowPassword] = React.useState(false);
   const [loading, setLoading] = useState(false);
   const [userData, setUserData] = React.useState({
-    username: "",
-    password: "",
+    username: "Dr.ahmed",
+    password: "ahmed1234",
   });
 
   const handleLogin = async (e: FormEvent) => {
@@ -35,7 +35,13 @@ const Page = () => {
       toast.success("Login Successfully");
       document.cookie = `accessToken=${res.accessToken}`;
       window.localStorage.setItem("userData", JSON.stringify(res.data));
-      router.push("/dashboard");
+      if (res?.data?.role == "User") {
+        router.push(
+          `/dashboard/users/userDetails?id=${res.data.user_id}&groupId=${res.data.group_id}`
+        );
+      } else {
+        router.push("/dashboard");
+      }
     }
     if (res.status == "error" && res.statusCode == 400) {
       toast.error("Invalid username or password");

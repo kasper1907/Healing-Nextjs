@@ -169,7 +169,7 @@ const UserMain = () => {
             {LoadingUserGroup ? (
               <CircularProgress color="primary" />
             ) : (
-              <Tooltip title={group.group_name}>
+              <Tooltip title={group?.group_name}>
                 <Image
                   src={`${process.env.NEXT_PUBLIC_BASE_URL2}${group?.logo}`}
                   width={50}
