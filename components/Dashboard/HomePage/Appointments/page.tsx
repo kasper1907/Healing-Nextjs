@@ -5,12 +5,32 @@ import AppointmentCard from "./AppointmentCard/page";
 import useSWR from "swr";
 import { fetcher } from "@/utils/swr";
 import { getOne } from "@/services/service";
+import jwt from "jsonwebtoken";
+import { usePathname } from "next/navigation";
 
 const Appointments = () => {
-  const { data, error, isLoading } = useSWR(`appointments`, getOne);
+  const pathname = usePathname();
 
-  console.log(data);
-  const Appointments = data?.data;
+  const userToken = document?.cookie.split("accessToken=")[1];
+
+  const decodedToken = jwt.decode(userToken?.toString()) as any;
+
+  const getAppointmentsEndPoint = () => {
+    if (pathname == "/dashboard") {
+      return `appointments/getByUser/${decodedToken?.data?.passwordHash}`;
+    } else {
+      return `appointments/`;
+    }
+  };
+
+  const { data: AppointmentsData, isLoading: AppointmentsLoading } = useSWR(
+    getAppointmentsEndPoint(),
+    getOne
+  );
+
+  const Appointments = AppointmentsData?.data;
+
+  console.log(Appointments);
   return (
     <div className={styles.PageWrapper}>
       <Container
