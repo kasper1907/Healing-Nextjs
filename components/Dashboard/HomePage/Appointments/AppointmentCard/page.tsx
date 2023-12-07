@@ -20,7 +20,7 @@ const AppointmentCard = ({ appointment }: any) => {
   const handleChange = () => {
     setExpanded((prev: any) => !prev);
   };
-  console.log(appointment);
+  //console.log(appointment);
   return (
     <div className="flex flex-col w-full">
       <div className={styles.appointmentCard}>

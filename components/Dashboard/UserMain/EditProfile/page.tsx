@@ -28,6 +28,7 @@ import { FaArrowLeft } from "react-icons/fa";
 import jwt from "jsonwebtoken";
 import Dropzone from "@/utils/Dropzone";
 import { toast } from "sonner";
+import useCookie from "react-use-cookie";
 export const CssTextField: any = styled(TextField as any)({
   "& label.Mui-focused": {
     color: "#10458c",
@@ -92,21 +93,35 @@ export const StyledDatePicker: any = styled(DatePicker as any)({
 });
 
 const EditProfile = () => {
+  const [userToken, setUserToken] = useCookie("accessToken", "0");
   const { userTabsValue, setUserTabsValue }: any = useTabsContext();
   const [userData, setUserData] = React.useState({} as UserDetails);
   const [newData, setNewData] = React.useState({} as UserDetails);
   const [files, setFiles] = React.useState([] as any);
   const [loading, setLoading] = React.useState(false);
   const searchParams = useSearchParams();
-  const token = document?.cookie.split("=")[1];
-  const decodedToken = jwt.decode(token?.toString()) as any;
+  const decodedToken = jwt.decode(userToken?.toString()) as any;
   const { data, isLoading } = useSWR(
     endPoints.getUser(decodedToken?.data?.user_id as string),
     getOne
   );
 
   const user: UserDetails = data?.data;
-  console.log(user);
+
+  let defaultUserData = {
+    full_name: user?.full_name || "",
+    email: user?.email || "",
+    country: user?.country || "",
+    phone: user?.phone || "",
+    date_of_birth: user?.date_of_birth || "",
+    time_of_birth: user?.time_of_birth || "",
+    weight: user?.weight || "",
+    height: user?.height || "",
+    job_title: user?.job_title || "",
+    social_status: user?.social_status || "",
+    number_of_boys: user?.number_of_boys || "",
+    number_of_girls: user?.number_of_girls || "",
+  };
   useEffect(() => {
     Aos.init();
   }, []);
@@ -147,7 +162,14 @@ const EditProfile = () => {
         mutate(mutateEndPoint);
       }
     );
+    let test = await res.accessToken;
 
+    if (res.status == "success") {
+      if (res.accessToken != undefined) {
+        setUserToken(test?.toString());
+        // mutate(endPoints.getUser(decodedToken?.data?.user_id));
+      }
+    }
     setLoading(false);
   };
 
@@ -474,7 +496,7 @@ const EditProfile = () => {
             }}
             type="submit"
             className="main-btn"
-            disabled={JSON.stringify(userData) === JSON.stringify(user)}
+            disabled={JSON.stringify(defaultUserData) === JSON.stringify(user)}
           >
             {loading ? "Loading..." : "Update"}
           </Button>

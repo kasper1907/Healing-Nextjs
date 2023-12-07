@@ -56,8 +56,9 @@ const Attachments = () => {
 
   const filesExtensionsImg: any = {
     pdf: "/images/Dashboard/file-icon (2).svg",
-    doc: "/images/Dashboard/file-icon (1).svg",
-    docx: "/images/Dashboard/file-icon (1).svg",
+    png: "/images/Dashboard/image.svg",
+    svg: "/images/Dashboard/image.svg",
+    jpg: "/images/Dashboard/image.svg",
   };
 
   return (

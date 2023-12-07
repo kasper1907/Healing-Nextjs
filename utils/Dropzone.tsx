@@ -38,7 +38,7 @@ const Dropzone = ({
     [setFiles]
   );
 
-  let acceptedFiles = [".pdf"];
+  let acceptedFiles = [".pdf", ".svg"];
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: {
       "image/": acceptedFiles.map((type) => type + ", "),

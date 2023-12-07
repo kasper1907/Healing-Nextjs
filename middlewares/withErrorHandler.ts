@@ -7,7 +7,7 @@ export const withErrorHandler: MiddlewareFactory = (next) => {
       await next(request, _next);
     } catch (error) {
       if (error instanceof Error) {
-        // console.log("withErrorHandler", error.message);
+        // //console.log("withErrorHandler", error.message);
       }
     }
   };

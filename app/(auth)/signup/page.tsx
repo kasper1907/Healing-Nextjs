@@ -42,7 +42,7 @@ type Session = {
 };
 
 export default function Page() {
-  // console.log("steps", steps);
+  // //console.log("steps", steps);
   const { t, i18n } = useTranslation();
   const Languages: any = {
     en: { nativeName: "English" },

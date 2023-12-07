@@ -19,7 +19,12 @@ import {
 } from "@mui/material";
 import { isArabic } from "@/utils/checkLanguage";
 import { endPoints } from "@/services/endpoints";
-import { deleteRequest, postRequest, updateRequest } from "@/services/service";
+import {
+  deleteRequest,
+  getOne,
+  postRequest,
+  updateRequest,
+} from "@/services/service";
 import { calculateTimeDifference } from "@/utils/calculateTimeDifference";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { MdEditNote } from "react-icons/md";
@@ -40,6 +45,7 @@ const Comments = ({
   commentsRef,
   setCurrentVideoComments,
   currentVideoComments,
+  videoId,
 }: any) => {
   // ** States
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -55,8 +61,10 @@ const Comments = ({
 
   // const { data: Comments, isLoading } = useSWR(endPoints.getComments, fetcher);
   // const { data: Replies } = useSWR(endPoints.getReplies, fetcher);
-
-  const Comments: any = [];
+  const { data: VideoComments, isLoading } = useSWR(
+    endPoints.getCommentByVideoId(videoId),
+    getOne
+  );
 
   const userData = JSON.parse(window?.localStorage.getItem("userData") || "{}");
   // ** Side Effects
@@ -79,7 +87,7 @@ const Comments = ({
   // ** Functions
   const toggleMakeAReply = () => {
     setMakeAReply((prev) => !prev);
-    setReplyText("@UserName__");
+    setReplyText("@" + comment?.full_name + " ");
   };
 
   const handleSubmit = async (e: any) => {
@@ -100,17 +108,13 @@ const Comments = ({
   };
   const handleSubmitEdit = async (e: any) => {
     e.preventDefault();
-    // console.log(comment);
     const postData = {
-      text: replyText,
-      id: comment?.id || comment?.commentId,
-      videoId: comment?.videoId,
-      // createdAt: new Date(),
+      comment_text: replyText,
     };
 
     const res = await updateRequest({
-      id: comment?.id || comment?.commentId,
-      endpoint: endPoints.getComments,
+      id: comment?.id,
+      endpoint: `comments/updateOne`,
       data: postData,
       handleSuccess: handleSuccess,
     });
@@ -121,16 +125,21 @@ const Comments = ({
       ` ${inputEdit ? "Comment Updated" : "Reply Added"}  Successfully`
     );
     if (inputEdit) {
-      const currentComment = Comments?.find(
-        (comment: any) => comment.id == data.commentId
+      const currentComment = VideoComments?.data?.find(
+        (el: any) => el.id == comment?.id
       );
       const currentCommentIndex = currentVideoComments?.indexOf(currentComment);
       const updatedComments = [...currentVideoComments];
-      updatedComments[currentCommentIndex] = data;
+
+      updatedComments[currentCommentIndex] = {
+        ...currentComment,
+        comment_text: replyText,
+      };
+      // console.log(updatedComments);
       setCurrentVideoComments(updatedComments);
       setInputEdit(false);
       // setCommentReplies((prev: any) => [...prev]);
-      // console.log(commentReplies);
+      // //console.log(commentReplies);
     } else {
       setCommentReplies((prev: any) => [...prev, data]);
     }
@@ -149,22 +158,36 @@ const Comments = ({
   const PrepareUpdateComment = () => {
     setInputEdit(true);
     setMakeAReply((prev) => !prev);
-    setReplyText(comment?.text);
+    setReplyText(comment?.comment_text);
     handleClose();
   };
 
   const handlePerformDeleteComment = async () => {
     const res = await deleteRequest({
-      endpoint: endPoints.getComments,
+      endpoint: `comments/deleteOne`,
       id: comment?.id || comment?.commentId,
+      mutateEndPoint: endPoints.getCommentByVideoId(videoId),
     });
   };
 
-  // console.log(comment.user_id == userData?.user_id);
+  // //console.log(comment.user_id == userData?.user_id);
   return (
     <>
       <div className={styles.write_comment}>
-        <div className={styles.userImgWrapper}></div>
+        <div className={styles.userImgWrapper}>
+          <Image
+            src={`${process.env.NEXT_PUBLIC_BASE_URL}/${comment.image}`}
+            width={156}
+            height={156}
+            alt="userImage"
+            style={{
+              borderRadius: "50%",
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+            }}
+          />{" "}
+        </div>
         <div className={styles.commentInput}>
           <div
             className={`${styles.comment} ${
@@ -173,7 +196,7 @@ const Comments = ({
                 : styles.englishComment
             }`}
           >
-            <span> @{comment?.user_name}</span>
+            <span> @{comment?.full_name}</span>
             {comment?.comment_text}
           </div>
           <div className={styles.commentBottom}>

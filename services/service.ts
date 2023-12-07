@@ -24,7 +24,7 @@ export const postRequest: any = async (
         Authorization: `Bearer ${document.cookie}`,
       },
     });
-    console.log(res);
+    //console.log(res);
     if (res.status == 201) {
       handleSuccess ? handleSuccess(res.data) : "";
     }
@@ -41,8 +41,16 @@ export const updateRequest: any = async ({
   handleSuccess,
 }: any) => {
   try {
-    const res = await axios.put(`${endpoint}/${id}`, data);
-    // console.log(res)
+    const res = await axios.put(
+      `${process.env.NEXT_PUBLIC_BASE_URL}${endpoint}/${id}`,
+      data,
+      {
+        headers: {
+          Authorization: `Bearer ${document.cookie}`,
+        },
+      }
+    );
+    // //console.log(res)
     if (res.status == 200) {
       handleSuccess(data);
       mutate(endpoint);
@@ -55,12 +63,20 @@ export const deleteRequest: any = async ({
   id,
   endpoint,
   handleSuccess,
+  mutateEndPoint,
 }: any) => {
   try {
-    const res = await axios.delete(`${endpoint}/${id}`);
-    if (res.status == 200) {
+    const res = await axios.delete(
+      `${process.env.NEXT_PUBLIC_BASE_URL}${endpoint}/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${document.cookie}`,
+        },
+      }
+    );
+    if (res.status == 200 || res.status == 204) {
       toast.success("Item deleted successfully");
-      mutate(endpoint);
+      mutate(mutateEndPoint);
     } else {
       toast.error("Something went wrong");
     }

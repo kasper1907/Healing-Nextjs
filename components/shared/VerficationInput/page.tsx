@@ -63,7 +63,7 @@ const VerificationCodeInput = ({
   ) => {
     // Move to the previous input on backspace
     if (event.key === "Backspace") {
-      // console.log(event.target.value);
+      // //console.log(event.target.value);
 
       //@ts-ignore
       if (event.target.value == "") {
@@ -95,7 +95,7 @@ const VerificationCodeInput = ({
         }
       }
 
-      // console.log("index", index);
+      // //console.log("index", index);
       //@ts-ignore
       if (index == 4 && event.target.value != "") {
         setShowNext(true);

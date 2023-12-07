@@ -25,12 +25,10 @@ const Recorded = () => {
 
   const { data, error, isLoading } = useSWR(
     endPoints.getSessionsByGroupId(groupId),
-    getOne,
-    {
-      revalidateOnMount: false,
-    }
+    getOne
   );
   const Videos: any = data?.data;
+  //console.log(Videos, "Videos");
   const userVideos: any = [];
 
   const VideoHeaderClickHandler = (video: any) => {
