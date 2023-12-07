@@ -14,8 +14,5 @@ export const withAuthorization: MiddlewareFactory = (next) => {
     if (isPublicPath && token) {
       return NextResponse.redirect(new URL("/dashboard", request.url));
     }
-    // console.log("withAuthorization", request.nextUrl.pathname);
-
-    return next(request, _next);
   };
 };

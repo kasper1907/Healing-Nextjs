@@ -24,6 +24,7 @@ export const postRequest: any = async (
         Authorization: `Bearer ${document.cookie}`,
       },
     });
+    console.log(res);
     if (res.status == 201) {
       handleSuccess ? handleSuccess(res.data) : "";
     }

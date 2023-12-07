@@ -45,5 +45,6 @@ export const withRolesAndPermissions: MiddlewareFactory = (next) => {
       //     return NextResponse.redirect(url);
       //   }
     }
+    return next(request, _next);
   };
 };

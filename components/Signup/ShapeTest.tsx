@@ -1,7 +1,6 @@
 import { Button, Grid, Typography } from "@mui/material";
 import Image from "next/image";
 import React, { useEffect } from "react";
-import ReactCodeInput from "react-verification-code-input";
 import styles from "@/styles/sass/Dashboard/Forms/main.module.scss";
 import { toast } from "sonner";
 import Aos from "aos";

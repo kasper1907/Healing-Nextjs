@@ -18,4 +18,5 @@ export const endPoints = {
   getUserProfile: (userId: string | null) => `users/getProfile/${userId}`,
   getUserAttachments: (userId: string | null) =>
     `attachments/getUserFiles/${userId}`,
+  updateUser: (userId: string | null) => `users/update/${userId}`,
 };

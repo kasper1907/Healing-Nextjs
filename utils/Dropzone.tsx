@@ -13,6 +13,7 @@ const Dropzone = ({
   setFiles,
   loading,
   handleSubmit,
+  isSubmitExternal,
 }: any) => {
   const [rejected, setRejected] = useState<any>([]);
   const { t } = useTranslation();
@@ -172,7 +173,7 @@ const Dropzone = ({
                   color: "#10458C",
                 }}
               >
-                {loading ? (
+                {!isSubmitExternal && loading ? (
                   <>
                     <CircularProgress size={20} color="primary" /> Loading...
                   </>

@@ -328,12 +328,15 @@ export default function DashboardNavbar(props: Props) {
               >
                 {currentPageUser && isInUserPage ? (
                   <Image
-                    src={`https://mtnhealingcenter.com/healing-center/${currentPageUser.image}`}
+                    src={`${process.env.NEXT_PUBLIC_BASE_URL}/${currentPageUser.image}`}
                     width={156}
                     height={156}
                     alt="userImage"
                     style={{
                       borderRadius: "50%",
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
                     }}
                   />
                 ) : null}

@@ -87,7 +87,7 @@ const UserMain = () => {
               />
               <span className="mt-[1px] text-[#10458C]">About</span>
             </div>
-            {decodedToken?.data?.id == User?.id ? (
+            {decodedToken?.data?.user_id == User?.id ? (
               <Button
                 variant="outlined"
                 sx={{

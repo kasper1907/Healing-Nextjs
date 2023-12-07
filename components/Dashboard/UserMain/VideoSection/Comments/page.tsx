@@ -57,10 +57,10 @@ const Comments = ({
   // const { data: Replies } = useSWR(endPoints.getReplies, fetcher);
 
   const Comments: any = [];
-  const Replies: any = [];
 
   const userData = JSON.parse(window?.localStorage.getItem("userData") || "{}");
   // ** Side Effects
+  const Replies: any = [];
 
   useEffect(() => {
     const commentReplies =

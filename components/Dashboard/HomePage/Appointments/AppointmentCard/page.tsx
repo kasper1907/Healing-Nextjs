@@ -7,6 +7,9 @@ import {
   AccordionSummary,
   Typography,
   AccordionDetails,
+  Box,
+  Chip,
+  Avatar,
 } from "@mui/material";
 import StyledButton from "@/components/shared/StyledButton";
 import Link from "next/link";
@@ -19,7 +22,7 @@ const AppointmentCard = ({ appointment }: any) => {
   };
   console.log(appointment);
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col w-full">
       <div className={styles.appointmentCard}>
         <div className={styles.left}>
           <span>{appointment?.session_time}</span>
@@ -49,7 +52,9 @@ const AppointmentCard = ({ appointment }: any) => {
               sm={6}
               className={styles.right_RightGrid}
             >
-              <Button>Members</Button>
+              <Button sx={{ width: "200px !important" }} onClick={handleChange}>
+                {expanded ? "Hide Members" : "Show Members"}
+              </Button>
               <Button>
                 <Link target="_blank" href={appointment.meeting_link}>
                   Join
@@ -60,12 +65,17 @@ const AppointmentCard = ({ appointment }: any) => {
         </div>
       </div>
       <Accordion
+        className="appointment_accordion"
         sx={{
-          "& .MuiPaper-root MuiPaper-elevation": {
+          "& .MuiPaper-root.MuiPaper-elevation": {
             boxShadow: "none !important",
-            backgroundColor: "transparent",
-            border: "none",
           },
+          "& .MuiAccordionSummary-expandIconWrapper": {
+            display: "none !important",
+          },
+          boxShadow: "none !important",
+          backgroundColor: "#FFF !important",
+          padding: "0px !important",
         }}
         expanded={expanded}
         onChange={handleChange}
@@ -74,16 +84,38 @@ const AppointmentCard = ({ appointment }: any) => {
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel4bh-content"
           id="panel4bh-header"
+          sx={{
+            "& .MuiButtonBase-root": {
+              minHeight: "0px !important",
+              height: "0px !important",
+            },
+          }}
         >
-          <Typography sx={{ width: "33%", flexShrink: 0 }}>
+          {/* <Typography sx={{ width: "33%", flexShrink: 0 }}>
             Personal data
-          </Typography>
+          </Typography> */}
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>
+          {/* <Typography>
             Nunc vitae orci ultricies, auctor nunc in, volutpat nisl. Integer
             sit amet egestas eros, vitae egestas augue. Duis vel est augue.
-          </Typography>
+          </Typography> */}
+          <Box sx={{ width: "100%" }}>
+            {Array.from({ length: 5 }).map((_, index) => (
+              <Chip
+                sx={{ mr: 2 }}
+                key={index}
+                avatar={
+                  <Avatar
+                    alt="Test User"
+                    src="/images/Dashboard/avatars/avatar.jpg"
+                  />
+                }
+                label="Test User"
+                variant="outlined"
+              />
+            ))}
+          </Box>
         </AccordionDetails>
       </Accordion>
     </div>
