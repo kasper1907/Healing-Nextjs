@@ -315,6 +315,7 @@ const VideoSection = ({
                 className={`${commentsStyles.comment} `}
               >
                 <Comments
+                  userData={userData}
                   videoId={video?.id}
                   comment={comment}
                   setCurrentVideoComments={setCurrentVideoComments}

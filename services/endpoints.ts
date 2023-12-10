@@ -19,4 +19,8 @@ export const endPoints = {
   getUserAttachments: (userId: string | null) =>
     `attachments/getUserFiles/${userId}`,
   updateUser: (userId: string | null) => `users/update/${userId}`,
+  createReply: (commentId: string | null) =>
+    `ReplayComments/createReplayComment/${commentId}`,
+  getRepliesByCommentId: (commentId: string | null) =>
+    `ReplayComments/getAllReplies/${commentId}`,
 };

@@ -28,37 +28,28 @@ import { checkLength } from "@/utils/checkLength";
 import { SessionDetails } from "@/models/Sessions";
 import { endPoints } from "@/services/endpoints";
 import jwt from "jsonwebtoken";
+import { UserContext } from "@/contexts/mainContext";
 const UserMain = () => {
   const [viewAllGroups, setViewAllGroups] = React.useState(false);
   const { userTabsValue, setUserTabsValue }: any = useTabsContext();
   const [loggedUserToken, setLoggedUserToken] = React.useState<any>("");
   const params = useSearchParams();
-  const userId = params.get("id");
-  const groupId = params.get("groupId");
-  const { data, error, isLoading } = useSWR(`users/getOne/${userId}`, getOne);
-  const { data: LastSession } = useSWR(
-    `videos/getLastSession/${groupId}`,
-    getOne
-  );
-  const { data: RecommendedVideos, isLoading: LoadingRecommendedVideos } =
-    useSWR(endPoints.getRecommendedVideos(groupId), getOne, {
-      revalidateOnMount: false,
-    });
-  const LastSessionVideo: SessionDetails = LastSession?.data;
+
+  const {
+    recommendedVideos: RecommendedVideos,
+    RecommendedVideosLoading: LoadingRecommendedVideos,
+    LastSession,
+    User,
+    LoadingUser,
+    UserGroup,
+    LoadingUserGroup,
+  }: any = React.useContext(UserContext);
+
   useEffect(() => {
     AOS.init();
   }, []);
 
-  const User: UserDetails | any = data?.data;
-
-  let userGroupId: any = `group_id_${User?.course_id}` || undefined;
-
-  const { data: UserGroup, isLoading: LoadingUserGroup } = useSWR(
-    `groups/getOne/${User?.course_id ? User[userGroupId] : groupId}`,
-    getOne
-  );
-
-  const group: Group = UserGroup?.data;
+  // const group: Group = UserUserGroup.data;
 
   useEffect(() => {
     const userToken: any = document?.cookie
@@ -71,7 +62,7 @@ const UserMain = () => {
 
   const decodedToken: any = jwt.decode(loggedUserToken?.toString() || "");
 
-  if (isLoading) return <UserMainSkelton />;
+  if (LoadingUser) return <UserMainSkelton />;
 
   return (
     <Grid container>
@@ -169,9 +160,9 @@ const UserMain = () => {
             {LoadingUserGroup ? (
               <CircularProgress color="primary" />
             ) : (
-              <Tooltip title={group?.group_name}>
+              <Tooltip title={UserGroup.group_name}>
                 <Image
-                  src={`${process.env.NEXT_PUBLIC_BASE_URL2}${group?.logo}`}
+                  src={`${process.env.NEXT_PUBLIC_BASE_URL2}${UserGroup.logo}`}
                   width={50}
                   height={50}
                   alt="TherapyGroup"
@@ -236,8 +227,8 @@ const UserMain = () => {
               <Typography color={"primary"} sx={{ mb: 2 }}>
                 Last Session
               </Typography>
-              {LastSessionVideo ? (
-                <VideoSection video={LastSessionVideo} isFullVideo={false} />
+              {LastSession ? (
+                <VideoSection video={LastSession} isFullVideo={false} />
               ) : (
                 "No Session Found"
               )}

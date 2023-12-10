@@ -40,6 +40,7 @@ export const StyledTextField = styled(TextField)`
 `;
 
 const Comments = ({
+  userData,
   comment,
   setCommentsHeight,
   commentsRef,
@@ -63,26 +64,23 @@ const Comments = ({
   // const { data: Replies } = useSWR(endPoints.getReplies, fetcher);
   const { data: VideoComments, isLoading } = useSWR(
     endPoints.getCommentByVideoId(videoId),
-    getOne
+    getOne,
+    {
+      revalidateOnMount: false,
+    }
   );
 
-  const userData = JSON.parse(window?.localStorage.getItem("userData") || "{}");
-  // ** Side Effects
-  const Replies: any = [];
-
-  useEffect(() => {
-    const commentReplies =
-      Replies &&
-      Replies?.length > 0 &&
-      Replies?.filter((reply: any) => reply.commentId == comment?.id);
-    setCommentReplies(commentReplies);
-
-    if (commentReplies?.length < 5) {
-      setRepliesVisible(true);
-    } else {
-      setRepliesVisible(false);
+  const { data, isLoading: LoadingReplies } = useSWR(
+    endPoints.getRepliesByCommentId(comment?.id),
+    getOne,
+    {
+      onSuccess: (data) => {
+        setCommentReplies(data?.data);
+      },
     }
-  }, [Replies, comment?.id]);
+  );
+
+  // ** Side Effects
 
   // ** Functions
   const toggleMakeAReply = () => {
@@ -92,16 +90,14 @@ const Comments = ({
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-
     const postData = {
-      text: replyText,
-      commentId: comment?.id || comment?.commentId,
-      createdAt: new Date(),
-      videoId: comment?.videoId,
+      comment_text: replyText,
+      video_id: videoId,
+      user_id: userData?.user_id,
     };
 
     const res = await postRequest(
-      endPoints.getReplies,
+      endPoints.createReply(comment?.id),
       postData,
       handleSuccess
     );
@@ -120,28 +116,27 @@ const Comments = ({
     });
   };
 
-  const handleSuccess = (data: any) => {
+  const handleSuccess = async (data: any) => {
     toast.success(
       ` ${inputEdit ? "Comment Updated" : "Reply Added"}  Successfully`
     );
     if (inputEdit) {
-      const currentComment = VideoComments?.data?.find(
+      const currentComment = await VideoComments?.data?.find(
         (el: any) => el.id == comment?.id
       );
-      const currentCommentIndex = currentVideoComments?.indexOf(currentComment);
-      const updatedComments = [...currentVideoComments];
-
-      updatedComments[currentCommentIndex] = {
-        ...currentComment,
-        comment_text: replyText,
-      };
-      // console.log(updatedComments);
-      setCurrentVideoComments(updatedComments);
+      currentComment.comment_text = replyText;
       setInputEdit(false);
-      // setCommentReplies((prev: any) => [...prev]);
-      // //console.log(commentReplies);
     } else {
-      setCommentReplies((prev: any) => [...prev, data]);
+      const newData = {
+        comment_text: replyText,
+        full_name: userData?.full_name,
+        image: userData?.image,
+        user_id: userData?.user_id,
+        comment_id: comment?.id,
+        created_at: new Date(),
+      };
+
+      setCommentReplies((prev: any) => [...prev, newData]);
     }
 
     setReplyText("");
@@ -162,14 +157,22 @@ const Comments = ({
     handleClose();
   };
 
-  const handlePerformDeleteComment = async () => {
-    const res = await deleteRequest({
-      endpoint: `comments/deleteOne`,
-      id: comment?.id || comment?.commentId,
-      mutateEndPoint: endPoints.getCommentByVideoId(videoId),
+  const handleSuccessDeleteComment = () => {
+    toast.success("Comment Deleted Successfully");
+    setCurrentVideoComments((prev: any) => {
+      const newComments = prev?.filter((el: any) => el.id !== comment?.id);
+      return newComments;
     });
   };
 
+  const handlePerformDeleteComment = async () => {
+    const res: any = await updateRequest({
+      endpoint: `ReplayComments/deletReplay/${comment?.id}`,
+      id: comment?.id || comment?.commentId,
+      data: {},
+      handleSuccess: handleSuccessDeleteComment,
+    });
+  };
   // //console.log(comment.user_id == userData?.user_id);
   return (
     <>
@@ -370,11 +373,13 @@ const Comments = ({
               } Replies`}
             </div>
           </AccordionSummary>
-
           <AccordionDetails>
             {commentReplies?.length > 0
               ? commentReplies?.map((reply: any, idx: number) => (
                   <Reply
+                    userData={userData}
+                    videoId
+                    commentId={comment?.id}
                     setCommentReplies={setCommentReplies}
                     key={idx}
                     reply={reply}

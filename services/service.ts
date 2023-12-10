@@ -8,6 +8,7 @@ export const postRequest: any = async (
   data: any,
   handleSuccess: any
 ) => {
+  console.log(url);
   let body;
   let contentType;
   if (data instanceof FormData) {
@@ -51,9 +52,8 @@ export const updateRequest: any = async ({
       }
     );
     // //console.log(res)
-    if (res.status == 200) {
+    if (res.status == 200 || res.status == 201) {
       handleSuccess(data);
-      mutate(endpoint);
     }
   } catch (e: any) {
     return toast.error(e.message);

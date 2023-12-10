@@ -6,6 +6,7 @@ import { fetcher } from "@/utils/swr";
 import useSWR from "swr";
 import { endPoints } from "@/services/endpoints";
 import { getOne } from "@/services/service";
+import { UserContext } from "@/contexts/mainContext";
 
 const Recommended = ({
   dashboardTabsValue,
@@ -19,19 +20,14 @@ const Recommended = ({
   const params = useParams();
   const searchParams = useSearchParams();
   const { id: userId } = params;
-  const groupId = searchParams.get("groupId");
-  const {
-    data: RecommendedVideos,
-    error,
-    isLoading,
-  } = useSWR(endPoints.getRecommendedVideos(groupId), getOne, {
-    revalidateOnMount: false,
-  });
+
+  const { recommendedVideos, RecommendedVideosLoading }: any =
+    React.useContext(UserContext);
 
   return (
     <div>
       <Grid container spacing={2}>
-        {isLoading ? (
+        {RecommendedVideosLoading ? (
           Array.from({ length: 6 }).map((_, idx) => (
             <Grid key={idx} item xs={12} md={4}>
               <Skeleton
@@ -41,8 +37,8 @@ const Recommended = ({
               />
             </Grid>
           ))
-        ) : RecommendedVideos?.data?.length ? (
-          RecommendedVideos?.data?.map((item: any, index: any) => (
+        ) : recommendedVideos?.length ? (
+          recommendedVideos?.map((item: any, index: any) => (
             <Grid key={index} item xs={12} lg={4}>
               <Box
                 sx={{
