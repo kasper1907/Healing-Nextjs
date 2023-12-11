@@ -11,7 +11,7 @@ const Page = () => {
     setToken(document?.cookie.split("=")[1]);
   }, []);
   const decodedToken = jwt.decode(token?.toString()) as any;
-  //console.log(decodedToken?.data?.role);
+  ////console.log(decodedToken?.data?.role);
 
   const RedirectionPages: any = {
     Doctor: "/dashboard",

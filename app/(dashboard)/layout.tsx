@@ -43,7 +43,14 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body style={{ padding: "0", margin: "0", background: "#F8F8F8" }}>
+      <body
+        style={{
+          padding: "0",
+          margin: "0",
+          background: "#F8F8F8",
+          overflowX: "hidden",
+        }}
+      >
         <CssBaseline />
         <TabsContextComponent>
           <ThemeProvider theme={theme}>

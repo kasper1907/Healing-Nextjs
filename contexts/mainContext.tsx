@@ -4,14 +4,16 @@ import { getOne } from "@/services/service";
 import { useSearchParams } from "next/navigation";
 import React, { ReactNode, createContext } from "react";
 import useSWR from "swr";
-
+import useCookie from "react-use-cookie";
+import jwt from "jsonwebtoken";
 const UserContext = createContext({});
 const UseUserContextProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = React.useState<any>({ name: "test" });
+  const [userToken, setUserToken] = useCookie("accessToken");
   const params = useSearchParams();
-  let groupId = params.get("groupId");
+  const groupId = params.get("groupId");
   const userId = params.get("id");
-
+  const decodedToken: any = jwt.decode(userToken);
   const { data, error, isLoading } = useSWR(
     endPoints.getSessionsByGroupId(groupId),
     getOne,
@@ -59,6 +61,7 @@ const UseUserContextProvider = ({ children }: { children: ReactNode }) => {
         LoadingUser: UserLoading,
         UserGroup: UserGroup?.data,
         LoadingUserGroup,
+        LoggedInUser: decodedToken?.data,
       }}
     >
       {children}

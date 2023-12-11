@@ -65,7 +65,7 @@ const ColorTest = ({
         fields={5}
         className="custom-class"
         onComplete={(e) => {
-          // //console.log(e);
+          // ////console.log(e);
           setShowNext(true);
         }}
         onChange={(e) => {

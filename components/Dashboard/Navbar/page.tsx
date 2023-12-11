@@ -32,6 +32,8 @@ import jwt from "jsonwebtoken";
 import { getOne } from "@/services/service";
 import { endPoints } from "@/services/endpoints";
 import useSWR from "swr";
+import useCookie from "react-use-cookie";
+import UserMenu from "./UserMenu";
 
 const drawerWidth = 300;
 const navItems = [{ id: 1, title: "All Groups", url: "/dashboard" }];
@@ -50,21 +52,12 @@ export default function DashboardNavbar(props: Props) {
   const searchParams = useSearchParams();
 
   const userId = searchParams.get("id");
+  const [userToken, setUserToken] = useCookie("accessToken");
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [userData, setUserData] = React.useState<any>({});
   const [currentPageUser, setCurrentPageUser] = React.useState<any>({});
-  const [loggedUserToken, setLoggedUserToken] = React.useState<any>("");
 
-  useEffect(() => {
-    const userToken: any = document?.cookie
-      .split(";")
-      .find((row) => row.startsWith("accessToken"))
-      ?.split("=")[1];
-
-    setLoggedUserToken(userToken);
-  }, []);
-
-  const decodedToken = jwt.decode(loggedUserToken?.toString() || "");
+  const decodedToken = jwt.decode(userToken?.toString() || "");
 
   const isInUserPage =
     pathname == "/dashboard/users/userDetails" ? true : false;
@@ -236,7 +229,6 @@ export default function DashboardNavbar(props: Props) {
 
   const container =
     window !== undefined ? () => window().document.body : undefined;
-
   return (
     <Box
       sx={{
@@ -262,7 +254,10 @@ export default function DashboardNavbar(props: Props) {
             },
           }}
         >
-          <Box className={styles.userLogo}>
+          <Box
+            sx={{ display: { xs: "none !important", lg: "flex !important" } }}
+            className={styles.userLogo}
+          >
             <Box
               sx={{
                 width: { xs: "100px", md: "156px" },
@@ -322,6 +317,7 @@ export default function DashboardNavbar(props: Props) {
                 />
               </Typography>
 
+              <UserMenu />
               <IconButton
                 color="inherit"
                 aria-label="open drawer"
@@ -342,7 +338,7 @@ export default function DashboardNavbar(props: Props) {
                 sx={{
                   flexGrow: 1,
                   gap: 2,
-                  display: { xs: "none", sm: "flex" },
+                  display: { xs: "none", lg: "flex" },
                   justifyContent: "flex-end",
                 }}
               >

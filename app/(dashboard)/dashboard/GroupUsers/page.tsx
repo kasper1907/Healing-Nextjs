@@ -25,17 +25,17 @@ const Page = () => {
     getOne
   );
 
-  // //console.log(data);
+  // ////console.log(data);
   const GroupUsers = data?.data;
   const [currentGroup, setCurrentGroup] = React.useState<any>(null);
-  //console.log(currentUser);
+  ////console.log(currentUser);
 
   useEffect(() => {
     const currentGroup = groups.find((group: any) => group.id == 1);
     setCurrentGroup(currentGroup);
   }, []);
 
-  // //console.log(Group);
+  // ////console.log(Group);
   return (
     <div className={styles.PageWrapper}>
       <Container sx={{ mt: 10 }}>
@@ -59,11 +59,12 @@ const Page = () => {
                   <div className={styles.groupCard}>
                     <div className={styles.img_place}>
                       <Image
-                        src={`https://mtnhealingcenter.com/healing-center/${user.image}`}
+                        src={`${process.env.NEXT_PUBLIC_BASE_URL}${user.image}`}
                         fill
                         alt="userImage"
                         style={{
                           borderRadius: "50%",
+                          objectFit: "cover",
                         }}
                       />
                     </div>

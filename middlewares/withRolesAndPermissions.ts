@@ -15,20 +15,20 @@ export const withRolesAndPermissions: MiddlewareFactory = (next) => {
     // const cookie = request.cookies.get(process.env.TOKEN as string);
     // const token = cookie?.value;
     const token: any = request.cookies.get("accessToken");
-    // //console.log("token ->", token?.value);
+    // ////console.log("token ->", token?.value);
     const decodedToken: any = jwt.decode(token?.value);
-    // //console.log(decodedToken);
-    if (token) {
+
+    if (token?.value != "") {
       //   url.pathname = "/not-found";
       url.pathname = "/dashboard/NotAuthorized";
       const user = decodedToken?.data as any;
-      //   //console.log("user ->", user);
+      //   ////console.log("user ->", user);
       // if token is expired then redirect to login page
       //   if (user?.exp < Date.now() / 1000) {
       //     url.pathname = "/signin";
       //     return NextResponse.redirect(url);
       //   }
-      // if user role is not admin and user is trying to access admin routes then redirect to login page
+
       if (user?.role != "Doctor" && user?.role != "Therapist") {
         if (
           doctorRoutes.includes(pathname) ||
@@ -50,9 +50,12 @@ export const withRolesAndPermissions: MiddlewareFactory = (next) => {
       }
 
       //   if (user?.role != "Therapist" && therapistRoutes.includes(pathname)) {
-      //     //console.log("Test");
+      //     ////console.log("Test");
       //     return NextResponse.redirect(url);
       //   }
+    } else {
+      // //console.log("No Token");
+      // return NextResponse.redirect(new URL("/login", request.url));
     }
     return next(request, _next);
   };

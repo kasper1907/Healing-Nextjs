@@ -22,7 +22,7 @@ const ProfileDetails = () => {
 
   const user: UserDetails = data?.data;
 
-  //console.log(user);
+  ////console.log(user);
 
   useEffect(() => {
     AOS.init();

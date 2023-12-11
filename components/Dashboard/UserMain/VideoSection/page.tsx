@@ -65,7 +65,7 @@ const VideoSection = ({
     getOne
   );
 
-  //console.log(User, "User");
+  ////console.log(User, "User");
 
   useEffect(() => {
     VideoComments?.data?.length > 0 &&
@@ -88,7 +88,7 @@ const VideoSection = ({
   };
 
   const handleSuccess = (data: any) => {
-    console.log(data);
+    //console.log(data);
     toast.success("Comment Added Successfully");
     setText("");
     let newData = {
@@ -121,7 +121,7 @@ const VideoSection = ({
     // Trigger a re-fetch after the POST request is completed
     const res = await postRequest(`comments/createComment`, postData);
 
-    console.log(res);
+    //console.log(res);
     if (res.status == 201) {
       handleSuccess(res?.data?.data);
     }

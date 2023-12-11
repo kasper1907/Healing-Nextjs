@@ -31,13 +31,18 @@ const Page = () => {
       return toast.warning("Please fill all fields");
     setLoading(true);
     const res = await postRequest(endPoints.auth, userData);
-    if (res.status == "success" && res.statusCode == 200) {
+
+    if (res.data.status == "success" && res.data.statusCode == 200) {
+      //console.log(res.data.statusCode);
+      //console.log(res.data.status);
+      //console.log(res.data.accessToken);
+      //console.log(res?.data?.data?.role);
       toast.success("Login Successfully");
-      document.cookie = `accessToken=${res.accessToken}`;
-      window.localStorage.setItem("userData", JSON.stringify(res.data));
-      if (res?.data?.role == "User") {
+      document.cookie = `accessToken=${res.data.accessToken}`;
+      window.localStorage.setItem("userData", JSON.stringify(res.data.data));
+      if (res?.data?.data?.role == "User") {
         router.push(
-          `/dashboard/users/userDetails?id=${res.data.user_id}&groupId=${res.data.group_id}`
+          `/dashboard/users/userDetails?id=${res.data?.data.user_id}&groupId=${res.data.data.group_id}`
         );
       } else {
         router.push("/dashboard");

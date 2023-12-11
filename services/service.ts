@@ -8,7 +8,7 @@ export const postRequest: any = async (
   data: any,
   handleSuccess: any
 ) => {
-  console.log(url);
+  //console.log(url);
   let body;
   let contentType;
   if (data instanceof FormData) {
@@ -25,7 +25,7 @@ export const postRequest: any = async (
         Authorization: `Bearer ${document.cookie}`,
       },
     });
-    //console.log(res);
+    ////console.log(res);
     if (res.status == 201) {
       handleSuccess ? handleSuccess(res.data.data) : "";
     }
@@ -51,7 +51,7 @@ export const updateRequest: any = async ({
         },
       }
     );
-    // //console.log(res)
+    // ////console.log(res)
     return res;
   } catch (e: any) {
     return toast.error(e.message);

@@ -33,8 +33,13 @@ import useCookie from "react-use-cookie";
 
 const UserMain = () => {
   const [accessToken, setAccessToken] = useCookie("accessToken");
-  const [viewAllGroups, setViewAllGroups] = React.useState(false);
-  const { userTabsValue, setUserTabsValue }: any = useTabsContext();
+
+  const {
+    userTabsValue,
+    setUserTabsValue,
+    viewAllGroups,
+    setViewAllGroups,
+  }: any = useTabsContext();
   const [loggedUserToken, setLoggedUserToken] = React.useState<any>("");
   const params = useSearchParams();
 
@@ -52,7 +57,7 @@ const UserMain = () => {
     AOS.init();
   }, []);
 
-  console.log(User);
+  //console.log(User);
 
   // const group: Group = UserUserGroup.data;
 

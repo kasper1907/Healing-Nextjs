@@ -11,6 +11,7 @@ export default function TabsContextComponent({
 }) {
   const [dashboardTabsValue, setDashboardTabsValue] = useState<any>("1");
   const [userTabsValue, setUserTabsValue] = useState<any>("1");
+  const [viewAllGroups, setViewAllGroups] = useState(false);
 
   return (
     <TabsContext.Provider
@@ -19,6 +20,8 @@ export default function TabsContextComponent({
         setDashboardTabsValue,
         userTabsValue,
         setUserTabsValue,
+        viewAllGroups,
+        setViewAllGroups,
       }}
     >
       {children}

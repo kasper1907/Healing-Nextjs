@@ -2,7 +2,7 @@ import { baseUrl } from "@/services/endpoints";
 import axios from "axios";
 
 export const fetcher = (url: string) => {
-  //console.log(baseUrl + url);
+  ////console.log(baseUrl + url);
   axios
     .get(baseUrl + url, {
       headers: {
@@ -10,7 +10,7 @@ export const fetcher = (url: string) => {
       },
     })
     .then((res: any) => {
-      //console.log(res.data.data);
+      ////console.log(res.data.data);
       return res.data.data;
     });
 };

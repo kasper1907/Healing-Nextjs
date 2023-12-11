@@ -123,8 +123,8 @@ const Comments = ({
       const currentComment = await VideoComments?.data?.find(
         (el: any) => el.id == comment?.id
       );
-      console.log(comment.id);
-      console.log(VideoComments?.data);
+      //console.log(comment.id);
+      //console.log(VideoComments?.data);
       currentComment.comment_text = replyText;
       setInputEdit(false);
     } else {
@@ -143,7 +143,7 @@ const Comments = ({
       setCurrentVideoComments((prev: any) => {
         const newComments = [...prev];
         const index = newComments.findIndex((el: any) => el.id == comment?.id);
-        // console.log(index);
+        // //console.log(index);
         newComments[index] = currentComment;
         return newComments;
       });
@@ -152,7 +152,7 @@ const Comments = ({
     setReplyText("");
     setMakeAReply(false);
   };
-  console.log(commentReplies);
+  //console.log(commentReplies);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -187,7 +187,7 @@ const Comments = ({
       handleSuccessDeleteComment();
     }
   };
-  // //console.log(comment.user_id == userData?.user_id);
+  // ////console.log(comment.user_id == userData?.user_id);
   return (
     <div
       className={`${
