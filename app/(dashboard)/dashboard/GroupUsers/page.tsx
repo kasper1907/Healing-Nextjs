@@ -13,7 +13,6 @@ import { fetcher } from "@/utils/swr";
 import CardsSkeleton from "@/components/Dashboard/Loading/CardsSkeleton";
 import { endPoints } from "@/services/endpoints";
 import { getOne } from "@/services/service";
-import { useUserContext } from "@/contexts/userContext";
 const Page = () => {
   const router = useRouter();
   const params = useSearchParams();
@@ -26,18 +25,17 @@ const Page = () => {
     getOne
   );
 
-  // console.log(data);
+  // //console.log(data);
   const GroupUsers = data?.data;
   const [currentGroup, setCurrentGroup] = React.useState<any>(null);
-  const { setCurrentUser, currentUser }: any = useUserContext();
-  console.log(currentUser);
+  //console.log(currentUser);
 
   useEffect(() => {
     const currentGroup = groups.find((group: any) => group.id == 1);
     setCurrentGroup(currentGroup);
   }, []);
 
-  // console.log(Group);
+  // //console.log(Group);
   return (
     <div className={styles.PageWrapper}>
       <Container sx={{ mt: 10 }}>

@@ -19,10 +19,16 @@ import {
 } from "@mui/material";
 import { isArabic } from "@/utils/checkLanguage";
 import { endPoints } from "@/services/endpoints";
-import { deleteRequest, postRequest, updateRequest } from "@/services/service";
+import {
+  deleteRequest,
+  getOne,
+  postRequest,
+  updateRequest,
+} from "@/services/service";
 import { calculateTimeDifference } from "@/utils/calculateTimeDifference";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { MdEditNote } from "react-icons/md";
+import commentsStyles from "@/styles/sass/Dashboard/UserMain/comment.module.scss";
 
 import { MdOutlinePlaylistRemove } from "react-icons/md";
 import DeleteDialog from "@/components/shared/Dialogs/DeleteDialog/page";
@@ -35,11 +41,13 @@ export const StyledTextField = styled(TextField)`
 `;
 
 const Comments = ({
+  userData,
   comment,
   setCommentsHeight,
   commentsRef,
   setCurrentVideoComments,
   currentVideoComments,
+  videoId,
 }: any) => {
   // ** States
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -53,92 +61,98 @@ const Comments = ({
   const repliesRef: any = useRef(null);
   const open = Boolean(anchorEl);
 
-  // const { data: Comments, isLoading } = useSWR(endPoints.getComments, fetcher);
-  // const { data: Replies } = useSWR(endPoints.getReplies, fetcher);
+  const { data: VideoComments, isLoading } = useSWR(
+    endPoints.getCommentByVideoId(videoId),
+    getOne
+  );
 
-  const Comments: any = [];
-  const Replies: any = [];
-
-  const userData = JSON.parse(window?.localStorage.getItem("userData") || "{}");
-  // ** Side Effects
-
-  useEffect(() => {
-    const commentReplies =
-      Replies &&
-      Replies?.length > 0 &&
-      Replies?.filter((reply: any) => reply.commentId == comment?.id);
-    setCommentReplies(commentReplies);
-
-    if (commentReplies?.length < 5) {
-      setRepliesVisible(true);
-    } else {
-      setRepliesVisible(false);
+  const { data, isLoading: LoadingReplies } = useSWR(
+    endPoints.getRepliesByCommentId(comment?.id),
+    getOne,
+    {
+      onSuccess: (data) => {
+        setCommentReplies(data?.data);
+      },
     }
-  }, [Replies, comment?.id]);
+  );
+
+  // ** Side Effects
 
   // ** Functions
   const toggleMakeAReply = () => {
     setMakeAReply((prev) => !prev);
-    setReplyText("@UserName__");
+    setReplyText("@" + comment?.full_name + " ");
   };
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-
     const postData = {
-      text: replyText,
-      commentId: comment?.id || comment?.commentId,
-      createdAt: new Date(),
-      videoId: comment?.videoId,
+      comment_text: replyText,
+      video_id: videoId,
+      user_id: userData?.user_id,
     };
 
     const res = await postRequest(
-      endPoints.getReplies,
+      endPoints.createReply(comment?.id),
       postData,
       handleSuccess
     );
   };
   const handleSubmitEdit = async (e: any) => {
     e.preventDefault();
-    // console.log(comment);
     const postData = {
-      text: replyText,
-      id: comment?.id || comment?.commentId,
-      videoId: comment?.videoId,
-      // createdAt: new Date(),
+      comment_text: replyText,
     };
 
     const res = await updateRequest({
-      id: comment?.id || comment?.commentId,
-      endpoint: endPoints.getComments,
+      id: comment?.id,
+      endpoint: `comments/updateOne`,
       data: postData,
       handleSuccess: handleSuccess,
     });
+    if (res.status == 200 || res.status == 204) {
+      handleSuccess(res.data);
+    }
   };
 
-  const handleSuccess = (data: any) => {
+  const handleSuccess = async (data: any) => {
     toast.success(
       ` ${inputEdit ? "Comment Updated" : "Reply Added"}  Successfully`
     );
     if (inputEdit) {
-      const currentComment = Comments?.find(
-        (comment: any) => comment.id == data.commentId
+      const currentComment = await VideoComments?.data?.find(
+        (el: any) => el.id == comment?.id
       );
-      const currentCommentIndex = currentVideoComments?.indexOf(currentComment);
-      const updatedComments = [...currentVideoComments];
-      updatedComments[currentCommentIndex] = data;
-      setCurrentVideoComments(updatedComments);
+      console.log(comment.id);
+      console.log(VideoComments?.data);
+      currentComment.comment_text = replyText;
       setInputEdit(false);
-      // setCommentReplies((prev: any) => [...prev]);
-      // console.log(commentReplies);
     } else {
-      setCommentReplies((prev: any) => [...prev, data]);
+      const newData = {
+        ...data,
+        image: userData?.image,
+        full_name: userData?.full_name,
+      };
+
+      setCommentReplies((prev: any) => [...prev, newData]);
+      const currentComment = await VideoComments?.data?.find(
+        (el: any) => el.id == comment?.id
+      );
+      currentComment.reply_count = currentComment.reply_count + 1;
+
+      setCurrentVideoComments((prev: any) => {
+        const newComments = [...prev];
+        const index = newComments.findIndex((el: any) => el.id == comment?.id);
+        // console.log(index);
+        newComments[index] = currentComment;
+        return newComments;
+      });
     }
 
     setReplyText("");
     setMakeAReply(false);
   };
-
+  console.log(commentReplies);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -149,22 +163,60 @@ const Comments = ({
   const PrepareUpdateComment = () => {
     setInputEdit(true);
     setMakeAReply((prev) => !prev);
-    setReplyText(comment?.text);
+    setReplyText(comment?.comment_text);
     handleClose();
   };
 
-  const handlePerformDeleteComment = async () => {
-    const res = await deleteRequest({
-      endpoint: endPoints.getComments,
-      id: comment?.id || comment?.commentId,
+  const handleSuccessDeleteComment = () => {
+    toast.success("Comment Deleted Successfully");
+    setCurrentVideoComments((prev: any) => {
+      const newComments = prev?.filter((el: any) => el.id !== comment?.id);
+      return newComments;
     });
   };
 
-  // console.log(comment.user_id == userData?.user_id);
+  const handlePerformDeleteComment = async () => {
+    const res: any = await updateRequest({
+      endpoint: `ReplayComments/deletReplay/${comment?.id}`,
+      id: comment?.id || comment?.commentId,
+      data: {},
+      handleSuccess: handleSuccessDeleteComment,
+    });
+
+    if (res.status == 201) {
+      handleSuccessDeleteComment();
+    }
+  };
+  // //console.log(comment.user_id == userData?.user_id);
   return (
-    <>
+    <div
+      className={`${
+        comment?.reply_count > 1
+          ? commentsStyles.comment_main
+          : comment?.reply_count == 1 && isRepliesVisible
+          ? commentsStyles.comment_main
+          : ""
+      } ${
+        comment?.reply_count > 1 && !isRepliesVisible
+          ? commentsStyles.closed
+          : ""
+      }`}
+    >
       <div className={styles.write_comment}>
-        <div className={styles.userImgWrapper}></div>
+        <div className={styles.userImgWrapper}>
+          <Image
+            src={`${process.env.NEXT_PUBLIC_BASE_URL}/${comment.image}`}
+            width={156}
+            height={156}
+            alt="userImage"
+            style={{
+              borderRadius: "50%",
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+            }}
+          />{" "}
+        </div>
         <div className={styles.commentInput}>
           <div
             className={`${styles.comment} ${
@@ -173,7 +225,7 @@ const Comments = ({
                 : styles.englishComment
             }`}
           >
-            <span> @{comment?.user_name}</span>
+            <span> @{comment?.full_name}</span>
             {comment?.comment_text}
           </div>
           <div className={styles.commentBottom}>
@@ -333,31 +385,64 @@ const Comments = ({
               },
             }}
           >
-            <div
-              className={`${styles.showAllReplies} ${
-                isRepliesVisible ? styles.visible : ""
-              }`}
-              onClick={() => {
-                setRepliesVisible((prev) => !prev);
-              }}
-            >
-              {/* <IoIosArrowDown /> */}
-              {`${isRepliesVisible ? "Hide" : "Show"} All ${
-                commentReplies?.length
-              } Replies`}
+            <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
+              {commentReplies?.length > 1 ? (
+                <div style={{ marginLeft: "16px" }}>
+                  <Reply
+                    userData={userData}
+                    videoId={videoId}
+                    commentId={comment?.id}
+                    setCommentReplies={setCommentReplies}
+                    key={0}
+                    reply={commentReplies?.slice(0, 1)[0]}
+                    idx={0}
+                  />
+                </div>
+              ) : null}
+              <div
+                className={`${styles.showAllReplies} ${
+                  isRepliesVisible ? styles.visible : ""
+                }`}
+                onClick={() => {
+                  setRepliesVisible((prev) => !prev);
+                }}
+              >
+                {/* <IoIosArrowDown /> */}
+                {`${isRepliesVisible ? "Hide" : "Show"} ${
+                  commentReplies?.length > 1 ? `rest` : "All"
+                } ${
+                  commentReplies?.length > 1 ? commentReplies?.length - 1 : 1
+                } Replies`}
+              </div>
             </div>
           </AccordionSummary>
-
           <AccordionDetails>
             {commentReplies?.length > 0
-              ? commentReplies?.map((reply: any, idx: number) => (
-                  <Reply
-                    setCommentReplies={setCommentReplies}
-                    key={idx}
-                    reply={reply}
-                    idx={idx}
-                  />
-                ))
+              ? commentReplies?.length > 1
+                ? commentReplies
+                    ?.slice(1, commentReplies?.length)
+                    .map((reply: any, idx: number) => (
+                      <Reply
+                        userData={userData}
+                        videoId={videoId}
+                        commentId={comment?.id}
+                        setCommentReplies={setCommentReplies}
+                        key={idx}
+                        reply={reply}
+                        idx={idx}
+                      />
+                    ))
+                : commentReplies?.map((reply: any, idx: number) => (
+                    <Reply
+                      userData={userData}
+                      videoId={videoId}
+                      commentId={comment?.id}
+                      setCommentReplies={setCommentReplies}
+                      key={idx}
+                      reply={reply}
+                      idx={idx}
+                    />
+                  ))
               : null}
           </AccordionDetails>
         </Accordion>
@@ -367,7 +452,7 @@ const Comments = ({
         setOpen={setOpenDeleteDialog}
         deleteAction={handlePerformDeleteComment}
       />
-    </>
+    </div>
   );
 };
 

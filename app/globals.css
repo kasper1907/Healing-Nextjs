@@ -76,3 +76,9 @@ button{
 .main-btn2:disabled{
   opacity: 0.5;
 }
+
+.appointment_accordion .MuiButtonBase-root{
+  padding: 0 !important;
+  min-height: 0px !important;
+  height: 0px !important;
+}

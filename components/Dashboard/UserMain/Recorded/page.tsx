@@ -10,27 +10,22 @@ import { useParams, useSearchParams } from "next/navigation";
 import { FaArrowLeft } from "react-icons/fa";
 import { getOne } from "@/services/service";
 import { endPoints } from "@/services/endpoints";
+import { UserContext } from "@/contexts/mainContext";
 
 const Recorded = () => {
   const [showFullVideo, setShowFullVideo] = React.useState<boolean>(false);
   const [currentVideo, setCurrentVideo] = React.useState<any>(null);
   const [_isPending, startTransition] = useTransition();
   const params = useSearchParams();
+  const { recordedVideos, RecordedVideosLoading }: any =
+    React.useContext(UserContext);
   let userId = params.get("id");
-  let groupId = params.get("groupId");
 
   useEffect(() => {
     AOS.init();
   }, []);
 
-  const { data, error, isLoading } = useSWR(
-    endPoints.getSessionsByGroupId(groupId),
-    getOne,
-    {
-      revalidateOnMount: false,
-    }
-  );
-  const Videos: any = data?.data;
+  //console.log(Videos, "Videos");
   const userVideos: any = [];
 
   const VideoHeaderClickHandler = (video: any) => {
@@ -43,7 +38,7 @@ const Recorded = () => {
     <div>
       {!showFullVideo ? (
         <Grid container spacing={1}>
-          {isLoading ? (
+          {RecordedVideosLoading ? (
             Array.from({ length: 6 }).map((_, idx) => (
               <Grid key={idx} item xs={12} md={4}>
                 <Skeleton
@@ -53,8 +48,8 @@ const Recorded = () => {
                 />
               </Grid>
             ))
-          ) : Videos?.length ? (
-            Videos?.map((el: any, idx: number) => {
+          ) : recordedVideos?.length ? (
+            recordedVideos?.map((el: any, idx: number) => {
               return (
                 <Grid item xs={12} md={6} lg={4} key={idx}>
                   <VideoSection

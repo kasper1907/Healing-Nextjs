@@ -40,10 +40,10 @@ const BirthInfo = ({
   }, []);
 
   const handleSubmit = () => {
-    // console.log(formData.dateOfBirth);
-    // console.log(formData.timeOfBirth);
-    // console.log(formData.placeOfBirth);
-    // console.log(formData.Nationality);
+    // //console.log(formData.dateOfBirth);
+    // //console.log(formData.timeOfBirth);
+    // //console.log(formData.placeOfBirth);
+    // //console.log(formData.Nationality);
     if (
       formData.dateOfBirth !== ""
       //  &&

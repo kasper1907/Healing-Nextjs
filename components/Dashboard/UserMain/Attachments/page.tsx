@@ -30,10 +30,10 @@ const Attachments = () => {
   const [loading, setLoading] = useState(false);
 
   const isParamsUserIdEqualDecodedTokenUserId =
-    userId == decodedToken?.data?.id;
+    userId == decodedToken?.data?.user_id;
 
   const { data: UserFiles, isLoading } = useSWR(
-    endPoints.getUserAttachments(decodedToken?.data?.id),
+    endPoints.getUserAttachments(decodedToken?.data?.user_id),
     getOne
   );
 
@@ -43,24 +43,24 @@ const Attachments = () => {
     const formData = new FormData();
     formData.append("file", files[0]);
     const res = await postRequest(
-      `attachments/uploadFiles/${decodedToken?.data?.id}`,
+      `attachments/uploadFiles/${decodedToken?.data?.user_id}`,
       formData,
       () => {
         toast.success("File Uploaded Successfully");
         setFiles([]);
         setLoading(false);
-        mutate(endPoints.getUserAttachments(decodedToken?.data?.id));
+        mutate(endPoints.getUserAttachments(decodedToken?.data?.user_id));
       }
     );
   };
 
   const filesExtensionsImg: any = {
     pdf: "/images/Dashboard/file-icon (2).svg",
-    doc: "/images/Dashboard/file-icon (1).svg",
-    docx: "/images/Dashboard/file-icon (1).svg",
+    png: "/images/Dashboard/image.svg",
+    svg: "/images/Dashboard/image.svg",
+    jpg: "/images/Dashboard/image.svg",
   };
 
-  
   return (
     <div className={styles.pageWrapper}>
       <Container sx={{ mt: 10 }}>

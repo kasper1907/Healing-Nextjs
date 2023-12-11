@@ -1,70 +1,69 @@
 @import "../../_base.sass";
-.pageWrapper {
-  .dropZoneWrapper {
-    background-color: rgb(192, 242, 194, 5%);
-    border: 2px dashed rgb(192, 242, 194, 50%);
-    border-spacing: 31px;
-    border-radius: 6px;
-    padding: 20px 10px;
-    padding-bottom: 0px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 241px;
-    height: fit-content;
-    margin-bottom: 64px;
 
-    .browseButton {
-      background-color: $primary-color;
-      color: #fff;
-      text-transform: unset;
-      padding: 10px 20px;
-      border-radius: 10px;
-    }
-  }
-  .dropZone__text {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    .dropZone__mainText {
-      font-size: 20px;
-      font-weight: 300;
-      color: #92929d;
-      text-align: center;
-    }
-  }
+.dropZoneWrapper {
+  background-color: rgb(192, 242, 194, 5%);
+  border: 2px dashed rgb(192, 242, 194, 50%);
+  border-spacing: 31px;
+  border-radius: 6px;
+  padding: 20px 10px;
+  padding-bottom: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 241px;
+  height: fit-content;
+  margin-bottom: 64px;
 
-  .userFileWrapper {
-    background-color: #fff;
-    border-radius: 8px;
-    min-height: 92px;
-    max-height: 200px;
-    margin-bottom: 20px;
+  .browseButton {
+    background-color: $primary-color;
+    color: #fff;
+    text-transform: unset;
+    padding: 10px 20px;
+    border-radius: 10px;
   }
+}
+.dropZone__text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  .dropZone__mainText {
+    font-size: 20px;
+    font-weight: 300;
+    color: #92929d;
+    text-align: center;
+  }
+}
 
-  .uploadedImgsGrid {
-    margin-bottom: 10px;
-  }
-  .uploadedImgsGrid div {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid #cecece;
-    border-radius: 8px;
-    padding: 10px;
-    // margin-right: 10px;
-    // margin-bottom: 10px;
-    position: relative;
-    margin: auto;
-    .removeIcon {
-      position: absolute;
-      top: 5px;
-      right: 5px;
-      cursor: pointer;
-    }
+.userFileWrapper {
+  background-color: #fff;
+  border-radius: 8px;
+  min-height: 92px;
+  max-height: 200px;
+  margin-bottom: 20px;
+}
+
+.uploadedImgsGrid {
+  margin-bottom: 10px;
+}
+.uploadedImgsGrid div {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #cecece;
+  border-radius: 8px;
+  padding: 10px;
+  // margin-right: 10px;
+  // margin-bottom: 10px;
+  position: relative;
+  margin: auto;
+  .removeIcon {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
   }
 }
 

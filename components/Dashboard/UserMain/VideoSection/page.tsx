@@ -20,6 +20,8 @@ import { getOne, postRequest } from "@/services/service";
 import { endPoints } from "@/services/endpoints";
 import { isArabic } from "@/utils/checkLanguage";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import jwt from "jsonwebtoken";
+import useCookie from "react-use-cookie";
 
 export const StyledTextField = styled(TextField)`
   input {
@@ -39,6 +41,7 @@ const VideoSection = ({
   isFullVideo?: boolean;
 }) => {
   //States
+  const [userToken, setUserToken] = useCookie("accessToken", "0");
   const [scrollPosition, setScrollPosition] = useState(0);
   const [videoLoadingOnStartUp, setVideoLoadingOnStartUp] =
     useState<boolean>(true);
@@ -50,11 +53,19 @@ const VideoSection = ({
   const commentInputRef: any = useRef(null);
   const commentsRef: any = useRef(null);
   const lastCommentRef: any = useRef(null);
-  const userData = JSON.parse(window?.localStorage.getItem("userData") || "{}");
+  const decodedToken = jwt.decode(userToken?.toString()) as any;
+  const userData = decodedToken?.data;
   const { data: VideoComments, isLoading } = useSWR(
     endPoints.getCommentByVideoId(video?.id),
     getOne
   );
+
+  const { data: User, isLoading: UserLoading } = useSWR(
+    endPoints.getUser(userData?.user_id),
+    getOne
+  );
+
+  //console.log(User, "User");
 
   useEffect(() => {
     VideoComments?.data?.length > 0 &&
@@ -77,10 +88,15 @@ const VideoSection = ({
   };
 
   const handleSuccess = (data: any) => {
+    console.log(data);
     toast.success("Comment Added Successfully");
     setText("");
-    let newData = { ...data, user_name: userData?.user_name };
-    setCurrentVideoComments((prev: any) => [...prev, newData, ,]);
+    let newData = {
+      ...data,
+      full_name: userData?.user_name,
+      image: User?.data?.image,
+    };
+    setCurrentVideoComments((prev: any) => [...prev, newData]);
     if (!isCommentsVisible) {
       setCommentsVisible(true);
     }
@@ -103,7 +119,12 @@ const VideoSection = ({
     };
 
     // Trigger a re-fetch after the POST request is completed
-    postRequest(`comments/createComment`, postData, handleSuccess(postData));
+    const res = await postRequest(`comments/createComment`, postData);
+
+    console.log(res);
+    if (res.status == 201) {
+      handleSuccess(res?.data?.data);
+    }
   };
 
   return (
@@ -232,7 +253,20 @@ const VideoSection = ({
               </div>{" "}
             </div>
             <div className={styles.write_comment}>
-              <div className={styles.userImgWrapper}></div>
+              <div className={styles.userImgWrapper}>
+                <Image
+                  src={`${process.env.NEXT_PUBLIC_BASE_URL}/${User?.data?.image}`}
+                  width={156}
+                  height={156}
+                  alt="userImage"
+                  style={{
+                    borderRadius: "50%",
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                  }}
+                />{" "}
+              </div>
               <div className={styles.commentInput}>
                 <form onSubmit={handleSubmit}>
                   <StyledTextField
@@ -284,9 +318,11 @@ const VideoSection = ({
                     : null
                 }
                 key={idx}
-                className={`${commentsStyles.comment} `}
+                className={`${commentsStyles.comment}`}
               >
                 <Comments
+                  userData={userData}
+                  videoId={video?.id}
                   comment={comment}
                   setCurrentVideoComments={setCurrentVideoComments}
                   currentVideoComments={currentVideoComments}

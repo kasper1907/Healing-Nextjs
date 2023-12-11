@@ -34,7 +34,7 @@ const UserMainSkelton = () => {
               <Skeleton
                 sx={{ mb: 2, borderRadius: "5px", width: "100%" }}
                 variant="rectangular"
-                height={10}
+                height={20}
               />
             </div>
           ))}

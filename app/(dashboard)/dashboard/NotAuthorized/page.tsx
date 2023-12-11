@@ -11,12 +11,12 @@ const Page = () => {
     setToken(document?.cookie.split("=")[1]);
   }, []);
   const decodedToken = jwt.decode(token?.toString()) as any;
-  console.log(decodedToken?.data?.role);
+  //console.log(decodedToken?.data?.role);
 
   const RedirectionPages: any = {
     Doctor: "/dashboard",
     User: `/dashboard/users/userDetails?id=${
-      decodedToken?.data?.id
+      decodedToken?.data?.user_id
     }&groupId=${200}`,
     Therapist: "/dashboard",
     Assistant: "/dashboard",

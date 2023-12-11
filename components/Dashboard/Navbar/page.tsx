@@ -262,6 +262,47 @@ export default function DashboardNavbar(props: Props) {
             },
           }}
         >
+          <Box className={styles.userLogo}>
+            <Box
+              sx={{
+                width: { xs: "100px", md: "156px" },
+                height: { xs: "100px", md: "156px" },
+              }}
+              className={styles.logoWrapper}
+            >
+              {currentPageUser && isInUserPage ? (
+                <Image
+                  src={`${process.env.NEXT_PUBLIC_BASE_URL}/${currentPageUser.image}`}
+                  width={156}
+                  height={156}
+                  alt="userImage"
+                  style={{
+                    borderRadius: "50%",
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                  }}
+                />
+              ) : null}
+            </Box>
+            <div className={styles.textWrapper}>
+              <h2>
+                {currentPageUser && isInUserPage
+                  ? currentPageUser?.full_name
+                  : userData?.user_name
+                  ? userData?.user_name
+                  : ""}
+              </h2>
+              <p>
+                @
+                {currentPageUser && isInUserPage
+                  ? currentPageUser?.user_name
+                  : userData?.user_name
+                  ? userData?.user_name
+                  : ""}
+              </p>
+            </div>
+          </Box>
           <Container sx={{ position: "relative" }}>
             <Toolbar>
               <Typography
@@ -318,44 +359,6 @@ export default function DashboardNavbar(props: Props) {
                 </Button>{" "}
               </Box>
             </Toolbar>
-            <Box className={styles.userLogo}>
-              <Box
-                sx={{
-                  width: { xs: "100px", md: "156px" },
-                  height: { xs: "100px", md: "156px" },
-                }}
-                className={styles.logoWrapper}
-              >
-                {currentPageUser && isInUserPage ? (
-                  <Image
-                    src={`https://mtnhealingcenter.com/healing-center/${currentPageUser.image}`}
-                    width={156}
-                    height={156}
-                    alt="userImage"
-                    style={{
-                      borderRadius: "50%",
-                    }}
-                  />
-                ) : null}
-              </Box>
-              <div className={styles.textWrapper}>
-                <h2>
-                  {currentPageUser && isInUserPage
-                    ? currentPageUser?.full_name
-                    : userData?.user_name
-                    ? userData?.user_name
-                    : ""}
-                </h2>
-                <p>
-                  @
-                  {currentPageUser && isInUserPage
-                    ? currentPageUser?.user_name
-                    : userData?.user_name
-                    ? userData?.user_name
-                    : ""}
-                </p>
-              </div>
-            </Box>
           </Container>
           <Image
             src={"/images/Dashboard-banner.png"}

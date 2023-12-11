@@ -13,6 +13,7 @@ const Dropzone = ({
   setFiles,
   loading,
   handleSubmit,
+  isSubmitExternal,
 }: any) => {
   const [rejected, setRejected] = useState<any>([]);
   const { t } = useTranslation();
@@ -37,7 +38,7 @@ const Dropzone = ({
     [setFiles]
   );
 
-  let acceptedFiles = [".pdf"];
+  let acceptedFiles = [".pdf", ".svg"];
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: {
       "image/": acceptedFiles.map((type) => type + ", "),
@@ -172,7 +173,7 @@ const Dropzone = ({
                   color: "#10458C",
                 }}
               >
-                {loading ? (
+                {!isSubmitExternal && loading ? (
                   <>
                     <CircularProgress size={20} color="primary" /> Loading...
                   </>
