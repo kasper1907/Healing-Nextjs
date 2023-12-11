@@ -23,4 +23,6 @@ export const endPoints = {
     `ReplayComments/createReplayComment/${commentId}`,
   getRepliesByCommentId: (commentId: string | null) =>
     `ReplayComments/getAllReplies/${commentId}`,
+  getCoursesByCategoryId: (categoryId: string | null) =>
+    `Courses/getByCategory/${categoryId}`,
 };

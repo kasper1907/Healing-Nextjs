@@ -6,9 +6,10 @@ import { MiddlewareFactory } from "./types";
 export const withAuthorization: MiddlewareFactory = (next) => {
   return async (request: NextRequest, _next: NextFetchEvent) => {
     const pathname = request.nextUrl.pathname;
-    const isPublicPath = pathname === "/login" || pathname === "/signup";
+    const isPublicPath = pathname == "/login" || pathname == "/signup" || "/";
     const token = request.cookies.get("accessToken");
     if (!isPublicPath && !token) {
+      console.log(pathname);
       return NextResponse.redirect(new URL("/login", request.url));
     }
     if (isPublicPath && token) {

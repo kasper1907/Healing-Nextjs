@@ -6,7 +6,13 @@ import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { Container, Grid, Link, Skeleton } from "@mui/material";
+import {
+  CircularProgress,
+  Container,
+  Grid,
+  Link,
+  Skeleton,
+} from "@mui/material";
 import BirthInfo from "../../../components/Signup/BirthInfo";
 import ContactInfo from "../../../components/Signup/ContactInfo";
 import Image from "next/image";
@@ -31,6 +37,8 @@ import { SignUpForm } from "@/models/SignUp";
 import CardsSkeleton from "@/components/Dashboard/Loading/CardsSkeleton";
 import { TfiWorld } from "react-icons/tfi";
 import ColorTest from "../../../components/Signup/ColorTest";
+import { endPoints } from "@/services/endpoints";
+import { getOne } from "@/services/service";
 
 type Session = {
   ar_name: string;
@@ -39,6 +47,8 @@ type Session = {
   id: string | number;
   image: string;
   sessionId?: string | any;
+  logo: string;
+  course_name: string;
 };
 
 export default function Page() {
@@ -50,9 +60,23 @@ export default function Page() {
   };
   const searchParams = useSearchParams();
   const sessionId: string | null = searchParams.get("sessionId");
-  const currentSession: Session | undefined = sessions.find(
+
+  const { data, isLoading } = useSWR(
+    endPoints.getCoursesByCategoryId("1"),
+    getOne,
+    {
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    }
+  );
+
+  const Courses = data?.data;
+
+  const currentSession: Session | undefined = Courses?.find(
     (s: Session) => s.id == sessionId
   )!;
+
   React.useEffect(() => {
     Aos.init();
   }, []);
@@ -192,6 +216,24 @@ export default function Page() {
     setCurrentStep(steps2[0]);
   };
 
+  if (isLoading)
+    return (
+      <Box
+        sx={{
+          height: "100vh",
+          background: "#F8F8F8",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          textAlign: "center",
+          width: "100%",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+
   if (!sessionId || !currentSession) {
     return (
       <div className="flex flex-row items-center justify-center w-full h-screen bg-[#F8F8F8]">
@@ -267,7 +309,7 @@ export default function Page() {
           <Box sx={{ width: "100%" }}>
             <Container
               sx={{
-                marginTop: { xs: "250px", md: "80px" },
+                marginTop: { xs: "250px", md: "115px" },
                 position: "relative",
                 width: "100%",
                 display: "flex",
@@ -275,7 +317,7 @@ export default function Page() {
               }}
             >
               <Image
-                src={currentSession?.image?.toString()}
+                src={`https://mtnhealingcenter.com/healing-center/${currentSession?.logo}`}
                 width={150}
                 height={150}
                 alt="page-header_img"

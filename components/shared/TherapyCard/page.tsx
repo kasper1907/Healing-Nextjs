@@ -34,7 +34,13 @@ const TherapyCard = ({ idx, name, img, sessionId }: any) => {
         width={100}
         height={100}
         alt="TherapyCardImg"
-        style={{ width: "100px" }}
+        style={{
+          width: "100px",
+          background: "#FFF",
+          padding: "0px",
+          borderRadius: "50%",
+          height: "100px",
+        }}
         className={styles.TherapyCardImg}
       />
       <Grid container sx={{ height: "100%" }}>

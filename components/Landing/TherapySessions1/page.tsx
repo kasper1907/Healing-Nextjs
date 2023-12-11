@@ -12,9 +12,24 @@ import "swiper/css";
 import "swiper/css/pagination";
 import { Pagination } from "swiper/modules";
 import "@/styles/sass/TherapyCard/Slider.scss";
+import useSWR from "swr";
+import { endPoints } from "@/services/endpoints";
+import { getOne } from "@/services/service";
 const TherapySession1 = () => {
   const [openDialog, setOpenDialog] = useState<boolean>(false);
   const isSmallScreen = useMediaQuery("(max-width: 600px)");
+
+  const { data, isLoading } = useSWR(
+    endPoints.getCoursesByCategoryId("1"),
+    getOne,
+    {
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    }
+  );
+
+  const Courses: any = data?.data;
   return (
     <div
       style={{
@@ -86,29 +101,30 @@ const TherapySession1 = () => {
             justifyContent={"center"}
             className="mb-10"
           >
-            {therapySessions?.length > 0
-              ? therapySessions?.map(
-                  (therapySession: TherapySession, index) => {
-                    return (
-                      <Grid
-                        item
-                        xs={12}
-                        sm={6}
-                        md={4}
-                        lg={3}
-                        key={index}
-                        className="flex justify-center"
-                      >
-                        <TherapyCard
-                          idx={index}
-                          sessionId={therapySession?.sessionId}
-                          name={therapySession?.name}
-                          img={therapySession?.imgSrc}
-                        />
-                      </Grid>
-                    );
-                  }
-                )
+            {Courses?.length > 0
+              ? Courses?.map((therapySession: any, index: number) => {
+                  return (
+                    <Grid
+                      item
+                      xs={12}
+                      sm={6}
+                      md={4}
+                      lg={3}
+                      key={index}
+                      className="flex justify-center"
+                    >
+                      <TherapyCard
+                        idx={index}
+                        sessionId={therapySession?.id}
+                        name={therapySession?.course_name?.replace(
+                          "جلسات الاتزان شفاء – ",
+                          ""
+                        )}
+                        img={`https://mtnhealingcenter.com/healing-center/${therapySession?.logo}`}
+                      />
+                    </Grid>
+                  );
+                })
               : ""}
           </Grid>
         )}
