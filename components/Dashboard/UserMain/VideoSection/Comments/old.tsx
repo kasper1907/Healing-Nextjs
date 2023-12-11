@@ -28,7 +28,6 @@ import {
 import { calculateTimeDifference } from "@/utils/calculateTimeDifference";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { MdEditNote } from "react-icons/md";
-import commentsStyles from "@/styles/sass/Dashboard/UserMain/comment.module.scss";
 
 import { MdOutlinePlaylistRemove } from "react-icons/md";
 import DeleteDialog from "@/components/shared/Dialogs/DeleteDialog/page";
@@ -63,7 +62,10 @@ const Comments = ({
 
   const { data: VideoComments, isLoading } = useSWR(
     endPoints.getCommentByVideoId(videoId),
-    getOne
+    getOne,
+    {
+      revalidateIfStale: false,
+    }
   );
 
   const { data, isLoading: LoadingReplies } = useSWR(
@@ -110,9 +112,6 @@ const Comments = ({
       data: postData,
       handleSuccess: handleSuccess,
     });
-    if (res.status == 200 || res.status == 204) {
-      handleSuccess(res.data);
-    }
   };
 
   const handleSuccess = async (data: any) => {
@@ -123,8 +122,6 @@ const Comments = ({
       const currentComment = await VideoComments?.data?.find(
         (el: any) => el.id == comment?.id
       );
-      console.log(comment.id);
-      console.log(VideoComments?.data);
       currentComment.comment_text = replyText;
       setInputEdit(false);
     } else {
@@ -135,24 +132,12 @@ const Comments = ({
       };
 
       setCommentReplies((prev: any) => [...prev, newData]);
-      const currentComment = await VideoComments?.data?.find(
-        (el: any) => el.id == comment?.id
-      );
-      currentComment.reply_count = currentComment.reply_count + 1;
-
-      setCurrentVideoComments((prev: any) => {
-        const newComments = [...prev];
-        const index = newComments.findIndex((el: any) => el.id == comment?.id);
-        // console.log(index);
-        newComments[index] = currentComment;
-        return newComments;
-      });
     }
 
     setReplyText("");
     setMakeAReply(false);
   };
-  console.log(commentReplies);
+
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -182,26 +167,10 @@ const Comments = ({
       data: {},
       handleSuccess: handleSuccessDeleteComment,
     });
-
-    if (res.status == 201) {
-      handleSuccessDeleteComment();
-    }
   };
   // //console.log(comment.user_id == userData?.user_id);
   return (
-    <div
-      className={`${
-        comment?.reply_count > 1
-          ? commentsStyles.comment_main
-          : comment?.reply_count == 1 && isRepliesVisible
-          ? commentsStyles.comment_main
-          : ""
-      } ${
-        comment?.reply_count > 1 && !isRepliesVisible
-          ? commentsStyles.closed
-          : ""
-      }`}
-    >
+    <>
       <div className={styles.write_comment}>
         <div className={styles.userImgWrapper}>
           <Image
@@ -385,64 +354,33 @@ const Comments = ({
               },
             }}
           >
-            <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
-              {commentReplies?.length > 1 ? (
-                <div style={{ marginLeft: "16px" }}>
+            <div
+              className={`${styles.showAllReplies} ${
+                isRepliesVisible ? styles.visible : ""
+              }`}
+              onClick={() => {
+                setRepliesVisible((prev) => !prev);
+              }}
+            >
+              {/* <IoIosArrowDown /> */}
+              {`${isRepliesVisible ? "Hide" : "Show"} All ${
+                commentReplies?.length
+              } Replies`}
+            </div>
+          </AccordionSummary>
+          <AccordionDetails>
+            {commentReplies?.length > 0
+              ? commentReplies?.map((reply: any, idx: number) => (
                   <Reply
                     userData={userData}
                     videoId={videoId}
                     commentId={comment?.id}
                     setCommentReplies={setCommentReplies}
-                    key={0}
-                    reply={commentReplies?.slice(0, 1)[0]}
-                    idx={0}
+                    key={idx}
+                    reply={reply}
+                    idx={idx}
                   />
-                </div>
-              ) : null}
-              <div
-                className={`${styles.showAllReplies} ${
-                  isRepliesVisible ? styles.visible : ""
-                }`}
-                onClick={() => {
-                  setRepliesVisible((prev) => !prev);
-                }}
-              >
-                {/* <IoIosArrowDown /> */}
-                {`${isRepliesVisible ? "Hide" : "Show"} ${
-                  commentReplies?.length > 1 ? `rest` : "All"
-                } ${
-                  commentReplies?.length > 1 ? commentReplies?.length - 1 : 1
-                } Replies`}
-              </div>
-            </div>
-          </AccordionSummary>
-          <AccordionDetails>
-            {commentReplies?.length > 0
-              ? commentReplies?.length > 1
-                ? commentReplies
-                    ?.slice(1, commentReplies?.length)
-                    .map((reply: any, idx: number) => (
-                      <Reply
-                        userData={userData}
-                        videoId={videoId}
-                        commentId={comment?.id}
-                        setCommentReplies={setCommentReplies}
-                        key={idx}
-                        reply={reply}
-                        idx={idx}
-                      />
-                    ))
-                : commentReplies?.map((reply: any, idx: number) => (
-                    <Reply
-                      userData={userData}
-                      videoId={videoId}
-                      commentId={comment?.id}
-                      setCommentReplies={setCommentReplies}
-                      key={idx}
-                      reply={reply}
-                      idx={idx}
-                    />
-                  ))
+                ))
               : null}
           </AccordionDetails>
         </Accordion>
@@ -452,7 +390,7 @@ const Comments = ({
         setOpen={setOpenDeleteDialog}
         deleteAction={handlePerformDeleteComment}
       />
-    </div>
+    </>
   );
 };
 

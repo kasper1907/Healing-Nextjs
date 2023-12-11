@@ -113,3 +113,25 @@
 .englishComment {
   text-align: left;
 }
+
+.comment_main {
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 20px;
+    top: 50px;
+    height: calc(100% - 130px);
+    width: 5px;
+    border-bottom-left-radius: 17px;
+    background: transparent;
+    border-left: 2px solid #d2d2d2;
+  }
+
+  &.closed {
+    &::after {
+      height: calc(100% - 154px);
+    }
+  }
+}

@@ -44,38 +44,15 @@ const Reply = ({
 
   const isArabic = (text: any) => /[\u0600-\u06FF]/.test(text);
 
-  // Function to conditionally apply className based on the language
-  const getLanguageClassName = (text: any) => {
-    // //console.log(isArabic(text));
-    return isArabic(text) ? styles.arabicComment : styles.englishComment;
-  };
-
   const toggleMakeAReply = () => {
     setMakeAReply((prev) => !prev);
     setReplyText("@UserName__");
   };
 
-  // const postRequest: any = async (url: any, data: any) => {
-  //   const response = await fetch(url, {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       // Add any other headers as needed
-  //     },
-  //     body: JSON.stringify(data),
-  //   });
-
-  //   if (response.status == 201) {
-
-  //   }
-
-  //   const responseData = await response.json();
-  //   return responseData;
-  // };
-
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     console.log("I am here");
+    console.log(videoId);
     const postData = {
       comment_text: replyText,
       video_id: videoId,
@@ -94,19 +71,18 @@ const Reply = ({
 
     e.preventDefault();
     const postData = {
-      text: replyText,
-      id: reply?.id,
-      commentId: reply?.commentId,
-      videoId: videoId,
-      // createdAt: new Date(),
+      comment_text: replyText,
     };
-    // //console.log(reply);
     const res = await updateRequest({
-      id: reply?.id || reply?.replyId,
-      endpoint: endPoints.getReplies,
+      id: reply?.id,
+      endpoint: `comments/updateOne`,
       data: postData,
       handleSuccess: handleSuccess,
     });
+
+    if (res.status == 200 || res.status == 204) {
+      handleSuccess();
+    }
   };
 
   const handleSuccess = () => {
@@ -115,7 +91,7 @@ const Reply = ({
 
     setCommentReplies((prev: any) => {
       const newReplies = [...prev];
-      newReplies[idx].text = replyText;
+      newReplies[idx].comment_text = replyText;
       return newReplies;
     });
     toast.success("Reply Updated Successfully");
@@ -137,6 +113,7 @@ const Reply = ({
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -148,12 +125,25 @@ const Reply = ({
     handleClose();
   };
 
-  const handlePerformDeleteComment = async () => {
-    const res: any = await deleteRequest({
-      endpoint: `comments/deleteOne`,
-      id: reply?.id,
-      mutateEndPoint: endPoints.getRepliesByCommentId(commentId),
+  const handleSuccessDeleteComment = () => {
+    toast.success("Comment Deleted Successfully");
+    setCommentReplies((prev: any) => {
+      const newReplies = prev?.filter((el: any) => el.id !== reply?.id);
+      return newReplies;
     });
+  };
+
+  const handlePerformDeleteComment = async () => {
+    const res: any = await updateRequest({
+      endpoint: `ReplayComments/deletReplay/${reply?.id}`,
+      id: reply?.id,
+      data: {},
+      handleSuccess: handleSuccessDeleteComment,
+    });
+
+    if (res.status == 201) {
+      handleSuccessDeleteComment();
+    }
   };
 
   return (
@@ -194,7 +184,7 @@ const Reply = ({
               height={4}
             />
             {/* <span>{moment(reply?.createdAt).format("YYYY-MM-DD hh:mm A")}</span> */}
-            <span>{calculateTimeDifference(reply?.createdAt)}</span>
+            <span>{calculateTimeDifference(reply?.created_at)}</span>
 
             <IconButton
               aria-label="more"

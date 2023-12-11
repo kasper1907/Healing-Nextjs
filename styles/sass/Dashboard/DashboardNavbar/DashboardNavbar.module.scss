@@ -52,7 +52,8 @@
     z-index: 3;
     position: absolute;
     border: 0;
-    top: calc(100% + 87px);
+    top: calc(100% - 130px);
+    left: 20px;
     display: flex;
     align-items: center;
     gap: 20px;

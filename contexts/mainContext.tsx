@@ -14,29 +14,37 @@ const UseUserContextProvider = ({ children }: { children: ReactNode }) => {
 
   const { data, error, isLoading } = useSWR(
     endPoints.getSessionsByGroupId(groupId),
-    getOne
+    getOne,
+    {
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+    }
   );
 
   const { data: RecommendedVideos, isLoading: RecommendedVideosLoading } =
     useSWR(endPoints.getRecommendedVideos(groupId), getOne, {
-      refreshInterval: 0,
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
     });
 
   const { data: LastSession } = useSWR(
     `videos/getLastSession/${groupId}`,
-    getOne
+    getOne,
+    { revalidateIfStale: false, revalidateOnFocus: false }
   );
 
   const { data: User, isLoading: UserLoading } = useSWR(
     `users/getOne/${userId}`,
-    getOne
+    getOne,
+    { revalidateIfStale: false, revalidateOnFocus: false }
   );
 
   let userGroupId: any = `group_id_${User?.course_id}` || undefined;
 
   const { data: UserGroup, isLoading: LoadingUserGroup } = useSWR(
     `groups/getOne/${User?.course_id ? User[userGroupId] : groupId}`,
-    getOne
+    getOne,
+    { revalidateIfStale: false, revalidateOnFocus: false }
   );
 
   return (
@@ -47,7 +55,7 @@ const UseUserContextProvider = ({ children }: { children: ReactNode }) => {
         recordedVideos: data?.data,
         RecordedVideosLoading: isLoading,
         LastSession: LastSession?.data,
-        User,
+        User: User?.data,
         LoadingUser: UserLoading,
         UserGroup: UserGroup?.data,
         LoadingUserGroup,

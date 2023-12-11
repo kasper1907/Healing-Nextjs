@@ -29,7 +29,10 @@ import { SessionDetails } from "@/models/Sessions";
 import { endPoints } from "@/services/endpoints";
 import jwt from "jsonwebtoken";
 import { UserContext } from "@/contexts/mainContext";
+import useCookie from "react-use-cookie";
+
 const UserMain = () => {
+  const [accessToken, setAccessToken] = useCookie("accessToken");
   const [viewAllGroups, setViewAllGroups] = React.useState(false);
   const { userTabsValue, setUserTabsValue }: any = useTabsContext();
   const [loggedUserToken, setLoggedUserToken] = React.useState<any>("");
@@ -49,19 +52,11 @@ const UserMain = () => {
     AOS.init();
   }, []);
 
+  console.log(User);
+
   // const group: Group = UserUserGroup.data;
 
-  useEffect(() => {
-    const userToken: any = document?.cookie
-      .split(";")
-      .find((row) => row.startsWith("accessToken"))
-      ?.split("=")[1];
-
-    setLoggedUserToken(userToken);
-  }, []);
-
-  const decodedToken: any = jwt.decode(loggedUserToken?.toString() || "");
-
+  const decodedToken: any = jwt.decode(accessToken?.toString() || "");
   if (LoadingUser) return <UserMainSkelton />;
 
   return (

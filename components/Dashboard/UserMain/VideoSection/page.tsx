@@ -88,6 +88,7 @@ const VideoSection = ({
   };
 
   const handleSuccess = (data: any) => {
+    console.log(data);
     toast.success("Comment Added Successfully");
     setText("");
     let newData = {
@@ -118,7 +119,12 @@ const VideoSection = ({
     };
 
     // Trigger a re-fetch after the POST request is completed
-    postRequest(`comments/createComment`, postData, handleSuccess(postData));
+    const res = await postRequest(`comments/createComment`, postData);
+
+    console.log(res);
+    if (res.status == 201) {
+      handleSuccess(res?.data?.data);
+    }
   };
 
   return (
@@ -312,7 +318,7 @@ const VideoSection = ({
                     : null
                 }
                 key={idx}
-                className={`${commentsStyles.comment} `}
+                className={`${commentsStyles.comment}`}
               >
                 <Comments
                   userData={userData}

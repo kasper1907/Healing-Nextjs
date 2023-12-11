@@ -27,9 +27,9 @@ export const postRequest: any = async (
     });
     //console.log(res);
     if (res.status == 201) {
-      handleSuccess ? handleSuccess(res.data) : "";
+      handleSuccess ? handleSuccess(res.data.data) : "";
     }
-    const result = await res.data;
+    const result = await res;
     return result;
   } catch (e: any) {
     return toast.error(e.message);
@@ -52,9 +52,7 @@ export const updateRequest: any = async ({
       }
     );
     // //console.log(res)
-    if (res.status == 200 || res.status == 201) {
-      handleSuccess(data);
-    }
+    return res;
   } catch (e: any) {
     return toast.error(e.message);
   }
