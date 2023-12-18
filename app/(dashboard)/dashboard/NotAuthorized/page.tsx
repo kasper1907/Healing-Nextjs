@@ -4,12 +4,10 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect } from "react";
 import jwt from "jsonwebtoken";
+import useCookie from "react-use-cookie";
 const Page = () => {
-  const [token, setToken] = React.useState("");
+  const [token, setUserToken] = useCookie("SID");
 
-  useEffect(() => {
-    setToken(document?.cookie.split("=")[1]);
-  }, []);
   const decodedToken = jwt.decode(token?.toString()) as any;
   ////console.log(decodedToken?.data?.role);
 

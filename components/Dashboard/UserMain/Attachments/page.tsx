@@ -21,9 +21,10 @@ import { endPoints } from "@/services/endpoints";
 import useSWR, { mutate } from "swr";
 import { toast } from "sonner";
 import DownloadComponenet from "./DownloadComponenet";
+import useCookie from "react-use-cookie";
 const Attachments = () => {
-  const token = document?.cookie.split("=")[1];
-  const decodedToken = jwt.decode(token?.toString()) as any;
+  const [userToken, setUserToken] = useCookie("SID");
+  const decodedToken = jwt.decode(userToken?.toString()) as any;
   const searchParams = useSearchParams();
   const userId = searchParams.get("id");
   const [files, setFiles] = useState<any>([]);
