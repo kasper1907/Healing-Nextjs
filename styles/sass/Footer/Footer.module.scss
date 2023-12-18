@@ -1,0 +1,17 @@
+@import "../_base.sass";
+.footer {
+  width: 100%;
+  margin-top: 30px;
+  .footerGrid {
+    .GridItem {
+      display: flex;
+      justify-content: center;
+      hr {
+        width: 100%;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        border-color: $primary-color;
+      }
+    }
+  }
+}

@@ -1,0 +1,89 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+}
+
+
+
+
+
+.section {
+ padding: "20px"
+}
+
+.title {
+  font-weight: 400;
+  font-size: 2rem;
+}
+
+
+/* button {
+  padding: 0 !important;
+} */
+
+.logo-ct{
+  
+  display: flex;
+  justify-content: center;
+
+}
+button{
+  position: relative;
+}
+.MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation1.MuiAccordion-root.MuiAccordion-rounded::before{
+  content: "";
+  background-color: transparent;
+}
+.css-b0ldl9-MuiButtonBase-root-MuiAccordionSummary-root.Mui-expanded{
+  min-height: 0;
+}
+
+.main-btn{
+    background-color: #10458c !important;
+    color: #FFF;
+    padding: 8px 32px;
+    border-radius: 8px;
+    transition: 0.3s ease-in-out;
+}
+
+.main-btn:disabled{
+  background-color: #10458c !important;
+  color: #FFF;
+  padding: 8px 32px;
+  border-radius: 8px;
+  opacity: 0.5;
+  cursor: not-allowed !important;
+}
+
+.main-btn2:disabled{
+  opacity: 0.5;
+}
+
+.appointment_accordion .MuiButtonBase-root{
+  padding: 0 !important;
+  min-height: 0px !important;
+  height: 0px !important;
+}

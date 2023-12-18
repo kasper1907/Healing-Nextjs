@@ -1,0 +1,90 @@
+@import "../../_base.sass";
+.userMainGridItem {
+  margin-bottom: 60px;
+  &:first-of-type {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  &:first-of-type .gridMainChild {
+    width: 95%;
+    height: 350px;
+    display: flex;
+    border-radius: 8px;
+    @media (max-width: 1200px) {
+      width: 100%;
+    }
+
+    flex-direction: column;
+    &.therapyGroups {
+      height: 190px;
+      justify-content: space-between;
+    }
+    &.lucherDates {
+      min-height: 291px;
+      height: fit-content;
+      .lucher__btns {
+        button {
+          border-radius: 8px;
+          &.active {
+            background-color: #81f2c2;
+          }
+        }
+      }
+    }
+  }
+
+  .gridMainChild {
+    height: 100%;
+    background-color: #fff;
+    height: fit-content;
+    border-radius: 8px;
+    padding: 20px;
+  }
+
+  &:first-of-type .gridMainChild .row:first-of-type {
+    display: flex;
+    justify-content: space-between;
+  }
+  &:first-of-type .gridMainChild .row:nth-of-type(2) {
+    display: flex;
+    flex-direction: column;
+
+    .infoSection {
+      width: 100%;
+      background-color: #f8f8f8;
+      border-radius: 8px;
+      //   padding: 8px 4px;
+      padding: 0px 8px;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      margin-bottom: 8px;
+      font-size: 14px;
+      &:first-of-type {
+        margin-top: 20px;
+      }
+
+      span:first-of-type {
+        color: $primary-color;
+        font-weight: 300;
+      }
+      span:nth-of-type(2) {
+        color: #777777;
+      }
+    }
+  }
+
+  .lastSession {
+    // background-color: red;
+  }
+
+  .preparationVideos {
+    margin-top: 20px;
+  }
+  .recommendedVideos {
+    margin-top: 40px;
+  }
+}

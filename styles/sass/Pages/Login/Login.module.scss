@@ -1,0 +1,65 @@
+.formWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  font-family: "Poppins", sans-serif;
+  .formText {
+    color: #aaaaaa;
+  }
+  .welcomeText {
+    display: flex;
+    flex-direction: column;
+    margin-top: 16px;
+    margin-bottom: 32px;
+    gap: 8px;
+    span:first-of-type {
+      font-size: 26px;
+      color: rgb(16, 69, 140, 70%);
+      font-weight: 300;
+    }
+    span:nth-of-type(2) {
+      font-size: 28px;
+      color: #10458c;
+      font-weight: 500;
+    }
+    input {
+      z-index: 22;
+    }
+  }
+
+  .signInBtn {
+    width: 100%;
+    background: #c0f8e0;
+    padding: 10px;
+    border-radius: 10px;
+  }
+  .link {
+    color: #10458c;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: 0.3s ease;
+    &:hover {
+      color: #10458c;
+      border-bottom: 1px solid #10458c;
+    }
+  }
+  .singupLink {
+    margin-top: 8px;
+    display: flex;
+    gap: 2px;
+    span {
+      color: #838383;
+    }
+    a {
+      font-size: 16px;
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: 0.3s ease;
+      &:hover {
+        color: #10458c;
+        border-bottom: 1px solid #10458c;
+      }
+    }
+  }
+}

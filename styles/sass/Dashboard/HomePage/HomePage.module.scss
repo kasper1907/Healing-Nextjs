@@ -1,0 +1,97 @@
+@import "../../_base.sass";
+.PageWrapper {
+  //   background-color: red;
+  //   height: calc(100vh - 260px);
+  height: fit-content;
+
+  .groupCard {
+    background-color: #fff;
+    min-height: 170px;
+    height: fit-content;
+    width: 95%;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    position: relative;
+    h3 {
+      margin-top: 20px;
+    }
+    .img_place {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: -36px;
+      @media (max-width: 768px) {
+        top: -50px;
+      }
+      height: 85px;
+      width: 85px;
+      background-color: #81f2c2;
+      border-radius: 50%;
+      img {
+        object-fit: fill;
+        padding: 10px;
+      }
+    }
+    .groupButtons {
+      width: 80%;
+      display: flex;
+      margin-top: 15px;
+      align-items: center;
+      @media (max-width: 768px) {
+        flex-direction: column;
+        gap: 8px;
+      }
+      gap: 8px;
+
+      width: 100%;
+
+      button {
+        box-shadow: none;
+        width: 100%;
+        background-color: transparent;
+        color: $primary-color;
+        border: 1px solid $primary-color;
+        border-radius: 10px;
+        height: 38px;
+        transition: 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        svg {
+          color: $primary-color;
+        }
+        &:hover {
+          background-color: $primary-color;
+          color: $btn-hover-color;
+        }
+        &:hover svg {
+          color: $btn-hover-color;
+        }
+        &:last-child {
+          background-color: $primary-color;
+          color: $btn-hover-color;
+        }
+        &:last-child svg {
+          color: $btn-hover-color;
+        }
+        &:last-child:hover {
+          background-color: $btn-hover-color;
+          color: $primary-color;
+        }
+        &:last-child:hover svg {
+          color: $primary-color;
+        }
+      }
+    }
+  }
+
+  .Appointments_header {
+    color: $primary-color;
+    margin-bottom: 32px;
+    font-size: 20px;
+  }
+}

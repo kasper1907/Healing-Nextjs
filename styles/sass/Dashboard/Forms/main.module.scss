@@ -1,0 +1,48 @@
+@import "../../_base.sass";
+
+.main {
+  min-height: 215px;
+  height: fit-content;
+  padding: 10px;
+
+  .inputWrapper {
+    width: 100%;
+  }
+}
+
+.nextBtn {
+  background-color: $primary-color !important;
+  color: #fff !important;
+  border-radius: 8px !important;
+  padding: 8px 32px !important;
+
+  &:disabled {
+    background-color: $primary-color !important;
+    color: #fff !important;
+    opacity: 0.5 !important;
+  }
+}
+.backBtn {
+  background-color: transparent;
+  border-radius: 8px !important;
+  padding: 8px 32px !important;
+}
+
+.langBtn {
+  position: absolute;
+  right: 30px;
+  top: 10px;
+  padding: 3px 17px;
+  display: flex;
+  gap: 5px;
+  background: transparent !important;
+  color: #10458c;
+  border: 1px solid #10458c;
+  font-size: 14px;
+  border-radius: 6px;
+  transition: 0.3s ease;
+  &:hover {
+    background: #10458c !important;
+    color: #fff;
+  }
+}

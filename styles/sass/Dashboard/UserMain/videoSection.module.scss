@@ -1,0 +1,109 @@
+.SectionWrapper {
+  background-color: #fff;
+  min-height: 300px;
+  height: fit-content;
+  box-shadow: 0 0 3px 0px #0000000d;
+  padding: 20px;
+  border-radius: 8px;
+
+  .sessionInfo {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+
+    .sessionInfo__imgWrapper {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background-color: #fff;
+      box-shadow: 0px 0 2px #ababab5e;
+      padding: 10px;
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    .sessionInfo__text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .sessionInfo_videoHeader {
+      cursor: pointer;
+      transition: 0.2s ease;
+      &:hover {
+        color: #6bcca3;
+      }
+    }
+  }
+
+  .videoContainer {
+    height: 336px;
+    width: 100%;
+    .videoIframe {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .videoContainerFull {
+    height: 480px;
+  }
+
+  .comments_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 20px;
+    border-top: 1px solid #f1f1f5;
+    border-bottom: 1px solid #f1f1f5;
+    margin-top: 15px;
+  }
+
+  .write_comment {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    // margin-bottom: 10px;
+    margin-top: 15px;
+    justify-content: flex-start;
+  }
+  .userImgWrapper {
+    width: 50px;
+    height: 45px;
+    border-radius: 50%;
+    background-color: #81f2c2;
+    box-shadow: 0px 0 2px rgba(171, 171, 171, 0.368627451);
+    padding: 20px px;
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+  .commentInput {
+    width: 100%;
+    position: relative;
+
+    .sendIcon {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      z-index: 23;
+    }
+  }
+}
+
+.commentsMainWrapper {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  // overflow-y: scroll;
+}

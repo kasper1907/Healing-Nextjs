@@ -1,0 +1,67 @@
+@import "../../_base.sass";
+
+.groupCard {
+  background-color: #f8f8f8;
+  height: 180px;
+  border-radius: 10px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  justify-content: space-around;
+
+  img {
+    width: 160px;
+  }
+}
+
+.groupButtons {
+  width: 100%;
+  display: flex;
+  margin-top: 15px;
+  align-items: center;
+  gap: 8px;
+  flex-direction: row-reverse;
+
+  button {
+    box-shadow: none;
+    width: 100%;
+    background-color: transparent;
+    color: $primary-color;
+    border: 1px solid $primary-color;
+    border-radius: 10px;
+    height: 35px;
+    transition: 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    &:first-of-type {
+      padding: 10px;
+    }
+    svg {
+      color: $primary-color;
+    }
+    &:hover {
+      background-color: $primary-color;
+      color: $btn-hover-color;
+    }
+    &:hover svg {
+      color: $btn-hover-color;
+    }
+    &:last-child {
+      background-color: $primary-color;
+      color: $btn-hover-color;
+    }
+    &:last-child svg {
+      color: $btn-hover-color;
+    }
+    &:last-child:hover {
+      background-color: $btn-hover-color;
+      color: $primary-color;
+    }
+    &:last-child:hover svg {
+      color: $primary-color;
+    }
+  }
+}
