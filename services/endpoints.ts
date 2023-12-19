@@ -5,7 +5,7 @@ export const endPoints = {
   getComments: `${baseUrl}comments`,
 
   //Healing - Real APIS
-  auth: `auth/login`,
+  auth: `Auth/login`,
   getGroupUsers: (groupId: string | null, courseId: string | null) =>
     `Users/getGroupUsers/?groupId=${groupId}&courseId=${courseId}`,
   getSessionsByGroupId: (groupId: string | null) =>
