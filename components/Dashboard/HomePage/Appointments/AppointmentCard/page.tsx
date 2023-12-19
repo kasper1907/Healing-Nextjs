@@ -25,7 +25,7 @@ const AppointmentCard = ({ appointment }: any) => {
   ////console.log(appointment);
 
   const { data: AppointmentUsers, isLoading: AppointmentUsersLoading } = useSWR(
-    `appointments/getAppointmentUsers/${appointment?.id}`,
+    `Appointments/getAppointmentUsers/${appointment?.id}`,
     getOne,
     {
       revalidateOnFocus: false,

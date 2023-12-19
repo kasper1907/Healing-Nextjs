@@ -31,13 +31,13 @@ const UseUserContextProvider = ({ children }: { children: ReactNode }) => {
     });
 
   const { data: LastSession } = useSWR(
-    `videos/getLastSession/${groupId}`,
+    `Videos/getLastSession/${groupId}`,
     getOne,
     { revalidateIfStale: false, revalidateOnFocus: false }
   );
 
   const { data: User, isLoading: UserLoading } = useSWR(
-    `users/getOne/${userId}`,
+    `Users/getOne/${userId}`,
     getOne,
     { revalidateIfStale: false, revalidateOnFocus: false }
   );
@@ -47,7 +47,7 @@ const UseUserContextProvider = ({ children }: { children: ReactNode }) => {
   let userGroupId: any = `group_id_${User?.course_id}` || undefined;
 
   const { data: UserGroup, isLoading: LoadingUserGroup } = useSWR(
-    `groups/getOne/${User?.course_id ? User[userGroupId] : groupId}`,
+    `Groups/getOne/${User?.course_id ? User[userGroupId] : groupId}`,
     getOne,
     { revalidateIfStale: false, revalidateOnFocus: false }
   );

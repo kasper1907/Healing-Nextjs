@@ -15,7 +15,7 @@ const Page = ({ tableName, userSelections, Table }: any) => {
   console.log(isNaN(userId as any));
 
   const { data: User, isLoading: UserLoading } = useSWR(
-    `users/getOne/${userId}`,
+    `Users/getOne/${userId}`,
     getOne,
     {
       revalidateIfStale: false,

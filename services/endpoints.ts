@@ -7,18 +7,18 @@ export const endPoints = {
   //Healing - Real APIS
   auth: `auth/login`,
   getGroupUsers: (groupId: string | null, courseId: string | null) =>
-    `users/getGroupUsers/?groupId=${groupId}&courseId=${courseId}`,
+    `Users/getGroupUsers/?groupId=${groupId}&courseId=${courseId}`,
   getSessionsByGroupId: (groupId: string | null) =>
-    `videos/getSessionsByGroupId/${groupId}`,
+    `Videos/getSessionsByGroupId/${groupId}`,
   getRecommendedVideos: (groupId: string | null) =>
-    `videos/getAllRecommended/${groupId}`,
+    `Videos/getAllRecommended/${groupId}`,
   getCommentByVideoId: (videoId: string | null) =>
-    `comments/getCommentsByVideoId/${videoId}`,
-  getUser: (userId: string | null) => `users/getOne/${userId}`,
-  getUserProfile: (userId: string | null) => `users/getProfile/${userId}`,
+    `Comments/getCommentsByVideoId/${videoId}`,
+  getUser: (userId: string | null) => `Users/getOne/${userId}`,
+  getUserProfile: (userId: string | null) => `Users/getProfile/${userId}`,
   getUserAttachments: (userId: string | null) =>
-    `attachments/getUserFiles/${userId}`,
-  updateUser: (userId: string | null) => `users/update/${userId}`,
+    `Attachments/getUserFiles/${userId}`,
+  updateUser: (userId: string | null) => `Users/update/${userId}`,
   createReply: (commentId: string | null) =>
     `ReplayComments/createReplayComment/${commentId}`,
   getRepliesByCommentId: (commentId: string | null) =>

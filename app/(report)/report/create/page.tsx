@@ -60,7 +60,7 @@ const Page = () => {
   const userId = searchParams.get("id");
 
   const { data: User, isLoading: UserLoading } = useSWR(
-    `users/getOne/${userId}`,
+    `Users/getOne/${userId}`,
     getOne,
     {
       revalidateIfStale: false,

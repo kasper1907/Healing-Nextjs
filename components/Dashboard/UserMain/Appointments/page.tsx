@@ -10,7 +10,7 @@ export const Appointments = () => {
   const searchParams = useSearchParams();
   const groupId = searchParams.get("groupId");
   const { data: AppointmentsData, isLoading: AppointmentsLoading } = useSWR(
-    `appointments/getByGroupId/${groupId}`,
+    `Appointments/getByGroupId/${groupId}`,
     getOne,
     {
       revalidateOnFocus: false,
