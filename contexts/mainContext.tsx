@@ -42,7 +42,7 @@ const UseUserContextProvider = ({ children }: { children: ReactNode }) => {
     { revalidateIfStale: false, revalidateOnFocus: false }
   );
 
-  console.log(User);
+  // console.log(User);
 
   let userGroupId: any = `group_id_${User?.course_id}` || undefined;
 

@@ -57,7 +57,7 @@ const UserMain = () => {
     AOS.init();
   }, []);
 
-  console.log(User);
+  // console.log(User);
 
   // const group: Group = UserUserGroup.data;
 

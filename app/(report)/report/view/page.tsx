@@ -12,7 +12,7 @@ const Page = ({ tableName, userSelections, Table }: any) => {
   const searchParams = useSearchParams();
   const userId = searchParams.get("id");
   const groupId = searchParams.get("groupId");
-  console.log(isNaN(userId as any));
+  // console.log(isNaN(userId as any));
 
   const { data: User, isLoading: UserLoading } = useSWR(
     `Users/getOne/${userId}`,
