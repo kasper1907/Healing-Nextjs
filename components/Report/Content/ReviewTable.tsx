@@ -4,8 +4,8 @@ import React from "react";
 import useSWR from "swr";
 
 const ReviewTable = ({ tableName, userSelections, Table }: any) => {
-  console.log(userSelections);
-  console.log(tableName);
+  // console.log(userSelections);
+  // console.log(tableName);
 
   const { data, isLoading, error } = useSWR(
     `Reports/getAllStaticData/${tableName}`,
@@ -32,7 +32,7 @@ const ReviewTable = ({ tableName, userSelections, Table }: any) => {
     );
   }
 
-  console.log(data?.data);
+  // console.log(data?.data);
 
   const combinedArray = userSelections.map((userSelection: any) => {
     const staticData = data?.data.find(

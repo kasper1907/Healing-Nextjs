@@ -13,7 +13,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   const searchParams = useSearchParams();
   const [token, setToken] = useCookie("SID");
   const decodedToken = jwt.decode(token) as any;
-  console.log(decodedToken?.data?.role);
+  // console.log(decodedToken?.data?.role);
   const { isAuthenticated, isLoading, isAuthorized } = useAuthentication({
     redirectTo: "/login",
   });
@@ -22,9 +22,9 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     return <LoadingScreen />;
   }
 
-  if (!isAuthenticated) {
-    router.push("/login");
-  }
+  // if (!isAuthenticated) {
+  //   router.push("/login");
+  // }
 
   // if (isAuthenticated && pathName == "/dashboard") {
   //   if (decodedToken?.data?.role == "User") {

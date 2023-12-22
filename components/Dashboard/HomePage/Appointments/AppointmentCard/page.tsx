@@ -33,7 +33,7 @@ const AppointmentCard = ({ appointment }: any) => {
     }
   );
 
-  console.log(AppointmentUsers);
+  // console.log(AppointmentUsers);
 
   return (
     <div className="flex flex-col w-full">

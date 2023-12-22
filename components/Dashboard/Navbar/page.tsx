@@ -35,6 +35,7 @@ import useSWR from "swr";
 import useCookie from "react-use-cookie";
 import UserMenu from "./UserMenu";
 import { useAuthentication } from "@/hooks/useAuthentication";
+import { UserContext } from "@/contexts/mainContext";
 
 const drawerWidth = 300;
 const navItems = [{ id: 1, title: "All Groups", url: "/dashboard" }];
@@ -56,28 +57,29 @@ export default function DashboardNavbar(props: Props) {
   const [userToken, setUserToken] = useCookie("SID");
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [userData, setUserData] = React.useState<any>({});
-  const [currentPageUser, setCurrentPageUser] = React.useState<any>({});
   const { isAuthenticated, isLoading: MainLoading, isAuthorized } =
     //@ts-ignore
     useAuthentication("/login");
   const decodedToken: any = jwt.decode(userToken?.toString() || "");
 
-  const isInUserPage =
-    pathname == "/dashboard/users/userDetails" ? true : false;
-  const {
-    data: user,
-    error,
-    isLoading,
-  } = useSWR(endPoints.getUser(userId), getOne, {
-    onSuccess: (data) => {
-      if (isInUserPage) {
-        setCurrentPageUser(data?.data);
-      } else {
-        setCurrentPageUser({});
-      }
-    },
-  });
+  // const isInUserPage =
+  //   pathname == "/dashboard/users/userDetails" ? true : false;
+  // const {
+  //   data: user,
+  //   error,
+  //   isLoading,
+  // } = useSWR(endPoints.getUser(userId), getOne, {
+  //   onSuccess: (data) => {
+  //     if (isInUserPage) {
+  //       setuser(data?.data);
+  //     } else {
+  //       setuser({});
+  //     }
+  //   },
+  // });
 
+  const { User: user, Group }: any = React.useContext(UserContext);
+  // console.log(Group);
   // console.log(decodedToken?.data);
 
   useEffect(() => {
@@ -275,61 +277,26 @@ export default function DashboardNavbar(props: Props) {
                   }}
                   className={styles.logoWrapper}
                 >
-                  {currentPageUser && isInUserPage ? (
-                    <Image
-                      src={`${
-                        currentPageUser.image
-                          ? process.env.NEXT_PUBLIC_BASE_URL +
-                            "/" +
-                            currentPageUser.image
-                          : "/images/Dashboard/avatars/avatar.jpg"
-                      }`}
-                      width={156}
-                      height={156}
-                      alt="userImage1"
-                      style={{
-                        borderRadius: "50%",
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover",
-                      }}
-                    />
-                  ) : (
-                    <Image
-                      src={`${
-                        decodedToken?.data?.image
-                          ? process.env.NEXT_PUBLIC_BASE_URL +
-                            decodedToken?.data?.image
-                          : "/images/Dashboard/avatars/avatar.jpg"
-                      }`}
-                      width={156}
-                      height={156}
-                      alt="userImage2"
-                      style={{
-                        borderRadius: "50%",
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover",
-                      }}
-                    />
-                  )}
+                  {/* {console.log("user", user)} */}
+                  <Image
+                    src={`${
+                      "/images/Dashboard/avatars/avatar.jpg" ||
+                      process.env.NEXT_PUBLIC_BASE_URL + user.image
+                    }`}
+                    width={156}
+                    height={156}
+                    alt="userImage2"
+                    style={{
+                      borderRadius: "50%",
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                    }}
+                  />
                 </Box>
                 <div className={styles.textWrapper}>
-                  <h2>
-                    {currentPageUser && isInUserPage
-                      ? currentPageUser?.full_name
-                      : decodedToken?.data?.full_name
-                      ? decodedToken?.data?.full_name
-                      : ""}
-                  </h2>
-                  <p>
-                    @
-                    {currentPageUser && isInUserPage
-                      ? currentPageUser?.user_name
-                      : decodedToken?.data?.user_name
-                      ? decodedToken?.data?.user_name
-                      : ""}
-                  </p>
+                  <h2>{user ? user?.full_name : ""}</h2>
+                  <p>{user ? "@" + user?.user_name : ""}</p>
                 </div>
               </Box>
             ) : null}
@@ -352,7 +319,7 @@ export default function DashboardNavbar(props: Props) {
                   />
                 </Typography>
 
-                <UserMenu currentPageUser={currentPageUser} />
+                <UserMenu currentPageUser={user} />
                 <IconButton
                   color="inherit"
                   aria-label="open drawer"

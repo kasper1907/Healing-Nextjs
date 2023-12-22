@@ -26,8 +26,8 @@ export const postRequest: any = async (
     body = JSON.stringify(data);
     contentType = "application/json";
   }
-  console.log("body", data);
-  console.log(url);
+  // console.log("body", data);
+  // console.log(url);
 
   try {
     const res = await axios.post(`${baseUrl}${url}`, data, {
@@ -106,7 +106,7 @@ export const getOne: any = async (endPoint: any) => {
         contentType: "application/json",
       },
     });
-    console.log("res", res);
+    // console.log("res", res);
     return res.data;
   } catch (e: any) {
     return e.message;

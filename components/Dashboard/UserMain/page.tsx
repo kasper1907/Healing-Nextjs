@@ -16,7 +16,7 @@ import Image from "next/image";
 import Link from "next/link";
 import VideoSection from "./VideoSection/page";
 import UserMainSkelton from "../Loading/UserMainSkelton";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams, usePathname, useSearchParams } from "next/navigation";
 import moment from "moment";
 import { useTabsContext } from "../TabsContext";
 import AOS from "aos";
@@ -33,6 +33,7 @@ import { UserContext } from "@/contexts/mainContext";
 import useCookie from "react-use-cookie";
 
 const UserMain = () => {
+  // console.log(props);
   const [SID, setSID] = useCookie("SID");
 
   const {
@@ -48,21 +49,31 @@ const UserMain = () => {
     recommendedVideos: RecommendedVideos,
     RecommendedVideosLoading: LoadingRecommendedVideos,
     LastSession,
+
     User,
-    LoadingUser,
-    UserGroup,
-    LoadingUserGroup,
+    Group,
   }: any = React.useContext(UserContext);
   useEffect(() => {
     AOS.init();
   }, []);
 
-  console.log(User);
+  // console.log(User);
 
   // const group: Group = UserUserGroup.data;
 
   const decodedToken: any = jwt.decode(SID?.toString() || "");
-  if (LoadingUser) return <UserMainSkelton />;
+  const pathname = usePathname();
+  const userGroup = pathname;
+
+  let userGroupId: any = `group_id_${User?.course_id}`;
+
+  // const { data: UserGroup, isLoading: LoadingUserGroup } = useSWR(
+  //   `Groups/getOne/${LoggedInUser.course_id ? User[userGroupId] : groupId}`,
+  //   getOne,
+  //   { revalidateIfStale: false, revalidateOnFocus: false }
+  // );
+
+  // if (LoadingUser) return <UserMainSkelton />;
 
   return (
     <Grid container>
@@ -157,12 +168,16 @@ const UserMain = () => {
           </div>
 
           <div className="flex items-start  flex-wrap gap-2">
-            {LoadingUserGroup ? (
+            {false ? (
               <CircularProgress color="primary" />
             ) : (
-              <Tooltip title={UserGroup?.group_name}>
+              <Tooltip title={Group?.group_name}>
                 <Image
-                  src={`${process.env.NEXT_PUBLIC_BASE_URL2}${UserGroup?.logo}`}
+                  src={`${
+                    Group?.logo
+                      ? process.env.NEXT_PUBLIC_BASE_URL2 + Group?.logo
+                      : "/images/Dashboard/therapy-group.svg"
+                  }`}
                   width={50}
                   height={50}
                   alt="TherapyGroup"
@@ -356,6 +371,8 @@ const UserMain = () => {
         </Grid>
       )}
     </Grid>
+
+    // <div>Test</div>
   );
 };
 

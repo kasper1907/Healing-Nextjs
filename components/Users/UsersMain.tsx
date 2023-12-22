@@ -8,7 +8,7 @@ import { TabContext } from "@mui/lab";
 import { userTabs } from "@/constants/UserTabs";
 import { useTabsContext } from "@/components/Dashboard/TabsContext";
 
-const Page = ({ params }: any) => {
+const UsersMain = ({ params }: any) => {
   const { userTabsValue, setUserTabsValue }: any = useTabsContext();
   const currentTab = userTabs.find((tab) => tab.value == userTabsValue);
 
@@ -28,4 +28,4 @@ const Page = ({ params }: any) => {
   );
 };
 
-export default Page;
+export default UsersMain;

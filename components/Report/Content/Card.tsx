@@ -17,7 +17,7 @@ const Card = ({
   const handleSelectPlace = (e: any) => {
     let newArr = [...userSelections];
     const currentElement = newArr.find((el) => el.B_id == item.B_id);
-    console.log(currentElement);
+    // console.log(currentElement);
     newArr[currentIndex].place = e.target.value;
     setUserSelections(newArr);
   };

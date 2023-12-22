@@ -14,7 +14,7 @@ import CardsSkeleton from "@/components/Dashboard/Loading/CardsSkeleton";
 import { endPoints } from "@/services/endpoints";
 import { getOne } from "@/services/service";
 import { UserContext } from "@/contexts/mainContext";
-const Page = () => {
+const GroupDetails = ({ ID }: { ID: string }) => {
   const router = useRouter();
   const params = useSearchParams();
   let GroupId = params.get("id");
@@ -22,12 +22,18 @@ const Page = () => {
   const groupId = params.get("groupId");
   const { LoggedInUser }: any = React.useContext(UserContext);
 
+  const { data: Group, isLoading: LoadingGroup } = useSWR(
+    `Groups/getOne/${ID}`,
+    getOne,
+    { revalidateIfStale: false, revalidateOnFocus: false }
+  );
+
   const { data, isLoading } = useSWR(
-    endPoints.getGroupUsers(groupId, courseId),
+    endPoints.getGroupUsers(ID, Group?.data?.course_id),
     getOne
   );
 
-  // ////console.log(data);
+  //   console.log(ID, Group?.data?.course_id);
   const GroupUsers = data?.data;
   const [currentGroup, setCurrentGroup] = React.useState<any>(null);
   ////console.log(currentUser);
@@ -102,6 +108,7 @@ const Page = () => {
                             height: "100%",
                           }}
                           className="flex w-full h-full items-center justify-center"
+                          // href={`/dashboard/users/userDetails?id=${user?.id}`}
                           href={`/dashboard/Users/${user?.id}`}
                         >
                           <AiOutlineEye />
@@ -191,4 +198,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default GroupDetails;

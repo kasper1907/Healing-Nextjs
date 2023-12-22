@@ -1,7 +1,7 @@
 "use client";
 import { endPoints } from "@/services/endpoints";
 import { getOne } from "@/services/service";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import React, { ReactNode, createContext } from "react";
 import useSWR from "swr";
 import useCookie from "react-use-cookie";
@@ -11,6 +11,7 @@ const UseUserContextProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = React.useState<any>({ name: "test" });
   const [userToken, setUserToken] = useCookie("SID");
   const params = useSearchParams();
+  const pathName = usePathname();
   const groupId = params.get("groupId");
   const userId = params.get("id");
   const decodedToken: any = jwt.decode(userToken);
@@ -24,34 +25,39 @@ const UseUserContextProvider = ({ children }: { children: ReactNode }) => {
     }
   );
 
+  let finalUserId = decodedToken?.data?.user_id || 5000;
+  const { data: User, isLoading: UserLoading } = useSWR(
+    `Users/getOne/${finalUserId}`,
+    getOne,
+    { revalidateIfStale: false, revalidateOnFocus: false }
+  );
+
+  let userGroupId: any = `group_id_${User?.data?.course_id}`;
+
+  const { data: Group, isLoading: LoadingUserGroup } = useSWR(
+    `Groups/getOne/${User?.data[userGroupId]}`,
+    getOne,
+    { revalidateIfStale: false, revalidateOnFocus: false }
+  );
+
   const { data: RecommendedVideos, isLoading: RecommendedVideosLoading } =
-    useSWR(endPoints.getRecommendedVideos(groupId), getOne, {
+    useSWR(endPoints.getRecommendedVideos(User?.data[userGroupId]), getOne, {
       revalidateIfStale: false,
       revalidateOnFocus: false,
     });
 
   const { data: LastSession } = useSWR(
-    `Videos/getLastSession/${groupId}`,
+    `Videos/getLastSession/${User?.data[userGroupId]}`,
     getOne,
     { revalidateIfStale: false, revalidateOnFocus: false }
   );
-
-  const { data: User, isLoading: UserLoading } = useSWR(
-    `Users/getOne/${userId}`,
-    getOne,
-    { revalidateIfStale: false, revalidateOnFocus: false }
-  );
-
-  console.log(User);
-
-  let userGroupId: any = `group_id_${User?.course_id}` || undefined;
-
-  const { data: UserGroup, isLoading: LoadingUserGroup } = useSWR(
-    `Groups/getOne/${User?.course_id ? User[userGroupId] : groupId}`,
-    getOne,
-    { revalidateIfStale: false, revalidateOnFocus: false }
-  );
-
+  // console.log(decodedToken?.data);
+  // const { data: User, isLoading: UserLoading } = useSWR(
+  //   `Users/getOne/${decodedToken?.data?.user_id}`,
+  //   getOne,
+  //   { revalidateIfStale: false, revalidateOnFocus: false }
+  // );
+  console.log(LastSession);
   return (
     <UserContext.Provider
       value={{
@@ -60,11 +66,9 @@ const UseUserContextProvider = ({ children }: { children: ReactNode }) => {
         recordedVideos: data?.data,
         RecordedVideosLoading: isLoading,
         LastSession: LastSession?.data,
-        User: User?.data,
-        LoadingUser: UserLoading,
-        UserGroup: UserGroup?.data,
-        LoadingUserGroup,
         LoggedInUser: decodedToken?.data,
+        User: User?.data,
+        Group: Group?.data,
       }}
     >
       {children}
