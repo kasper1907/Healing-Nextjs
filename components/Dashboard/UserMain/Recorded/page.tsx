@@ -16,10 +16,19 @@ const Recorded = () => {
   const [showFullVideo, setShowFullVideo] = React.useState<boolean>(false);
   const [currentVideo, setCurrentVideo] = React.useState<any>(null);
   const [_isPending, startTransition] = useTransition();
-  const params = useSearchParams();
-  const { recordedVideos, RecordedVideosLoading }: any =
-    React.useContext(UserContext);
-  let userId = params.get("id");
+  const { LoggedInUser }: any = React.useContext(UserContext);
+
+  const params = useParams();
+  const { id, userId } = params;
+
+  const { data: recordedVideos, isLoading: RecordedVideosLoading } = useSWR(
+    endPoints.getSessionsByGroupId(id || LoggedInUser?.group_id),
+    getOne,
+    {
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+    }
+  );
 
   useEffect(() => {
     AOS.init();
@@ -48,8 +57,8 @@ const Recorded = () => {
                 />
               </Grid>
             ))
-          ) : recordedVideos?.length ? (
-            recordedVideos?.map((el: any, idx: number) => {
+          ) : recordedVideos?.data?.length ? (
+            recordedVideos?.data?.map((el: any, idx: number) => {
               return (
                 <Grid item xs={12} md={6} lg={4} key={idx}>
                   <VideoSection

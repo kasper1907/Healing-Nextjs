@@ -68,13 +68,13 @@ const AllGroupsTab: UserTab = {
 
 export const userTabs = [
   HomeTab,
-  // RecommendedTab,
-  // RecordedTab,
-  // AppointmentTab,
-  // AttachmentsTab,
-  // ProfileTab,
-  // EditProfileTab,
-  // AllGroupsTab,
+  RecommendedTab,
+  RecordedTab,
+  AppointmentTab,
+  AttachmentsTab,
+  ProfileTab,
+  EditProfileTab,
+  AllGroupsTab,
 ];
 
 const DashboardTab: UserTab = {

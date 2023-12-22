@@ -8,7 +8,8 @@ import { TabContext } from "@mui/lab";
 import { userTabs } from "@/constants/UserTabs";
 import { useTabsContext } from "@/components/Dashboard/TabsContext";
 
-const UsersMain = ({ params }: any) => {
+const UsersMain = ({ ID }: any) => {
+  console.log(ID);
   const { userTabsValue, setUserTabsValue }: any = useTabsContext();
   const currentTab = userTabs.find((tab) => tab.value == userTabsValue);
 
@@ -22,7 +23,7 @@ const UsersMain = ({ params }: any) => {
         />
       </TabContext>
       <Container sx={{ mt: 10 }}>
-        {currentTab?.component && <currentTab.component />}
+        {currentTab?.component && <currentTab.component ID={ID} />}
       </Container>
     </>
   );

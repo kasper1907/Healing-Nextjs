@@ -109,7 +109,7 @@ const GroupDetails = ({ ID }: { ID: string }) => {
                           }}
                           className="flex w-full h-full items-center justify-center"
                           // href={`/dashboard/users/userDetails?id=${user?.id}`}
-                          href={`/dashboard/Users/${user?.id}`}
+                          href={`/dashboard/Groups/${ID}/${user?.id}`}
                         >
                           <AiOutlineEye />
                           View

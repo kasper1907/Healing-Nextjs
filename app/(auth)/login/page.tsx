@@ -63,7 +63,7 @@ const Page = () => {
         // );
         router.push("/Profile");
       } else {
-        router.push("/dashboard");
+        router.push("/dashboard/Groups");
       }
       setUserToken(data?.accessToken);
     } else {

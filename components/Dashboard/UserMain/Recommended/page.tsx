@@ -18,11 +18,21 @@ const Recommended = ({
   );
 
   const params = useParams();
-  const searchParams = useSearchParams();
-  const { id: userId } = params;
+  const { id, userId } = params;
 
-  const { recommendedVideos, RecommendedVideosLoading }: any =
-    React.useContext(UserContext);
+  const { LoggedInUser }: any = React.useContext(UserContext);
+  console.log(LoggedInUser);
+  const { data: recommendedVideos, isLoading: RecommendedVideosLoading } =
+    useSWR(
+      endPoints.getRecommendedVideos(id || LoggedInUser?.group_id),
+      getOne,
+      {
+        revalidateIfStale: false,
+        revalidateOnFocus: false,
+      }
+    );
+
+  console.log(recommendedVideos);
 
   return (
     <div>
@@ -37,8 +47,8 @@ const Recommended = ({
               />
             </Grid>
           ))
-        ) : recommendedVideos?.length ? (
-          recommendedVideos?.map((item: any, index: any) => (
+        ) : recommendedVideos?.data?.length ? (
+          recommendedVideos?.data?.map((item: any, index: any) => (
             <Grid key={index} item xs={12} lg={4}>
               <Box
                 sx={{
@@ -60,7 +70,7 @@ const Recommended = ({
                   }}
                   className={styles.videoIframe}
                   allowFullScreen
-                  src={item.url}
+                  src={item.link}
                 ></iframe>
               </Box>
             </Grid>

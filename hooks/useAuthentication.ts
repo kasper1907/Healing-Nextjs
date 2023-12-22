@@ -4,13 +4,9 @@ import jwt from "jsonwebtoken";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useRouter as useRouter2 } from "next/router";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { isLoggedIn } from "./auth";
-import useSWR from "swr";
-import { getOne } from "@/services/service";
-import { UserContext } from "@/contexts/mainContext";
-import { endPoints } from "@/services/endpoints";
 
 type Props = {
   redirectTo?: string;
@@ -25,26 +21,6 @@ type ReturnData = {
 export const useAuthentication = ({ redirectTo }: Props): ReturnData => {
   const pathname = usePathname();
 
-
-  let currentGroupId:any = pathname.startsWith("/dashboard/Groups") && pathname.split("/")[3];
-  const { LoggedInUser }: any = React.useContext(UserContext);
-  const { data:Groups, error } = useSWR(
-    `Groups/getThirapistGroups/${LoggedInUser?.course_id}`,
-    getOne
-  );
-
-  const { data:GroupUsers } = useSWR(
-    endPoints.getGroupUsers(currentGroupId, LoggedInUser?.course_id),
-    getOne
-  );
- 
-  const { data:AllGroups } = useSWR(
-   "Groups",
-    getOne
-  );
-
-
-
   const [cookies] = useCookies(["SID"]);
   const decodedToken: any = jwt.decode(cookies.SID);
   const userData = decodedToken?.data;
@@ -57,66 +33,30 @@ export const useAuthentication = ({ redirectTo }: Props): ReturnData => {
   const currentUrl = `${pathname}?id=${searchParams.get("id")}`;
   // console.log(userUrl);
 
-  
-  const generateGroupsRoutes = () => {
-
-    let routes: any = [];
-    Groups?.data?.map((group: any) => {
-      routes.push(`/dashboard/Groups/${group?.id}`);
-    });
-
-    return routes;
-  }
-  const generateGroupUsersRoutes = () => {
-    let routes: any = [];
-    GroupUsers?.data?.map((user: any) => {
-      routes.push(`/dashboard/Users/${user?.id}`);
-    });
-
-    return routes;
-  }
-
-  const generateDoctorRoutes = () => {
-    let routes: any = [];
-    AllGroups?.data?.map((group: any) => {
-      routes.push(`/dashboard/Groups/${group?.id}`);
-    });
-
-    return routes;
-  }
-  // console.log(generateGroupsRoutes());
-
-  let TherapistAndAssistantGroupRoutes = generateGroupsRoutes();
-  let TherapistAndAssistantGroupUsersRoutes = generateGroupUsersRoutes();
   const RolePages: any = {
     Doctor: [
       "/dashboard",
-      "/dashboard/Groups",
-      ...TherapistAndAssistantGroupRoutes,
+      "/dashboard/GroupUsers",
+      "/dashboard/users/userDetails",
     ],
 
     Therapist: [
+      "/dashboard",
       "/dashboard/Groups",
-      // ...TherapistAndAssistantGroupRoutes,
-      // ...TherapistAndAssistantGroupUsersRoutes,
       "/dashboard/Users",
-      "/dashboard/Groups",
       "/report/view",
+      "/Profile"
     ],
 
     Assistant: [
+      "/dashboard",
       "/dashboard/Groups",
-      // ...TherapistAndAssistantGroupRoutes,
-      // ...TherapistAndAssistantGroupUsersRoutes,
       "/dashboard/Users",
-      "/dashboard/Groups",
       "/report/create",
     ],
 
     User: ["/Profile"],
   };
-
-  console.log('RolePages["Therapist"]', RolePages["Therapist"])
 
   // console.log(pathname);
   // I want to check if the user is not authorized to view the current page, return false
@@ -132,9 +72,6 @@ export const useAuthentication = ({ redirectTo }: Props): ReturnData => {
   // );
 
   // console.log(userUrl);
-
-
-
 
   useEffect(() => {
     let shouldAbort = false;
@@ -174,10 +111,10 @@ export const useAuthentication = ({ redirectTo }: Props): ReturnData => {
       shouldAbort = true;
     };
   }, [cookies.SID, redirectTo, router]);
-  let trimmedPathName = (pathname.split("/")[0] + "/" + pathname.split("/")[1]) + "/" + pathname.split("/")[2]; 
-  let isAuthorizedUser = RolePages[userData?.role]?.includes(pathname) || RolePages[userData?.role]?.includes(trimmedPathName) ;
-  
-
+  let trimmedURL = pathname.split("/")[0] + "/" + pathname.split("/")[1] + "/" + pathname.split("/")[2];
+  console.log(trimmedURL);  
+  let isAuthorizedUser = RolePages[userData?.role]?.includes(pathname) || RolePages[userData?.role]?.includes(trimmedURL)
+  console.log(isAuthorizedUser);  
   return {
     isAuthenticated,
     isLoading,

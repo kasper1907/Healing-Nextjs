@@ -2,15 +2,21 @@ import React from "react";
 import styles from "@/styles/sass/Dashboard/HomePage/HomePage.module.scss";
 import { Box, Button, Container, Grid, Typography } from "@mui/material";
 import AppointmentCard from "../../HomePage/Appointments/AppointmentCard/page";
-import { useSearchParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import useSWR from "swr";
 import { getOne } from "@/services/service";
+import { UserContext } from "@/contexts/mainContext";
 
 export const Appointments = () => {
+  const { LoggedInUser }: any = React.useContext(UserContext);
+
+  const params = useParams();
+  const { id, userId } = params;
+
   const searchParams = useSearchParams();
   const groupId = searchParams.get("groupId");
   const { data: AppointmentsData, isLoading: AppointmentsLoading } = useSWR(
-    `Appointments/getByGroupId/${groupId}`,
+    `Appointments/getByGroupId/${id || LoggedInUser?.group_id}`,
     getOne,
     {
       revalidateOnFocus: false,

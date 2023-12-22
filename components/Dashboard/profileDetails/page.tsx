@@ -5,7 +5,7 @@ import styles from "@/styles/sass/Dashboard/Profile/Profile.module.scss";
 import { Button, Grid, Typography } from "@mui/material";
 import { ProfileData } from "@/constants/ProfileData";
 import { useTabsContext } from "../TabsContext";
-import { useSearchParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { getOne } from "@/services/service";
 import useSWR from "swr";
 import { endPoints } from "@/services/endpoints";
@@ -13,13 +13,15 @@ import { UserDetails } from "@/models/User";
 import { FaArrowLeft } from "react-icons/fa";
 import useCookie from "react-use-cookie";
 import jwt from "jsonwebtoken";
+import { UserContext } from "@/contexts/mainContext";
 const ProfileDetails = () => {
   const [SID, setSID] = useCookie("SID");
   const decodedToken: any = jwt.decode(SID?.toString() || "");
-
+  const { LoggedInUser }: any = React.useContext(UserContext);
+  const params = useParams();
+  const { id, userId } = params;
   const { userTabsValue, setUserTabsValue }: any = useTabsContext();
   const searchParams = useSearchParams();
-  const userId = searchParams.get("id");
   const { data, isLoading } = useSWR(
     endPoints.getUserProfile(userId as string),
     getOne
