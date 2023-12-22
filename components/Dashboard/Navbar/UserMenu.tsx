@@ -52,8 +52,8 @@ export default function UserMenu({
   // console.log(user);
   React.useEffect(() => {
     setUserImage(user.image);
-    setUserAvatarName(user.full_name);
-  }, [user.image, user?.full_name]);
+    setUserAvatarName(user?.full_name);
+  }, [user?.image, user?.full_name]);
   const {
     userTabsValue,
     setUserTabsValue,
@@ -87,7 +87,7 @@ export default function UserMenu({
     LogoutHandler();
     router.push("/login");
   };
-  // console.log(user.full_name);
+  // console.log(user?.full_name);
   return (
     <Box
       sx={{
@@ -148,7 +148,7 @@ export default function UserMenu({
             gap: "5px",
           }}
         >
-          Welcome, {user.full_name}!
+          Welcome, {user?.full_name}!
           <div className="flex flex-row items-center gap-2">
             <FcLock />
 

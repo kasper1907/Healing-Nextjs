@@ -22,9 +22,9 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     return <LoadingScreen />;
   }
 
-  if (!isAuthenticated) {
-    router.push("/login");
-  }
+  // if (!isAuthenticated) {
+  //   router.push("/login");
+  // }
 
   // if (isAuthenticated && pathName == "/dashboard") {
   //   if (decodedToken?.data?.role == "User") {

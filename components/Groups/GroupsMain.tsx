@@ -8,7 +8,7 @@ import { dashboardTabs } from "@/constants/UserTabs";
 import { useTabsContext } from "@/components/Dashboard/TabsContext";
 import { useAuthentication } from "@/hooks/useAuthentication";
 
-const Page = () => {
+const GroupsMain = () => {
   const { dashboardTabsValue, setDashboardTabsValue }: any = useTabsContext();
   const currentTab = dashboardTabs.find(
     (tab) => tab.value == dashboardTabsValue
@@ -30,4 +30,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default GroupsMain;

@@ -1,10 +1,11 @@
 "use client";
-import { Button, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect } from "react";
 import jwt from "jsonwebtoken";
 import useCookie from "react-use-cookie";
+import { Button } from "@nextui-org/react";
 const Page = () => {
   const [token, setUserToken] = useCookie("SID");
 
@@ -20,7 +21,12 @@ const Page = () => {
     Assistant: "/dashboard",
   };
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center">
+    <div
+      style={{
+        height: "calc(100vh - 260px)",
+      }}
+      className="w-full h-full flex flex-col items-center justify-center"
+    >
       <Image
         src="/images/Dashboard/401.svg"
         width={300}
@@ -35,10 +41,18 @@ const Page = () => {
       <Typography sx={{ ml: 4 }}>
         Sorry! Your Are Not Authorized To Access This Page
       </Typography>
-      <Button sx={{ ml: 4 }}>
+      {/* <Button sx={{ ml: 4 }}>
         <Link href={RedirectionPages[decodedToken?.data?.role] || "/dashboard"}>
           Go Back
         </Link>
+      </Button> */}
+      <Button
+        href={RedirectionPages[decodedToken?.data?.role] || "/dashboard"}
+        as={Link}
+        color="primary"
+        variant="solid"
+      >
+        Go Back
       </Button>
     </div>
   );

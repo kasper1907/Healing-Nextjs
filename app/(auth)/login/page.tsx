@@ -57,13 +57,14 @@ const Page = () => {
       toast.success("Login Successfully");
 
       const userRole = await data?.data?.role;
-      // if (userRole == "User") {
-      //   router.push(
-      //     `/dashboard/users/userDetails?id=${data?.data?.user_id}&groupId=${data?.data?.group_id}`
-      //   );
-      // } else {
-      //   router.push("/dashboard");
-      // }
+      if (userRole == "User") {
+        // router.push(
+        //   `/dashboard/users/userDetails?id=${data?.data?.user_id}&groupId=${data?.data?.group_id}`
+        // );
+        router.push("/Profile");
+      } else {
+        router.push("/dashboard/Groups");
+      }
       setUserToken(data?.accessToken);
     } else {
       toast.error("Invalid username or password");

@@ -16,7 +16,8 @@ export const withAuthorization: MiddlewareFactory = (next) => {
     if (pathname == "/dashboard" && userRole == "User") {
       return NextResponse.redirect(
         new URL(
-          `/dashboard/users/userDetails?id=${decodedToken.data.user_id}&groupId=${decodedToken.data.group_id}`,
+          // `/dashboard/users/userDetails?id=${decodedToken.data.user_id}&groupId=${decodedToken.data.group_id}`,
+          `/Profile`,
           request.url
         )
       );
@@ -26,7 +27,8 @@ export const withAuthorization: MiddlewareFactory = (next) => {
       if (userRole == "User") {
         return NextResponse.redirect(
           new URL(
-            `/dashboard/users/userDetails?id=${decodedToken.data.user_id}&groupId=${decodedToken.data.group_id}`,
+            // `/dashboard/users/userDetails?id=${decodedToken.data.user_id}&groupId=${decodedToken.data.group_id}`,
+            `/Profile`,
             request.url
           )
         );

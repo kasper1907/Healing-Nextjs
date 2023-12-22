@@ -1,7 +1,12 @@
 "use client";
 import { endPoints } from "@/services/endpoints";
 import { getOne } from "@/services/service";
-import { useSearchParams } from "next/navigation";
+import {
+  useParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from "next/navigation";
 import React, { ReactNode, createContext } from "react";
 import useSWR from "swr";
 import useCookie from "react-use-cookie";
@@ -11,6 +16,11 @@ const UseUserContextProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = React.useState<any>({ name: "test" });
   const [userToken, setUserToken] = useCookie("SID");
   const params = useSearchParams();
+  const pathName = usePathname();
+  const router = useRouter();
+  console.log(router);
+  const pageParams = useParams();
+
   const groupId = params.get("groupId");
   const userId = params.get("id");
   const decodedToken: any = jwt.decode(userToken);
@@ -24,47 +34,51 @@ const UseUserContextProvider = ({ children }: { children: ReactNode }) => {
     }
   );
 
-  const { data: RecommendedVideos, isLoading: RecommendedVideosLoading } =
-    useSWR(endPoints.getRecommendedVideos(groupId), getOne, {
-      revalidateIfStale: false,
-      revalidateOnFocus: false,
-    });
-
-  const { data: LastSession } = useSWR(
-    `Videos/getLastSession/${groupId}`,
-    getOne,
-    { revalidateIfStale: false, revalidateOnFocus: false }
-  );
-
+  let finalUserId = decodedToken?.data?.user_id;
   const { data: User, isLoading: UserLoading } = useSWR(
-    `Users/getOne/${userId}`,
+    `Users/getOne/${finalUserId}`,
     getOne,
     { revalidateIfStale: false, revalidateOnFocus: false }
   );
 
-  // console.log(User);
+  let userGroupId: any = `group_id_${User?.data?.course_id}`;
 
-  let userGroupId: any = `group_id_${User?.course_id}` || undefined;
-
-  const { data: UserGroup, isLoading: LoadingUserGroup } = useSWR(
-    `Groups/getOne/${User?.course_id ? User[userGroupId] : groupId}`,
+  const { data: Group, isLoading: LoadingUserGroup } = useSWR(
+    `Groups/getOne/${User?.data[userGroupId]}`,
     getOne,
     { revalidateIfStale: false, revalidateOnFocus: false }
   );
+
+ 
+
+  // const generateGroupsRoutes = () => {
+
+  //   let routes: any = [];
+  //   Groups?.data?.map((group: any) => {
+  //     routes.push(`/dashboard/Groups/${group?.id}`);
+  //   });
+
+  //   return routes;
+  // }
+  // const generateGroupUsersRoutes = () => {
+  //   console.log(GroupUsers);
+  //   console.log(LoggedInUser?.group_id, LoggedInUser?.course_id);
+  //   let routes: any = [];
+  //   GroupUsers?.data?.map((user: any) => {
+  //     routes.push(`/dashboard/Users/${user?.id}`);
+  //   });
+
+  //   return routes;
+  // }
 
   return (
     <UserContext.Provider
       value={{
-        recommendedVideos: RecommendedVideos?.data,
-        RecommendedVideosLoading,
         recordedVideos: data?.data,
         RecordedVideosLoading: isLoading,
-        LastSession: LastSession?.data,
-        User: User?.data,
-        LoadingUser: UserLoading,
-        UserGroup: UserGroup?.data,
-        LoadingUserGroup,
         LoggedInUser: decodedToken?.data,
+        User: User?.data,
+        Group: Group?.data,
       }}
     >
       {children}

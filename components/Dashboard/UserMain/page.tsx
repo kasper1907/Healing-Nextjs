@@ -16,7 +16,7 @@ import Image from "next/image";
 import Link from "next/link";
 import VideoSection from "./VideoSection/page";
 import UserMainSkelton from "../Loading/UserMainSkelton";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams, usePathname, useSearchParams } from "next/navigation";
 import moment from "moment";
 import { useTabsContext } from "../TabsContext";
 import AOS from "aos";
@@ -32,9 +32,41 @@ import jwt from "jsonwebtoken";
 import { UserContext } from "@/contexts/mainContext";
 import useCookie from "react-use-cookie";
 
-const UserMain = () => {
-  const [SID, setSID] = useCookie("SID");
+const UserMain = ({ ID }: { ID?: string }) => {
+  const Pageparams = useParams();
+  const { id, userId } = Pageparams;
 
+  const { LoggedInUser, Group }: any = React.useContext(UserContext);
+
+  const [SID, setSID] = useCookie("SID");
+  const decodedToken: any = jwt.decode(SID?.toString() || "");
+  const userData = decodedToken?.data;
+
+  const { data: recommendedVideos, isLoading: RecommendedVideosLoading } =
+    useSWR(
+      endPoints.getRecommendedVideos(id || LoggedInUser?.group_id),
+      getOne,
+      {
+        revalidateIfStale: false,
+        revalidateOnFocus: false,
+      }
+    );
+
+  const { data: GetUser, isLoading: UserLoading } = useSWR(
+    `Users/getOne/${ID ? ID : userData?.user_id}`,
+    getOne,
+    { revalidateIfStale: false, revalidateOnFocus: false }
+  );
+
+  const User = GetUser?.data;
+
+  let userGroupId: any = `group_id_${User?.course_id}`;
+
+  const { data: LastSession } = useSWR(
+    `Videos/getLastSession/${id || User[userGroupId]}`,
+    getOne,
+    { revalidateIfStale: false, revalidateOnFocus: false }
+  );
   const {
     userTabsValue,
     setUserTabsValue,
@@ -44,15 +76,6 @@ const UserMain = () => {
   const [loggedUserToken, setLoggedUserToken] = React.useState<any>("");
   const params = useSearchParams();
 
-  const {
-    recommendedVideos: RecommendedVideos,
-    RecommendedVideosLoading: LoadingRecommendedVideos,
-    LastSession,
-    User,
-    LoadingUser,
-    UserGroup,
-    LoadingUserGroup,
-  }: any = React.useContext(UserContext);
   useEffect(() => {
     AOS.init();
   }, []);
@@ -61,8 +84,16 @@ const UserMain = () => {
 
   // const group: Group = UserUserGroup.data;
 
-  const decodedToken: any = jwt.decode(SID?.toString() || "");
-  if (LoadingUser) return <UserMainSkelton />;
+  const pathname = usePathname();
+  const userGroup = pathname;
+
+  // const { data: UserGroup, isLoading: LoadingUserGroup } = useSWR(
+  //   `Groups/getOne/${LoggedInUser.course_id ? User[userGroupId] : groupId}`,
+  //   getOne,
+  //   { revalidateIfStale: false, revalidateOnFocus: false }
+  // );
+
+  // if (LoadingUser) return <UserMainSkelton />;
 
   return (
     <Grid container>
@@ -157,12 +188,16 @@ const UserMain = () => {
           </div>
 
           <div className="flex items-start  flex-wrap gap-2">
-            {LoadingUserGroup ? (
+            {false ? (
               <CircularProgress color="primary" />
             ) : (
-              <Tooltip title={UserGroup?.group_name}>
+              <Tooltip title={Group?.group_name}>
                 <Image
-                  src={`${process.env.NEXT_PUBLIC_BASE_URL2}${UserGroup?.logo}`}
+                  src={`${
+                    Group?.logo
+                      ? process.env.NEXT_PUBLIC_BASE_URL2 + Group?.logo
+                      : "/images/Dashboard/therapy-group.svg"
+                  }`}
                   width={50}
                   height={50}
                   alt="TherapyGroup"
@@ -227,8 +262,8 @@ const UserMain = () => {
               <Typography color={"primary"} sx={{ mb: 2 }}>
                 Last Session
               </Typography>
-              {LastSession ? (
-                <VideoSection video={LastSession} isFullVideo={false} />
+              {LastSession?.data ? (
+                <VideoSection video={LastSession?.data} isFullVideo={false} />
               ) : (
                 "No Session Found"
               )}
@@ -266,7 +301,7 @@ const UserMain = () => {
               </Grid>
             </div> */}
 
-            {LoadingRecommendedVideos ? (
+            {RecommendedVideosLoading ? (
               <CircularProgress color="primary" />
             ) : (
               <div className={styles.recommendedVideos}>
@@ -274,7 +309,7 @@ const UserMain = () => {
                   <Typography color={"primary"} sx={{ mb: 3 }}>
                     Recommended Videos
                   </Typography>
-                  {RecommendedVideos?.data?.length > 0 ? (
+                  {recommendedVideos?.data?.length > 0 ? (
                     <Link
                       className={"styledLink"}
                       style={{
@@ -289,8 +324,8 @@ const UserMain = () => {
                   ) : null}
                 </div>
                 <Grid container spacing={2}>
-                  {RecommendedVideos?.length ? (
-                    RecommendedVideos?.map((item: any, index: any) => (
+                  {recommendedVideos?.length ? (
+                    recommendedVideos?.map((item: any, index: any) => (
                       <Grid key={index} item xs={12} lg={4}>
                         <Box
                           sx={{
@@ -356,6 +391,8 @@ const UserMain = () => {
         </Grid>
       )}
     </Grid>
+
+    // <div>Test</div>
   );
 };
 

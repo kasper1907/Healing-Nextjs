@@ -42,19 +42,20 @@ export const useAuthentication = ({ redirectTo }: Props): ReturnData => {
 
     Therapist: [
       "/dashboard",
-      "/dashboard/users/userDetails",
-      "/dashboard/GroupUsers",
+      "/dashboard/Groups",
+      "/dashboard/Users",
       "/report/view",
+      "/Profile"
     ],
 
     Assistant: [
       "/dashboard",
-      "/dashboard/users/userDetails",
-      "/dashboard/GroupUsers",
+      "/dashboard/Groups",
+      "/dashboard/Users",
       "/report/create",
     ],
 
-    User: ["/dashboard/users/userDetails", userUrl],
+    User: ["/Profile"],
   };
 
   // console.log(pathname);
@@ -110,14 +111,13 @@ export const useAuthentication = ({ redirectTo }: Props): ReturnData => {
       shouldAbort = true;
     };
   }, [cookies.SID, redirectTo, router]);
-
+  let trimmedURL = pathname.split("/")[0] + "/" + pathname.split("/")[1] + "/" + pathname.split("/")[2];
+  console.log(trimmedURL);  
+  let isAuthorizedUser = RolePages[userData?.role]?.includes(pathname) || RolePages[userData?.role]?.includes(trimmedURL)
+  console.log(isAuthorizedUser);  
   return {
     isAuthenticated,
     isLoading,
-    isAuthorized: RolePages[userData?.role]?.includes(
-      userData?.role == "User" && pathname == "/dashboard/users/userDetails"
-        ? currentUrl
-        : pathname
-    ),
+    isAuthorized:isAuthorizedUser
   };
 };
