@@ -49,13 +49,7 @@ const UseUserContextProvider = ({ children }: { children: ReactNode }) => {
     { revalidateIfStale: false, revalidateOnFocus: false }
   );
 
-  // console.log(decodedToken?.data);
-  // const { data: User, isLoading: UserLoading } = useSWR(
-  //   `Users/getOne/${decodedToken?.data?.user_id}`,
-  //   getOne,
-  //   { revalidateIfStale: false, revalidateOnFocus: false }
-  // );
-  // console.log(LastSession);
+ 
 
   // const generateGroupsRoutes = () => {
 
