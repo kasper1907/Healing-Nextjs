@@ -31,12 +31,13 @@ import { endPoints } from "@/services/endpoints";
 import jwt from "jsonwebtoken";
 import { UserContext } from "@/contexts/mainContext";
 import useCookie from "react-use-cookie";
+import { Spinner } from "@nextui-org/react";
 
 const UserMain = ({ ID }: { ID?: string }) => {
   const PageParams = useParams();
   const { id, userId } = PageParams;
   const pathname = usePathname();
-  const isInProfilePage = pathname == "/dashboard/Profile";
+  const isInProfilePage = pathname == "/Profile";
 
   const { LoggedInUser, Group }: any = React.useContext(UserContext);
 
@@ -310,7 +311,11 @@ const UserMain = ({ ID }: { ID?: string }) => {
             </div> */}
 
             {RecommendedVideosLoading ? (
-              <CircularProgress color="primary" />
+              // <CircularProgress color="primary" />
+              <div className="flex flex-row items-center justify-center">
+                <Spinner />
+                Loading...
+              </div>
             ) : (
               <div className={styles.recommendedVideos}>
                 <div className="flex items-center justify-between ">

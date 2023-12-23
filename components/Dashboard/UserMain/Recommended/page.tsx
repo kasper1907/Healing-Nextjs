@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Grid, Skeleton, Typography } from "@mui/material";
 import styles from "@/styles/sass/Dashboard/UserMain/usermain.module.scss";
 import { useParams, useSearchParams } from "next/navigation";
@@ -7,6 +7,7 @@ import useSWR from "swr";
 import { endPoints } from "@/services/endpoints";
 import { getOne } from "@/services/service";
 import { UserContext } from "@/contexts/mainContext";
+import { Spinner } from "@nextui-org/react";
 
 const Recommended = ({
   dashboardTabsValue,
@@ -21,7 +22,6 @@ const Recommended = ({
   const { id, userId } = params;
 
   const { LoggedInUser }: any = React.useContext(UserContext);
-  console.log(LoggedInUser);
   const { data: recommendedVideos, isLoading: RecommendedVideosLoading } =
     useSWR(
       endPoints.getRecommendedVideos(id || LoggedInUser?.group_id),
@@ -32,7 +32,23 @@ const Recommended = ({
       }
     );
 
-  console.log(recommendedVideos);
+  const [loading, setLoading] = React.useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="w-full h-full gap-2 flex items-center justify-center">
+        {" "}
+        <Spinner />
+        Loading...
+      </div>
+    );
+  }
 
   return (
     <div>

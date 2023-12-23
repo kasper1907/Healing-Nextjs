@@ -241,7 +241,7 @@ export default function UserMenu() {
             }}
             className="transition-transform"
             description={`${isLoading ? "Loading..." : `@${user?.user_name}`}`}
-            name={UserData?.data.full_name}
+            name={UserData?.data?.full_name}
           />
         </DropdownTrigger>
         <DropdownMenu

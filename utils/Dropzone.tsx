@@ -29,6 +29,7 @@ const Dropzone = ({
       }
 
       if (rejectedFiles?.length) {
+        toast.error("File is not supported");
         setRejected((previousFiles: any) => [
           ...previousFiles,
           ...rejectedFiles,
@@ -38,10 +39,10 @@ const Dropzone = ({
     [setFiles]
   );
 
-  let acceptedFiles = [".pdf", ".svg"];
+  let acceptedFiles = [".svg", ".png", ".jpeg", ".jpg"];
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: {
-      "image/": acceptedFiles.map((type) => type + ", "),
+      "image/": acceptedFiles,
     },
     maxSize: 60 * 1024 * 1024, // 50 megabytes in bytes
     onDrop,
@@ -113,7 +114,14 @@ const Dropzone = ({
                   Browse Files
                 </Button>
                 <Typography color={"primary"} sx={{ fontSize: "15px" }}>
-                  *You can upload {acceptedFiles?.map((el) => el)} files only
+                  *You can upload{" "}
+                  {acceptedFiles?.map(
+                    (el, idx) =>
+                      `${el.replace(".", "")} ${
+                        idx + 1 == acceptedFiles?.length ? " " : " - "
+                      } `
+                  )}{" "}
+                  files only
                 </Typography>
               </p>
             )}
@@ -163,24 +171,26 @@ const Dropzone = ({
               xs={12}
               md={12}
             >
-              <Button
-                type="submit"
-                className={styles.browseButton}
-                sx={{ backgroundColor: "#10458C" }}
-                style={{
-                  border: "1px solid #10458C",
-                  background: "transparent",
-                  color: "#10458C",
-                }}
-              >
-                {!isSubmitExternal && loading ? (
-                  <>
-                    <CircularProgress size={20} color="primary" /> Loading...
-                  </>
-                ) : (
-                  "Submit And Upload"
-                )}
-              </Button>
+              {isSubmitExternal ? null : (
+                <Button
+                  type="submit"
+                  className={styles.browseButton}
+                  sx={{ backgroundColor: "#10458C" }}
+                  style={{
+                    border: "1px solid #10458C",
+                    background: "transparent",
+                    color: "#10458C",
+                  }}
+                >
+                  {!isSubmitExternal && loading ? (
+                    <>
+                      <CircularProgress size={20} color="primary" /> Loading...
+                    </>
+                  ) : (
+                    "Submit And Upload"
+                  )}
+                </Button>
+              )}
             </Grid>
           </Grid>
         )}

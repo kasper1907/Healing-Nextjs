@@ -132,7 +132,7 @@ const VideoSection = ({
       <div className={styles.sessionInfo}>
         <div className={styles.sessionInfo__imgWrapper}>
           <Image
-            src="/images/Dashboard/session-logo.svg"
+            src={process.env.NEXT_PUBLIC_BASE_URL2 + video?.logo}
             width={50}
             height={50}
             alt="sessionInfo"
