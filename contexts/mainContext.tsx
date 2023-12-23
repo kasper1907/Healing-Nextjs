@@ -34,9 +34,9 @@ const UseUserContextProvider = ({ children }: { children: ReactNode }) => {
     }
   );
 
-  let finalUserId = decodedToken?.data?.user_id;
+  let loggedUserId = decodedToken?.data?.user_id;
   const { data: User, isLoading: UserLoading } = useSWR(
-    `Users/getOne/${finalUserId}`,
+    `Users/getOne/${loggedUserId}`,
     getOne,
     { revalidateIfStale: false, revalidateOnFocus: false }
   );
@@ -44,12 +44,10 @@ const UseUserContextProvider = ({ children }: { children: ReactNode }) => {
   let userGroupId: any = `group_id_${User?.data?.course_id}`;
 
   const { data: Group, isLoading: LoadingUserGroup } = useSWR(
-    `Groups/getOne/${User?.data[userGroupId]}`,
+    `Groups/getOne/${User?.data?.course_id && User?.data[userGroupId]}`,
     getOne,
     { revalidateIfStale: false, revalidateOnFocus: false }
   );
-
- 
 
   // const generateGroupsRoutes = () => {
 

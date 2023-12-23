@@ -22,6 +22,7 @@ import useSWR, { mutate } from "swr";
 import { toast } from "sonner";
 import DownloadComponenet from "./DownloadComponenet";
 import useCookie from "react-use-cookie";
+import { Spinner } from "@nextui-org/react";
 const Attachments = () => {
   const [userToken, setUserToken] = useCookie("SID");
   const decodedToken = jwt.decode(userToken?.toString()) as any;
@@ -61,6 +62,24 @@ const Attachments = () => {
     svg: "/images/Dashboard/image.svg",
     jpg: "/images/Dashboard/image.svg",
   };
+
+  const [firstLoading, setFirstLoading] = React.useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setFirstLoading(false);
+    }, 2000);
+  }, []);
+
+  if (firstLoading) {
+    return (
+      <div className="w-full h-full gap-2 flex items-center justify-center">
+        {" "}
+        <Spinner />
+        Loading...
+      </div>
+    );
+  }
 
   return (
     <div className={styles.pageWrapper}>

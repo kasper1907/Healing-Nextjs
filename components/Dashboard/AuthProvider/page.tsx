@@ -14,9 +14,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [token, setToken] = useCookie("SID");
   const decodedToken = jwt.decode(token) as any;
   // console.log(decodedToken?.data?.role);
-  const { isAuthenticated, isLoading, isAuthorized } = useAuthentication({
-    redirectTo: "/login",
-  });
+  const { isAuthenticated, isLoading, isAuthorized } = useAuthentication({});
 
   if (isLoading) {
     return <LoadingScreen />;

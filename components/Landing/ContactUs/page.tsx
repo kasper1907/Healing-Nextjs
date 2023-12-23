@@ -7,7 +7,7 @@ import Image from "next/image";
 import StyledButton from "../../shared/StyledButton";
 const ContactUs = () => {
   return (
-    <div className={styles.ContactUs}>
+    <div className={`${styles.ContactUs} contact`}>
       <Container>
         <Grid container className={styles.container}>
           <Grid item xs={12} md={6}>

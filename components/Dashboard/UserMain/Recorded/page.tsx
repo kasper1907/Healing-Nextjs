@@ -11,6 +11,7 @@ import { FaArrowLeft } from "react-icons/fa";
 import { getOne } from "@/services/service";
 import { endPoints } from "@/services/endpoints";
 import { UserContext } from "@/contexts/mainContext";
+import { Spinner } from "@nextui-org/react";
 
 const Recorded = () => {
   const [showFullVideo, setShowFullVideo] = React.useState<boolean>(false);
@@ -34,6 +35,14 @@ const Recorded = () => {
     AOS.init();
   }, []);
 
+  const [loading, setLoading] = React.useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  }, []);
+
   ////console.log(Videos, "Videos");
   const userVideos: any = [];
 
@@ -43,6 +52,16 @@ const Recorded = () => {
     });
     setShowFullVideo((prev) => !prev);
   };
+
+  if (loading) {
+    return (
+      <div className="w-full h-full gap-2 flex items-center justify-center">
+        {" "}
+        <Spinner />
+        Loading...
+      </div>
+    );
+  }
   return (
     <div>
       {!showFullVideo ? (

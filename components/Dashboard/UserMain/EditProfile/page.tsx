@@ -145,6 +145,25 @@ const EditProfile = () => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+    // Object.entries(userData).forEach(([key, value]) => {
+    //   if (value == "") {
+    //     return toast.warning("Please fill all fields");
+    //   }
+    // });
+    if (!userData.full_name) return toast.warning(" Full Name is Required");
+    if (!userData.email) return toast.warning(" Email is Required");
+    if (!userData.country) return toast.warning(" Country is Required");
+    if (!userData.phone) return toast.warning(" Phone is Required");
+    if (!userData.date_of_birth)
+      return toast.warning(" Date of Birth is Required");
+    if (!userData.weight) return toast.warning(" Weight is Required");
+    if (!userData.social_status)
+      return toast.warning(" Social Status is Required");
+    if (!userData.job_title) return toast.warning(" Job Title is Required");
+    if (!userData.number_of_boys)
+      return toast.warning("Please Fill All Fields");
+    if (!userData.number_of_girls)
+      return toast.warning("Please Fill All Fields");
     setLoading(true);
     const formData = new FormData();
     Object.entries(userData).forEach(([key, value]) => {

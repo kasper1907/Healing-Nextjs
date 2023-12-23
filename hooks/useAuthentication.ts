@@ -3,7 +3,6 @@ import jwt from "jsonwebtoken";
 // hooks/useAuthentication.ts
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useRouter as useRouter2 } from "next/router";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { isLoggedIn } from "./auth";
@@ -45,7 +44,7 @@ export const useAuthentication = ({ redirectTo }: Props): ReturnData => {
       "/dashboard/Groups",
       "/dashboard/Users",
       "/report/view",
-      "/Profile"
+      "/Profile",
     ],
 
     Assistant: [
@@ -86,7 +85,7 @@ export const useAuthentication = ({ redirectTo }: Props): ReturnData => {
 
         setIsAuthenticated(isAuthenticated);
         if (!isAuthenticated && redirectTo) {
-          router.push(redirectTo);
+          // router.push(redirectTo);
         }
       })
       .catch(() => {
@@ -111,13 +110,20 @@ export const useAuthentication = ({ redirectTo }: Props): ReturnData => {
       shouldAbort = true;
     };
   }, [cookies.SID, redirectTo, router]);
-  let trimmedURL = pathname.split("/")[0] + "/" + pathname.split("/")[1] + "/" + pathname.split("/")[2];
-  console.log(trimmedURL);  
-  let isAuthorizedUser = RolePages[userData?.role]?.includes(pathname) || RolePages[userData?.role]?.includes(trimmedURL)
-  console.log(isAuthorizedUser);  
+  let trimmedURL =
+    pathname.split("/")[0] +
+    "/" +
+    pathname.split("/")[1] +
+    "/" +
+    pathname.split("/")[2];
+  console.log(trimmedURL);
+  let isAuthorizedUser =
+    RolePages[userData?.role]?.includes(pathname) ||
+    RolePages[userData?.role]?.includes(trimmedURL);
+  console.log(isAuthorizedUser);
   return {
     isAuthenticated,
     isLoading,
-    isAuthorized:isAuthorizedUser
+    isAuthorized: isAuthorizedUser,
   };
 };

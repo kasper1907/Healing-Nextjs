@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "@/styles/sass/Dashboard/HomePage/HomePage.module.scss";
 import { Box, Button, Container, Grid, Typography } from "@mui/material";
 import AppointmentCard from "../../HomePage/Appointments/AppointmentCard/page";
@@ -6,6 +6,7 @@ import { useParams, useSearchParams } from "next/navigation";
 import useSWR from "swr";
 import { getOne } from "@/services/service";
 import { UserContext } from "@/contexts/mainContext";
+import { Spinner } from "@nextui-org/react";
 
 export const Appointments = () => {
   const { LoggedInUser }: any = React.useContext(UserContext);
@@ -23,6 +24,25 @@ export const Appointments = () => {
       revalidateIfStale: false,
     }
   );
+
+  const [loading, setLoading] = React.useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="w-full h-full gap-2 flex items-center justify-center">
+        {" "}
+        <Spinner />
+        Loading...
+      </div>
+    );
+  }
+
   return (
     <div className={styles.PageWrapper}>
       <Container

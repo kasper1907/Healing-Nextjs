@@ -25,7 +25,12 @@ import { TabContext } from "@mui/lab";
 import HomeTabs from "../HomeTabs/page";
 import { dashboardTabs, userTabs } from "@/constants/UserTabs";
 import { useTabsContext } from "../TabsContext";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import {
+  useParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from "next/navigation";
 import { BsFillArrowRightCircleFill } from "react-icons/bs";
 import { Logout } from "@/utils/Logout";
 import jwt from "jsonwebtoken";
@@ -52,8 +57,12 @@ export default function DashboardNavbar(props: Props) {
   }: any = useTabsContext();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const PageParams = useParams();
+  console.log(PageParams);
+  const { id, userId } = PageParams;
+  console.log(PageParams);
+  const [userImg, setUserImg] = useState("");
 
-  const userId = searchParams.get("id");
   const [userToken, setUserToken] = useCookie("SID");
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [userData, setUserData] = React.useState<any>({});
@@ -62,26 +71,25 @@ export default function DashboardNavbar(props: Props) {
     useAuthentication("/login");
   const decodedToken: any = jwt.decode(userToken?.toString() || "");
 
-  // const isInUserPage =
-  //   pathname == "/dashboard/users/userDetails" ? true : false;
-  // const {
-  //   data: user,
-  //   error,
-  //   isLoading,
-  // } = useSWR(endPoints.getUser(userId), getOne, {
-  //   onSuccess: (data) => {
-  //     if (isInUserPage) {
-  //       setuser(data?.data);
-  //     } else {
-  //       setuser({});
-  //     }
-  //   },
-  // });
-
+  // Logged In User:
   const { User: user, Group }: any = React.useContext(UserContext);
-  // console.log(Group);
-  // console.log(decodedToken?.data);
 
+  useEffect(() => {
+    user && setUserImg(user?.image);
+  }, [user]);
+  const { data: CurrentUser, isLoading: UserLoading } = useSWR(
+    `Users/getOne/${userId}`,
+    getOne,
+    {
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+    }
+  );
+  const isInProfilePage =
+    pathname == "/Profile" ||
+    pathname == "/dashboard/Groups" ||
+    (pathname.startsWith("/dashboard/Groups/") &&
+      pathname.split("/")?.length < 5);
   useEffect(() => {
     typeof localStorage !== "undefined" &&
       setUserData(JSON.parse(localStorage.getItem("userData") || "{}"));
@@ -234,6 +242,8 @@ export default function DashboardNavbar(props: Props) {
     </Box>
   );
 
+  console.log(CurrentUser?.data);
+  console.log(user);
   const container =
     window !== undefined ? () => window().document.body : undefined;
 
@@ -277,11 +287,14 @@ export default function DashboardNavbar(props: Props) {
                   }}
                   className={styles.logoWrapper}
                 >
-                  {/* {console.log("user", user)} */}
                   <Image
                     src={`${
-                      "/images/Dashboard/avatars/avatar.jpg" ||
-                      process.env.NEXT_PUBLIC_BASE_URL + user.image
+                      isInProfilePage
+                        ? userImg?.length > 0
+                          ? process.env.NEXT_PUBLIC_BASE_URL + userImg
+                          : "sd"
+                        : process.env.NEXT_PUBLIC_BASE_URL +
+                          CurrentUser?.data?.image
                     }`}
                     width={156}
                     height={156}
@@ -295,8 +308,25 @@ export default function DashboardNavbar(props: Props) {
                   />
                 </Box>
                 <div className={styles.textWrapper}>
-                  <h2>{user ? user?.full_name : ""}</h2>
-                  <p>{user ? "@" + user?.user_name : ""}</p>
+                  <h2>
+                    {isInProfilePage
+                      ? user
+                        ? user?.full_name
+                        : ""
+                      : CurrentUser?.data
+                      ? CurrentUser?.data?.full_name
+                      : ""}
+                  </h2>
+                  <p>
+                    {/* {user ?  : ""} */}
+                    {isInProfilePage
+                      ? user
+                        ? "@" + user?.user_name
+                        : ""
+                      : CurrentUser?.data
+                      ? "@" + CurrentUser?.data?.user_name
+                      : ""}
+                  </p>
                 </div>
               </Box>
             ) : null}
@@ -319,7 +349,7 @@ export default function DashboardNavbar(props: Props) {
                   />
                 </Typography>
 
-                <UserMenu currentPageUser={user} />
+                <UserMenu />
                 <IconButton
                   color="inherit"
                   aria-label="open drawer"
