@@ -61,6 +61,7 @@ export default function DashboardNavbar(props: Props) {
   console.log(PageParams);
   const { id, userId } = PageParams;
   console.log(PageParams);
+  const [userImg, setUserImg] = useState("");
 
   const [userToken, setUserToken] = useCookie("SID");
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -72,7 +73,10 @@ export default function DashboardNavbar(props: Props) {
 
   // Logged In User:
   const { User: user, Group }: any = React.useContext(UserContext);
-  console.log(userId);
+
+  useEffect(() => {
+    user && setUserImg(user?.image);
+  }, [user]);
   const { data: CurrentUser, isLoading: UserLoading } = useSWR(
     `Users/getOne/${userId}`,
     getOne,
@@ -82,7 +86,10 @@ export default function DashboardNavbar(props: Props) {
     }
   );
   const isInProfilePage =
-    pathname == "/dashboard/Profile" || pathname == "/dashboard/Groups";
+    pathname == "/Profile" ||
+    pathname == "/dashboard/Groups" ||
+    (pathname.startsWith("/dashboard/Groups/") &&
+      pathname.split("/")?.length < 5);
   useEffect(() => {
     typeof localStorage !== "undefined" &&
       setUserData(JSON.parse(localStorage.getItem("userData") || "{}"));
@@ -236,7 +243,7 @@ export default function DashboardNavbar(props: Props) {
   );
 
   console.log(CurrentUser?.data);
-
+  console.log(user);
   const container =
     window !== undefined ? () => window().document.body : undefined;
 
@@ -283,7 +290,9 @@ export default function DashboardNavbar(props: Props) {
                   <Image
                     src={`${
                       isInProfilePage
-                        ? process.env.NEXT_PUBLIC_BASE_URL + user?.image
+                        ? userImg?.length > 0
+                          ? process.env.NEXT_PUBLIC_BASE_URL + userImg
+                          : "sd"
                         : process.env.NEXT_PUBLIC_BASE_URL +
                           CurrentUser?.data?.image
                     }`}
