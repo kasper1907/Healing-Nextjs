@@ -33,8 +33,10 @@ import { UserContext } from "@/contexts/mainContext";
 import useCookie from "react-use-cookie";
 
 const UserMain = ({ ID }: { ID?: string }) => {
-  const Pageparams = useParams();
-  const { id, userId } = Pageparams;
+  const PageParams = useParams();
+  const { id, userId } = PageParams;
+  const pathname = usePathname();
+  const isInProfilePage = pathname == "/dashboard/Profile";
 
   const { LoggedInUser, Group }: any = React.useContext(UserContext);
 
@@ -52,6 +54,12 @@ const UserMain = ({ ID }: { ID?: string }) => {
       }
     );
 
+  const { data: CurrentGroup, isLoading: LoadingGroup } = useSWR(
+    `Groups/getOne/${id}`,
+    getOne,
+    { revalidateIfStale: false, revalidateOnFocus: false }
+  );
+
   const { data: GetUser, isLoading: UserLoading } = useSWR(
     `Users/getOne/${ID ? ID : userData?.user_id}`,
     getOne,
@@ -59,14 +67,15 @@ const UserMain = ({ ID }: { ID?: string }) => {
   );
 
   const User = GetUser?.data;
-
+  console.log(User);
   let userGroupId: any = `group_id_${User?.course_id}`;
 
   const { data: LastSession } = useSWR(
-    `Videos/getLastSession/${id || User[userGroupId]}`,
+    `Videos/getLastSession/${id || (User?.course_id && User[userGroupId])}`,
     getOne,
     { revalidateIfStale: false, revalidateOnFocus: false }
   );
+
   const {
     userTabsValue,
     setUserTabsValue,
@@ -79,19 +88,6 @@ const UserMain = ({ ID }: { ID?: string }) => {
   useEffect(() => {
     AOS.init();
   }, []);
-
-  // console.log(User);
-
-  // const group: Group = UserUserGroup.data;
-
-  const pathname = usePathname();
-  const userGroup = pathname;
-
-  // const { data: UserGroup, isLoading: LoadingUserGroup } = useSWR(
-  //   `Groups/getOne/${LoggedInUser.course_id ? User[userGroupId] : groupId}`,
-  //   getOne,
-  //   { revalidateIfStale: false, revalidateOnFocus: false }
-  // );
 
   // if (LoadingUser) return <UserMainSkelton />;
 
@@ -188,15 +184,27 @@ const UserMain = ({ ID }: { ID?: string }) => {
           </div>
 
           <div className="flex items-start  flex-wrap gap-2">
-            {false ? (
+            {LoadingGroup ? (
               <CircularProgress color="primary" />
             ) : (
-              <Tooltip title={Group?.group_name}>
+              <Tooltip
+                title={
+                  isInProfilePage
+                    ? Group?.group_name
+                    : CurrentGroup?.data?.group_name
+                }
+              >
                 <Image
+                  // src={`${
+                  //   Group?.logo
+                  //     ? process.env.NEXT_PUBLIC_BASE_URL2 + Group?.logo
+                  //     : "/images/Dashboard/therapy-group.svg"
+                  // }`}
                   src={`${
-                    Group?.logo
+                    isInProfilePage
                       ? process.env.NEXT_PUBLIC_BASE_URL2 + Group?.logo
-                      : "/images/Dashboard/therapy-group.svg"
+                      : process.env.NEXT_PUBLIC_BASE_URL2 +
+                        CurrentGroup?.data?.logo
                   }`}
                   width={50}
                   height={50}

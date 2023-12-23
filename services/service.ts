@@ -1,7 +1,7 @@
 "use server";
 import axios, { AxiosError } from "axios";
 import { toast } from "sonner";
-import { mutate } from "swr";
+// import { mutate } from "swr";
 import { baseUrl } from "./endpoints";
 import { cookies } from "next/dist/client/components/headers";
 
@@ -88,7 +88,7 @@ export const deleteRequest: any = async ({
     );
     if (res.status == 200 || res.status == 204) {
       toast.success("Item deleted successfully");
-      mutate(mutateEndPoint);
+      // mutate(mutateEndPoint);
     } else {
       toast.error("Something went wrong");
     }

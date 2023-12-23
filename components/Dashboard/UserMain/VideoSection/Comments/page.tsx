@@ -392,7 +392,7 @@ const Comments = ({
             }}
           >
             <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
-              {commentReplies?.length > 1 ? (
+              {/* {commentReplies?.length > 1 ? (
                 <div style={{ marginLeft: "16px" }}>
                   <Reply
                     userData={userData}
@@ -404,7 +404,7 @@ const Comments = ({
                     idx={0}
                   />
                 </div>
-              ) : null}
+              ) : null} */}
               <div
                 className={`${styles.showAllReplies} ${
                   isRepliesVisible ? styles.visible : ""
@@ -415,9 +415,7 @@ const Comments = ({
               >
                 {/* <IoIosArrowDown /> */}
                 {`${isRepliesVisible ? "Hide" : "Show"} ${
-                  commentReplies?.length > 1 ? `rest` : "All"
-                } ${
-                  commentReplies?.length > 1 ? commentReplies?.length - 1 : 1
+                  commentReplies?.length
                 } Replies`}
               </div>
             </div>
@@ -425,19 +423,17 @@ const Comments = ({
           <AccordionDetails>
             {commentReplies?.length > 0
               ? commentReplies?.length > 1
-                ? commentReplies
-                    ?.slice(1, commentReplies?.length)
-                    .map((reply: any, idx: number) => (
-                      <Reply
-                        userData={userData}
-                        videoId={videoId}
-                        commentId={comment?.id}
-                        setCommentReplies={setCommentReplies}
-                        key={idx}
-                        reply={reply}
-                        idx={idx}
-                      />
-                    ))
+                ? commentReplies.map((reply: any, idx: number) => (
+                    <Reply
+                      userData={userData}
+                      videoId={videoId}
+                      commentId={comment?.id}
+                      setCommentReplies={setCommentReplies}
+                      key={idx}
+                      reply={reply}
+                      idx={idx}
+                    />
+                  ))
                 : commentReplies?.map((reply: any, idx: number) => (
                     <Reply
                       userData={userData}

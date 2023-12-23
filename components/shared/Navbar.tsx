@@ -29,19 +29,27 @@ interface Props {
    * Injected by the documentation to work in an iframe.
    * You won't need it on your project.
    */
-  window?: () => Window;
+window?: () => Window;
+  accessToken?: string;
 }
 // const navItems = ['جلساتي', 'المدونه', 'تواصل معنا'];
-
+const handleContactUs = () => {
+  let contactSection: any = document.querySelector(".contact");
+  contactSection.scrollIntoView({ behavior: "smooth", block: "center" });
+  window.scrollTo({
+    top: contactSection.offsetTop - 100,
+    behavior: "smooth",
+  });
+};
 const drawerWidth = 300;
 const navItems = [
-  { id: 1, title: "جلساتي", url: "#" },
+  { id: 1, title: "جلساتي", url: "/Profile" },
   { id: 2, title: "المدونه", url: "#" },
-  { id: 3, title: "تواصل معنا", url: "#" },
+  { id: 3, title: "تواصل معنا", url: "#", onclick: handleContactUs },
 ];
 
 export default function Navbar(props: Props) {
-  const { window } = props;
+  const { window, accessToken } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [userToken, setUserToken] = useCookie("SID");
   const router = useRouter();
@@ -49,12 +57,14 @@ export default function Navbar(props: Props) {
     setMobileOpen((prevState) => !prevState);
   };
 
+  console.log(userToken);
+
   const handleLogout = () => {
     LogoutHandler();
-    router.push("/");
+    router.refresh();
   };
 
-  const accessToken = getCookie("SID");
+  // const accessToken = getCookie("SID");
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
       <Typography
@@ -150,16 +160,16 @@ export default function Navbar(props: Props) {
               }}
             >
               <Button className={styles.NavBarLink}>English</Button>
-              {accessToken ? (
+              {accessToken == undefined ? (
+                <Button className={styles.NavBarLink}>
+                  <Link href={"/login"}>تسجيل الدخول</Link>
+                </Button>
+              ) : (
                 <Button
                   onClick={handleLogout}
                   className={styles.NavBarLinkLogout}
                 >
                   تسجيل الخروج
-                </Button>
-              ) : (
-                <Button className={styles.NavBarLink}>
-                  <Link href={"/login"}>تسجيل الدخول</Link>
                 </Button>
               )}
             </Box>
@@ -175,7 +185,12 @@ export default function Navbar(props: Props) {
             >
               {navItems.map((item: NavbarItems, index: number) => (
                 <Link
-                  href="#"
+                  href={item.url}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    item?.onclick && item?.onclick();
+                    item?.url ? router.push(item?.url) : null;
+                  }}
                   className={`${styles.navLink} ${index == 0 && styles.active}`}
                   key={index}
                   style={{ color: "#000" }}

@@ -173,6 +173,7 @@ const Reply = ({
                 : styles.englishComment
             }`}
           >
+            <span> @{reply?.full_name}</span>
             {reply?.comment_text}
           </div>
           <div className={styles.replyBottom}>

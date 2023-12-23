@@ -44,7 +44,7 @@ const VideoSection = ({
   const [userToken, setUserToken] = useCookie("SID", "0");
   const [scrollPosition, setScrollPosition] = useState(0);
   const [videoLoadingOnStartUp, setVideoLoadingOnStartUp] =
-    useState<boolean>(true);
+    useState<boolean>(false);
   const [commentText, setCommentText] = useState<string>("");
   const [isCommentsVisible, setCommentsVisible] = useState(false);
   const [currentVideoComments, setCurrentVideoComments] = useState<any>([]);
@@ -76,11 +76,11 @@ const VideoSection = ({
 
   // const commentReplies =
   // UseEffects
-  useEffect(() => {
-    setTimeout(() => {
-      setVideoLoadingOnStartUp(false);
-    }, 2000);
-  }, []);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setVideoLoadingOnStartUp(false);
+  //   }, 2000);
+  // }, []);
 
   // Functions
   const toggleComments = () => {
@@ -119,7 +119,7 @@ const VideoSection = ({
     };
 
     // Trigger a re-fetch after the POST request is completed
-    const res = await postRequest(`comments/createComment`, postData);
+    const res = await postRequest(`Comments/createComment`, postData);
 
     //console.log(res);
     if (res.status == 201) {
