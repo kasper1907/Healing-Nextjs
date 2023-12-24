@@ -2,11 +2,13 @@ import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { ArrowUpTrayIcon, XMarkIcon } from "@heroicons/react/24/solid";
-import { Box, Button, CircularProgress, Grid, Typography } from "@mui/material";
+import { Box, CircularProgress, Grid, Typography } from "@mui/material";
 import styles from "@/styles/sass/Dashboard/UserMain/attachments.module.scss";
 import { CiCircleRemove } from "react-icons/ci";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import { Button } from "@nextui-org/react";
+import { Button as MuiButton } from "@mui/material";
 const Dropzone = ({
   className,
   files,
@@ -107,12 +109,12 @@ const Dropzone = ({
                   Drag & drop files here
                 </span>
                 <span>OR</span>
-                <Button
+                <MuiButton
                   className={styles.browseButton}
-                  sx={{ backgroundColor: "#10458C" }}
+                  style={{ backgroundColor: "#10458C" }}
                 >
                   Browse Files
-                </Button>
+                </MuiButton>
                 <Typography color={"primary"} sx={{ fontSize: "15px" }}>
                   *You can upload{" "}
                   {acceptedFiles?.map(
@@ -174,21 +176,16 @@ const Dropzone = ({
               {isSubmitExternal ? null : (
                 <Button
                   type="submit"
-                  className={styles.browseButton}
-                  sx={{ backgroundColor: "#10458C" }}
+                  isLoading={loading}
+                  // className={styles.browseButton}
                   style={{
+                    backgroundColor: "#10458C",
                     border: "1px solid #10458C",
                     background: "transparent",
                     color: "#10458C",
                   }}
                 >
-                  {!isSubmitExternal && loading ? (
-                    <>
-                      <CircularProgress size={20} color="primary" /> Loading...
-                    </>
-                  ) : (
-                    "Submit And Upload"
-                  )}
+                  {!isSubmitExternal && "Submit And Upload"}
                 </Button>
               )}
             </Grid>

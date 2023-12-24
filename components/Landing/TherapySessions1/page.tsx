@@ -32,6 +32,7 @@ const TherapySession1 = () => {
   const Courses: any = data?.data;
   return (
     <div
+      className="second-section"
       style={{
         width: "100%",
         position: "relative",

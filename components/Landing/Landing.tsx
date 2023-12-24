@@ -9,6 +9,23 @@ import { useMediaQuery } from "@mui/material";
 const Landing = () => {
   const isMediumScreen = useMediaQuery("(max-width: 900px)");
   const isSmallScreen = useMediaQuery("(max-width: 772px)");
+
+  const handleScrollToSecondSection = () => {
+    let secondSection: any = document.querySelector(".second-section");
+    secondSection.scrollIntoView({ behavior: "smooth", block: "center" });
+    window.scrollTo({
+      top: secondSection.offsetTop - 100,
+      behavior: "smooth",
+    });
+  };
+  const handleScrollToContact = () => {
+    let contactSection: any = document.querySelector(".contact");
+    contactSection.scrollIntoView({ behavior: "smooth", block: "center" });
+    window.scrollTo({
+      top: contactSection.offsetTop - 100,
+      behavior: "smooth",
+    });
+  };
   return (
     <>
       <Image
@@ -71,7 +88,7 @@ const Landing = () => {
                 </>
               ) : (
                 <>
-                  <span className={styles.LandingTitle}>اتزانك وراحتك</span>
+                  <span className={styles.LandingTitle}>اتزانك وراحتك </span>
                   <span>
                     هو هدفنا الأول <br /> ومساعنا دائما للارتقاء بجوده حياتك
                   </span>
@@ -95,6 +112,7 @@ const Landing = () => {
                     isLink={false}
                     label="اكتشف المزيد"
                     isPrimary={true}
+                    onClick={handleScrollToSecondSection}
                   />
                 </Grid>
                 <Grid item xs={12} md={6} className="flex justify-center">
@@ -102,6 +120,7 @@ const Landing = () => {
                     isLink={false}
                     label="طلب المساعده"
                     isPrimary={false}
+                    onClick={handleScrollToContact}
                   />
                 </Grid>
               </Grid>

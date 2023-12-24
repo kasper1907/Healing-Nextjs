@@ -8,7 +8,6 @@ const DownloadComponenet = ({ file: el }: any) => {
     let fileUrl = `${process.env.NEXT_PUBLIC_BASE_URL}download.php?filename=${filename}`;
     download(fileUrl, filename);
   };
-
   const { size, elapsed, percentage, download, cancel, error, isInProgress } =
     useDownloader();
   return (
@@ -17,7 +16,7 @@ const DownloadComponenet = ({ file: el }: any) => {
       variant="contained"
       className="main-btn2"
       onClick={() => {
-        handleDownloadFile(el?.attachment_name.split("/")[1]);
+        handleDownloadFile(el?.attachment_name.replace("files/imgs/", ""));
       }}
     >
       <span

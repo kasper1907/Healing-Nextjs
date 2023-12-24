@@ -15,7 +15,7 @@ import Link from "next/link";
 import { AiOutlineDownload, AiOutlineEdit, AiOutlineEye } from "react-icons/ai";
 import { BsDownload } from "react-icons/bs";
 import jwt from "jsonwebtoken";
-import { useSearchParams } from "next/navigation";
+import { useParams, usePathname, useSearchParams } from "next/navigation";
 import { getOne, postRequest } from "@/services/service";
 import { endPoints } from "@/services/endpoints";
 import useSWR, { mutate } from "swr";
@@ -23,16 +23,18 @@ import { toast } from "sonner";
 import DownloadComponenet from "./DownloadComponenet";
 import useCookie from "react-use-cookie";
 import { Spinner } from "@nextui-org/react";
+import { Error } from "@/components/shared/Error/page";
 const Attachments = () => {
   const [userToken, setUserToken] = useCookie("SID");
   const decodedToken = jwt.decode(userToken?.toString()) as any;
   const searchParams = useSearchParams();
-  const userId = searchParams.get("id");
+  const pageParams = useParams();
+  const pathname = usePathname();
+  const { id, userId } = pageParams;
   const [files, setFiles] = useState<any>([]);
   const [loading, setLoading] = useState(false);
 
-  const isParamsUserIdEqualDecodedTokenUserId =
-    userId == decodedToken?.data?.user_id;
+  const isInProfilePage = pathname == "/Profile";
 
   const { data: UserFiles, isLoading } = useSWR(
     endPoints.getUserAttachments(decodedToken?.data?.user_id),
@@ -45,15 +47,18 @@ const Attachments = () => {
     const formData = new FormData();
     formData.append("file", files[0]);
     const res = await postRequest(
-      `attachments/uploadFiles/${decodedToken?.data?.user_id}`,
-      formData,
-      () => {
-        toast.success("File Uploaded Successfully");
-        setFiles([]);
-        setLoading(false);
-        mutate(endPoints.getUserAttachments(decodedToken?.data?.user_id));
-      }
+      `Attachments/uploadFiles/${decodedToken?.data?.user_id}`,
+      formData
     );
+
+    if (res.status == 201) {
+      toast.success("File Uploaded Successfully");
+      setFiles([]);
+      setLoading(false);
+      mutate(endPoints.getUserAttachments(decodedToken?.data?.user_id));
+    } else {
+      toast.error("Something went wrong");
+    }
   };
 
   const filesExtensionsImg: any = {
@@ -61,6 +66,8 @@ const Attachments = () => {
     png: "/images/Dashboard/image.svg",
     svg: "/images/Dashboard/image.svg",
     jpg: "/images/Dashboard/image.svg",
+    JPEG: "/images/Dashboard/image.svg",
+    jpeg: "/images/Dashboard/image.svg",
   };
 
   const [firstLoading, setFirstLoading] = React.useState(true);
@@ -84,7 +91,7 @@ const Attachments = () => {
   return (
     <div className={styles.pageWrapper}>
       <Container sx={{ mt: 10 }}>
-        {isParamsUserIdEqualDecodedTokenUserId ? (
+        {isInProfilePage ? (
           <div className={styles.dropZoneWrapper}>
             <Dropzone
               files={files}
@@ -96,7 +103,7 @@ const Attachments = () => {
         ) : null}
 
         <Grid container rowSpacing={2}>
-          {UserFiles?.data?.length &&
+          {UserFiles?.data?.length ? (
             UserFiles?.data?.map((el: any, idx: number) => {
               return (
                 <Grid
@@ -119,7 +126,7 @@ const Attachments = () => {
                         <Image
                           src={`${
                             filesExtensionsImg[
-                              el?.attachment_name.split(".")[1]
+                              el?.attachment_name.split(".").pop()
                             ]
                           }`}
                           width={20}
@@ -163,7 +170,12 @@ const Attachments = () => {
                   </Grid>
                 </Grid>
               );
-            })}
+            })
+          ) : (
+            <div className="w-full flex justify-center">
+              <Error msg="No Attachments Found!" />
+            </div>
+          )}
         </Grid>
       </Container>
     </div>

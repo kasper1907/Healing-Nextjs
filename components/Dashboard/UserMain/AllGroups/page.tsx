@@ -10,8 +10,14 @@ import Link from "next/link";
 import { AiOutlineEdit, AiOutlineEye } from "react-icons/ai";
 import { IoCartOutline } from "react-icons/io5";
 import { CiShare1 } from "react-icons/ci";
+import { getOne } from "@/services/service";
+import { endPoints } from "@/services/endpoints";
+import useSWR from "swr";
+import { SessionDetails } from "@/models/Sessions";
 
 const AllGroups = ({ setViewAllGroups }: any) => {
+  const { data: Courses, isLoading } = useSWR("Courses", getOne);
+  const AllCourses: SessionDetails[] = Courses?.data;
   useEffect(() => {
     AOS.init();
   }, []);
@@ -42,12 +48,12 @@ const AllGroups = ({ setViewAllGroups }: any) => {
       </Typography>
 
       <Grid container spacing={2} sx={{ mt: 4 }}>
-        {userGroups?.map((el: any, idx: number) => {
+        {AllCourses?.map((el: SessionDetails, idx: number) => {
           return (
             <Grid key={idx} item xs={12} md={4}>
               <div className={styles.groupCard}>
                 <Image
-                  src={el?.imageSrc}
+                  src={process.env.NEXT_PUBLIC_BASE_URL2 + el?.logo}
                   width={200}
                   height={200}
                   alt="group_img"

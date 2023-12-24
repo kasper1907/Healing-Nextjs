@@ -5,7 +5,7 @@ import styles from "@/styles/sass/Dashboard/Profile/Profile.module.scss";
 import { Button, Grid, Typography } from "@mui/material";
 import { ProfileData } from "@/constants/ProfileData";
 import { useTabsContext } from "../TabsContext";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams, usePathname, useSearchParams } from "next/navigation";
 import { getOne } from "@/services/service";
 import useSWR from "swr";
 import { endPoints } from "@/services/endpoints";
@@ -18,13 +18,21 @@ const ProfileDetails = () => {
   const [SID, setSID] = useCookie("SID");
   const decodedToken: any = jwt.decode(SID?.toString() || "");
   const { LoggedInUser }: any = React.useContext(UserContext);
+  const pathname = usePathname();
+  const isInProfilePage = pathname == "/Profile";
   const params = useParams();
   const { id, userId } = params;
   const { userTabsValue, setUserTabsValue }: any = useTabsContext();
   const searchParams = useSearchParams();
   const { data, isLoading } = useSWR(
-    endPoints.getUserProfile(userId as string),
-    getOne
+    endPoints.getUserProfile(
+      isInProfilePage ? (LoggedInUser?.user_id as string) : (userId as string)
+    ),
+    getOne,
+    {
+      revalidateOnFocus: false,
+      revalidateIfStale: false,
+    }
   );
 
   const user: UserDetails = data?.data;

@@ -50,6 +50,8 @@ export default function RootLayout({
           margin: "0",
           background: "#F8F8F8",
           overflowX: "hidden",
+          minHeight: "100vh",
+          height: "fit-content",
         }}
       >
         <CssBaseline />

@@ -23,7 +23,7 @@ export const Error = ({ msg }: { msg?: string }) => {
       />
 
       <Typography sx={{ mt: 6 }} color={"primary"}>
-        Something went wrong, {msg ? msg : "please try again later"}
+        {msg ? msg : "please try again later"}
       </Typography>
     </div>
   );

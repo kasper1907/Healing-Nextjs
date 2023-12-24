@@ -166,31 +166,45 @@ const EditProfile = () => {
       return toast.warning("Please Fill All Fields");
     setLoading(true);
     const formData = new FormData();
-    Object.entries(userData).forEach(([key, value]) => {
-      formData.append(key, value);
-    });
-
     formData.append("file", files[0]);
+    try {
+      // Make a POST request to the ClamAV scan endpoint
+      const response = await fetch("/api/scanFile", {
+        method: "POST",
+        body: formData,
+      });
 
-    const res = await postRequest(
-      endPoints.updateUser(decodedToken?.data?.user_id),
-      formData
-    );
-
-    if (res.status == 200 || res.status == 204 || res.status == 201) {
-      toast.success("Your Data Updated Successfully");
-      let mutateEndPoint = endPoints.getUser(decodedToken?.data?.user_id);
-      mutate(mutateEndPoint);
+      const data = await response.json();
+      console.log("data", data);
+    } catch (err) {
+      console.log(err);
     }
-    let test = await res?.data?.accessToken;
 
-    // console.log(res);
-    if (res.status == "201") {
-      if (test != undefined) {
-        setUserToken(test?.toString());
-      }
-    }
-    setLoading(false);
+    // Object.entries(userData).forEach(([key, value]) => {
+    //   formData.append(key, value);
+    // });
+
+    // formData.append("file", files[0]);
+
+    // const res = await postRequest(
+    //   endPoints.updateUser(decodedToken?.data?.user_id),
+    //   formData
+    // );
+
+    // if (res.status == 200 || res.status == 204 || res.status == 201) {
+    //   toast.success("Your Data Updated Successfully");
+    //   let mutateEndPoint = endPoints.getUser(decodedToken?.data?.user_id);
+    //   mutate(mutateEndPoint);
+    // }
+    // let test = await res?.data?.accessToken;
+
+    // // console.log(res);
+    // if (res.status == "201") {
+    //   if (test != undefined) {
+    //     setUserToken(test?.toString());
+    //   }
+    // }
+    // setLoading(false);
   };
 
   return (

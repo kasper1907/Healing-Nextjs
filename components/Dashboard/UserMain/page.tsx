@@ -32,8 +32,10 @@ import jwt from "jsonwebtoken";
 import { UserContext } from "@/contexts/mainContext";
 import useCookie from "react-use-cookie";
 import { Spinner } from "@nextui-org/react";
+import { FaArrowLeft } from "react-icons/fa";
 
 const UserMain = ({ ID }: { ID?: string }) => {
+  const [ViewVideoOnly, setViewVideoOnly] = React.useState(false);
   const PageParams = useParams();
   const { id, userId } = PageParams;
   const pathname = usePathname();
@@ -68,7 +70,6 @@ const UserMain = ({ ID }: { ID?: string }) => {
   );
 
   const User = GetUser?.data;
-  console.log(User);
   let userGroupId: any = `group_id_${User?.course_id}`;
 
   const { data: LastSession } = useSWR(
@@ -86,11 +87,37 @@ const UserMain = ({ ID }: { ID?: string }) => {
   const [loggedUserToken, setLoggedUserToken] = React.useState<any>("");
   const params = useSearchParams();
 
+  const handleShowVideoOnly = () => {
+    // setUserTabsValue(3);
+    setViewVideoOnly((prev) => !prev);
+  };
   useEffect(() => {
     AOS.init();
   }, []);
 
   // if (LoadingUser) return <UserMainSkelton />;
+
+  if (ViewVideoOnly) {
+    return (
+      <div data-aos="fade-right" style={{ marginBottom: "50px" }}>
+        <Typography
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
+            mb: 2,
+            cursor: "pointer",
+          }}
+          color={"primary"}
+          onClick={() => setViewVideoOnly((prev) => !prev)}
+        >
+          <FaArrowLeft />
+          Back To Home
+        </Typography>
+        <VideoSection video={LastSession?.data} isFullVideo={true} />
+      </div>
+    );
+  }
 
   return (
     <Grid container>
@@ -272,7 +299,11 @@ const UserMain = ({ ID }: { ID?: string }) => {
                 Last Session
               </Typography>
               {LastSession?.data ? (
-                <VideoSection video={LastSession?.data} isFullVideo={false} />
+                <VideoSection
+                  video={LastSession?.data}
+                  isFullVideo={true}
+                  HeaderClickHandler={handleShowVideoOnly}
+                />
               ) : (
                 "No Session Found"
               )}
@@ -367,7 +398,7 @@ const UserMain = ({ ID }: { ID?: string }) => {
                               borderRadius: "16px",
                             }}
                             className={styles.videoIframe}
-                            allowFullScreen
+                            allowFullScreen={true}
                             src={item.link}
                           />
                         </Box>

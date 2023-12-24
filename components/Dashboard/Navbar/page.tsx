@@ -41,6 +41,7 @@ import useCookie from "react-use-cookie";
 import UserMenu from "./UserMenu";
 import { useAuthentication } from "@/hooks/useAuthentication";
 import { UserContext } from "@/contexts/mainContext";
+import { cursorTo } from "readline";
 
 const drawerWidth = 300;
 const navItems = [{ id: 1, title: "All Groups", url: "/dashboard" }];
@@ -188,12 +189,14 @@ export default function DashboardNavbar(props: Props) {
           gap: 1,
         }}
       >
-        <Image
-          src="/images/minilogo.svg"
-          width={30}
-          height={30}
-          alt="Mini-Logo"
-        />
+        <Link href="/">
+          <Image
+            src="/images/minilogo.svg"
+            width={30}
+            height={30}
+            alt="Mini-Logo"
+          />
+        </Link>
         Healing.com
       </Typography>
       <Divider />
@@ -341,12 +344,15 @@ export default function DashboardNavbar(props: Props) {
                     display: "flex",
                   }}
                 >
-                  <Image
-                    src="/images/healing-logo.svg"
-                    alt="healingLogo"
-                    width={106}
-                    height={62}
-                  />
+                  <Link href="/">
+                    <Image
+                      style={{ cursor: "pointer" }}
+                      src="/images/healing-logo.svg"
+                      alt="healingLogo"
+                      width={106}
+                      height={62}
+                    />
+                  </Link>
                 </Typography>
 
                 <UserMenu />

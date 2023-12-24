@@ -171,6 +171,7 @@ const VideoSection = ({
               borderRadius: "16px",
             }}
             className={styles.videoIframe}
+            allowFullScreen={true}
             src={video?.link}
           ></iframe>
         )}
