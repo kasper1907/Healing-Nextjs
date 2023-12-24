@@ -14,6 +14,8 @@ import {
 import StyledButton from "@/components/shared/StyledButton";
 import Link from "next/link";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import useSWR from "swr";
+import { getOne } from "@/services/service";
 
 const AppointmentCard = ({ appointment }: any) => {
   const [expanded, setExpanded] = React.useState<boolean>(false);
@@ -21,6 +23,18 @@ const AppointmentCard = ({ appointment }: any) => {
     setExpanded((prev: any) => !prev);
   };
   ////console.log(appointment);
+
+  const { data: AppointmentUsers, isLoading: AppointmentUsersLoading } = useSWR(
+    `Appointments/getAppointmentUsers/${appointment?.id}`,
+    getOne,
+    {
+      revalidateOnFocus: false,
+      revalidateIfStale: false,
+    }
+  );
+
+  // console.log(AppointmentUsers);
+
   return (
     <div className="flex flex-col w-full">
       <div className={styles.appointmentCard}>
@@ -90,18 +104,10 @@ const AppointmentCard = ({ appointment }: any) => {
               height: "0px !important",
             },
           }}
-        >
-          {/* <Typography sx={{ width: "33%", flexShrink: 0 }}>
-            Personal data
-          </Typography> */}
-        </AccordionSummary>
+        ></AccordionSummary>
         <AccordionDetails>
-          {/* <Typography>
-            Nunc vitae orci ultricies, auctor nunc in, volutpat nisl. Integer
-            sit amet egestas eros, vitae egestas augue. Duis vel est augue.
-          </Typography> */}
           <Box sx={{ width: "100%" }}>
-            {Array.from({ length: 5 }).map((_, index) => (
+            {/* {Array.from({ length: 5 }).map((_, index) => (
               <Chip
                 sx={{ mr: 2 }}
                 key={index}
@@ -114,7 +120,27 @@ const AppointmentCard = ({ appointment }: any) => {
                 label="Test User"
                 variant="outlined"
               />
-            ))}
+            ))} */}
+            {AppointmentUsers?.data?.map((el: any, idx: any) => {
+              return (
+                <Chip
+                  sx={{ mr: 2 }}
+                  key={idx}
+                  avatar={
+                    <Avatar
+                      alt="Test User"
+                      src={
+                        el?.image
+                          ? process.env.NEXT_PUBLIC_BASE_URL + "/" + el?.image
+                          : "/images/Dashboard/avatars/avatar.jpg"
+                      }
+                    />
+                  }
+                  label={el?.full_name}
+                  variant="outlined"
+                />
+              );
+            })}
           </Box>
         </AccordionDetails>
       </Accordion>

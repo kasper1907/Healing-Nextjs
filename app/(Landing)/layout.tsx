@@ -23,9 +23,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const Loading = () => {
-    return <div>Loading...</div>;
-  };
   return (
     <html lang="en">
       <head>

@@ -19,30 +19,52 @@ import Container from "@mui/material/Container";
 import styles from "@/styles/sass/Navbar/navbar.module.scss";
 import Link from "next/link";
 import { NavbarItems } from "@/models/Navbar";
+import useCookie from "react-use-cookie";
+import { getCookie } from "@/utils/getCookies";
+import { Logout as LogoutHandler } from "@/utils/Logout";
+import { useRouter } from "next/navigation";
+
 interface Props {
   /**
    * Injected by the documentation to work in an iframe.
    * You won't need it on your project.
    */
-  window?: () => Window;
+window?: () => Window;
+  accessToken?: string;
 }
 // const navItems = ['جلساتي', 'المدونه', 'تواصل معنا'];
-
+const handleContactUs = () => {
+  let contactSection: any = document.querySelector(".contact");
+  contactSection.scrollIntoView({ behavior: "smooth", block: "center" });
+  window.scrollTo({
+    top: contactSection.offsetTop - 100,
+    behavior: "smooth",
+  });
+};
 const drawerWidth = 300;
 const navItems = [
-  { id: 1, title: "جلساتي", url: "#" },
+  { id: 1, title: "جلساتي", url: "/Profile" },
   { id: 2, title: "المدونه", url: "#" },
-  { id: 3, title: "تواصل معنا", url: "#" },
+  { id: 3, title: "تواصل معنا", url: "#", onclick: handleContactUs },
 ];
 
 export default function Navbar(props: Props) {
-  const { window } = props;
+  const { window, accessToken } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
-
+  const [userToken, setUserToken] = useCookie("SID");
+  const router = useRouter();
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
 
+  console.log(userToken);
+
+  const handleLogout = () => {
+    LogoutHandler();
+    router.refresh();
+  };
+
+  // const accessToken = getCookie("SID");
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
       <Typography
@@ -89,9 +111,6 @@ export default function Navbar(props: Props) {
     </Box>
   );
 
-  const container =
-    window !== undefined ? () => window().document.body : undefined;
-
   return (
     <Box
       sx={{
@@ -104,110 +123,121 @@ export default function Navbar(props: Props) {
       }}
     >
       <CssBaseline />
-      <Container>
-        <AppBar
-          className={styles.navbar}
-          component="nav"
+      {/* <Container> */}
+      <AppBar
+        className={styles.navbar}
+        component="nav"
+        sx={{
+          "&.MuiPaper-root": {
+            boxShadow: "none",
+            background: "#f5f2ec",
+          },
+        }}
+      >
+        <Container>
+          <Toolbar sx={{ direction: { xs: "rtl", sm: "ltr" } }}>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="start"
+              onClick={handleDrawerToggle}
+              sx={{ mr: 0, display: { sm: "none" } }}
+            >
+              <Image
+                style={{ cursor: "pointer" }}
+                src={"/images/side-minue.svg"}
+                alt="Side Menu"
+                width={72}
+                height={72}
+              />{" "}
+            </IconButton>
+
+            <Box
+              sx={{
+                flexGrow: 1,
+                gap: 2,
+                display: { xs: "none", sm: "flex" },
+              }}
+            >
+              <Button className={styles.NavBarLink}>English</Button>
+              {accessToken == undefined ? (
+                <Button className={styles.NavBarLink}>
+                  <Link href={"/login"}>تسجيل الدخول</Link>
+                </Button>
+              ) : (
+                <Button
+                  onClick={handleLogout}
+                  className={styles.NavBarLinkLogout}
+                >
+                  تسجيل الخروج
+                </Button>
+              )}
+            </Box>
+
+            <Box
+              sx={{
+                flexGrow: 1,
+                gap: "10px",
+                justifyContent: "center",
+                flexDirection: "row-reverse",
+                display: { xs: "none", sm: "flex" },
+              }}
+            >
+              {navItems.map((item: NavbarItems, index: number) => (
+                <Link
+                  href={item.url}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    item?.onclick && item?.onclick();
+                    item?.url ? router.push(item?.url) : null;
+                  }}
+                  className={`${styles.navLink} ${index == 0 && styles.active}`}
+                  key={index}
+                  style={{ color: "#000" }}
+                >
+                  {item?.title}
+                </Link>
+              ))}
+            </Box>
+            <Typography
+              variant="h6"
+              component="div"
+              sx={{
+                flexGrow: 1,
+                justifyContent: "flex-end",
+                display: "flex",
+              }}
+            >
+              <Image
+                src="/images/healing-logo.svg"
+                alt="healingLogo"
+                width={106}
+                height={62}
+              />
+            </Typography>
+          </Toolbar>
+        </Container>
+      </AppBar>
+      <nav>
+        <Drawer
+          variant="temporary"
+          open={mobileOpen}
+          onClose={handleDrawerToggle}
+          ModalProps={{
+            keepMounted: true, // Better open performance on mobile.
+          }}
           sx={{
-            "&.MuiPaper-root": {
-              boxShadow: "none",
-              background: "#f5f2ec",
+            display: { xs: "block", sm: "none" },
+            "& .MuiDrawer-paper": {
+              boxSizing: "border-box",
+              width: drawerWidth,
             },
           }}
         >
-          <Container>
-            <Toolbar sx={{ direction: { xs: "rtl", sm: "ltr" } }}>
-              <IconButton
-                color="inherit"
-                aria-label="open drawer"
-                edge="start"
-                onClick={handleDrawerToggle}
-                sx={{ mr: 0, display: { sm: "none" } }}
-              >
-                <Image
-                  style={{ cursor: "pointer" }}
-                  src={"/images/side-minue.svg"}
-                  alt="Side Menu"
-                  width={72}
-                  height={72}
-                />{" "}
-              </IconButton>
-
-              <Box
-                sx={{
-                  flexGrow: 1,
-                  gap: 2,
-                  display: { xs: "none", sm: "flex" },
-                }}
-              >
-                <Button className={styles.NavBarLink}>English</Button>
-                <Button className={styles.NavBarLink}>
-                  <Link href={"/login"}>تسجيل الدخول</Link>
-                </Button>{" "}
-              </Box>
-
-              <Box
-                sx={{
-                  flexGrow: 1,
-                  gap: "10px",
-                  justifyContent: "center",
-                  flexDirection: "row-reverse",
-                  display: { xs: "none", sm: "flex" },
-                }}
-              >
-                {navItems.map((item: NavbarItems, index: number) => (
-                  <Link
-                    href="#"
-                    className={`${styles.navLink} ${
-                      index == 0 && styles.active
-                    }`}
-                    key={index}
-                    style={{ color: "#000" }}
-                  >
-                    {item?.title}
-                  </Link>
-                ))}
-              </Box>
-              <Typography
-                variant="h6"
-                component="div"
-                sx={{
-                  flexGrow: 1,
-                  justifyContent: "flex-end",
-                  display: "flex",
-                }}
-              >
-                <Image
-                  src="/images/healing-logo.svg"
-                  alt="healingLogo"
-                  width={106}
-                  height={62}
-                />
-              </Typography>
-            </Toolbar>
-          </Container>
-        </AppBar>
-        <nav>
-          <Drawer
-            container={container}
-            variant="temporary"
-            open={mobileOpen}
-            onClose={handleDrawerToggle}
-            ModalProps={{
-              keepMounted: true, // Better open performance on mobile.
-            }}
-            sx={{
-              display: { xs: "block", sm: "none" },
-              "& .MuiDrawer-paper": {
-                boxSizing: "border-box",
-                width: drawerWidth,
-              },
-            }}
-          >
-            {drawer}
-          </Drawer>
-        </nav>
-      </Container>
+          {drawer}
+        </Drawer>
+      </nav>
+      {/* </Container> */}
     </Box>
   );
 }

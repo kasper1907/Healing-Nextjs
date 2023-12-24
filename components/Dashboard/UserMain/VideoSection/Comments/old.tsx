@@ -96,8 +96,8 @@ const Comments = ({
 
     const res = await postRequest(
       endPoints.createReply(comment?.id),
-      postData,
-      handleSuccess
+      postData
+      // handleSuccess
     );
   };
   const handleSubmitEdit = async (e: any) => {

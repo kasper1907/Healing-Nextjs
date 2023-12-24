@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Grid, Skeleton, Typography } from "@mui/material";
 import styles from "@/styles/sass/Dashboard/UserMain/usermain.module.scss";
 import { useParams, useSearchParams } from "next/navigation";
@@ -7,6 +7,7 @@ import useSWR from "swr";
 import { endPoints } from "@/services/endpoints";
 import { getOne } from "@/services/service";
 import { UserContext } from "@/contexts/mainContext";
+import { Spinner } from "@nextui-org/react";
 
 const Recommended = ({
   dashboardTabsValue,
@@ -18,11 +19,36 @@ const Recommended = ({
   );
 
   const params = useParams();
-  const searchParams = useSearchParams();
-  const { id: userId } = params;
+  const { id, userId } = params;
 
-  const { recommendedVideos, RecommendedVideosLoading }: any =
-    React.useContext(UserContext);
+  const { LoggedInUser }: any = React.useContext(UserContext);
+  const { data: recommendedVideos, isLoading: RecommendedVideosLoading } =
+    useSWR(
+      endPoints.getRecommendedVideos(id || LoggedInUser?.group_id),
+      getOne,
+      {
+        revalidateIfStale: false,
+        revalidateOnFocus: false,
+      }
+    );
+
+  const [loading, setLoading] = React.useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="w-full h-full gap-2 flex items-center justify-center">
+        {" "}
+        <Spinner />
+        Loading...
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -37,8 +63,8 @@ const Recommended = ({
               />
             </Grid>
           ))
-        ) : recommendedVideos?.length ? (
-          recommendedVideos?.map((item: any, index: any) => (
+        ) : recommendedVideos?.data?.length ? (
+          recommendedVideos?.data?.map((item: any, index: any) => (
             <Grid key={index} item xs={12} lg={4}>
               <Box
                 sx={{
@@ -60,7 +86,7 @@ const Recommended = ({
                   }}
                   className={styles.videoIframe}
                   allowFullScreen
-                  src={item.url}
+                  src={item.link}
                 ></iframe>
               </Box>
             </Grid>

@@ -44,7 +44,12 @@ body {
   padding: 0 !important;
 } */
 
+.logo-ct{
+  
+  display: flex;
+  justify-content: center;
 
+}
 button{
   position: relative;
 }

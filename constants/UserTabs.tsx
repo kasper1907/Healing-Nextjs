@@ -11,6 +11,7 @@ import Recorded from "@/components/Dashboard/UserMain/Recorded/page";
 import Attachments from "@/components/Dashboard/UserMain/Attachments/page";
 import Saved from "@/components/Dashboard/UserMain/Saved/page";
 import Appointments from "@/components/Dashboard/HomePage/Appointments/page";
+import { Appointments as UserAppointments } from "@/components/Dashboard/UserMain/Appointments/page";
 import Home from "@/components/Dashboard/HomePage/Home/page";
 import ProfileDetails from "@/components/Dashboard/profileDetails/page";
 import EditProfile from "@/components/Dashboard/UserMain/EditProfile/page";
@@ -38,7 +39,7 @@ const AppointmentTab: UserTab = {
   value: "4",
   label: "Appointments",
   icon: <BsCalendarDate size={18} />,
-  component: Appointments,
+  component: UserAppointments,
 };
 const AttachmentsTab: UserTab = {
   value: "5",

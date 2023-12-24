@@ -42,7 +42,7 @@ const PersonalInfo = ({
   formData,
   setFormData,
 }: any) => {
-  const [selected, setSelected] = useState("");
+  const [selected, setSelected] = useState<string | undefined>("");
   const [phone, setPhone] = useState("");
   const { t } = useTranslation();
   useEffect(() => {
@@ -301,7 +301,7 @@ const PersonalInfo = ({
               customLabels={placeOfBirthObject}
               className="NationalitiesSelect"
             /> */}
-            <CountrySelect />
+            <CountrySelect formData={formData} setFormData={setFormData} />
           </div>
         </Grid>
 

@@ -25,7 +25,12 @@ import { TabContext } from "@mui/lab";
 import HomeTabs from "../HomeTabs/page";
 import { dashboardTabs, userTabs } from "@/constants/UserTabs";
 import { useTabsContext } from "../TabsContext";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import {
+  useParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from "next/navigation";
 import { BsFillArrowRightCircleFill } from "react-icons/bs";
 import { Logout } from "@/utils/Logout";
 import jwt from "jsonwebtoken";
@@ -34,6 +39,8 @@ import { endPoints } from "@/services/endpoints";
 import useSWR from "swr";
 import useCookie from "react-use-cookie";
 import UserMenu from "./UserMenu";
+import { useAuthentication } from "@/hooks/useAuthentication";
+import { UserContext } from "@/contexts/mainContext";
 
 const drawerWidth = 300;
 const navItems = [{ id: 1, title: "All Groups", url: "/dashboard" }];
@@ -50,31 +57,39 @@ export default function DashboardNavbar(props: Props) {
   }: any = useTabsContext();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const PageParams = useParams();
+  console.log(PageParams);
+  const { id, userId } = PageParams;
+  console.log(PageParams);
+  const [userImg, setUserImg] = useState("");
 
-  const userId = searchParams.get("id");
-  const [userToken, setUserToken] = useCookie("accessToken");
+  const [userToken, setUserToken] = useCookie("SID");
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [userData, setUserData] = React.useState<any>({});
-  const [currentPageUser, setCurrentPageUser] = React.useState<any>({});
+  const { isAuthenticated, isLoading: MainLoading, isAuthorized } =
+    //@ts-ignore
+    useAuthentication("/login");
+  const decodedToken: any = jwt.decode(userToken?.toString() || "");
 
-  const decodedToken = jwt.decode(userToken?.toString() || "");
+  // Logged In User:
+  const { User: user, Group }: any = React.useContext(UserContext);
 
-  const isInUserPage =
-    pathname == "/dashboard/users/userDetails" ? true : false;
-  const {
-    data: user,
-    error,
-    isLoading,
-  } = useSWR(endPoints.getUser(userId), getOne, {
-    onSuccess: (data) => {
-      if (isInUserPage) {
-        setCurrentPageUser(data?.data);
-      } else {
-        setCurrentPageUser({});
-      }
-    },
-  });
-
+  useEffect(() => {
+    user && setUserImg(user?.image);
+  }, [user]);
+  const { data: CurrentUser, isLoading: UserLoading } = useSWR(
+    `Users/getOne/${userId}`,
+    getOne,
+    {
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+    }
+  );
+  const isInProfilePage =
+    pathname == "/Profile" ||
+    pathname == "/dashboard/Groups" ||
+    (pathname.startsWith("/dashboard/Groups/") &&
+      pathname.split("/")?.length < 5);
   useEffect(() => {
     typeof localStorage !== "undefined" &&
       setUserData(JSON.parse(localStorage.getItem("userData") || "{}"));
@@ -227,116 +242,132 @@ export default function DashboardNavbar(props: Props) {
     </Box>
   );
 
+  console.log(CurrentUser?.data);
+  console.log(user);
   const container =
     window !== undefined ? () => window().document.body : undefined;
-  return (
-    <Box
-      sx={{
-        display: "flex",
-        height: "260px",
-        ".MuiToolbar-root ": {
-          backgroundColor: "transparent",
-          color: "#000",
-          padding: "0",
-        },
-      }}
-    >
-      <CssBaseline />
-      <Container sx={{ "& .MuiContainer-root ": { zIndex: 2 } }}>
-        <AppBar
-          className={styles.navbar}
-          component="nav"
-          sx={{
-            "&.MuiPaper-root": {
-              boxShadow: "none",
-              background: "transparent",
-              position: "absolute",
-            },
-          }}
-        >
-          <Box
-            sx={{ display: { xs: "none !important", lg: "flex !important" } }}
-            className={styles.userLogo}
+
+  if (!MainLoading) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          height: "260px",
+          ".MuiToolbar-root ": {
+            backgroundColor: "transparent",
+            color: "#000",
+            padding: "0",
+          },
+        }}
+      >
+        <CssBaseline />
+        <Container sx={{ "& .MuiContainer-root ": { zIndex: 2 } }}>
+          <AppBar
+            className={styles.navbar}
+            component="nav"
+            sx={{
+              "&.MuiPaper-root": {
+                boxShadow: "none",
+                background: "transparent",
+                position: "absolute",
+              },
+            }}
           >
-            <Box
-              sx={{
-                width: { xs: "100px", md: "156px" },
-                height: { xs: "100px", md: "156px" },
-              }}
-              className={styles.logoWrapper}
-            >
-              {currentPageUser && isInUserPage ? (
-                <Image
-                  src={`${process.env.NEXT_PUBLIC_BASE_URL}/${currentPageUser.image}`}
-                  width={156}
-                  height={156}
-                  alt="userImage"
-                  style={{
-                    borderRadius: "50%",
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                  }}
-                />
-              ) : null}
-            </Box>
-            <div className={styles.textWrapper}>
-              <h2>
-                {currentPageUser && isInUserPage
-                  ? currentPageUser?.full_name
-                  : userData?.user_name
-                  ? userData?.user_name
-                  : ""}
-              </h2>
-              <p>
-                @
-                {currentPageUser && isInUserPage
-                  ? currentPageUser?.user_name
-                  : userData?.user_name
-                  ? userData?.user_name
-                  : ""}
-              </p>
-            </div>
-          </Box>
-          <Container sx={{ position: "relative" }}>
-            <Toolbar>
-              <Typography
-                variant="h6"
-                component="div"
-                sx={{
-                  flexGrow: 1,
-                  justifyContent: "flex-start",
-                  display: "flex",
-                }}
-              >
-                <Image
-                  src="/images/healing-logo.svg"
-                  alt="healingLogo"
-                  width={106}
-                  height={62}
-                />
-              </Typography>
-
-              <UserMenu />
-              <IconButton
-                color="inherit"
-                aria-label="open drawer"
-                edge="start"
-                onClick={handleDrawerToggle}
-                sx={{ mr: 0, display: { sm: "none" } }}
-              >
-                <Image
-                  style={{ cursor: "pointer" }}
-                  src={"/images/side-minue.svg"}
-                  alt="Side Menu"
-                  width={72}
-                  height={72}
-                />{" "}
-              </IconButton>
-
+            {isAuthorized ? (
               <Box
                 sx={{
-                  flexGrow: 1,
+                  display: { xs: "none !important", lg: "flex !important" },
+                }}
+                className={styles.userLogo}
+              >
+                <Box
+                  sx={{
+                    width: { xs: "100px", md: "156px" },
+                    height: { xs: "100px", md: "156px" },
+                  }}
+                  className={styles.logoWrapper}
+                >
+                  <Image
+                    src={`${
+                      isInProfilePage
+                        ? userImg?.length > 0
+                          ? process.env.NEXT_PUBLIC_BASE_URL + userImg
+                          : "sd"
+                        : process.env.NEXT_PUBLIC_BASE_URL +
+                          CurrentUser?.data?.image
+                    }`}
+                    width={156}
+                    height={156}
+                    alt="userImage2"
+                    style={{
+                      borderRadius: "50%",
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                    }}
+                  />
+                </Box>
+                <div className={styles.textWrapper}>
+                  <h2>
+                    {isInProfilePage
+                      ? user
+                        ? user?.full_name
+                        : ""
+                      : CurrentUser?.data
+                      ? CurrentUser?.data?.full_name
+                      : ""}
+                  </h2>
+                  <p>
+                    {/* {user ?  : ""} */}
+                    {isInProfilePage
+                      ? user
+                        ? "@" + user?.user_name
+                        : ""
+                      : CurrentUser?.data
+                      ? "@" + CurrentUser?.data?.user_name
+                      : ""}
+                  </p>
+                </div>
+              </Box>
+            ) : null}
+            <Container sx={{ position: "relative" }}>
+              <Toolbar>
+                <Typography
+                  variant="h6"
+                  component="div"
+                  sx={{
+                    flexGrow: 1,
+                    justifyContent: "flex-start",
+                    display: "flex",
+                  }}
+                >
+                  <Image
+                    src="/images/healing-logo.svg"
+                    alt="healingLogo"
+                    width={106}
+                    height={62}
+                  />
+                </Typography>
+
+                <UserMenu />
+                <IconButton
+                  color="inherit"
+                  aria-label="open drawer"
+                  edge="start"
+                  onClick={handleDrawerToggle}
+                  sx={{ mr: 0, display: { sm: "none" } }}
+                >
+                  <Image
+                    style={{ cursor: "pointer" }}
+                    src={"/images/side-minue.svg"}
+                    alt="Side Menu"
+                    width={72}
+                    height={72}
+                  />{" "}
+                </IconButton>
+                {/* 
+              <Box
+                sx={{
                   gap: 2,
                   display: { xs: "none", lg: "flex" },
                   justifyContent: "flex-end",
@@ -353,37 +384,38 @@ export default function DashboardNavbar(props: Props) {
                     Logout
                   </Link>
                 </Button>{" "}
-              </Box>
-            </Toolbar>
-          </Container>
-          <Image
-            src={"/images/Dashboard-banner.png"}
-            alt="dashboard-banner"
-            fill
-            style={{ objectFit: "contain", background: "#f8f6ef" }}
-          />
-        </AppBar>
-        <nav>
-          <Drawer
-            container={container}
-            variant="temporary"
-            open={mobileOpen}
-            onClose={handleDrawerToggle}
-            ModalProps={{
-              keepMounted: true, // Better open performance on mobile.
-            }}
-            sx={{
-              display: { xs: "block", sm: "none" },
-              "& .MuiDrawer-paper": {
-                boxSizing: "border-box",
-                width: drawerWidth,
-              },
-            }}
-          >
-            {drawer}
-          </Drawer>
-        </nav>
-      </Container>
-    </Box>
-  );
+              </Box> */}
+              </Toolbar>
+            </Container>
+            <Image
+              src={"/images/Dashboard-banner.png"}
+              alt="dashboard-banner"
+              fill
+              style={{ objectFit: "contain", background: "#f8f6ef" }}
+            />
+          </AppBar>
+          <nav>
+            <Drawer
+              container={container}
+              variant="temporary"
+              open={mobileOpen}
+              onClose={handleDrawerToggle}
+              ModalProps={{
+                keepMounted: true, // Better open performance on mobile.
+              }}
+              sx={{
+                display: { xs: "block", sm: "none" },
+                "& .MuiDrawer-paper": {
+                  boxSizing: "border-box",
+                  width: drawerWidth,
+                },
+              }}
+            >
+              {drawer}
+            </Drawer>
+          </nav>
+        </Container>
+      </Box>
+    );
+  }
 }

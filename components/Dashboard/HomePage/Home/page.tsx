@@ -10,6 +10,8 @@ import useSWR from "swr";
 import CardsSkeleton from "../../Loading/CardsSkeleton";
 import { Error } from "@/components/shared/Error/page";
 import { getOne } from "@/services/service";
+import { UserContext } from "@/contexts/mainContext";
+import Image from "next/image";
 
 type Group = {
   id: number;
@@ -18,9 +20,14 @@ type Group = {
   course_id: string;
   users: any[];
   image: string;
+  logo: string;
 };
 const Home = () => {
-  const { data, error, isLoading } = useSWR(`groups`, getOne);
+  const { LoggedInUser }: any = React.useContext(UserContext);
+  const { data, error, isLoading } = useSWR(
+    `Groups/getThirapistGroups/${LoggedInUser?.course_id}`,
+    getOne
+  );
   const Groups: any = data?.data;
   if (error) {
     return <Error />;
@@ -46,7 +53,20 @@ const Home = () => {
                 sx={{ display: "flex", justifyContent: "center" }}
               >
                 <div className={styles.groupCard}>
-                  <div className={styles.img_place}></div>
+                  <div className={styles.img_place}>
+                    <Image
+                      src={`https://mtnhealingcenter.com/healing-center/${group?.logo}`}
+                      fill
+                      alt="group image"
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        background: "#fff",
+                        borderRadius: "50%",
+                      }}
+                    />
+                  </div>
                   <h3>{group.group_name}</h3>
                   <div className={styles.groupButtons}>
                     <Button variant="contained">
@@ -56,13 +76,7 @@ const Home = () => {
                           height: "100%",
                         }}
                         className="flex items-center justify-center gap-1"
-                        href={{
-                          pathname: "/dashboard/GroupUsers",
-                          query: {
-                            groupId: group.id,
-                            courseId: group.course_id,
-                          },
-                        }}
+                        href={`/dashboard/Groups/${group?.id}`}
                       >
                         <AiOutlineEye />
                         View

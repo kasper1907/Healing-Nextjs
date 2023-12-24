@@ -59,11 +59,13 @@ const Reply = ({
       user_id: userData?.user_id,
     };
 
-    const res = await postRequest(
-      endPoints.createReply(commentId),
-      postData,
-      successCreateReply
-    );
+    const res = await postRequest(endPoints.createReply(commentId), postData);
+
+    if (res.status == 201) {
+      successCreateReply(res.data);
+    } else {
+      toast.error("Something went wrong");
+    }
   };
 
   const handleSubmitEdit = async (e: any) => {
@@ -171,6 +173,7 @@ const Reply = ({
                 : styles.englishComment
             }`}
           >
+            <span> @{reply?.full_name}</span>
             {reply?.comment_text}
           </div>
           <div className={styles.replyBottom}>

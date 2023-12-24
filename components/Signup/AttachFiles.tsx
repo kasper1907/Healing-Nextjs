@@ -7,8 +7,7 @@ import styles from "@/styles/sass/Dashboard/UserMain/attachments.module.scss";
 import { CiCircleRemove } from "react-icons/ci";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
-const AttachFiles = ({ className }: any) => {
-  const [files, setFiles] = useState<any>([]);
+const AttachFiles = ({ className, files, setFiles }: any) => {
   const [rejected, setRejected] = useState<any>([]);
   const { t } = useTranslation();
   const onDrop = useCallback((acceptedFiles: any, rejectedFiles: any) => {

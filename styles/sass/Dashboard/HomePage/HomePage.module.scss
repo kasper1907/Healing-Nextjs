@@ -6,8 +6,9 @@
 
   .groupCard {
     background-color: #fff;
-    height: 154px;
-    width: 364px;
+    min-height: 170px;
+    height: fit-content;
+    width: 95%;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
@@ -23,17 +24,30 @@
       left: 50%;
       transform: translateX(-50%);
       top: -36px;
-      height: 72px;
-      width: 72px;
+      @media (max-width: 768px) {
+        top: -50px;
+      }
+      height: 85px;
+      width: 85px;
       background-color: #81f2c2;
       border-radius: 50%;
+      img {
+        object-fit: fill;
+        padding: 10px;
+      }
     }
     .groupButtons {
       width: 80%;
       display: flex;
       margin-top: 15px;
       align-items: center;
+      @media (max-width: 768px) {
+        flex-direction: column;
+        gap: 8px;
+      }
       gap: 8px;
+
+      width: 100%;
 
       button {
         box-shadow: none;

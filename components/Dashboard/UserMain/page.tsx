@@ -1,3 +1,4 @@
+"use client";
 import { fetcher } from "@/utils/swr";
 import {
   Box,
@@ -15,7 +16,7 @@ import Image from "next/image";
 import Link from "next/link";
 import VideoSection from "./VideoSection/page";
 import UserMainSkelton from "../Loading/UserMainSkelton";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams, usePathname, useSearchParams } from "next/navigation";
 import moment from "moment";
 import { useTabsContext } from "../TabsContext";
 import AOS from "aos";
@@ -30,9 +31,51 @@ import { endPoints } from "@/services/endpoints";
 import jwt from "jsonwebtoken";
 import { UserContext } from "@/contexts/mainContext";
 import useCookie from "react-use-cookie";
+import { Spinner } from "@nextui-org/react";
 
-const UserMain = () => {
-  const [accessToken, setAccessToken] = useCookie("accessToken");
+const UserMain = ({ ID }: { ID?: string }) => {
+  const PageParams = useParams();
+  const { id, userId } = PageParams;
+  const pathname = usePathname();
+  const isInProfilePage = pathname == "/Profile";
+
+  const { LoggedInUser, Group }: any = React.useContext(UserContext);
+
+  const [SID, setSID] = useCookie("SID");
+  const decodedToken: any = jwt.decode(SID?.toString() || "");
+  const userData = decodedToken?.data;
+
+  const { data: recommendedVideos, isLoading: RecommendedVideosLoading } =
+    useSWR(
+      endPoints.getRecommendedVideos(id || LoggedInUser?.group_id),
+      getOne,
+      {
+        revalidateIfStale: false,
+        revalidateOnFocus: false,
+      }
+    );
+
+  const { data: CurrentGroup, isLoading: LoadingGroup } = useSWR(
+    `Groups/getOne/${id}`,
+    getOne,
+    { revalidateIfStale: false, revalidateOnFocus: false }
+  );
+
+  const { data: GetUser, isLoading: UserLoading } = useSWR(
+    `Users/getOne/${ID ? ID : userData?.user_id}`,
+    getOne,
+    { revalidateIfStale: false, revalidateOnFocus: false }
+  );
+
+  const User = GetUser?.data;
+  console.log(User);
+  let userGroupId: any = `group_id_${User?.course_id}`;
+
+  const { data: LastSession } = useSWR(
+    `Videos/getLastSession/${id || (User?.course_id && User[userGroupId])}`,
+    getOne,
+    { revalidateIfStale: false, revalidateOnFocus: false }
+  );
 
   const {
     userTabsValue,
@@ -43,26 +86,11 @@ const UserMain = () => {
   const [loggedUserToken, setLoggedUserToken] = React.useState<any>("");
   const params = useSearchParams();
 
-  const {
-    recommendedVideos: RecommendedVideos,
-    RecommendedVideosLoading: LoadingRecommendedVideos,
-    LastSession,
-    User,
-    LoadingUser,
-    UserGroup,
-    LoadingUserGroup,
-  }: any = React.useContext(UserContext);
-
   useEffect(() => {
     AOS.init();
   }, []);
 
-  //console.log(User);
-
-  // const group: Group = UserUserGroup.data;
-
-  const decodedToken: any = jwt.decode(accessToken?.toString() || "");
-  if (LoadingUser) return <UserMainSkelton />;
+  // if (LoadingUser) return <UserMainSkelton />;
 
   return (
     <Grid container>
@@ -157,12 +185,28 @@ const UserMain = () => {
           </div>
 
           <div className="flex items-start  flex-wrap gap-2">
-            {LoadingUserGroup ? (
+            {LoadingGroup ? (
               <CircularProgress color="primary" />
             ) : (
-              <Tooltip title={UserGroup.group_name}>
+              <Tooltip
+                title={
+                  isInProfilePage
+                    ? Group?.group_name
+                    : CurrentGroup?.data?.group_name
+                }
+              >
                 <Image
-                  src={`${process.env.NEXT_PUBLIC_BASE_URL2}${UserGroup.logo}`}
+                  // src={`${
+                  //   Group?.logo
+                  //     ? process.env.NEXT_PUBLIC_BASE_URL2 + Group?.logo
+                  //     : "/images/Dashboard/therapy-group.svg"
+                  // }`}
+                  src={`${
+                    isInProfilePage
+                      ? process.env.NEXT_PUBLIC_BASE_URL2 + Group?.logo
+                      : process.env.NEXT_PUBLIC_BASE_URL2 +
+                        CurrentGroup?.data?.logo
+                  }`}
                   width={50}
                   height={50}
                   alt="TherapyGroup"
@@ -227,8 +271,8 @@ const UserMain = () => {
               <Typography color={"primary"} sx={{ mb: 2 }}>
                 Last Session
               </Typography>
-              {LastSession ? (
-                <VideoSection video={LastSession} isFullVideo={false} />
+              {LastSession?.data ? (
+                <VideoSection video={LastSession?.data} isFullVideo={false} />
               ) : (
                 "No Session Found"
               )}
@@ -266,15 +310,19 @@ const UserMain = () => {
               </Grid>
             </div> */}
 
-            {LoadingRecommendedVideos ? (
-              <CircularProgress color="primary" />
+            {RecommendedVideosLoading ? (
+              // <CircularProgress color="primary" />
+              <div className="flex flex-row items-center justify-center">
+                <Spinner />
+                Loading...
+              </div>
             ) : (
               <div className={styles.recommendedVideos}>
                 <div className="flex items-center justify-between ">
                   <Typography color={"primary"} sx={{ mb: 3 }}>
                     Recommended Videos
                   </Typography>
-                  {RecommendedVideos?.data?.length > 0 ? (
+                  {recommendedVideos?.data?.length > 0 ? (
                     <Link
                       className={"styledLink"}
                       style={{
@@ -289,8 +337,8 @@ const UserMain = () => {
                   ) : null}
                 </div>
                 <Grid container spacing={2}>
-                  {RecommendedVideos?.data?.length ? (
-                    RecommendedVideos?.data?.map((item: any, index: any) => (
+                  {recommendedVideos?.length ? (
+                    recommendedVideos?.map((item: any, index: any) => (
                       <Grid key={index} item xs={12} lg={4}>
                         <Box
                           sx={{
@@ -302,7 +350,15 @@ const UserMain = () => {
                           }}
                         >
                           <Typography color={"#838383"} sx={{ ml: 2, mb: 2 }}>
-                            {item?.video_name}
+                            {item?.video_name?.length > 20 ? (
+                              <Tooltip title={item?.video_name}>
+                                <span>
+                                  {item?.video_name?.slice(0, 20) + "..."}
+                                </span>
+                              </Tooltip>
+                            ) : (
+                              item?.video_name
+                            )}
                           </Typography>
                           <iframe
                             style={{
@@ -312,7 +368,7 @@ const UserMain = () => {
                             }}
                             className={styles.videoIframe}
                             allowFullScreen
-                            src={item.url}
+                            src={item.link}
                           />
                         </Box>
                       </Grid>
@@ -324,21 +380,8 @@ const UserMain = () => {
                       No Recommended Videos Found For This Group !
                     </Typography>
                   )}
-                  {/* <Grid item xs={12} lg={6} sx={{ height: "370px" }}>
-                    <Typography color={"#838383"} sx={{ ml: 2, mb: 2 }}>
-                      Healing from diabetes1
-                    </Typography>
-                    <iframe
-                      style={{
-                        width: "100%",
-                        height: "90%",
-                        borderRadius: "16px",
-                      }}
-                      className={styles.videoIframe}
-                      allowFullScreen
-                      src="https://customer-7ral3pe3959xe832.cloudflarestream.com/737b67dbf506017e02fd8039f213b5f0/iframe?poster=https%3A%2F%2Fcustomer-7ral3pe3959xe832.cloudflarestream.com%2F737b67dbf506017e02fd8039f213b5f0%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600"
-                    ></iframe>
-                  </Grid> */}
+
+                  {/* Recorded Video Example If You want to render it */}
                   {/* <Grid item xs={12} lg={6} sx={{ height: "370px" }}>
                     <Typography color={"#838383"} sx={{ ml: 2, mb: 2 }}>
                       Healing from diabetes2
@@ -361,6 +404,8 @@ const UserMain = () => {
         </Grid>
       )}
     </Grid>
+
+    // <div>Test</div>
   );
 };
 

@@ -22,13 +22,22 @@ const ContactInfo = ({
   formData,
   setFormData,
 }: any) => {
-  const [selected, setSelected] = useState("");
+  const [selected, setSelected] = useState<any>("");
   const [phone, setPhone] = useState("");
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage;
   useEffect(() => {
     Aos.init();
   }, []);
+
+  useEffect(() => {
+    if (formData?.countryCode !== "") {
+      const code = Object.keys(customLabels).find(
+        (key) => customLabels[key].secondary === formData?.countryCode
+      );
+      setSelected(code);
+    }
+  }, [formData]);
 
   const handleSubmit = () => {
     if (
@@ -44,6 +53,14 @@ const ContactInfo = ({
     } else {
       toast.warning(t("Please fill all fields"));
     }
+  };
+
+  const handleSelect = (code: any) => {
+    // Access the customLabels object and print the secondary property
+    const secondaryLabel: any = customLabels[code]?.secondary || "";
+    setSelected(code);
+    setFormData({ ...formData, countryCode: secondaryLabel });
+    // console.log("Selected secondary label:", secondaryLabel);
   };
 
   return (
@@ -149,7 +166,7 @@ const ContactInfo = ({
 
             <ReactFlagsSelect
               selected={selected}
-              onSelect={(code) => setSelected(code)}
+              onSelect={handleSelect}
               searchable={true}
               showOptionLabel={true}
               showSecondaryOptionLabel={true}
@@ -203,4 +220,4 @@ const ContactInfo = ({
   );
 };
 
-export default ContactInfo;
+export default React.memo(ContactInfo);

@@ -14,7 +14,7 @@ export const withRolesAndPermissions: MiddlewareFactory = (next) => {
 
     // const cookie = request.cookies.get(process.env.TOKEN as string);
     // const token = cookie?.value;
-    const token: any = request.cookies.get("accessToken");
+    const token: any = request.cookies.get("SID");
     // ////console.log("token ->", token?.value);
     const decodedToken: any = jwt.decode(token?.value);
 

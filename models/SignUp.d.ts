@@ -4,7 +4,7 @@ type SignUpForm = {
   firstName: string;
   lastName: string;
   email: string;
-  country: string;
+  countryCode: string;
   phone: string;
   dateOfBirth: dayjs;
   timeOfBirth: currentTime;
@@ -16,7 +16,11 @@ type SignUpForm = {
   weight: string;
   maritalStatus: string;
   jobTitle: string;
-  countryOfLiving: string;
+  country: {
+    label: string;
+    value: string;
+    flag: string;
+  };
   boys: string;
   girls: string;
   colorTest: string[];

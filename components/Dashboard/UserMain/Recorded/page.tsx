@@ -11,18 +11,36 @@ import { FaArrowLeft } from "react-icons/fa";
 import { getOne } from "@/services/service";
 import { endPoints } from "@/services/endpoints";
 import { UserContext } from "@/contexts/mainContext";
+import { Spinner } from "@nextui-org/react";
 
 const Recorded = () => {
   const [showFullVideo, setShowFullVideo] = React.useState<boolean>(false);
   const [currentVideo, setCurrentVideo] = React.useState<any>(null);
   const [_isPending, startTransition] = useTransition();
-  const params = useSearchParams();
-  const { recordedVideos, RecordedVideosLoading }: any =
-    React.useContext(UserContext);
-  let userId = params.get("id");
+  const { LoggedInUser }: any = React.useContext(UserContext);
+
+  const params = useParams();
+  const { id, userId } = params;
+
+  const { data: recordedVideos, isLoading: RecordedVideosLoading } = useSWR(
+    endPoints.getSessionsByGroupId(id || LoggedInUser?.group_id),
+    getOne,
+    {
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+    }
+  );
 
   useEffect(() => {
     AOS.init();
+  }, []);
+
+  const [loading, setLoading] = React.useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
   }, []);
 
   ////console.log(Videos, "Videos");
@@ -34,6 +52,16 @@ const Recorded = () => {
     });
     setShowFullVideo((prev) => !prev);
   };
+
+  if (loading) {
+    return (
+      <div className="w-full h-full gap-2 flex items-center justify-center">
+        {" "}
+        <Spinner />
+        Loading...
+      </div>
+    );
+  }
   return (
     <div>
       {!showFullVideo ? (
@@ -48,8 +76,8 @@ const Recorded = () => {
                 />
               </Grid>
             ))
-          ) : recordedVideos?.length ? (
-            recordedVideos?.map((el: any, idx: number) => {
+          ) : recordedVideos?.data?.length ? (
+            recordedVideos?.data?.map((el: any, idx: number) => {
               return (
                 <Grid item xs={12} md={6} lg={4} key={idx}>
                   <VideoSection

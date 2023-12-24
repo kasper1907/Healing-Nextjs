@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Select from "react-select/async";
 import Image from "next/image";
 import { useTranslation } from "react-i18next";
 
-const CountrySelect = () => {
+const CountrySelect = ({ formData, setFormData }: any) => {
   const { t } = useTranslation();
   const [allCountries, setAllCountries] = useState([]);
+  const [selected, setSelected] = useState<any>("");
 
   const loadOptions = (inputValue: any, callback: any) => {
     // Filter the countries based on user input or return all countries if no input
@@ -47,10 +48,25 @@ const CountrySelect = () => {
       });
   }, []);
 
+  const memoizedCountries: any = useMemo(() => allCountries, [allCountries]);
+  useEffect(() => {
+    if (formData?.country !== "") {
+      const country = Object.keys(memoizedCountries).find(
+        (key) => memoizedCountries[key].label === formData?.country
+      );
+      setSelected(country);
+    }
+  }, []);
+
   return (
     <Select
+      onChange={(e) => {
+        setSelected(e);
+        setFormData({ ...formData, country: e?.label });
+      }}
+      value={selected}
       cacheOptions
-      defaultOptions={allCountries}
+      defaultOptions={memoizedCountries}
       loadOptions={loadOptions}
       placeholder={t("Enter your living country")}
       formatOptionLabel={formatOptionLabel}

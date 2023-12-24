@@ -52,17 +52,23 @@ type Session = {
 };
 
 export default function Page() {
-  // ////console.log("steps", steps);
   const { t, i18n } = useTranslation();
   const Languages: any = {
     en: { nativeName: "English" },
     ar: { nativeName: "Arabic" },
   };
   const searchParams = useSearchParams();
-  const sessionId: string | null = searchParams.get("sessionId");
+  const sessionId: string | any = searchParams.get("sessionId");
+  const [steps2, setSteps2] = React.useState<any>([]);
 
-  const { data, isLoading } = useSWR(
-    endPoints.getCoursesByCategoryId("1"),
+  const { data, isLoading } = useSWR(endPoints.getCourses, getOne, {
+    revalidateIfStale: false,
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false,
+  });
+
+  const { data: sessionData, isLoading: sessionLoading } = useSWR(
+    endPoints.getCourseById(sessionId!),
     getOne,
     {
       revalidateIfStale: false,
@@ -92,55 +98,133 @@ export default function Page() {
   currentTime.setMinutes(dayjs().minute());
   currentTime.setSeconds(dayjs().second());
 
-  const steps = (sessionId: string | null) => [
-    {
-      label: "Contact",
-      component: ContactInfo,
-      isCompleted: false,
-      sectionText: "Enter your contact information",
-    },
-    {
-      label: "Birth Info",
-      component: BirthInfo,
-      isCompleted: false,
-      sectionText: "Enter your birth information",
-    },
-    {
-      label: "Personal info",
-      component: PersonalInfo,
-      sectionText: "Enter your personal information",
-    },
-    {
-      label: "Color Test",
-      component: ColorTest,
-      sectionText: "Solve This Color Test",
-    },
-    {
-      label: "Shape Test",
-      component: ShapeTest,
-      sectionText: "Solve This Shape Test",
-    },
-    {
-      label: "Medical Info",
-      component: sessionId == "1" ? BrainCTQuestions : Step6,
-      sectionText: "Enter your medical information",
-    },
-    {
-      label: "Upload Documents",
-      component: Upload,
-      sectionText: "Upload your documents",
-    },
-  ];
+  // console.log(sessionData?.data?.category_id == 2);
 
-  const [activeStep, setActiveStep] = React.useState(0);
+  const customStep = () => {
+    // console.log(sessionData);
+
+    if (sessionData != undefined) {
+      if (sessionData?.data?.category_id == 2) {
+        return {
+          label: "Brain CT Questions",
+          component: BrainCTQuestions,
+          sectionText: "Answer the following questions",
+        };
+      } else {
+        return {
+          label: "Medical Data",
+          component: Step6,
+          sectionText: "Enter Your Medical Information",
+        };
+      }
+    }
+  };
+
+  React.useEffect(() => {
+    const steps = [
+      {
+        label: "Contact",
+        component: ContactInfo,
+        isCompleted: false,
+        sectionText: "Enter your contact information",
+      },
+      {
+        label: "Birth Info",
+        component: BirthInfo,
+        isCompleted: false,
+        sectionText: "Enter your birth information",
+      },
+      {
+        label: "Personal info",
+        component: PersonalInfo,
+        sectionText: "Enter your personal information",
+      },
+      {
+        label: "Color Test",
+        component: ColorTest,
+        sectionText: "Solve This Color Test",
+      },
+      {
+        label: "Shape Test",
+        component: ShapeTest,
+        sectionText: "Solve This Shape Test",
+      },
+      {
+        label: "Brain CT Questions",
+        component:
+          sessionData?.data?.category_id != undefined
+            ? sessionData?.data?.category_id === "2"
+              ? BrainCTQuestions
+              : sessionData?.data?.category_id === "1"
+              ? Step6
+              : null
+            : null,
+        sectionText: "Answer the following questions",
+      },
+      {
+        label: "Upload Documents",
+        component: Upload,
+        sectionText: "Upload your documents",
+      },
+    ];
+
+    setSteps2(steps);
+  }, [sessionData?.data?.category_id]);
+  // const steps = (sessionId: string | null) => [
+  //   {
+  //     label: "Contact",
+  //     component: ContactInfo,
+  //     isCompleted: false,
+  //     sectionText: "Enter your contact information",
+  //   },
+  //   {
+  //     label: "Birth Info",
+  //     component: BirthInfo,
+  //     isCompleted: false,
+  //     sectionText: "Enter your birth information",
+  //   },
+  //   {
+  //     label: "Personal info",
+  //     component: PersonalInfo,
+  //     sectionText: "Enter your personal information",
+  //   },
+  //   {
+  //     label: "Color Test",
+  //     component: ColorTest,
+  //     sectionText: "Solve This Color Test",
+  //   },
+  //   {
+  //     label: "Shape Test",
+  //     component: ShapeTest,
+  //     sectionText: "Solve This Shape Test",
+  //   },
+  //   {
+  //     label: "Brain CT Questions",
+  //     component:
+  //       sessionData?.data?.category_id != undefined
+  //         ? sessionData?.data?.category_id === "2"
+  //           ? BrainCTQuestions
+  //           : sessionData?.data?.category_id === "1"
+  //           ? Step6
+  //           : null
+  //         : null,
+  //     sectionText: "Answer the following questions",
+  //   },
+  //   {
+  //     label: "Upload Documents",
+  //     component: Upload,
+  //     sectionText: "Upload your documents",
+  //   },
+  // ];
+  const [activeStep, setActiveStep] = React.useState(5);
   const [skipped, setSkipped] = React.useState(new Set<number>());
-  const [currentStep, setCurrentStep] = React.useState<any>(0);
-  const [steps2, setSteps2] = React.useState<any>(steps(sessionId));
+  const [currentStep, setCurrentStep] = React.useState<any>(5);
+  // const [steps2, setSteps2] = React.useState<any>(steps(sessionId));
   const [formData, setFormData] = React.useState<SignUpForm>({
     firstName: "",
     lastName: "",
     email: "",
-    country: "",
+    countryCode: "",
     phone: "",
     dateOfBirth: dayjs(),
     timeOfBirth: dayjs(),
@@ -152,7 +236,7 @@ export default function Page() {
     weight: "",
     maritalStatus: "",
     jobTitle: "",
-    countryOfLiving: "",
+    country: { label: "", value: "", flag: "" },
     boys: "",
     girls: "",
     colorTest: ["", "", "", "", ""],
@@ -177,8 +261,8 @@ export default function Page() {
   };
 
   React.useEffect(() => {
-    setCurrentStep(steps2[0]);
-  }, [steps2]);
+    setCurrentStep(steps2[5]);
+  }, [steps2, sessionData?.data?.category_id]);
 
   const handleNext = () => {
     let newSkipped = skipped;

@@ -7,11 +7,12 @@ import { fetcher } from "@/utils/swr";
 import { getOne } from "@/services/service";
 import jwt from "jsonwebtoken";
 import { usePathname } from "next/navigation";
+import useCookie from "react-use-cookie";
 
 const Appointments = () => {
   const pathname = usePathname();
 
-  const userToken = document?.cookie.split("accessToken=")[1];
+  const [userToken, setUserToken] = useCookie("SID");
 
   const decodedToken = jwt.decode(userToken?.toString()) as any;
 

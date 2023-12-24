@@ -32,7 +32,8 @@ const BirthInfo = ({
   formData,
   setFormData,
 }: any) => {
-  const [selected, setSelected] = useState("");
+  const [selected, setSelected] = useState<any>("");
+  const [selectedNationality, setSelectedNationality] = useState<any>("");
   const [phone, setPhone] = useState("");
   const { t } = useTranslation();
   useEffect(() => {
@@ -57,6 +58,21 @@ const BirthInfo = ({
       toast.warning("Please fill all fields");
     }
   };
+
+  useEffect(() => {
+    if (formData?.placeOfBirth !== "") {
+      const country = Object.keys(placeOfBirthObject).find(
+        (key) => placeOfBirthObject[key] === formData?.placeOfBirth
+      );
+      setSelected(country);
+    }
+    if (formData?.Nationality !== "") {
+      const nationality = Object.keys(Nationalities).find(
+        (key) => Nationalities[key] === formData?.Nationality
+      );
+      setSelectedNationality(nationality);
+    }
+  }, [formData]);
 
   return (
     <div data-aos="fade-right" className={styles.main}>
@@ -121,10 +137,12 @@ const BirthInfo = ({
               {t("Place Of Birth")}
             </InputLabel>
             <ReactFlagsSelect
-              selected={formData?.placeOfBirth}
-              onSelect={(code) =>
-                setFormData({ ...formData, placeOfBirth: code })
-              }
+              selected={selected}
+              onSelect={(code) => {
+                const country: any = placeOfBirthObject[code] || "";
+                setSelected(code);
+                setFormData({ ...formData, placeOfBirth: country });
+              }}
               searchable={true}
               placeholder={t("Select Place Of Birth")}
               showOptionLabel={true}
@@ -146,10 +164,12 @@ const BirthInfo = ({
               {t("Nationality")}
             </InputLabel>
             <ReactFlagsSelect
-              selected={formData?.Nationality}
-              onSelect={(code) =>
-                setFormData({ ...formData, Nationality: code })
-              }
+              selected={selectedNationality}
+              onSelect={(el) => {
+                const nationality: any = Nationalities[el] || "";
+                setSelectedNationality(el);
+                setFormData({ ...formData, Nationality: nationality });
+              }}
               countries={["US", "GB", "FR", "DE", "IT", "ES"]}
               searchable={true}
               placeholder={t("Select Your Nationality")}

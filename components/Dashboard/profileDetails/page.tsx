@@ -5,16 +5,23 @@ import styles from "@/styles/sass/Dashboard/Profile/Profile.module.scss";
 import { Button, Grid, Typography } from "@mui/material";
 import { ProfileData } from "@/constants/ProfileData";
 import { useTabsContext } from "../TabsContext";
-import { useSearchParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { getOne } from "@/services/service";
 import useSWR from "swr";
 import { endPoints } from "@/services/endpoints";
 import { UserDetails } from "@/models/User";
 import { FaArrowLeft } from "react-icons/fa";
+import useCookie from "react-use-cookie";
+import jwt from "jsonwebtoken";
+import { UserContext } from "@/contexts/mainContext";
 const ProfileDetails = () => {
+  const [SID, setSID] = useCookie("SID");
+  const decodedToken: any = jwt.decode(SID?.toString() || "");
+  const { LoggedInUser }: any = React.useContext(UserContext);
+  const params = useParams();
+  const { id, userId } = params;
   const { userTabsValue, setUserTabsValue }: any = useTabsContext();
   const searchParams = useSearchParams();
-  const userId = searchParams.get("id");
   const { data, isLoading } = useSWR(
     endPoints.getUserProfile(userId as string),
     getOne
@@ -57,31 +64,33 @@ const ProfileDetails = () => {
             Profile Details
           </Typography>
         </Grid>
-        <Grid
-          className="flex items-center"
-          sx={{
-            justifyContent: { xs: "flex-start", md: "flex-end" },
-          }}
-          item
-          xs={12}
-          md={6}
-        >
-          <Button
-            variant="outlined"
+        {decodedToken?.data?.user_id == userId ? (
+          <Grid
+            className="flex items-center"
             sx={{
-              textTransform: "unset",
-              borderRadius: "8px",
-              fontWeight: "400",
-              fontSize: "12px",
+              justifyContent: { xs: "flex-start", md: "flex-end" },
             }}
-            onClick={() => {
-              //set the current tab value to 7 which is the edit profile tab
-              setUserTabsValue(7);
-            }}
+            item
+            xs={12}
+            md={6}
           >
-            Edit Profile
-          </Button>
-        </Grid>
+            <Button
+              variant="outlined"
+              sx={{
+                textTransform: "unset",
+                borderRadius: "8px",
+                fontWeight: "400",
+                fontSize: "12px",
+              }}
+              onClick={() => {
+                //set the current tab value to 7 which is the edit profile tab
+                setUserTabsValue(7);
+              }}
+            >
+              Edit Profile
+            </Button>
+          </Grid>
+        ) : null}
       </Grid>
 
       <Grid container spacing={2} rowSpacing={4} sx={{ mt: 4 }}>

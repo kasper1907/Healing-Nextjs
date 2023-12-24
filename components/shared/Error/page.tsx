@@ -1,11 +1,20 @@
+"use client";
 import { Typography } from "@mui/material";
+import Aos from "aos";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
+import "aos/dist/aos.css";
 
 export const Error = ({ msg }: { msg?: string }) => {
+  useEffect(() => {
+    Aos.init();
+  }, []);
   return (
-    <div className="w-full h-[50vh] flex flex-col items-center justify-center">
+    <div
+      data-aos="fade-right"
+      className="w-full h-[50vh] flex flex-col items-center justify-center"
+    >
       <Image
         src={"/images/Dashboard/error.svg"}
         width={200}
