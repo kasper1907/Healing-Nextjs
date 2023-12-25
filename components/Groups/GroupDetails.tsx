@@ -17,9 +17,10 @@ import { UserContext } from "@/contexts/mainContext";
 const GroupDetails = ({ ID }: { ID: string }) => {
   const router = useRouter();
   const params = useSearchParams();
-  let GroupId = params.get("id");
-  const courseId = params.get("courseId");
-  const groupId = params.get("groupId");
+  // let GroupId = params.get("id");
+  const pageParams = useParams();
+  const { id: groupId } = pageParams;
+  // const groupId = params.get("groupId");
   const { LoggedInUser }: any = React.useContext(UserContext);
 
   const { data: Group, isLoading: LoadingGroup } = useSWR(
@@ -58,7 +59,7 @@ const GroupDetails = ({ ID }: { ID: string }) => {
   // ////console.log(Group);
   return (
     <div className={styles.PageWrapper}>
-      <Container maxWidth={"xl"} sx={{ mt: 10 }}>
+      <Container maxWidth={"lg"} sx={{ mt: 10 }}>
         <Typography sx={{ mb: 7, ml: 2 }} color={"primary"}>
           Dashboard / All Groups / Group Users
         </Typography>
@@ -96,25 +97,21 @@ const GroupDetails = ({ ID }: { ID: string }) => {
                     </div>
                     <h3>{user?.full_name}</h3>
                     <div className={styles.groupButtons}>
-                      <Button
-                        // onClick={() => {
-                        //   setCurrentUser(user);
-                        // }}
-                        variant="contained"
-                      >
-                        <Link
-                          style={{
-                            width: "100%",
-                            height: "100%",
-                          }}
-                          className="flex w-full h-full items-center justify-center"
-                          // href={`/dashboard/users/userDetails?id=${user?.id}`}
-                          href={`/dashboard/Groups/${ID}/${user?.id}`}
-                        >
-                          <AiOutlineEye />
-                          View
-                        </Link>
-                      </Button>
+                      {LoggedInUser?.role != "Assistant" && (
+                        <Button variant="contained">
+                          <Link
+                            style={{
+                              width: "100%",
+                              height: "100%",
+                            }}
+                            className="flex w-full h-full items-center justify-center"
+                            href={`/dashboard/Groups/${ID}/${user?.id}`}
+                          >
+                            <AiOutlineEye />
+                            View
+                          </Link>
+                        </Button>
+                      )}
                       {LoggedInUser?.role == "Assistant" && (
                         <Button variant="outlined">
                           <Link
@@ -147,9 +144,8 @@ const GroupDetails = ({ ID }: { ID: string }) => {
                             }}
                             className="flex w-full h-full items-center justify-center"
                             href={{
-                              pathname: `/report/view`,
+                              pathname: `/report/view/${user?.id}`,
                               query: {
-                                id: user?.id,
                                 groupId: groupId,
                               },
                             }}

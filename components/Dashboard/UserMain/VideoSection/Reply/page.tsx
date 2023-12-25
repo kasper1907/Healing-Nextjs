@@ -46,7 +46,7 @@ const Reply = ({
 
   const toggleMakeAReply = () => {
     setMakeAReply((prev) => !prev);
-    setReplyText("@UserName__");
+    setReplyText("@" + reply.full_name + " ");
   };
 
   const handleSubmit = async (e: any) => {

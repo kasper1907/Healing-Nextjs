@@ -341,6 +341,7 @@ const Comments = ({
         >
           <AccordionSummary
             aria-controls="panel1a-content"
+            className={styles.toggleReplyVisibility}
             id="panel1a-header"
             sx={{
               background: "#FFF !important",

@@ -8,10 +8,16 @@ import "@/styles/reports/main.css";
 import { MdErrorOutline } from "react-icons/md";
 import Image from "next/image";
 
-const Page = ({ tableName, userSelections, Table }: any) => {
-  const searchParams = useSearchParams();
-  const userId = searchParams.get("id");
-  const groupId = searchParams.get("groupId");
+const ViewReport = ({
+  tableName,
+  userSelections,
+  Table,
+  userId,
+  groupId,
+}: any) => {
+  //   const searchParams = useSearchParams();
+  //   const userId = searchParams.get("id");
+  //   const groupId = searchParams.get("groupId");
   // console.log(isNaN(userId as any));
 
   const { data: User, isLoading: UserLoading } = useSWR(
@@ -50,7 +56,7 @@ const Page = ({ tableName, userSelections, Table }: any) => {
   let data: any = null;
   if (isLoading) {
     return (
-      <div className="w-full h-full flex flex-row items-center justify-center">
+      <div className="w-full h-screen flex flex-row items-center justify-center">
         <CircularProgress color="primary" />
       </div>
     );
@@ -134,4 +140,4 @@ const Page = ({ tableName, userSelections, Table }: any) => {
   );
 };
 
-export default Page;
+export default ViewReport;

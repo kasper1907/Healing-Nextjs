@@ -196,14 +196,8 @@ const Comments = ({
   // ////console.log(comment.user_id == userData?.user_id);
   return (
     <div
-      className={`${
-        comment?.reply_count > 1
-          ? commentsStyles.comment_main
-          : comment?.reply_count == 1 && isRepliesVisible
-          ? commentsStyles.comment_main
-          : ""
-      } ${
-        comment?.reply_count > 1 && !isRepliesVisible
+      className={`${commentsStyles.comment_main} ${
+        comment?.reply_count >= 1 && !isRepliesVisible
           ? commentsStyles.closed
           : ""
       }`}
@@ -406,9 +400,9 @@ const Comments = ({
                 </div>
               ) : null} */}
               <div
-                className={`${styles.showAllReplies} ${
-                  isRepliesVisible ? styles.visible : ""
-                }`}
+                className={`${styles.toggleReplyVisibility} ${
+                  styles.showAllReplies
+                } ${isRepliesVisible ? styles.visible : ""} `}
                 onClick={() => {
                   setRepliesVisible((prev) => !prev);
                 }}

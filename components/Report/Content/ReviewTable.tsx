@@ -33,14 +33,22 @@ const ReviewTable = ({ tableName, userSelections, Table }: any) => {
   }
 
   // console.log(data?.data);
-
+  console.log(userSelections);
   const combinedArray = userSelections.map((userSelection: any) => {
-    const staticData = data?.data.find(
-      (data: any) => data.B_id === userSelection.B_id
-    );
-    return { ...userSelection, ...staticData };
+    if (userSelection.status != "" || userSelection.place != "") {
+      const staticData = data?.data.find(
+        (data: any) => data.B_id === userSelection.B_id
+      );
+      return { ...userSelection, ...staticData };
+    } else {
+      return;
+    }
   });
 
+  console.log(combinedArray);
+  const test = new Set(combinedArray);
+  const finalData = Array.from(test);
+  console.log(finalData);
   return (
     <table className="table table-striped">
       <thead className="table-header">
@@ -57,8 +65,8 @@ const ReviewTable = ({ tableName, userSelections, Table }: any) => {
         </tr>
       </thead>
       <tbody className="table-body">
-        {combinedArray?.length > 0
-          ? combinedArray?.map((el: any, idx: any) => {
+        {finalData?.length > 0
+          ? finalData?.map((el: any, idx: any) => {
               return (
                 <tr key={idx} style={{ width: "100%" }}>
                   <th scope="row" style={{ width: "10%" }}>

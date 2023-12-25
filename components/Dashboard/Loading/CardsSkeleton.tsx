@@ -9,7 +9,7 @@ const CardsSkeleton = () => {
           item
           xs={12}
           sm={6}
-          md={3}
+          md={4}
           key={idx}
           sx={{
             display: "flex",
@@ -18,7 +18,9 @@ const CardsSkeleton = () => {
             gap: 2,
           }}
         >
-          <Skeleton variant="circular" width={40} height={40} />
+          <div className="w-full flex justify-center">
+            <Skeleton variant="circular" width={40} height={40} />
+          </div>
           <Skeleton
             variant="rectangular"
             sx={{ borderRadius: "10px", width: "90%" }}
@@ -37,7 +39,7 @@ const CardsSkeleton = () => {
           <Skeleton
             sx={{ borderRadius: "10px", width: "90%" }}
             variant="rounded"
-            height={60}
+            height={30}
           />
         </Grid>
       ))}

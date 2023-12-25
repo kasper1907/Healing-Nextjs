@@ -13,12 +13,12 @@ const Page = () => {
   ////console.log(decodedToken?.data?.role);
 
   const RedirectionPages: any = {
-    Doctor: "/dashboard",
+    Doctor: "/dashboard/Groups",
     User: `/dashboard/users/userDetails?id=${
       decodedToken?.data?.user_id
     }&groupId=${200}`,
-    Therapist: "/dashboard",
-    Assistant: "/dashboard",
+    Therapist: "/dashboard/Groups",
+    Assistant: "/dashboard/Groups",
   };
   return (
     <div
@@ -47,6 +47,11 @@ const Page = () => {
         </Link>
       </Button> */}
       <Button
+        style={{
+          width: "200px",
+          marginLeft: "40px",
+          marginTop: "20px",
+        }}
         href={RedirectionPages[decodedToken?.data?.role] || "/dashboard"}
         as={Link}
         color="primary"

@@ -49,7 +49,7 @@ export default function AvatarMenu({ user }: any) {
 
           <DropdownItem
             onClick={() => {
-              router.push("/dashboard");
+              router.push("/dashboard/Groups");
             }}
             key="الرئيسيه"
           >
