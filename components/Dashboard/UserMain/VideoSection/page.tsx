@@ -127,6 +127,21 @@ const VideoSection = ({
     }
   };
 
+  const handleSaveVideo = async () => {
+    const postData = {
+      user_id: userData?.user_id,
+    };
+
+    const res = await postRequest(`Videos/SaveVideo/${video?.id}`, postData);
+    // console.log(res);
+
+    if (res.data.status == "error") {
+      toast.error(res.data.message);
+    } else {
+      toast.success("Video Saved Successfully");
+    }
+  };
+
   return (
     <div className={styles.SectionWrapper}>
       <div className={styles.sessionInfo}>
@@ -241,7 +256,10 @@ const VideoSection = ({
                   </>
                 )}
               </div>
-              <div className="flex items-center gap-2 cursor-pointer">
+              <div
+                className="flex items-center gap-2 cursor-pointer"
+                onClick={handleSaveVideo}
+              >
                 <Image
                   src={"/images/Dashboard/ic_Saved.svg"}
                   width={20}

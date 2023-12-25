@@ -51,7 +51,7 @@ const Recommended = ({
   }
 
   return (
-    <div>
+    <div style={{ paddingBottom: "50px" }}>
       <Grid container spacing={2}>
         {RecommendedVideosLoading ? (
           Array.from({ length: 6 }).map((_, idx) => (

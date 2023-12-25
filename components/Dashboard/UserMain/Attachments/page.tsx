@@ -90,7 +90,7 @@ const Attachments = () => {
 
   return (
     <div className={styles.pageWrapper}>
-      <Container sx={{ mt: 10 }}>
+      <Container sx={{ mt: 10, paddingBottom: "30px" }}>
         {isInProfilePage ? (
           <div className={styles.dropZoneWrapper}>
             <Dropzone
@@ -110,6 +110,7 @@ const Attachments = () => {
                   key={idx}
                   sx={{
                     padding: { xs: "15px", md: "20px 80px" },
+                    marginBottom: "20px",
                   }}
                   className={styles.userFileWrapper}
                   item
