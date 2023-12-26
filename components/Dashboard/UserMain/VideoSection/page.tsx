@@ -16,12 +16,13 @@ import { fetcher } from "@/utils/swr";
 import { toast } from "sonner";
 import commentsStyles from "@/styles/sass/Dashboard/UserMain/comment.module.scss";
 import { IoIosArrowDown } from "react-icons/io";
-import { getOne, postRequest } from "@/services/service";
+import { deleteRequest, getOne, postRequest } from "@/services/service";
 import { endPoints } from "@/services/endpoints";
 import { isArabic } from "@/utils/checkLanguage";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import jwt from "jsonwebtoken";
 import useCookie from "react-use-cookie";
+import { CircularProgress } from "@mui/material";
 
 export const StyledTextField = styled(TextField)`
   input {
@@ -49,6 +50,9 @@ const VideoSection = ({
   const [isCommentsVisible, setCommentsVisible] = useState(false);
   const [currentVideoComments, setCurrentVideoComments] = useState<any>([]);
   const [commentInputFocus, setCommentInputFocus] = useState(false);
+  const [isVideoSaved, setIsVideoSaved] = useState<boolean>(false);
+  const [LoadingSaveVideo, setLoadingSaveVideo] = useState<boolean>(false);
+  const [LoadingUnSaveVideo, setLoadingUnSaveVideo] = useState<boolean>(false);
   const [text, setText] = useState("");
   const commentInputRef: any = useRef(null);
   const commentsRef: any = useRef(null);
@@ -71,6 +75,10 @@ const VideoSection = ({
     VideoComments?.data?.length > 0 &&
       setCurrentVideoComments(VideoComments?.data);
   }, [VideoComments]);
+
+  useEffect(() => {
+    setIsVideoSaved(video?.is_saved);
+  }, [video?.is_saved]);
 
   const Replies: any = [];
 
@@ -128,18 +136,42 @@ const VideoSection = ({
   };
 
   const handleSaveVideo = async () => {
+    setLoadingSaveVideo(true);
     const postData = {
       user_id: userData?.user_id,
     };
 
-    const res = await postRequest(`Videos/SaveVideo/${video?.id}`, postData);
+    const res = await postRequest(`Videos/SaveVideo/${video?.id}`);
     // console.log(res);
 
     if (res.data.status == "error") {
       toast.error(res.data.message);
     } else {
       toast.success("Video Saved Successfully");
+      setIsVideoSaved((prev) => !prev);
     }
+    setLoadingSaveVideo(false);
+  };
+
+  const handleUnSaveVideo = async () => {
+    setLoadingUnSaveVideo(true);
+    const postData = {
+      user_id: userData?.user_id,
+    };
+
+    // const res = await postRequest(`Videos/UnSaveVideo/${video?.id}`);
+    const res = await deleteRequest({
+      endpoint: `Videos/UnSaveVideo`,
+      id: video?.id,
+    });
+    // console.log(res);
+    if (res.status == "error") {
+      toast.error(res.data.message);
+    } else {
+      toast.success("Video UnSaved Successfully");
+      setIsVideoSaved((prev) => !prev);
+    }
+    setLoadingUnSaveVideo(false);
   };
 
   return (
@@ -256,19 +288,37 @@ const VideoSection = ({
                   </>
                 )}
               </div>
-              <div
-                className="flex items-center gap-2 cursor-pointer"
-                onClick={handleSaveVideo}
-              >
+              <div className="flex items-center gap-2 cursor-pointer">
                 <Image
                   src={"/images/Dashboard/ic_Saved.svg"}
                   width={20}
                   height={20}
                   alt="commentsIcon"
+                  style={{
+                    filter: video?.is_saved ? "sepia(0.5)" : "",
+                  }}
                 />
-                <span className="text-[#44444F] text-[15px] hover:text-[#10458C]">
-                  Save
-                </span>
+                {isVideoSaved ? (
+                  LoadingUnSaveVideo ? (
+                    <CircularProgress size={15} />
+                  ) : (
+                    <span
+                      onClick={handleUnSaveVideo}
+                      className="text-[#b6985f] text-[15px] hover:text-[#10458C]"
+                    >
+                      unSave
+                    </span>
+                  )
+                ) : LoadingSaveVideo ? (
+                  <CircularProgress size={15} />
+                ) : (
+                  <span
+                    onClick={handleSaveVideo}
+                    className="text-[#44444F] text-[15px] hover:text-[#10458C]"
+                  >
+                    Save
+                  </span>
+                )}
               </div>{" "}
             </div>
             <div className={styles.write_comment}>

@@ -73,10 +73,14 @@ const UserMain = ({ ID }: { ID?: string }) => {
   let userGroupId: any = `group_id_${User?.course_id}`;
 
   const { data: LastSession } = useSWR(
-    `Videos/getLastSession/${id || (User?.course_id && User[userGroupId])}`,
+    `Videos/getLastSession/${id || (User?.course_id && User[userGroupId])}/${
+      ID ? ID : userData?.user_id
+    }`,
     getOne,
     { revalidateIfStale: false, revalidateOnFocus: false }
   );
+
+  console.log(LastSession?.data);
 
   const {
     userTabsValue,

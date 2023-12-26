@@ -21,12 +21,14 @@ const Recorded = () => {
 
   const params = useParams();
   const { id, userId } = params;
-
   const { data: recordedVideos, isLoading: RecordedVideosLoading } = useSWR(
-    endPoints.getSessionsByGroupId(id || LoggedInUser?.group_id),
+    endPoints.getSessionsByGroupId(
+      id || LoggedInUser?.group_id,
+      LoggedInUser?.user_id
+    ),
     getOne,
     {
-      revalidateIfStale: false,
+      revalidateIfStale: true,
       revalidateOnFocus: false,
     }
   );

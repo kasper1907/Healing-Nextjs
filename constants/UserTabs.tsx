@@ -16,6 +16,8 @@ import Home from "@/components/Dashboard/HomePage/Home/page";
 import ProfileDetails from "@/components/Dashboard/profileDetails/page";
 import EditProfile from "@/components/Dashboard/UserMain/EditProfile/page";
 import AllGroups from "@/components/Dashboard/UserMain/AllGroups/page";
+import Image from "next/image";
+import { SavedVideos as SavedVideosComponent } from "@/components/Dashboard/UserMain/SavedVideos/page";
 
 const HomeTab: any = {
   value: "1",
@@ -65,7 +67,19 @@ const AllGroupsTab: UserTab = {
   isHidden: true,
   component: AllGroups,
 };
-
+const SavedVideos: UserTab = {
+  value: "9",
+  label: "Saved",
+  icon: (
+    <Image
+      src="/images/Dashboard/bookmark-solid.svg"
+      width={10}
+      height={10}
+      alt="saved"
+    />
+  ),
+  component: SavedVideosComponent,
+};
 export const userTabs = [
   HomeTab,
   RecommendedTab,
@@ -75,6 +89,7 @@ export const userTabs = [
   ProfileTab,
   EditProfileTab,
   AllGroupsTab,
+  SavedVideos,
 ];
 
 const DashboardTab: UserTab = {

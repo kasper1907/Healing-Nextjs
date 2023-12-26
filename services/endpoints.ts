@@ -8,8 +8,8 @@ export const endPoints = {
   auth: `Auth/login`,
   getGroupUsers: (groupId: string | null, courseId: string | null) =>
     `Users/getGroupUsers/?groupId=${groupId}&courseId=${courseId}`,
-  getSessionsByGroupId: (groupId: string | null) =>
-    `Videos/getSessionsByGroupId/${groupId}`,
+  getSessionsByGroupId: (groupId: string | null, userId: string | null) =>
+    `Videos/getSessionsByGroupId/${groupId}/${userId}`,
   getRecommendedVideos: (groupId: string | null) =>
     `Videos/getAllRecommended/${groupId}`,
   getCommentByVideoId: (videoId: string | null) =>
@@ -27,4 +27,5 @@ export const endPoints = {
     `Courses/getByCategory/${categoryId}`,
   getCourses: `Courses/`,
   getCourseById: (courseId: string | null) => `Courses/getOne/${courseId}`,
+  getSavedVideos: `Videos/getSavedVideos`,
 };

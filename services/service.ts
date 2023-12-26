@@ -76,7 +76,7 @@ export const deleteRequest: any = async ({
   mutateEndPoint,
 }: any) => {
   const accessToken = await getCookie();
-
+  // console.log(`${process.env.NEXT_PUBLIC_BASE_URL}${endpoint}/${id}`);
   try {
     const res = await axios.delete(
       `${process.env.NEXT_PUBLIC_BASE_URL}${endpoint}/${id}`,
@@ -86,14 +86,12 @@ export const deleteRequest: any = async ({
         },
       }
     );
-    if (res.status == 200 || res.status == 204) {
-      toast.success("Item deleted successfully");
-      // mutate(mutateEndPoint);
-    } else {
-      toast.error("Something went wrong");
-    }
+    return {
+      status: res.status,
+      data: res?.data,
+    };
   } catch (e: any) {
-    return toast.error(e.message);
+    return { status: e?.response?.status, data: e?.response?.data };
   }
 };
 export const getOne: any = async (endPoint: any) => {
