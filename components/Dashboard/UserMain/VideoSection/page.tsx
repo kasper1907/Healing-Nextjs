@@ -306,7 +306,7 @@ const VideoSection = ({
                       onClick={handleUnSaveVideo}
                       className="text-[#b6985f] text-[15px] hover:text-[#10458C]"
                     >
-                      unSave
+                      unsave
                     </span>
                   )
                 ) : LoadingSaveVideo ? (

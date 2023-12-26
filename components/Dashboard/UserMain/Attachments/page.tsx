@@ -75,7 +75,7 @@ const Attachments = () => {
   useEffect(() => {
     setTimeout(() => {
       setFirstLoading(false);
-    }, 2000);
+    }, 1000);
   }, []);
 
   if (firstLoading) {

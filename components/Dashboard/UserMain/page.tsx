@@ -80,7 +80,6 @@ const UserMain = ({ ID }: { ID?: string }) => {
     { revalidateIfStale: false, revalidateOnFocus: false }
   );
 
-  console.log(LastSession?.data);
 
   const {
     userTabsValue,
@@ -372,7 +371,7 @@ const UserMain = ({ ID }: { ID?: string }) => {
                   ) : null}
                 </div>
                 <Grid container spacing={2}>
-                  {recommendedVideos?.length ? (
+                  {recommendedVideos?.length > 0 ? (
                     recommendedVideos?.map((item: any, index: any) => (
                       <Grid key={index} item xs={12} lg={4}>
                         <Box

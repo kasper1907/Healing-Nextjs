@@ -30,7 +30,7 @@ export const Appointments = () => {
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 2000);
+    }, 1000);
   }, []);
 
   if (loading) {
