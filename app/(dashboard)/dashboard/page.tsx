@@ -6,7 +6,6 @@ import React, { useEffect } from "react";
 import { TabContext } from "@mui/lab";
 import { dashboardTabs } from "@/constants/UserTabs";
 import { useTabsContext } from "@/components/Dashboard/TabsContext";
-import socket from "@/socket";
 const Page = () => {
   const { dashboardTabsValue, setDashboardTabsValue }: any = useTabsContext();
   const currentTab = dashboardTabs.find(
