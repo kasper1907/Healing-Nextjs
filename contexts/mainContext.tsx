@@ -18,7 +18,7 @@ const UseUserContextProvider = ({ children }: { children: ReactNode }) => {
   const params = useSearchParams();
   const pathName = usePathname();
   const router = useRouter();
-  console.log(router);
+  // console.log(router);
   const pageParams = useParams();
 
   const groupId = params.get("groupId");
@@ -26,7 +26,7 @@ const UseUserContextProvider = ({ children }: { children: ReactNode }) => {
   const decodedToken: any = jwt.decode(userToken);
   // console.log(decodedToken);
   const { data, error, isLoading } = useSWR(
-    endPoints.getSessionsByGroupId(groupId),
+    endPoints.getSessionsByGroupId(groupId, userId),
     getOne,
     {
       revalidateIfStale: false,

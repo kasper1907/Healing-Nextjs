@@ -2,16 +2,17 @@
 import Appointments from "@/components/Dashboard/HomePage/Appointments/page";
 import Home from "@/components/Dashboard/HomePage/Home/page";
 import HomeTabs from "@/components/Dashboard/HomeTabs/page";
-import React from "react";
+import React, { useEffect } from "react";
 import { TabContext } from "@mui/lab";
 import { dashboardTabs } from "@/constants/UserTabs";
 import { useTabsContext } from "@/components/Dashboard/TabsContext";
-
+import socket from "@/socket";
 const Page = () => {
   const { dashboardTabsValue, setDashboardTabsValue }: any = useTabsContext();
   const currentTab = dashboardTabs.find(
     (tab) => tab.value == dashboardTabsValue
   );
+
   return (
     <div>
       <TabContext value={dashboardTabsValue}>

@@ -53,22 +53,30 @@ const Page = () => {
       // return toast.warning("Please fill all fields");
       setLoading(true);
     const { status, data } = await postRequest(endPoints.auth, userData);
-    if (status == 200) {
-      toast.success("Login Successfully");
+    // if (status == 200) {
+    //   toast.success("Login Successfully");
 
-      const userRole = await data?.data?.role;
-      if (userRole == "User") {
-        // router.push(
-        //   `/dashboard/users/userDetails?id=${data?.data?.user_id}&groupId=${data?.data?.group_id}`
-        // );
-        router.push("/Profile");
-      } else {
-        router.push("/dashboard/Groups");
-      }
-      setUserToken(data?.accessToken);
-    } else {
-      toast.error("Invalid username or password");
+    // console.log(status);
+    // console.log(data?.message);
+
+    if (status != 200) {
+      toast.error(data?.message);
+      setLoading(false);
+      return;
     }
+    toast.success("Login Successfully");
+    const userRole = await data?.data?.role;
+    if (userRole == "User") {
+      // router.push(
+      //   `/dashboard/users/userDetails?id=${data?.data?.user_id}&groupId=${data?.data?.group_id}`
+      // );
+      router.push("/Profile");
+    } else {
+      router.push("/dashboard/Groups");
+    }
+    setUserToken(data?.accessToken);
+    setLoading(false);
+    return;
     // if (res.data.status == "success" && res.data.statusCode == 200) {
     //   //console.log(res.data.statusCode);
     //   //console.log(res.data.status);
@@ -94,7 +102,6 @@ const Page = () => {
     // if (res.status == "error" && res.statusCode == 400) {
     //   toast.error("Invalid username or password");
     // }
-    setLoading(false);
   };
   return (
     <AuthProvider>

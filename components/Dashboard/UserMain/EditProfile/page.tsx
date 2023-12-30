@@ -175,9 +175,9 @@ const EditProfile = () => {
       });
 
       const data = await response.json();
-      console.log("data", data);
+      // console.log("data", data);
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
 
     // Object.entries(userData).forEach(([key, value]) => {

@@ -33,7 +33,7 @@ const ReviewTable = ({ tableName, userSelections, Table }: any) => {
   }
 
   // console.log(data?.data);
-  console.log(userSelections);
+  // console.log(userSelections);
   const combinedArray = userSelections.map((userSelection: any) => {
     if (userSelection.status != "" || userSelection.place != "") {
       const staticData = data?.data.find(
@@ -45,10 +45,10 @@ const ReviewTable = ({ tableName, userSelections, Table }: any) => {
     }
   });
 
-  console.log(combinedArray);
+  // console.log(combinedArray);
   const test = new Set(combinedArray);
   const finalData = Array.from(test);
-  console.log(finalData);
+  // console.log(finalData);
   return (
     <table className="table table-striped">
       <thead className="table-header">

@@ -116,11 +116,11 @@ export const useAuthentication = ({ redirectTo }: Props): ReturnData => {
     pathname.split("/")[1] +
     "/" +
     pathname.split("/")[2];
-  console.log(trimmedURL);
+  // console.log(trimmedURL);
   let isAuthorizedUser =
     RolePages[userData?.role]?.includes(pathname) ||
     RolePages[userData?.role]?.includes(trimmedURL);
-  console.log(isAuthorizedUser);
+  // console.log(isAuthorizedUser);
   return {
     isAuthenticated,
     isLoading,
