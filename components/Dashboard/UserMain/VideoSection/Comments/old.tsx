@@ -168,7 +168,6 @@ const Comments = ({
       handleSuccess: handleSuccessDeleteComment,
     });
   };
-  // ////console.log(comment.user_id == userData?.user_id);
   return (
     <>
       <div className={styles.write_comment}>

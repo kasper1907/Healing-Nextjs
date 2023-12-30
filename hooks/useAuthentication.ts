@@ -30,7 +30,6 @@ export const useAuthentication = ({ redirectTo }: Props): ReturnData => {
   const url = `${pathname}?${searchParams}`;
   const userUrl = `/dashboard/users/userDetails?id=${userData?.user_id}`;
   const currentUrl = `${pathname}?id=${searchParams.get("id")}`;
-  // console.log(userUrl);
 
   const RolePages: any = {
     Doctor: [
@@ -57,20 +56,11 @@ export const useAuthentication = ({ redirectTo }: Props): ReturnData => {
     User: ["/Profile"],
   };
 
-  // console.log(pathname);
   // I want to check if the user is not authorized to view the current page, return false
 
-  // console.log(RolePages["User"].includes(url));
 
-  // console.log(
-  //   RolePages[userData?.role]?.includes(
-  //     userData?.role == "User" && pathname == "/dashboard/users/userDetails"
-  //       ? currentUrl
-  //       : pathname
-  //   )
-  // );
 
-  // console.log(userUrl);
+
 
   useEffect(() => {
     let shouldAbort = false;
@@ -78,7 +68,6 @@ export const useAuthentication = ({ redirectTo }: Props): ReturnData => {
 
     isLoggedIn(cookies.SID, pathname)
       .then((isAuthenticated: any) => {
-        // console.log(isAuthenticated);
         if (shouldAbort) {
           return;
         }
@@ -116,11 +105,9 @@ export const useAuthentication = ({ redirectTo }: Props): ReturnData => {
     pathname.split("/")[1] +
     "/" +
     pathname.split("/")[2];
-  // console.log(trimmedURL);
   let isAuthorizedUser =
     RolePages[userData?.role]?.includes(pathname) ||
     RolePages[userData?.role]?.includes(trimmedURL);
-  // console.log(isAuthorizedUser);
   return {
     isAuthenticated,
     isLoading,

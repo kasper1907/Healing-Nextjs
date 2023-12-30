@@ -59,9 +59,7 @@ export default function DashboardNavbar(props: Props) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const PageParams = useParams();
-  // console.log(PageParams);
   const { id, userId } = PageParams;
-  // console.log(PageParams);
   const [userImg, setUserImg] = useState("");
 
   const [userToken, setUserToken] = useCookie("SID");
@@ -245,8 +243,6 @@ export default function DashboardNavbar(props: Props) {
     </Box>
   );
 
-  // console.log(CurrentUser?.data);
-  // console.log(user);
   const container =
     window !== undefined ? () => window().document.body : undefined;
 

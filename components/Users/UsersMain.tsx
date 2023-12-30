@@ -9,7 +9,6 @@ import { userTabs } from "@/constants/UserTabs";
 import { useTabsContext } from "@/components/Dashboard/TabsContext";
 
 const UsersMain = ({ ID }: any) => {
-  // console.log(ID);
   const { userTabsValue, setUserTabsValue }: any = useTabsContext();
   const currentTab = userTabs.find((tab) => tab.value == userTabsValue);
 

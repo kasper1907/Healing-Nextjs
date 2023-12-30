@@ -30,7 +30,6 @@ const Upload = ({
     // steps[currentIndex].isCompleted = true;
     // handleNext();
 
-    // console.log(formData);
     delete formData["countryCode"];
     delete formData["countryOfLiving"];
     const formDataObj: any = new FormData();
@@ -50,12 +49,9 @@ const Upload = ({
 
     formDataObj.append("courseId", searchParams.get("sessionId")!);
 
-    // for (var pair of formDataObj) {
-    //   console.log(pair[0] + ", " + pair[1]);
-    // }
+ 
 
     const res = await postRequest("users/createUser", formDataObj);
-    // console.log(res);
     if (res.status == 201) {
       steps[currentIndex].isCompleted = true;
       handleNext();

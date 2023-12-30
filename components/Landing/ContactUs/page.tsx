@@ -67,7 +67,6 @@ const ContactUs = () => {
               <h2 className={styles.formHeader}>تواصل معنا</h2>
               <form
                 onSubmit={(e) => {
-                  // ////console.log("Form Submitter");
                 }}
               >
                 <Grid container spacing={3}>

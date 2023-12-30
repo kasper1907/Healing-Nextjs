@@ -59,7 +59,6 @@ const InputForShapeTest = ({
   ) => {
     // Move to the previous input on backspace
     if (event.key === "Backspace") {
-      // ////console.log(event.target.value);
 
       //@ts-ignore
       if (event.target.value == "") {
@@ -87,7 +86,6 @@ const InputForShapeTest = ({
         }
       }
 
-      // ////console.log("index", index);
       //@ts-ignore
       if (index == 6 && event.target.value != "") {
         setShowNext(true);

@@ -57,7 +57,6 @@ export default function Navbar(props: Props) {
     setMobileOpen((prevState) => !prevState);
   };
 
-  // console.log(userToken);
 
   const handleLogout = () => {
     LogoutHandler();

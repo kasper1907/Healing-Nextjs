@@ -45,7 +45,6 @@ const Recorded = () => {
     }, 1000);
   }, []);
 
-  ////console.log(Videos, "Videos");
   const userVideos: any = [];
 
   const VideoHeaderClickHandler = (video: any) => {

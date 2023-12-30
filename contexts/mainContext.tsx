@@ -18,21 +18,11 @@ const UseUserContextProvider = ({ children }: { children: ReactNode }) => {
   const params = useSearchParams();
   const pathName = usePathname();
   const router = useRouter();
-  // console.log(router);
   const pageParams = useParams();
 
   const groupId = params.get("groupId");
   const userId = params.get("id");
   const decodedToken: any = jwt.decode(userToken);
-  // console.log(decodedToken);
-  const { data, error, isLoading } = useSWR(
-    endPoints.getSessionsByGroupId(groupId, userId),
-    getOne,
-    {
-      revalidateIfStale: false,
-      revalidateOnFocus: false,
-    }
-  );
 
   let loggedUserId = decodedToken?.data?.user_id;
   const { data: User, isLoading: UserLoading } = useSWR(
@@ -49,31 +39,9 @@ const UseUserContextProvider = ({ children }: { children: ReactNode }) => {
     { revalidateIfStale: false, revalidateOnFocus: false }
   );
 
-  // const generateGroupsRoutes = () => {
-
-  //   let routes: any = [];
-  //   Groups?.data?.map((group: any) => {
-  //     routes.push(`/dashboard/Groups/${group?.id}`);
-  //   });
-
-  //   return routes;
-  // }
-  // const generateGroupUsersRoutes = () => {
-  //   console.log(GroupUsers);
-  //   console.log(LoggedInUser?.group_id, LoggedInUser?.course_id);
-  //   let routes: any = [];
-  //   GroupUsers?.data?.map((user: any) => {
-  //     routes.push(`/dashboard/Users/${user?.id}`);
-  //   });
-
-  //   return routes;
-  // }
-
   return (
     <UserContext.Provider
       value={{
-        recordedVideos: data?.data,
-        RecordedVideosLoading: isLoading,
         LoggedInUser: decodedToken?.data,
         User: User?.data,
         Group: Group?.data,

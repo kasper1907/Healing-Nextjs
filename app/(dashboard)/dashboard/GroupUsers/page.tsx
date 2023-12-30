@@ -25,17 +25,14 @@ const Page = () => {
     getOne
   );
 
-  // ////console.log(data);
   const GroupUsers = data?.data;
   const [currentGroup, setCurrentGroup] = React.useState<any>(null);
-  ////console.log(currentUser);
 
   useEffect(() => {
     const currentGroup = groups.find((group: any) => group.id == 1);
     setCurrentGroup(currentGroup);
   }, []);
 
-  // ////console.log(Group);
   return (
     <div className={styles.PageWrapper}>
       <Container sx={{ mt: 10 }}>

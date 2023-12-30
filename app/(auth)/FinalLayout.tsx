@@ -11,7 +11,6 @@ import "./main.css";
 
 const FinalLayout = ({ children }: { children: React.ReactNode }) => {
   const { i18n }: any = useTranslation();
-  // ////console.log(i18n.resolvedLanguage);
   const languagesFonts: any = {
     ar: "Tajawal, sans-serif !important",
     en: "Roboto, sans-serif !important",

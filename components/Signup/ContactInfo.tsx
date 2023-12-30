@@ -60,7 +60,6 @@ const ContactInfo = ({
     const secondaryLabel: any = customLabels[code]?.secondary || "";
     setSelected(code);
     setFormData({ ...formData, countryCode: secondaryLabel });
-    // console.log("Selected secondary label:", secondaryLabel);
   };
 
   return (

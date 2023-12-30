@@ -13,7 +13,6 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   const searchParams = useSearchParams();
   const [token, setToken] = useCookie("SID");
   const decodedToken = jwt.decode(token) as any;
-  // console.log(decodedToken?.data?.role);
   const { isAuthenticated, isLoading, isAuthorized } = useAuthentication({});
 
   if (isLoading) {

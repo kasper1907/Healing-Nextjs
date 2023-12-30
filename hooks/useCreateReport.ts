@@ -14,7 +14,6 @@ export const useCreateReport = ({
   const [success, setSuccess] = useState(false);
 
   const createReport = async (e: any) => {
-    // console.log("Submit Form");
     e.preventDefault();
     setLoading(true);
     let postBody = {

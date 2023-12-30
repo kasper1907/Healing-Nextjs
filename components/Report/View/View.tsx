@@ -18,7 +18,6 @@ const ViewReport = ({
   //   const searchParams = useSearchParams();
   //   const userId = searchParams.get("id");
   //   const groupId = searchParams.get("groupId");
-  // console.log(isNaN(userId as any));
 
   const { data: User, isLoading: UserLoading } = useSWR(
     `Users/getOne/${userId}`,

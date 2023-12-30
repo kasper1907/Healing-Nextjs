@@ -22,7 +22,6 @@ const AppointmentCard = ({ appointment }: any) => {
   const handleChange = () => {
     setExpanded((prev: any) => !prev);
   };
-  ////console.log(appointment);
 
   const { data: AppointmentUsers, isLoading: AppointmentUsersLoading } = useSWR(
     `Appointments/getAppointmentUsers/${appointment?.id}`,
@@ -33,7 +32,6 @@ const AppointmentCard = ({ appointment }: any) => {
     }
   );
 
-  // console.log(AppointmentUsers);
 
   return (
     <div className="flex flex-col w-full">

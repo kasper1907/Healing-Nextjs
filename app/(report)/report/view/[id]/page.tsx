@@ -28,7 +28,6 @@ const ViewReportPage = async ({
 }) => {
   // const searchParams = useSearchParams();
   // const groupId = searchParams.get("groupId");
-  // console.log(searchParams);
   const { groupId } = searchParams;
   const LoggedInUserToken = await cookies().get("SID")?.value;
   const decodedToken: TokenData | any = await jwt.decode(

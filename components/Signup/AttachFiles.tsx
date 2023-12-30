@@ -70,7 +70,6 @@ const AttachFiles = ({ className, files, setFiles }: any) => {
       body: formData,
     }).then((res) => res.json());
 
-    // ////console.log(data);
   };
 
   return (

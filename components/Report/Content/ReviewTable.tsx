@@ -4,8 +4,7 @@ import React from "react";
 import useSWR from "swr";
 
 const ReviewTable = ({ tableName, userSelections, Table }: any) => {
-  // console.log(userSelections);
-  // console.log(tableName);
+
 
   const { data, isLoading, error } = useSWR(
     `Reports/getAllStaticData/${tableName}`,
@@ -32,8 +31,7 @@ const ReviewTable = ({ tableName, userSelections, Table }: any) => {
     );
   }
 
-  // console.log(data?.data);
-  // console.log(userSelections);
+
   const combinedArray = userSelections.map((userSelection: any) => {
     if (userSelection.status != "" || userSelection.place != "") {
       const staticData = data?.data.find(
@@ -45,10 +43,8 @@ const ReviewTable = ({ tableName, userSelections, Table }: any) => {
     }
   });
 
-  // console.log(combinedArray);
   const test = new Set(combinedArray);
   const finalData = Array.from(test);
-  // console.log(finalData);
   return (
     <table className="table table-striped">
       <thead className="table-header">

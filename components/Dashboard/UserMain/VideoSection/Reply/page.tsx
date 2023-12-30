@@ -51,8 +51,7 @@ const Reply = ({
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    //console.log("I am here");
-    //console.log(videoId);
+
     const postData = {
       comment_text: replyText,
       video_id: videoId,
@@ -69,7 +68,6 @@ const Reply = ({
   };
 
   const handleSubmitEdit = async (e: any) => {
-    //console.log("I am here 2");
 
     e.preventDefault();
     const postData = {

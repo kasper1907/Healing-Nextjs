@@ -56,8 +56,6 @@ const Page = () => {
     // if (status == 200) {
     //   toast.success("Login Successfully");
 
-    // console.log(status);
-    // console.log(data?.message);
 
     if (status != 200) {
       toast.error(data?.message);
@@ -77,31 +75,7 @@ const Page = () => {
     setUserToken(data?.accessToken);
     setLoading(false);
     return;
-    // if (res.data.status == "success" && res.data.statusCode == 200) {
-    //   //console.log(res.data.statusCode);
-    //   //console.log(res.data.status);
-    //   //console.log(res.data.SID);
-    //   //console.log(res?.data?.data?.role);
-    //   toast.success("Login Successfully");
-    //   document.cookie = `SID=${res.data.SID}`;
-    //   setCookie(
-    //     AUTHENTICATION_COOKIE_NAME,
-    //     res.data.SID,
-    //     AUTHENTICATION_COOKIE_OPTIONS
-    //   );
 
-    //   window.localStorage.setItem("userData", JSON.stringify(res.data.data));
-    //   if (res?.data?.data?.role == "User") {
-    //     router.push(
-    //       `/dashboard/users/userDetails?id=${res.data?.data.user_id}&groupId=${res.data.data.group_id}`
-    //     );
-    //   } else {
-    //     router.push("/dashboard");
-    //   }
-    // }
-    // if (res.status == "error" && res.statusCode == 400) {
-    //   toast.error("Invalid username or password");
-    // }
   };
   return (
     <AuthProvider>

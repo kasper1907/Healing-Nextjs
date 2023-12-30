@@ -26,8 +26,6 @@ export const postRequest: any = async (
     body = JSON.stringify(data);
     contentType = "application/json";
   }
-  // console.log("body", data);
-  // console.log(url);
 
   try {
     const res = await axios.post(`${baseUrl}${url}`, data, {
@@ -76,7 +74,6 @@ export const deleteRequest: any = async ({
   mutateEndPoint,
 }: any) => {
   const accessToken = await getCookie();
-  // console.log(`${process.env.NEXT_PUBLIC_BASE_URL}${endpoint}/${id}`);
   try {
     const res = await axios.delete(
       `${process.env.NEXT_PUBLIC_BASE_URL}${endpoint}/${id}`,
@@ -96,7 +93,6 @@ export const deleteRequest: any = async ({
 };
 export const getOne: any = async (endPoint: any) => {
   const accessToken = cookies().get("SID")?.value;
-  // console.log(accessToken);
   try {
     const res = await axios.get(`${baseUrl}${endPoint}`, {
       headers: {
@@ -104,7 +100,6 @@ export const getOne: any = async (endPoint: any) => {
         contentType: "application/json",
       },
     });
-    // console.log("res", res);
     return res.data;
   } catch (e: any) {
     return e.message;

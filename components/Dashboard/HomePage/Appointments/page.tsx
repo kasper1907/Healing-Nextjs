@@ -31,7 +31,6 @@ const Appointments = () => {
 
   const Appointments = AppointmentsData?.data;
 
-  ////console.log(Appointments);
   return (
     <div className={styles.PageWrapper}>
       <Container

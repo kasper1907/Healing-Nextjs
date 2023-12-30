@@ -34,10 +34,8 @@ const GroupDetails = ({ ID }: { ID: string }) => {
     getOne
   );
 
-  //   console.log(ID, Group?.data?.course_id);
   const GroupUsers = data?.data;
   const [currentGroup, setCurrentGroup] = React.useState<any>(null);
-  ////console.log(currentUser);
 
   useEffect(() => {
     const currentGroup = groups.find((group: any) => group.id == 1);
@@ -56,7 +54,6 @@ const GroupDetails = ({ ID }: { ID: string }) => {
     // });
   };
 
-  // ////console.log(Group);
   return (
     <div className={styles.PageWrapper}>
       <Container maxWidth={"lg"} sx={{ mt: 10 }}>

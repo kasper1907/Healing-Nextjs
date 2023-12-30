@@ -10,7 +10,6 @@ const Page = () => {
   const [token, setUserToken] = useCookie("SID");
 
   const decodedToken = jwt.decode(token?.toString()) as any;
-  ////console.log(decodedToken?.data?.role);
 
   const RedirectionPages: any = {
     Doctor: "/dashboard/Groups",

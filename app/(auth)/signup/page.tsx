@@ -98,10 +98,8 @@ export default function Page() {
   currentTime.setMinutes(dayjs().minute());
   currentTime.setSeconds(dayjs().second());
 
-  // console.log(sessionData?.data?.category_id == 2);
 
   const customStep = () => {
-    // console.log(sessionData);
 
     if (sessionData != undefined) {
       if (sessionData?.data?.category_id == 2) {
