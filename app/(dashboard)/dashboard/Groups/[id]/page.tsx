@@ -19,7 +19,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
     (group: any) => group.id === id
   );
 
-  if (!isThisGroupAllowedToThisUser) {
+  if (!isThisGroupAllowedToThisUser && decodedToken?.data?.role != "Doctor") {
     return <NotAuthorized />;
   }
 

@@ -1,14 +1,17 @@
+"use client";
 import React from "react";
 import styles from "@/styles/sass/Testimonials/Testimonials.module.scss";
 import SectionHeader from "../../shared/SectionHeader/page";
 import { Container, Grid } from "@mui/material";
 import Image from "next/image";
+import { useTranslation } from "react-i18next";
 const Testimonials = () => {
+  const { t, i18n } = useTranslation();
   return (
     <div className={styles.Testimonials}>
       <Container>
         <SectionHeader
-          Label="اراء العملاء"
+          Label={t("Testimonials")}
           secondary={false}
           isCentered={true}
         />
@@ -24,25 +27,30 @@ const Testimonials = () => {
             <Grid container>
               <Grid item xs={12}>
                 <div className={styles.testimonialCard}>
-                  بدأت أحس بتحسن كبير من بعد 3 أو 4 جلسة... ونسبة التحسن دلوقتي
-                  بعد الانتهاء من الجلسات أقدر أقول 98%
+                  {t(
+                    "I started to feel a great improvement after 3 or 4 sessions... and the improvement rate now, after completing the sessions, I can say 98%."
+                  )}
                 </div>
               </Grid>
               <Grid item xs={12}>
                 <div className={styles.testimonialCard}>
-                  أنا بقالى 25 سنة بعانى من ألم شديد في العمود الفقري ولكن بعد
-                  ما حضرت الجلسات الحمدلله تعافيت تمامًا
+                  {t(
+                    "I have been suffering from severe pain in the spine for 25 years, but after I attended the sessions, thank God, I completely recovered."
+                  )}
                 </div>
               </Grid>
               <Grid item xs={12}>
                 <div className={styles.testimonialCard}>
-                  شعرت أننى أعيش حياتى، الحياة أصبحت بجودة عالية وبقيت بشوف
-                  الجمال في كل الأشياء وحتى علاقتي بأهلي اختلفت تمامًا
+                  {t(
+                    "I felt like I was living my life. Life became of high quality and I continued to see beauty in all things. Even my relationship with my family was completely different."
+                  )}
                 </div>
               </Grid>
               <Grid item xs={12}>
                 <div className={styles.testimonialCard}>
-                  الكورس بالنسبة له كان نقلة رهيبه وإكتشفت إني كنت أفتقد الحياة
+                  {t(
+                    "The course for me was a terrible transition and I discovered that I was missing out on life"
+                  )}
                 </div>
               </Grid>
             </Grid>

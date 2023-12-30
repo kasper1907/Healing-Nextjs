@@ -87,3 +87,15 @@ button{
   min-height: 0px !important;
   height: 0px !important;
 }
+
+
+
+[dir="rtl"] *{
+  font-family: Tajawal, Arial, sans-serif !important;
+  direction: rtl !important;
+}
+
+[dir="ltr"] *{
+  font-family: Roboto, Arial, sans-serif !important;
+  direction: ltr !important;
+}

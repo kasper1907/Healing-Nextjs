@@ -6,7 +6,9 @@ import Image from "next/image";
 import Button from "@mui/material/Button";
 import StyledButton from "../shared/StyledButton";
 import { useMediaQuery } from "@mui/material";
+import { useTranslation } from "react-i18next";
 const Landing = () => {
+  const { t, i18n } = useTranslation();
   const isMediumScreen = useMediaQuery("(max-width: 900px)");
   const isSmallScreen = useMediaQuery("(max-width: 772px)");
 
@@ -88,9 +90,14 @@ const Landing = () => {
                 </>
               ) : (
                 <>
-                  <span className={styles.LandingTitle}>اتزانك وراحتك </span>
+                  <span className={styles.LandingTitle}>
+                    {t("Your balance and comfort") + " "}
+                  </span>
                   <span>
-                    هو هدفنا الأول <br /> ومساعنا دائما للارتقاء بجوده حياتك
+                    {t("is our first goal")} <br />
+                    {t(
+                      "and our constant endeavor to improve the quality of your life"
+                    )}
                   </span>
                 </>
               )}
@@ -102,15 +109,18 @@ const Landing = () => {
             >
               <h2 className={styles.LandingText}>
                 <span className={styles.LandingTitle}>Healing Center</span>
-                هو مركز مُتخصص في التدريبات الشعورية للوصول إلى عالم متكامل من
-                الوعي بالذات للارتقاء بجودة الحياة أفضل.{" "}
+                {" " +
+                  t(
+                    "is a center specialized in emotional training to reach an integrated world of self-awareness to improve the quality of life."
+                  )}
               </h2>
 
               <Grid container sx={{ mt: 6 }} rowSpacing={2}>
                 <Grid item xs={12} md={6} className="flex justify-center ">
                   <StyledButton
                     isLink={false}
-                    label="اكتشف المزيد"
+                    // label="اكتشف المزيد"
+                    label={t("Discover More")}
                     isPrimary={true}
                     onClick={handleScrollToSecondSection}
                   />
@@ -118,7 +128,8 @@ const Landing = () => {
                 <Grid item xs={12} md={6} className="flex justify-center">
                   <StyledButton
                     isLink={false}
-                    label="طلب المساعده"
+                    // label="طلب المساعده"
+                    label={t("Request Help")}
                     isPrimary={false}
                     onClick={handleScrollToContact}
                   />

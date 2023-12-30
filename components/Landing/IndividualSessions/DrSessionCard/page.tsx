@@ -6,8 +6,11 @@ import SectionHeader from "@/components/shared/SectionHeader/page";
 import StyledButton from "@/components/shared/StyledButton";
 import SmallDialog from "@/components/shared/Dialogs/SmallDialog/page";
 import { Box } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 const DrSessionCard = () => {
+  const { t, i18n } = useTranslation();
+
   const [openDialog, setOpenDialog] = useState<boolean>(false);
   const handleOpenDialog = () => {
     setOpenDialog(true);
@@ -17,7 +20,8 @@ const DrSessionCard = () => {
     <div className={styles.DrSessionCard}>
       <Box sx={{ display: { xs: "block", md: "none" } }}>
         <SectionHeader
-          Label="جلسات- مع دكتور أحمد الدملاوي"
+          // Label="جلسات- مع دكتور أحمد الدملاوي"
+          Label={t("Sessions With Dr. Ahmed El Demelawy")}
           isCentered={true}
           secondary={true}
         />
@@ -33,20 +37,20 @@ const DrSessionCard = () => {
       <div className={styles.text}>
         <Box sx={{ display: { xs: "none", md: "block" } }}>
           <SectionHeader
-            Label="جلسات- مع دكتور أحمد الدملاوي"
+            Label={t("Sessions With Dr. Ahmed El Demelawy")}
             isCentered={false}
             secondary={false}
           />
         </Box>
         <p className={`section-p mb-4 w-[594px] max-w-full ${styles.CardP}`}>
-          هي جلسة فردية تسطتيع من خلالها الإفصاح عن معاناتك ومشاعرك بكل حرية
-          وإنطلاق وبدون حرج ويساعدك دكتور أحمد على إدراك مشكلتك والمشاعر التي
-          أدت لظهور ها وكيفية الإنتباه لها وإدارتها.
+          {t(
+            "Its an individual session in which you can freely and freely disclose your suffering and feelings without embarrassment. Dr. Ahmed helps you to realize your problem, the feelings that led to its appearance, how to pay attention to it and manage it."
+          )}
         </p>
         <div className={styles.buttonContainer}>
           <StyledButton
             isLink={false}
-            label="اشترك الان"
+            label={t("Subscribe Now")}
             isPrimary={true}
             onClick={handleOpenDialog}
           />

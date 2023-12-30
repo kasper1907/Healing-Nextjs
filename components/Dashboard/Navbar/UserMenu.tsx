@@ -1,4 +1,3 @@
-
 import React from "react";
 import useCookie from "react-use-cookie";
 import jwt from "jsonwebtoken";
@@ -46,8 +45,8 @@ export default function UserMenu() {
   };
 
   const handleLogout = () => {
-    LogoutHandler();
     router.push("/login");
+    LogoutHandler();
   };
 
   const { data: UserData, isLoading } = useSWR(

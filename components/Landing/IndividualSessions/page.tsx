@@ -1,15 +1,22 @@
+"use client";
 import React from "react";
 import styles from "@/styles/sass/IndividualSessions/main.module.scss";
 import { Container, Grid } from "@mui/material";
 import SectionHeader from "../../shared/SectionHeader/page";
 import DrSessionCard from "./DrSessionCard/page";
 import SessionCard from "./DrSessionCard/SessionCard.tsx/page";
+import { useTranslation } from "react-i18next";
 
 const IndividualSessions = () => {
+  const { t, i18n } = useTranslation();
   return (
     <div className={styles.IndividualSessions}>
       <Container className={styles.container}>
-        <SectionHeader Label="جلسات فرديه" isCentered={true} secondary={true} />
+        <SectionHeader
+          Label={t("Individual Sessions")}
+          isCentered={true}
+          secondary={true}
+        />
         <DrSessionCard />
         <Grid
           container
@@ -26,10 +33,10 @@ const IndividualSessions = () => {
             <SessionCard
               bannerSrc={"/images/TherapySessions1/Dr-Card-header1.svg"}
               logoSrc={"/images/TherapySessions1/session1.svg"}
-              header={"التلعثم"}
-              text={
-                "هي جلسة فردية تسطتيع من خلالها الإفصاح ومشاعرك بكل حرية وإنطلاق وبدون حرج ويساعدك دكتور أحمد على "
-              }
+              header={t("Stuttering")}
+              text={t(
+                "It is an individual session in which you can express your feelings freely and without embarrassment, and Dr. Ahmed Ali helps you"
+              )}
               sessionId={1}
             />
           </Grid>
@@ -42,10 +49,10 @@ const IndividualSessions = () => {
             <SessionCard
               bannerSrc={"/images/TherapySessions1/Dr-Card-header2.svg"}
               logoSrc={"/images/TherapySessions1/session2.svg"}
-              header={"الأشعة المقطعية على الدماغ"}
-              text={
-                "هي جلسة فردية تسطتيع من خلالها الإفصاح ومشاعرك بكل حرية وإنطلاق وبدون حرج ويساعدك دكتور أحمد على "
-              }
+              header={t("Brain CT Scan")}
+              text={t(
+                "It is an individual session in which you can express your feelings freely and without embarrassment, and Dr. Ahmed Ali helps you"
+              )}
               sessionId={2}
             />
           </Grid>

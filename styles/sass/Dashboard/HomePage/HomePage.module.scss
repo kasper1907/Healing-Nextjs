@@ -32,8 +32,8 @@
       background-color: #81f2c2;
       border-radius: 50%;
       img {
-        object-fit: fill;
-        padding: 10px;
+        object-fit: contain !important;
+        padding: 0;
       }
     }
     .groupButtons {

@@ -5,21 +5,23 @@ import { Container, Grid, TextField } from "@mui/material";
 import PlaceIcon from "@mui/icons-material/Place";
 import Image from "next/image";
 import StyledButton from "../../shared/StyledButton";
+import { useTranslation } from "react-i18next";
 const ContactUs = () => {
+  const { t, i18n } = useTranslation();
   return (
     <div className={`${styles.ContactUs} contact`}>
       <Container>
         <Grid container className={styles.container}>
           <Grid item xs={12} md={6}>
             <h2 className={styles.ContactUsHeader}>
-              ابق علي <br /> تواصل معنا{" "}
+              {t("Stay on")} <br /> {t("a Contact With Us")}{" "}
             </h2>
             <p className={styles.ContactP}>
-              لدينا فريق متخصص للإجابة علي أي استفسارات
+              {t("We are here to answer any question you may have about our")}
             </p>
 
             <div className={styles.address}>
-              <h4>العنوان</h4>
+              <h4>{t("Address")}</h4>
               <div className={styles.iconAndText}>
                 <Image
                   src="/images/location.svg"
@@ -28,14 +30,14 @@ const ContactUs = () => {
                   alt="Location_icon"
                 />
                 <span>
-                  ٤١ محمد توفيق دياب، المنطقة السادسة، مدينة نصر، <br /> محافظة
-                  القاهرة{" "}
+                  {t("41 Muhammad Tawfiq Diab, Sixth District, Nasr City,")}{" "}
+                  <br /> {t("Cairo, Egypt")}{" "}
                 </span>
               </div>
             </div>
 
             <div className={styles.address}>
-              <h4>تواصل معنا علي</h4>
+              <h4>{t("Contact us on")}</h4>
               <Grid container>
                 <Grid item xs={12} md={6}>
                   <div className={styles.iconAndText}>
@@ -64,11 +66,8 @@ const ContactUs = () => {
           </Grid>
           <Grid item xs={12} md={6}>
             <div className={styles.contactFormContainer}>
-              <h2 className={styles.formHeader}>تواصل معنا</h2>
-              <form
-                onSubmit={(e) => {
-                }}
-              >
+              <h2 className={styles.formHeader}>{t("Contact Us")}</h2>
+              <form onSubmit={(e) => {}}>
                 <Grid container spacing={3}>
                   <Grid item xs={12} md={6}>
                     <TextField
@@ -76,7 +75,7 @@ const ContactUs = () => {
                       id="outlined-basic"
                       dir="rtl"
                       lang="en"
-                      label="الاسم"
+                      label={t("Name")}
                       variant="outlined"
                       fullWidth
                     />
@@ -87,7 +86,7 @@ const ContactUs = () => {
                       id="outlined-basic"
                       dir="rtl"
                       lang="en"
-                      label="رقم الهاتف"
+                      label={t("Phone Number")}
                       variant="outlined"
                       fullWidth
                     />
@@ -98,7 +97,8 @@ const ContactUs = () => {
                       id="outlined-basic"
                       dir="rtl"
                       lang="en"
-                      label="استفسارك"
+                      label={t("Your Question")}
+                      // label="استفسارك"
                       variant="outlined"
                       fullWidth
                       multiline
@@ -110,7 +110,8 @@ const ContactUs = () => {
                     <StyledButton
                       isLink={false}
                       isPrimary={true}
-                      label="إرسال"
+                      // label="إرسال"
+                      label={t("Send")}
                       fullWidth={true}
                     />
                   </Grid>

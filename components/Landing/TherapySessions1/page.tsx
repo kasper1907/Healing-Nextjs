@@ -15,7 +15,9 @@ import "@/styles/sass/TherapyCard/Slider.scss";
 import useSWR from "swr";
 import { endPoints } from "@/services/endpoints";
 import { getOne } from "@/services/service";
+import { useTranslation } from "react-i18next";
 const TherapySession1 = () => {
+  const { t, i18n } = useTranslation();
   const [openDialog, setOpenDialog] = useState<boolean>(false);
   const isSmallScreen = useMediaQuery("(max-width: 600px)");
 
@@ -53,16 +55,23 @@ const TherapySession1 = () => {
       />
       <Container>
         <SectionHeader
-          Label={"جلسات الاتزان شفاء"}
+          Label={t("Balance is Healing Sessions")}
           isCentered={true}
           secondary={false}
         />
-        <p className={`section-p w-full text-center`}>
+        {/* <p className={`section-p w-full text-center`}>
           نحن في جلسات الاتزان شفاء نقدم لك تدريبات الدعم الشعوري المتخصصة
           لتساعدك على التعافي من الاضطرابات الجسدية والشعورية
+        </p> */}
+        <p className={`section-p w-full text-center`}>
+          {t(
+            "We at Healing Balance Sessions provide you with specialized emotional support exercises to help you recover from physical and emotional disorders"
+          )}
         </p>
+
         <SectionHeader
-          Label={"جلسات جماعية "}
+          // Label={"جلسات جماعية "}
+          Label={t("Group Sessions")}
           isCentered={true}
           secondary={true}
         />
@@ -117,10 +126,7 @@ const TherapySession1 = () => {
                       <TherapyCard
                         idx={index}
                         sessionId={therapySession?.id}
-                        name={therapySession?.course_name?.replace(
-                          "جلسات الاتزان شفاء – ",
-                          ""
-                        )}
+                        name={t(therapySession?.course_name_en)}
                         img={`https://mtnhealingcenter.com/healing-center/${therapySession?.logo}`}
                       />
                     </Grid>

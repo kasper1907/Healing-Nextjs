@@ -32,11 +32,7 @@ export const useAuthentication = ({ redirectTo }: Props): ReturnData => {
   const currentUrl = `${pathname}?id=${searchParams.get("id")}`;
 
   const RolePages: any = {
-    Doctor: [
-      "/dashboard",
-      "/dashboard/GroupUsers",
-      "/dashboard/users/userDetails",
-    ],
+    Doctor: ["/dashboard", "/dashboard/Groups", "/dashboard/Users"],
 
     Therapist: [
       "/dashboard",
@@ -57,10 +53,6 @@ export const useAuthentication = ({ redirectTo }: Props): ReturnData => {
   };
 
   // I want to check if the user is not authorized to view the current page, return false
-
-
-
-
 
   useEffect(() => {
     let shouldAbort = false;

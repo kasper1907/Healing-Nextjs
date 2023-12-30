@@ -28,7 +28,10 @@ const Page = async ({ params }: any) => {
     (user: any) => user.id === userId
   );
 
-  if (!isThisUserExistInThisGroup || !isThisGroupAllowedToThisUser) {
+  if (
+    (!isThisUserExistInThisGroup && decodedToken?.data?.role != "Doctor") ||
+    (!isThisGroupAllowedToThisUser && decodedToken?.data?.role != "Doctor")
+  ) {
     return <NotAuthorized />;
   }
 

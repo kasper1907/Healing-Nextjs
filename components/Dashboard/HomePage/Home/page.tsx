@@ -24,10 +24,15 @@ type Group = {
 };
 const Home = () => {
   const { LoggedInUser }: any = React.useContext(UserContext);
+  const UserRole = LoggedInUser?.role;
+  console.log(UserRole);
   const { data, error, isLoading } = useSWR(
-    `Groups/getThirapistGroups/${LoggedInUser?.course_id}`,
+    UserRole == "Doctor"
+      ? `Groups`
+      : `Groups/getThirapistGroups/${LoggedInUser?.course_id}`,
     getOne
   );
+
   const Groups: any = data?.data;
   if (error) {
     return <Error />;
