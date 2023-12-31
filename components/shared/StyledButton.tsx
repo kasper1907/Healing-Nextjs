@@ -5,7 +5,7 @@ import styles from "@/styles/sass/Landing/landing.module.scss";
 import Link from "next/link";
 
 type ButtonProps = {
-  label: string;
+  label: string | React.ReactNode;
   isPrimary: boolean;
   fullWidth?: boolean;
   onClick?: () => void;

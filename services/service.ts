@@ -26,7 +26,6 @@ export const postRequest: any = async (
     body = JSON.stringify(data);
     contentType = "application/json";
   }
-
   try {
     const res = await axios.post(`${baseUrl}${url}`, data, {
       headers: {

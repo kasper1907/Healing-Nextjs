@@ -42,11 +42,13 @@ import UserMenu from "./UserMenu";
 import { useAuthentication } from "@/hooks/useAuthentication";
 import { UserContext } from "@/contexts/mainContext";
 import { cursorTo } from "readline";
+import NotificationsMenu from "./NotificationsMenu";
 
 const drawerWidth = 300;
 const navItems = [{ id: 1, title: "All Groups", url: "/dashboard" }];
 
 interface Props {
+  accessToken?: string;
   window?: () => Window;
 }
 export default function DashboardNavbar(props: Props) {
@@ -56,6 +58,7 @@ export default function DashboardNavbar(props: Props) {
     userTabsValue,
     setUserTabsValue,
   }: any = useTabsContext();
+  const { accessToken } = props;
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const PageParams = useParams();
@@ -350,8 +353,11 @@ export default function DashboardNavbar(props: Props) {
                     />
                   </Link>
                 </Typography>
-
-                <UserMenu />
+                <div className="gap-4 flex flex-row items-center">
+                  {" "}
+                  <NotificationsMenu accessToken={accessToken} />
+                  <UserMenu />
+                </div>
                 <IconButton
                   color="inherit"
                   aria-label="open drawer"

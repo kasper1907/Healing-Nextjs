@@ -1,13 +1,46 @@
 "use client";
 import React from "react";
 import styles from "@/styles/sass/ContactUs/Contact.module.scss";
-import { Container, Grid, TextField } from "@mui/material";
+import { CircularProgress, Container, Grid, TextField } from "@mui/material";
 import PlaceIcon from "@mui/icons-material/Place";
 import Image from "next/image";
 import StyledButton from "../../shared/StyledButton";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
+import { postRequest } from "@/services/service";
 const ContactUs = () => {
   const { t, i18n } = useTranslation();
+  const [loading, setLoading] = React.useState<boolean>(false);
+  const [userData, setUserData] = React.useState<any>({
+    client_name: "",
+    client_phone: "",
+    Questionnaire: "",
+  });
+
+  const handleSubmit = async () => {
+    if (
+      !userData.client_name ||
+      !userData.client_phone ||
+      !userData.Questionnaire
+    ) {
+      return toast.warning(t("Please fill all fields"));
+    } else {
+      setLoading(true);
+      const res = await postRequest("ContactUs/Create", userData);
+
+      if (res.status == 201) {
+        toast.success(t("Your message has been sent successfully"));
+        setUserData({
+          client_name: "",
+          client_phone: "",
+          Questionnaire: "",
+        });
+      } else {
+        toast.error(t("Something went wrong"));
+      }
+      setLoading(false);
+    }
+  };
   return (
     <div className={`${styles.ContactUs} contact`}>
       <Container>
@@ -78,6 +111,13 @@ const ContactUs = () => {
                       label={t("Name")}
                       variant="outlined"
                       fullWidth
+                      value={userData.client_name}
+                      onChange={(e) => {
+                        setUserData({
+                          ...userData,
+                          client_name: e.target.value,
+                        });
+                      }}
                     />
                   </Grid>
                   <Grid item xs={12} md={6}>
@@ -89,6 +129,13 @@ const ContactUs = () => {
                       label={t("Phone Number")}
                       variant="outlined"
                       fullWidth
+                      value={userData.client_phone}
+                      onChange={(e) => {
+                        setUserData({
+                          ...userData,
+                          client_phone: e.target.value,
+                        });
+                      }}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -103,6 +150,13 @@ const ContactUs = () => {
                       fullWidth
                       multiline
                       rows={8}
+                      value={userData.Questionnaire}
+                      onChange={(e) => {
+                        setUserData({
+                          ...userData,
+                          Questionnaire: e.target.value,
+                        });
+                      }}
                     />
                   </Grid>
 
@@ -111,8 +165,15 @@ const ContactUs = () => {
                       isLink={false}
                       isPrimary={true}
                       // label="إرسال"
-                      label={t("Send")}
+                      label={
+                        loading ? (
+                          <CircularProgress size={18} sx={{ color: "#FFF" }} />
+                        ) : (
+                          t("Send")
+                        )
+                      }
                       fullWidth={true}
+                      onClick={handleSubmit}
                     />
                   </Grid>
                 </Grid>

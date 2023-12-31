@@ -99,3 +99,17 @@ button{
   font-family: Roboto, Arial, sans-serif !important;
   direction: ltr !important;
 }
+
+.notification-body{
+  text-wrap: balance;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+
+  font-family: "Poppins !important;";
+}
+
+.notification-body.arabic{
+  text-align: center;
+  font-family: Tajawal, Arial, sans-serif !important;
+}

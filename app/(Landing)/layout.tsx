@@ -5,6 +5,7 @@ import "@/styles/sass/main.sass";
 
 import { cookies } from "next/dist/client/components/headers";
 import I18Provider from "./I18Provider";
+import { Toaster } from "sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
@@ -20,5 +21,10 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const accessToken = await cookies().get("SID")?.value;
-  return <I18Provider accessToken={accessToken}>{children}</I18Provider>;
+  return (
+    <I18Provider accessToken={accessToken}>
+      <Toaster />
+      {children}
+    </I18Provider>
+  );
 }
