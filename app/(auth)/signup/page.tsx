@@ -98,9 +98,7 @@ export default function Page() {
   currentTime.setMinutes(dayjs().minute());
   currentTime.setSeconds(dayjs().second());
 
-
   const customStep = () => {
-
     if (sessionData != undefined) {
       if (sessionData?.data?.category_id == 2) {
         return {
@@ -214,9 +212,9 @@ export default function Page() {
   //     sectionText: "Upload your documents",
   //   },
   // ];
-  const [activeStep, setActiveStep] = React.useState(5);
+  const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set<number>());
-  const [currentStep, setCurrentStep] = React.useState<any>(5);
+  const [currentStep, setCurrentStep] = React.useState<any>(0);
   // const [steps2, setSteps2] = React.useState<any>(steps(sessionId));
   const [formData, setFormData] = React.useState<SignUpForm>({
     firstName: "",
@@ -259,7 +257,7 @@ export default function Page() {
   };
 
   React.useEffect(() => {
-    setCurrentStep(steps2[5]);
+    setCurrentStep(steps2[0]);
   }, [steps2, sessionData?.data?.category_id]);
 
   const handleNext = () => {

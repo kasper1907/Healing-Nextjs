@@ -9,18 +9,22 @@ import {
   DropdownItem,
   Avatar,
   User,
+  useDisclosure,
 } from "@nextui-org/react";
 import { Logout as LogoutHandler } from "@/utils/Logout";
 import { useTabsContext } from "../TabsContext";
 import { useRouter } from "next/navigation";
 import useSWR from "swr";
 import { getOne } from "@/services/service";
+import SendNotification from "./SendNotification";
 
 export default function UserMenu() {
   const router = useRouter();
   const [userToken, setUserToken] = useCookie("SID");
   const decodedToken = jwt.decode(userToken) as any;
   const user = decodedToken?.data;
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
   const {
     userTabsValue,
     setUserTabsValue,
@@ -57,6 +61,7 @@ export default function UserMenu() {
       revalidateOnFocus: false,
     }
   );
+
   return (
     <div className="flex items-center gap-4">
       <Dropdown placement="bottom-start">
@@ -77,6 +82,7 @@ export default function UserMenu() {
             `${user?.role != "User" ? "profile" : ""}`,
             `${user?.role != "User" ? "courses" : ""}`,
             `${user?.role != "User" ? "edit_account" : ""}`,
+            `${user?.role != "Moderator" ? "send_notification" : ""}`,
           ]}
           aria-label="User Actions"
           variant="flat"
@@ -101,6 +107,25 @@ export default function UserMenu() {
           >
             Edit account
           </DropdownItem>
+          {/* {user?.role == "Moderator" && (
+            <DropdownItem
+              key="edit_account"
+              onClick={() => {
+                setUserTabsValue(7);
+              }}
+            >
+              Send Notification
+            </DropdownItem>
+          )} */}
+          <DropdownItem
+            key="send_notification"
+            onClick={() => {
+              // setUserTabsValue(7);
+              onOpen();
+            }}
+          >
+            Send A Notification
+          </DropdownItem>
           <DropdownItem key="courses" onClick={ViewAllCourses}>
             View All Courses
           </DropdownItem>
@@ -109,6 +134,12 @@ export default function UserMenu() {
           </DropdownItem>
         </DropdownMenu>
       </Dropdown>
+      <SendNotification
+        user={user}
+        isOpen={isOpen}
+        onOpen={onOpen}
+        onOpenChange={onOpenChange}
+      />
     </div>
   );
 }

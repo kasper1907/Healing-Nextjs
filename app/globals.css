@@ -102,10 +102,7 @@ button{
 
 .notification-body{
   text-wrap: balance;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-
+  flex-grow: 2;
   font-family: "Poppins !important;";
 }
 

@@ -14,7 +14,7 @@ import useSWR from "swr";
 import { getOne } from "@/services/service";
 import moment from "moment";
 import { isArabic } from "@/utils/checkLanguage";
-export default function App({ accessToken }: any) {
+const NotificationsMenu = ({ accessToken }: { accessToken: string }) => {
   const [showAlert, setShowAlert] = React.useState(true);
   const [receivedNotifications, setReceivedNotifications] = React.useState([]);
   const decodedToken = jwt.decode(accessToken || "") as any;
@@ -31,97 +31,89 @@ export default function App({ accessToken }: any) {
       revalidateOnFocus: true,
     }
   );
-
-  useEffect(() => {
-    setReceivedNotifications(Notifications?.data);
-  }, [Notifications?.data]);
-
-  useEffect(() => {
-    if (Notifications?.data?.length !== receivedNotifications?.length) {
-      setShowAlert(true);
-    } else {
-      setShowAlert(false);
+  const { data: UnReadNotifications, isLoading: UnReadIsLoading } = useSWR(
+    `Notifications/GetUnReadNotifications/${user?.user_id}/${userGroupId}`,
+    getOne,
+    {
+      revalidateIfStale: true,
+      revalidateOnFocus: true,
     }
-  }, [Notifications?.data, receivedNotifications?.length]);
-
-  return (
-    <Dropdown>
-      <DropdownTrigger>
-        <Button
-          style={{
-            minWidth: "10px",
-            background: "transparent",
-            width: "80px",
-            height: "60px",
-            margin: "0",
-            padding: "0",
-          }}
-        >
-          {showAlert && receivedNotifications?.length > 0 ? (
-            <Badge
-              onClick={() => {
-                if (showAlert) {
-                  setShowAlert(false);
-                }
-              }}
-              badgeContent={
-                Notifications?.data?.length - receivedNotifications?.length
-              }
-              color="error"
-            >
-              <IoMdNotificationsOutline
-                size={30}
-                style={{ width: "50px", cursor: "pointer" }}
-              />
-            </Badge>
-          ) : (
-            <>
-              <IoMdNotificationsOutline
-                size={30}
-                style={{ width: "50px", cursor: "pointer" }}
-              />
-            </>
-          )}
-        </Button>
-      </DropdownTrigger>
-      <DropdownMenu variant="flat" aria-label="Dropdown menu with shortcut">
-        {Notifications?.data?.map((notification: any) => (
-          <DropdownItem key="new">
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "flex-start",
-                alignItems: "center",
-              }}
-            >
-              <User
-                name=""
-                description=""
-                avatarProps={{
-                  src: `${process.env.NEXT_PUBLIC_BASE_URL}${notification?.image}`,
-                }}
-              />
-              <div className="flex flex-col gap-1">
-                <p className="w-[100px] font-bold flex flex-row gap-8 justify-between">
-                  <span>{notification?.header}</span>
-                </p>
-                <p className="flex flex-row gap-4 justify-between">
-                  <span
-                    className={`w-[100px] notification-body ${
-                      isArabic(notification?.body) ? "arabic" : ""
-                    }`}
-                  >
-                    {notification?.body}
-                  </span>
-                  <span>
-                    {moment(notification?.createdAt).format("MM-DD hh:mm A")}
-                  </span>
-                </p>
-              </div>
-            </div>
-          </DropdownItem>
-        ))}
-      </DropdownMenu>
-    </Dropdown>
   );
-}
+  const { data: ReadNotifications, isLoading: ReadIsLoading } = useSWR(
+    `Notifications/GetByGroupId/${user?.user_id}/${userGroupId}`,
+    getOne,
+    {
+      revalidateIfStale: true,
+      revalidateOnFocus: true,
+    }
+  );
+  <Dropdown>
+    <DropdownTrigger>
+      <Button
+        style={{
+          minWidth: "10px",
+          background: "transparent",
+          width: "80px",
+          height: "60px",
+          margin: "0",
+          padding: "0",
+        }}
+      >
+        <Badge
+          onClick={() => {
+            if (showAlert) {
+              setShowAlert(false);
+            }
+          }}
+          badgeContent={UnReadNotifications?.data?.length}
+          color="error"
+        >
+          <IoMdNotificationsOutline
+            size={30}
+            style={{ width: "50px", cursor: "pointer" }}
+          />
+        </Badge>
+      </Button>
+    </DropdownTrigger>
+    <DropdownMenu variant="flat" aria-label="Dropdown menu with shortcut">
+      {Notifications?.data?.map((notification: any) => (
+        <DropdownItem key="new">
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-start",
+              alignItems: "center",
+            }}
+          >
+            <User
+              name=""
+              description=""
+              avatarProps={{
+                src: `${process.env.NEXT_PUBLIC_BASE_URL}${notification?.image}`,
+              }}
+            />
+            <div className="flex flex-col gap-1">
+              <p className="w-[100px] font-bold flex flex-row gap-8 justify-between">
+                <span>{notification?.header}</span>
+              </p>
+              <p className="flex flex-row gap-4 justify-between">
+                <span
+                  className={`w-[100px] notification-body ${
+                    isArabic(notification?.body) ? "arabic" : ""
+                  }`}
+                >
+                  {notification?.body}
+                </span>
+                <span>
+                  {moment(notification?.createdAt).format("MM-DD hh:mm A")}
+                </span>
+              </p>
+            </div>
+          </div>
+        </DropdownItem>
+      ))}
+    </DropdownMenu>
+  </Dropdown>;
+};
+
+export default NotificationsMenu;

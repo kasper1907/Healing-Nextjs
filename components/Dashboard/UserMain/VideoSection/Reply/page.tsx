@@ -68,7 +68,6 @@ const Reply = ({
   };
 
   const handleSubmitEdit = async (e: any) => {
-
     e.preventDefault();
     const postData = {
       comment_text: replyText,
@@ -138,7 +137,6 @@ const Reply = ({
       endpoint: `ReplayComments/deletReplay/${reply?.id}`,
       id: reply?.id,
       data: {},
-      handleSuccess: handleSuccessDeleteComment,
     });
 
     if (res.status == 201) {

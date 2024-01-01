@@ -42,12 +42,8 @@ export const useAuthentication = ({ redirectTo }: Props): ReturnData => {
       "/Profile",
     ],
 
-    Assistant: [
-      "/dashboard",
-      "/dashboard/Groups",
-      "/dashboard/Users",
-      "/report/create",
-    ],
+    Assistant: ["/dashboard/Groups", "/dashboard/Users", "/report/create"],
+    Moderator: ["/dashboard/Groups", "/dashboard/Users", "/report/create"],
 
     User: ["/Profile"],
   };

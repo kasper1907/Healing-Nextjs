@@ -26,9 +26,8 @@ export default function DeleteDialog({ open, setOpen, deleteAction }: any) {
     setOpen(false);
   };
 
-  const handleSubmit = () => {
-    // Perform the function that comes from parent component
-    deleteAction();
+  const handleSubmit = async () => {
+    await deleteAction();
     handleClose();
   };
 

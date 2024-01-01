@@ -183,9 +183,7 @@ const Comments = ({
       endpoint: `ReplayComments/deletReplay/${comment?.id}`,
       id: comment?.id || comment?.commentId,
       data: {},
-      handleSuccess: handleSuccessDeleteComment,
     });
-
     if (res.status == 201) {
       handleSuccessDeleteComment();
     }

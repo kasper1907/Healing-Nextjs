@@ -43,6 +43,7 @@ import { useAuthentication } from "@/hooks/useAuthentication";
 import { UserContext } from "@/contexts/mainContext";
 import { cursorTo } from "readline";
 import NotificationsMenu from "./NotificationsMenu";
+import Notifications from "./Notifications";
 
 const drawerWidth = 300;
 const navItems = [{ id: 1, title: "All Groups", url: "/dashboard" }];
@@ -263,7 +264,12 @@ export default function DashboardNavbar(props: Props) {
         }}
       >
         <CssBaseline />
-        <Container sx={{ "& .MuiContainer-root ": { zIndex: 2 } }}>
+        <Container
+          style={{
+            zIndex: 2,
+          }}
+          sx={{ "& .MuiContainer-root ": { zIndex: 2 } }}
+        >
           <AppBar
             className={styles.navbar}
             component="nav"
@@ -355,7 +361,9 @@ export default function DashboardNavbar(props: Props) {
                 </Typography>
                 <div className="gap-4 flex flex-row items-center">
                   {" "}
-                  <NotificationsMenu accessToken={accessToken} />
+                  {/* <NotificationsMenu accessToken={accessToken} /> */}
+                  {/* <NotificationsMenu accessToken={accessToken} /> */}
+                  <Notifications accessToken={accessToken} />
                   <UserMenu />
                 </div>
                 <IconButton

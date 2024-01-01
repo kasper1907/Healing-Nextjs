@@ -42,12 +42,7 @@ export const postRequest: any = async (
     return { status: e?.response?.status, data: e?.response?.data };
   }
 };
-export const updateRequest: any = async ({
-  id,
-  endpoint,
-  data,
-  handleSuccess,
-}: any) => {
+export const updateRequest: any = async ({ id, endpoint, data }: any) => {
   const accessToken = await getCookie();
 
   try {
@@ -61,17 +56,15 @@ export const updateRequest: any = async ({
         },
       }
     );
-    return res;
+    return {
+      status: res.status,
+      data: res?.data,
+    };
   } catch (e: any) {
-    return toast.error(e.message);
+    return { status: e?.response?.status, data: e?.response?.data };
   }
 };
-export const deleteRequest: any = async ({
-  id,
-  endpoint,
-  handleSuccess,
-  mutateEndPoint,
-}: any) => {
+export const deleteRequest: any = async ({ id, endpoint }: any) => {
   const accessToken = await getCookie();
   try {
     const res = await axios.delete(

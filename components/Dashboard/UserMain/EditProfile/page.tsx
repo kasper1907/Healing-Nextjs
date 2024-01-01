@@ -145,42 +145,34 @@ const EditProfile = () => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    // Object.entries(userData).forEach(([key, value]) => {
-    //   if (value == "") {
-    //     return toast.warning("Please fill all fields");
-    //   }
-    // });
-    if (!userData.full_name) return toast.warning(" Full Name is Required");
-    if (!userData.email) return toast.warning(" Email is Required");
-    if (!userData.country) return toast.warning(" Country is Required");
-    if (!userData.phone) return toast.warning(" Phone is Required");
-    if (!userData.date_of_birth)
-      return toast.warning(" Date of Birth is Required");
-    if (!userData.weight) return toast.warning(" Weight is Required");
-    if (!userData.social_status)
-      return toast.warning(" Social Status is Required");
-    if (!userData.job_title) return toast.warning(" Job Title is Required");
-    if (!userData.number_of_boys)
-      return toast.warning("Please Fill All Fields");
-    if (!userData.number_of_girls)
-      return toast.warning("Please Fill All Fields");
     setLoading(true);
     const formData = new FormData();
+    Object.entries(userData).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
+
     formData.append("file", files[0]);
-    try {
-      // Make a POST request to the ClamAV scan endpoint
-      const response = await fetch("/api/scanFile", {
-        method: "POST",
-        body: formData,
-      });
 
-      const data = await response.json();
-    } catch (err) {
+    const res = await postRequest(
+      endPoints.updateUser(decodedToken?.data?.user_id),
+      formData
+    );
+
+    if (res.status == 200 || res.status == 204 || res.status == 201) {
+      toast.success("Your Data Updated Successfully");
+      let mutateEndPoint = endPoints.getUser(decodedToken?.data?.user_id);
+      mutate(mutateEndPoint);
     }
+    let test = await res?.data?.accessToken;
 
-
+    // console.log(res);
+    if (res.status == "201") {
+      if (test != undefined) {
+        setUserToken(test?.toString());
+      }
+    }
+    setLoading(false);
   };
-
   return (
     <div data-aos="fade-right" className={styles.EditProfilePage}>
       <form onSubmit={handleSubmit}>
