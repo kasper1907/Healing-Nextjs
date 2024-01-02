@@ -17,6 +17,7 @@ import { useRouter } from "next/navigation";
 import useSWR from "swr";
 import { getOne } from "@/services/service";
 import SendNotification from "./SendNotification";
+import UploadVideo from "./UploadVideo";
 
 export default function UserMenu() {
   const router = useRouter();
@@ -24,6 +25,11 @@ export default function UserMenu() {
   const decodedToken = jwt.decode(userToken) as any;
   const user = decodedToken?.data;
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const {
+    isOpen: isOpen2,
+    onOpen: onOpen2,
+    onOpenChange: onOpenChange2,
+  } = useDisclosure();
 
   const {
     userTabsValue,
@@ -77,68 +83,67 @@ export default function UserMenu() {
             name={UserData?.data?.full_name}
           />
         </DropdownTrigger>
-        <DropdownMenu
-          disabledKeys={[
-            `${user?.role != "User" ? "profile" : ""}`,
-            `${user?.role != "User" ? "courses" : ""}`,
-            `${user?.role != "User" ? "edit_account" : ""}`,
-            `${user?.role != "Moderator" ? "send_notification" : ""}`,
-          ]}
-          aria-label="User Actions"
-          variant="flat"
-        >
-          <DropdownItem key="profileA" className="h-14 gap-2">
-            <p className="font-bold">Signed in as</p>
-            <p className="font-bold">{`@${user?.user_name}`}</p>
-          </DropdownItem>
-          <DropdownItem
-            key="profile"
-            onClick={() => {
-              setUserTabsValue(6);
-            }}
-          >
-            Profile
-          </DropdownItem>
-          <DropdownItem
-            key="edit_account"
-            onClick={() => {
-              setUserTabsValue(7);
-            }}
-          >
-            Edit account
-          </DropdownItem>
-          {/* {user?.role == "Moderator" && (
+        {user?.role == "User" && (
+          <DropdownMenu>
             <DropdownItem
-              key="edit_account"
+              onClick={() => {
+                setUserTabsValue(6);
+              }}
+            >
+              Profile
+            </DropdownItem>
+            <DropdownItem
               onClick={() => {
                 setUserTabsValue(7);
               }}
             >
-              Send Notification
+              Edit account
             </DropdownItem>
-          )} */}
-          <DropdownItem
-            key="send_notification"
-            onClick={() => {
-              // setUserTabsValue(7);
-              onOpen();
-            }}
-          >
-            Send A Notification
-          </DropdownItem>
-          <DropdownItem key="courses" onClick={ViewAllCourses}>
-            View All Courses
-          </DropdownItem>
-          <DropdownItem onClick={handleLogout} key="logout" color="danger">
-            Log Out
-          </DropdownItem>
-        </DropdownMenu>
+
+            <DropdownItem onClick={ViewAllCourses}>
+              View All Courses
+            </DropdownItem>
+            <DropdownItem onClick={handleLogout} color="danger">
+              Log Out
+            </DropdownItem>
+          </DropdownMenu>
+        )}
+
+        {user?.role != "User" && (
+          <DropdownMenu>
+            <DropdownItem
+              onClick={() => {
+                // setUserTabsValue(7);
+                onOpen();
+              }}
+            >
+              Send A Notification
+            </DropdownItem>
+            <DropdownItem
+              onClick={() => {
+                // setUserTabsValue(7);
+                onOpen2();
+              }}
+            >
+              Upload New Video
+            </DropdownItem>
+            <DropdownItem onClick={handleLogout} color="danger">
+              Log Out
+            </DropdownItem>
+          </DropdownMenu>
+        )}
       </Dropdown>
       <SendNotification
         user={user}
         isOpen={isOpen}
         onOpen={onOpen}
         onOpenChange={onOpenChange}
+      />
+      <UploadVideo
+        user={user}
+        isOpen2={isOpen2}
+        onOpen2={onOpen2}
+        onOpenChange2={onOpenChange2}
       />
     </div>
   );

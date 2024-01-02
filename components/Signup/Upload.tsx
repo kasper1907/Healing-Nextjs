@@ -10,6 +10,7 @@ import ActionsButtons from "./ActionsButtons";
 import AttachFiles from "./AttachFiles";
 import { postRequest } from "@/services/service";
 import { useSearchParams } from "next/navigation";
+import { toast } from "sonner";
 
 const Upload = ({
   handleNext,
@@ -49,12 +50,13 @@ const Upload = ({
 
     formDataObj.append("courseId", searchParams.get("sessionId")!);
 
- 
-
-    const res = await postRequest("users/createUser", formDataObj);
+    const res = await postRequest("Users/Register", formDataObj);
+    // console.log(res);
     if (res.status == 201) {
       steps[currentIndex].isCompleted = true;
       handleNext();
+    } else {
+      toast.error(res?.data?.message || "Something went wrong");
     }
   };
 
