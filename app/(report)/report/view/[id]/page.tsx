@@ -34,9 +34,10 @@ const ViewReportPage = async ({
     (LoggedInUserToken as string) || ""
   );
   const LoggedInUser = decodedToken?.data;
+  const loggedInUserPHash = decodedToken?.data?.passwordHash;
 
   const userAllowedGroups = await getOne(
-    `Groups/getThirapistGroups/${LoggedInUser?.course_id}`
+    `Groups/getThirapistGroups/${loggedInUserPHash?.course_id}`
   );
 
   const GroupUsers = await getOne(

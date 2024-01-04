@@ -17,17 +17,15 @@ import {
 import useSWR from "swr";
 import { getOne, postRequest } from "@/services/service";
 import { toast } from "sonner";
-
+import useCookie from "react-use-cookie";
+import jwt from "jsonwebtoken";
 export default function SendNotification({
   isOpen,
   onOpen,
   onOpenChange,
   user,
 }: any) {
-  const { data: ModeratorGroups, isLoading } = useSWR(
-    `Groups/getThirapistGroups/${user?.course_id}`,
-    getOne
-  );
+  const [userToken, setUserToken] = useCookie("SID");
   const [loading, setLoading] = useState(false);
   const [Notification, setNotification] = useState({
     header: "",
@@ -35,6 +33,13 @@ export default function SendNotification({
     groupId: "",
     courseId: user?.course_id,
   });
+
+  const decodedToken = jwt.decode(userToken) as any;
+
+  const { data: ModeratorGroups, isLoading } = useSWR(
+    `Groups/getThirapistGroups/${decodedToken?.data?.passwordHash}`,
+    getOne
+  );
 
   const handleSendNotification = async (e: any) => {
     e.preventDefault();

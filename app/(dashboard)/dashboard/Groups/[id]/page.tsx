@@ -9,10 +9,11 @@ const Page = async ({ params }: { params: { id: string } }) => {
   const { id } = params;
   const accessToken = cookies().get("SID")?.value;
   const decodedToken: any = await jwt.decode(accessToken?.toString() || "");
-  const loggedInUserCourseId = decodedToken?.data?.course_id;
+
+  const loggedInUserPHash = decodedToken?.data?.passwordHash;
 
   const userGroups = await getOne(
-    `Groups/getThirapistGroups/${loggedInUserCourseId}`
+    `Groups/getThirapistGroups/${loggedInUserPHash}`
   );
 
   const isThisGroupAllowedToThisUser = await userGroups?.data?.some(

@@ -26,8 +26,11 @@ const Home = () => {
   const { LoggedInUser }: any = React.useContext(UserContext);
   const UserRole = LoggedInUser?.role;
   console.log(LoggedInUser);
+
+  const loggedInUserPHash = LoggedInUser?.passwordHash;
+
   const { data, error, isLoading } = useSWR(
-    `Groups/getThirapistGroups/${LoggedInUser?.passwordHash}`,
+    `Groups/getThirapistGroups/${loggedInUserPHash}`,
     getOne
   );
 

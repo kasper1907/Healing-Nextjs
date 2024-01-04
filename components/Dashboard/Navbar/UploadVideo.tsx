@@ -17,10 +17,16 @@ import {
 import useSWR from "swr";
 import { getOne, postRequest } from "@/services/service";
 import { toast } from "sonner";
+import useCookie from "react-use-cookie";
+import jwt from "jsonwebtoken";
 
 export default function UploadVideo({ isOpen2, onOpenChange2, user }: any) {
+  const [userToken, setUserToken] = useCookie("SID");
+
+  const decodedToken = jwt.decode(userToken) as any;
+
   const { data: ModeratorGroups, isLoading } = useSWR(
-    `Groups/getThirapistGroups/${user?.course_id}`,
+    `Groups/getThirapistGroups/${decodedToken?.data?.passwordHash}`,
     getOne
   );
   const [loading, setLoading] = useState(false);
