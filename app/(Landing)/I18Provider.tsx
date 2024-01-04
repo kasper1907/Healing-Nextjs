@@ -16,41 +16,27 @@ const I18Provider = ({
   children: React.ReactNode;
   accessToken: string | undefined;
 }) => {
-  const { i18n }: any = useTranslation();
-  const languagesFonts: any = {
-    ar: "Tajawal, sans-serif !important",
-    en: "Poppins, sans-serif !important",
-  };
-
   return (
     <html
-      lang={i18n.resolvedLanguage}
-      dir={
-        i18n.resolvedLanguage == "en"
-          ? "ltr"
-          : i18n.resolvedLanguage == "ar"
-          ? "rtl"
-          : ""
-      }
       style={{
-        fontFamily: languagesFonts[i18n.resolvedLanguage],
+        fontFamily: "Tajawal, sans-serif !important",
       }}
     >
-      <Head>
+      <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" />
-        <Link
+        <link
           href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap"
           rel="stylesheet"
         />
 
         <link rel="icon" href="/images/healing-logo.svg" sizes="any" />
 
-        <Link
+        <link
           href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,700;1,100;1,200;1,300;1,400&display=swap"
           rel="stylesheet"
         />
-      </Head>
+      </head>
       <body style={{ padding: "0", margin: "0" }}>
         <main className="flex h-fit min-h-screen flex-col items-center justify-between bg-[#f5f2ec]">
           <Navbar accessToken={accessToken} />

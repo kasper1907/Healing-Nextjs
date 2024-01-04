@@ -39,11 +39,15 @@ const UseUserContextProvider = ({ children }: { children: ReactNode }) => {
     { revalidateIfStale: false, revalidateOnFocus: false }
   );
 
+  console.log(User);
+
+  let finalUser =
+    decodedToken?.data?.role == "User" ? User?.data : decodedToken?.data;
   return (
     <UserContext.Provider
       value={{
         LoggedInUser: decodedToken?.data,
-        User: User?.data,
+        User: finalUser,
         Group: Group?.data,
       }}
     >

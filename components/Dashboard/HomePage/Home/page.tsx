@@ -25,11 +25,9 @@ type Group = {
 const Home = () => {
   const { LoggedInUser }: any = React.useContext(UserContext);
   const UserRole = LoggedInUser?.role;
-  console.log(UserRole);
+  console.log(LoggedInUser);
   const { data, error, isLoading } = useSWR(
-    UserRole == "Doctor"
-      ? `Groups`
-      : `Groups/getThirapistGroups/${LoggedInUser?.course_id}`,
+    `Groups/getThirapistGroups/${LoggedInUser?.passwordHash}`,
     getOne
   );
 
@@ -72,7 +70,7 @@ const Home = () => {
                       }}
                     />
                   </div>
-                  <h3>{group.group_name}</h3>
+                  <h3>{group?.group_name}</h3>
                   <div className={styles.groupButtons}>
                     <Button variant="contained">
                       <Link

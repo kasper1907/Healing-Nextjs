@@ -112,7 +112,7 @@ export default function Navbar(props: Props) {
           display: { sm: "flex" },
         }}
       >
-        <Button className={styles.NavBarLink}>English</Button>
+        {/* <Button className={styles.NavBarLink}>English</Button> */}
         <Button className={styles.NavBarLink}>
           <Link href={"/login"}>{t("Sign In")}</Link>
         </Button>
@@ -168,7 +168,7 @@ export default function Navbar(props: Props) {
                 display: { xs: "none", sm: "flex" },
               }}
             >
-              <Button
+              {/* <Button
                 className={styles.NavBarLink}
                 onClick={() =>
                   i18n.resolvedLanguage == "en"
@@ -178,7 +178,7 @@ export default function Navbar(props: Props) {
               >
                 {i18n.resolvedLanguage == "en" && "Arabic"}
                 {i18n.resolvedLanguage == "ar" && "English"}
-              </Button>
+              </Button> */}
               {accessToken == undefined ? (
                 <Button className={styles.NavBarLink}>
                   <Link href={"/login"}>{t("Sign In")}</Link>

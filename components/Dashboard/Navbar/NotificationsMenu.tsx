@@ -27,24 +27,24 @@ const NotificationsMenu = ({ accessToken }: { accessToken: string }) => {
     `Notifications/GetByGroupId/${userGroupId}`,
     getOne,
     {
-      revalidateIfStale: true,
-      revalidateOnFocus: true,
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
     }
   );
   const { data: UnReadNotifications, isLoading: UnReadIsLoading } = useSWR(
     `Notifications/GetUnReadNotifications/${user?.user_id}/${userGroupId}`,
     getOne,
     {
-      revalidateIfStale: true,
-      revalidateOnFocus: true,
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
     }
   );
   const { data: ReadNotifications, isLoading: ReadIsLoading } = useSWR(
     `Notifications/GetByGroupId/${user?.user_id}/${userGroupId}`,
     getOne,
     {
-      revalidateIfStale: true,
-      revalidateOnFocus: true,
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
     }
   );
   <Dropdown>

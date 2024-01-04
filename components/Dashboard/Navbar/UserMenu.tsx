@@ -76,7 +76,10 @@ export default function UserMenu() {
             as="button"
             avatarProps={{
               isBordered: true,
-              src: process.env.NEXT_PUBLIC_BASE_URL + UserData?.data?.image,
+              src: UserData?.data?.image
+                ? process.env.NEXT_PUBLIC_BASE_URL + UserData?.data?.image
+                : process.env.NEXT_PUBLIC_BASE_URL +
+                  "files/static_assets/male-av.jpg",
             }}
             className="transition-transform"
             description={`${isLoading ? "Loading..." : `@${user?.user_name}`}`}
@@ -109,7 +112,7 @@ export default function UserMenu() {
           </DropdownMenu>
         )}
 
-        {user?.role != "User" && (
+        {user?.role == "Moderator" && (
           <DropdownMenu>
             <DropdownItem
               onClick={() => {
@@ -127,6 +130,22 @@ export default function UserMenu() {
             >
               Upload New Video
             </DropdownItem>
+            <DropdownItem onClick={handleLogout} color="danger">
+              Log Out
+            </DropdownItem>
+          </DropdownMenu>
+        )}
+        {user?.role != "Moderator" && user?.role != "User" && (
+          <DropdownMenu>
+            <DropdownItem
+              onClick={() => {
+                // setUserTabsValue(7);
+                onOpen();
+              }}
+            >
+              Send A Notification
+            </DropdownItem>
+
             <DropdownItem onClick={handleLogout} color="danger">
               Log Out
             </DropdownItem>

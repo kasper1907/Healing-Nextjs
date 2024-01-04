@@ -76,10 +76,10 @@ export default function DashboardNavbar(props: Props) {
 
   // Logged In User:
   const { User: user, Group }: any = React.useContext(UserContext);
-
   useEffect(() => {
     user && setUserImg(user?.image);
   }, [user]);
+
   const { data: CurrentUser, isLoading: UserLoading } = useSWR(
     `Users/getOne/${userId}`,
     getOne,
@@ -249,7 +249,7 @@ export default function DashboardNavbar(props: Props) {
 
   const container =
     window !== undefined ? () => window().document.body : undefined;
-
+  console.log(CurrentUser);
   if (!MainLoading) {
     return (
       <Box
@@ -300,7 +300,8 @@ export default function DashboardNavbar(props: Props) {
                       isInProfilePage
                         ? userImg?.length > 0
                           ? process.env.NEXT_PUBLIC_BASE_URL + userImg
-                          : "sd"
+                          : process.env.NEXT_PUBLIC_BASE_URL +
+                            "files/static_assets/male-av.jpg"
                         : process.env.NEXT_PUBLIC_BASE_URL +
                           CurrentUser?.data?.image
                     }`}
@@ -318,12 +319,12 @@ export default function DashboardNavbar(props: Props) {
                 <div className={styles.textWrapper}>
                   <h2>
                     {isInProfilePage
-                      ? user
+                      ? user?.full_name
                         ? user?.full_name
-                        : ""
+                        : user?.user_name
                       : CurrentUser?.data
                       ? CurrentUser?.data?.full_name
-                      : ""}
+                      : CurrentUser?.data?.user_name}
                   </h2>
                   <p>
                     {/* {user ?  : ""} */}
