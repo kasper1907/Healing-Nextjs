@@ -7,7 +7,7 @@ export const endPoints = {
   //Healing - Real APIS
   auth: `Auth/login`,
   getGroupUsers: (groupId: string | null, courseId: string | null) =>
-    `Users/getGroupUsers/?groupId=${groupId}&courseId=${courseId}`,
+    `Users/getGroupUsers/${groupId}`,
   getSessionsByGroupId: (groupId: string | null, userId: string | null) =>
     `Videos/getSessionsByGroupId/${groupId}/${userId}`,
   getRecommendedVideos: (groupId: string | null) =>
