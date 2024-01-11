@@ -44,6 +44,7 @@ import { UserContext } from "@/contexts/mainContext";
 import { cursorTo } from "readline";
 import NotificationsMenu from "./NotificationsMenu";
 import Notifications from "./Notifications";
+import { useMediaQuery } from "@mui/material";
 
 const drawerWidth = 300;
 const navItems = [{ id: 1, title: "All Groups", url: "/dashboard" }];
@@ -88,6 +89,8 @@ export default function DashboardNavbar(props: Props) {
       revalidateOnFocus: false,
     }
   );
+
+  const isLargeScreen = useMediaQuery("(min-width:765px)");
   const isInProfilePage =
     pathname == "/Profile" ||
     pathname == "/dashboard/Groups" ||
@@ -109,7 +112,7 @@ export default function DashboardNavbar(props: Props) {
   const pagePath = usePathname();
   const isDashboard = pagePath == "/dashboard";
   const isGroupUsers = pagePath.includes("/dashboard/GroupUsers");
-  const isUserPage = pagePath.includes("/dashboard/users");
+  const isUserPage = pagePath.includes("/Profile");
   const { window } = props;
 
   const renderDashboardTabs = (
@@ -249,7 +252,6 @@ export default function DashboardNavbar(props: Props) {
 
   const container =
     window !== undefined ? () => window().document.body : undefined;
-  console.log(CurrentUser);
   if (!MainLoading) {
     return (
       <Box
@@ -365,7 +367,7 @@ export default function DashboardNavbar(props: Props) {
                   {/* <NotificationsMenu accessToken={accessToken} /> */}
                   {/* <NotificationsMenu accessToken={accessToken} /> */}
                   <Notifications accessToken={accessToken} />
-                  <UserMenu />
+                  {isLargeScreen ? <UserMenu /> : null}
                 </div>
                 <IconButton
                   color="inherit"

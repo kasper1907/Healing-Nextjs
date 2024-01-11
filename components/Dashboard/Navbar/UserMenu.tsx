@@ -112,29 +112,6 @@ export default function UserMenu() {
           </DropdownMenu>
         )}
 
-        {user?.role == "Moderator" && (
-          <DropdownMenu>
-            <DropdownItem
-              onClick={() => {
-                // setUserTabsValue(7);
-                onOpen();
-              }}
-            >
-              Send A Notification
-            </DropdownItem>
-            <DropdownItem
-              onClick={() => {
-                // setUserTabsValue(7);
-                onOpen2();
-              }}
-            >
-              Upload New Video
-            </DropdownItem>
-            <DropdownItem onClick={handleLogout} color="danger">
-              Log Out
-            </DropdownItem>
-          </DropdownMenu>
-        )}
         {user?.role != "Moderator" && user?.role != "User" && (
           <DropdownMenu>
             <DropdownItem

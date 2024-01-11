@@ -16,6 +16,7 @@ import Link from "next/link";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import useSWR from "swr";
 import { getOne } from "@/services/service";
+import moment from "moment";
 
 const AppointmentCard = ({ appointment }: any) => {
   const [expanded, setExpanded] = React.useState<boolean>(false);
@@ -32,12 +33,13 @@ const AppointmentCard = ({ appointment }: any) => {
     }
   );
 
-
   return (
     <div className="flex flex-col w-full">
       <div className={styles.appointmentCard}>
         <div className={styles.left}>
-          <span>{appointment?.session_time}</span>
+          <span>
+            {moment(appointment?.session_time).format("MM-DD hh:mm A")}
+          </span>
           <span>To</span>
           <span>
             {parseInt(appointment?.session_time?.split(":")[0]) + 2}
@@ -52,7 +54,10 @@ const AppointmentCard = ({ appointment }: any) => {
                 Date: <span>{appointment.session_date}</span>
               </span>
               <span>
-                Assistant: <span>{appointment.assistant_id}</span>
+                Therapist: <span>{appointment?.Therapist}</span>
+              </span>
+              <span>
+                Assistant: <span>{appointment?.Assistant}</span>
               </span>
             </Grid>
             <Grid

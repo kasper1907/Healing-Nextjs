@@ -115,7 +115,7 @@ export default function Page() {
       }
     }
   };
-
+  console.log(sessionData);
   React.useEffect(() => {
     const steps = [
       {
@@ -153,8 +153,8 @@ export default function Page() {
               ? BrainCTQuestions
               : sessionData?.data?.category_id === "1"
               ? Step6
-              : null
-            : null,
+              : Step6
+            : Step6,
         sectionText: "Answer the following questions",
       },
       {

@@ -89,8 +89,7 @@ const Page = () => {
           <Autocomplete
             className="h-12"
             classNames={{}}
-            placeholder="Search an Client"
-            // className="w-full"
+            placeholder="Search for a Client"
             defaultItems={Clients?.data}
           >
             {(item: any) => (

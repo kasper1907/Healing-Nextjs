@@ -19,6 +19,7 @@ import { useRouter } from "next/navigation";
 import { useCookies } from "react-cookie";
 import useCookie from "react-use-cookie";
 import AuthProvider from "@/components/Dashboard/AuthProvider/page";
+import { Elsie_Swash_Caps } from "next/font/google";
 
 const ONE_DAY_IN_MS = 24 * 60 * 60 * 1000;
 const AUTHENTICATION_COOKIE_NAME = "SID";
@@ -56,7 +57,6 @@ const Page = () => {
     // if (status == 200) {
     //   toast.success("Login Successfully");
 
-
     if (status != 200) {
       toast.error(data?.message);
       setLoading(false);
@@ -69,13 +69,14 @@ const Page = () => {
       //   `/dashboard/users/userDetails?id=${data?.data?.user_id}&groupId=${data?.data?.group_id}`
       // );
       router.push("/Profile");
+    } else if (userRole == "Moderator") {
+      router.push("/ModeratorDashboard");
     } else {
       router.push("/dashboard/Groups");
     }
     setUserToken(data?.accessToken);
     setLoading(false);
     return;
-
   };
   return (
     <AuthProvider>

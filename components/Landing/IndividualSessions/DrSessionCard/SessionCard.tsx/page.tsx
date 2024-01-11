@@ -6,7 +6,6 @@ import SectionHeader from "@/components/shared/SectionHeader/page";
 import StyledButton from "@/components/shared/StyledButton";
 import LargeDialog from "@/components/shared/Dialogs/LargeDialog/page";
 import { useTransition } from "react";
-import { useTranslation } from "react-i18next";
 type ComponentProps = {
   bannerSrc: string;
   logoSrc: string;
@@ -14,7 +13,6 @@ type ComponentProps = {
   text: string;
 };
 const SessionCard = ({ bannerSrc, logoSrc, header, text, sessionId }: any) => {
-  const { t, i18n } = useTranslation();
   const [openDialog, setOpenDialog] = useState<boolean>(false);
   const [isPending, startTransition] = useTransition();
   const [item, setItem] = useState<any>({});
@@ -50,7 +48,7 @@ const SessionCard = ({ bannerSrc, logoSrc, header, text, sessionId }: any) => {
           <StyledButton
             isLink={false}
             isPrimary={true}
-            label={t("Subscribe Now")}
+            label="اشترك الان"
             onClick={handleClickSubscribe}
           />
         </div>

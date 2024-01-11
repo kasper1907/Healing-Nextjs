@@ -5,9 +5,7 @@ import { Grid } from "@mui/material";
 import Image from "next/image";
 import LargeDialog from "../Dialogs/LargeDialog/page";
 import { useTransition } from "react";
-import { useTranslation } from "react-i18next";
 const TherapyCard = ({ idx, name, img, sessionId }: any) => {
-  const { t, i18n } = useTranslation();
   const [openDialog, setOpenDialog] = useState<boolean>(false);
   const [isPending, startTransition] = useTransition();
   const [item, setItem] = useState<any>({});
@@ -71,7 +69,7 @@ const TherapyCard = ({ idx, name, img, sessionId }: any) => {
           }}
           onClick={handleClickSubscribe}
         >
-          {t("Subscribe Now")}
+          اشترك الان
         </Grid>
       </Grid>
     </div>

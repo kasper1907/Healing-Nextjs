@@ -36,6 +36,7 @@ export default function ClientCredentials({
     const res = await postRequest("Auth/login", data);
     if (res.status == 400) {
       toast.error(res.data.message);
+      setLoading(false);
     } else {
       if (
         res.data.data.role == "Moderator"
@@ -67,7 +68,7 @@ export default function ClientCredentials({
               ) : (
                 <>
                   <ModalHeader className="flex flex-col gap-1">
-                    Log in
+                    Enter Your Email & Password To View Client Credentials
                   </ModalHeader>
                   <ModalBody>
                     <Input

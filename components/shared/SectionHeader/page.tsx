@@ -15,11 +15,7 @@ const SectionHeader = ({ Label, secondary, isCentered }: any) => {
         secondary ? "secondary" : "primary"
       }`}
       style={{
-        textAlign: isCentered
-          ? "center"
-          : i18n?.resolvedLanguage == "ar"
-          ? "right"
-          : "left",
+        textAlign: isCentered ? "center" : "right",
       }}
     >
       {Label}

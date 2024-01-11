@@ -28,6 +28,7 @@ import { BiLogoZoom } from "react-icons/bi";
 import { IoIosCloudUpload, IoIosPersonAdd } from "react-icons/io";
 import { AiOutlineNotification } from "react-icons/ai";
 import { usePathname, useRouter } from "next/navigation";
+import UserMenu from "@/components/ModeratorDashboard/UserMenu/UserMenu";
 
 const drawerWidth = 240;
 
@@ -161,26 +162,30 @@ export default function LayoutWrapper({
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar position="fixed" open={open}>
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={{ mr: 0, ...(open && { display: "none" }) }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            <Image
-              src={"/images/Dashboard/white.png"}
-              alt="White Logo"
-              width={120}
-              height={40}
-              loading="lazy"
-              objectFit="contain"
-            />
-          </Typography>
+        <Toolbar className="flex justify-between">
+          <Box className="flex items-center">
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={handleDrawerOpen}
+              edge="start"
+              sx={{ mr: 0, ...(open && { display: "none" }) }}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h6" noWrap component="div">
+              <Image
+                src={"/images/Dashboard/white.png"}
+                alt="White Logo"
+                width={120}
+                height={40}
+                loading="lazy"
+                objectFit="contain"
+              />
+            </Typography>
+          </Box>
+
+          <UserMenu />
         </Toolbar>
       </AppBar>
       <Drawer
@@ -237,6 +242,9 @@ export default function LayoutWrapper({
               }}
               key={index}
               disablePadding
+              onClick={() => {
+                router.push(item?.url);
+              }}
             >
               <ListItemButton>
                 <ListItemIcon>{item?.icon}</ListItemIcon>

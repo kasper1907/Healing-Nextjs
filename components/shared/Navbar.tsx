@@ -23,8 +23,6 @@ import useCookie from "react-use-cookie";
 import { getCookie } from "@/utils/getCookies";
 import { Logout as LogoutHandler } from "@/utils/Logout";
 import { useRouter } from "next/navigation";
-import { useTranslation } from "react-i18next";
-import { t } from "i18next";
 
 interface Props {
   /**
@@ -44,35 +42,28 @@ const handleContactUs = () => {
   });
 };
 const drawerWidth = 300;
+const navItems = [
+  { id: 1, title: "جلساتي", url: "/Profile" },
+  { id: 2, title: "المدونه", url: "#" },
+  { id: 3, title: "تواصل معنا", url: "#", onclick: handleContactUs },
+];
 
 export default function Navbar(props: Props) {
   const { window, accessToken } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [userToken, setUserToken] = useCookie("SID");
   const router = useRouter();
-  const { t, i18n } = useTranslation();
-  const Languages: any = {
-    en: { nativeName: "English" },
-    ar: { nativeName: "Arabic" },
-  };
-
-  const navItems = [
-    { id: 1, title: "My Sessions", url: "/Profile" },
-    { id: 2, title: "Blog", url: "#" },
-    { id: 3, title: "Contact Us", url: "#", onclick: handleContactUs },
-  ];
-
-  const handleLangItemClick = (lang: "en" | "ar") => {
-    i18n.changeLanguage(lang);
-  };
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
+
+  console.log(userToken);
 
   const handleLogout = () => {
     LogoutHandler();
     router.refresh();
   };
+
   // const accessToken = getCookie("SID");
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
@@ -112,9 +103,9 @@ export default function Navbar(props: Props) {
           display: { sm: "flex" },
         }}
       >
-        {/* <Button className={styles.NavBarLink}>English</Button> */}
+        <Button className={styles.NavBarLink}>English</Button>
         <Button className={styles.NavBarLink}>
-          <Link href={"/login"}>{t("Sign In")}</Link>
+          <Link href={"/login"}>تسجيل الدخول</Link>
         </Button>
       </Box>
     </Box>
@@ -168,27 +159,17 @@ export default function Navbar(props: Props) {
                 display: { xs: "none", sm: "flex" },
               }}
             >
-              {/* <Button
-                className={styles.NavBarLink}
-                onClick={() =>
-                  i18n.resolvedLanguage == "en"
-                    ? handleLangItemClick("ar")
-                    : handleLangItemClick("en")
-                }
-              >
-                {i18n.resolvedLanguage == "en" && "Arabic"}
-                {i18n.resolvedLanguage == "ar" && "English"}
-              </Button> */}
+              <Button className={styles.NavBarLink}>English</Button>
               {accessToken == undefined ? (
                 <Button className={styles.NavBarLink}>
-                  <Link href={"/login"}>{t("Sign In")}</Link>
+                  <Link href={"/login"}>تسجيل الدخول</Link>
                 </Button>
               ) : (
                 <Button
                   onClick={handleLogout}
                   className={styles.NavBarLinkLogout}
                 >
-                  {t("Sign Out")}
+                  تسجيل الخروج
                 </Button>
               )}
             </Box>
@@ -214,7 +195,7 @@ export default function Navbar(props: Props) {
                   key={index}
                   style={{ color: "#000" }}
                 >
-                  {t(item?.title)}
+                  {item?.title}
                 </Link>
               ))}
             </Box>

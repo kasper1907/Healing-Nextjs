@@ -50,8 +50,7 @@ const Upload = ({
 
     formDataObj.append("courseId", searchParams.get("sessionId")!);
 
-    const res = await postRequest("Users/Register", formDataObj);
-    // console.log(res);
+    const res = await postRequest("Users/Register/", formDataObj);
     if (res.status == 201) {
       steps[currentIndex].isCompleted = true;
       handleNext();
@@ -63,7 +62,8 @@ const Upload = ({
   return (
     <div data-aos="fade-right" className={styles.pageWrapper}>
       <div className={styles.dropZoneWrapper}>
-        <AttachFiles files={files} setFiles={setFiles} />
+        {/* <AttachFiles files={files} setFiles={setFiles} /> */}
+        <Dropzone files={files} setFiles={setFiles} isSubmitExternal={true} />
       </div>
 
       <ActionsButtons
