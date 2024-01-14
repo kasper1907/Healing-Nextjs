@@ -97,3 +97,26 @@ export const getOne: any = async (endPoint: any) => {
     return e.message;
   }
 };
+
+export const patchRequest: any = async ({ id, endpoint, data }: any) => {
+  const accessToken = await getCookie();
+  console.log(`${process.env.NEXT_PUBLIC_BASE_URL}${endpoint}/${id}`);
+  try {
+    const res = await axios.patch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}${endpoint}/${id}`,
+      data,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return {
+      status: res.status,
+      data: res?.data,
+    };
+  } catch (e: any) {
+    return { status: e?.response?.status, data: e?.response?.data };
+  }
+};

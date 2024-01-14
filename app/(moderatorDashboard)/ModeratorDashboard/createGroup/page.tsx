@@ -14,6 +14,7 @@ import {
   AutocompleteItem,
   Avatar,
   Button,
+  Chip,
   CircularProgress,
   Input,
   Select,
@@ -25,15 +26,24 @@ import React, { useState } from "react";
 import { toast } from "sonner";
 import useSWR from "swr";
 
+type GroupAssistants = {
+  courseId: string;
+  groupName: string;
+  groupNumber: string;
+  groupAssistant: string;
+  groupTherapists: string;
+};
 const Page = () => {
   const [loading, setLoading] = useState(false);
   const [Groups, setGroups] = React.useState([]);
   const { data: Courses, isLoading } = useSWR(`Courses/`, getOne);
   const { data: Assistants } = useSWR(`Users/GetByUserStatus/4`, getOne);
-  const [groupData, setGroupData] = useState({
+  const [groupData, setGroupData] = useState<GroupAssistants>({
     courseId: "",
     groupName: "",
     groupNumber: "",
+    groupAssistant: "",
+    groupTherapists: "",
   });
   const { data: Therapists } = useSWR(`Dashboard/GetTherapists/`, getOne);
   const { data: Clients, isLoading: LoadingClients } = useSWR(
@@ -71,10 +81,18 @@ const Page = () => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+
     if (!groupData.courseId || !groupData.groupName || !groupData.groupNumber)
       return toast.error("Please fill all fields");
     setLoading(true);
-    const res = await postRequest(`Dashboard/CreateGroup`, groupData);
+    let newGroupData = {
+      courseId: groupData.courseId,
+      groupName: groupData.groupName,
+      groupNumber: groupData.groupNumber,
+      Assistants: groupData.groupAssistant?.split(","),
+      Therapists: groupData.groupTherapists?.split(","),
+    };
+    const res = await postRequest(`Dashboard/CreateGroup`, newGroupData);
     setLoading(false);
     if (res.status == 200) {
       toast.success("Group Created Successfully");
@@ -82,11 +100,15 @@ const Page = () => {
         courseId: "",
         groupName: "",
         groupNumber: "",
+        groupAssistant: "",
+        groupTherapists: "",
       });
     } else {
       toast.error(res.data.message || "Something went wrong");
     }
   };
+
+  // console.log(groupData?.groupAssistant?.join(","));
 
   return (
     <Grid container>
@@ -189,6 +211,107 @@ const Page = () => {
             }
             label="Group Name"
           />
+        </Grid>
+
+        <Grid item xs={12} md={12} sx={{ mt: 3 }}>
+          <Select
+            label="Group Therapists (you can select multiple Therapists)"
+            isMultiline={true}
+            selectionMode="multiple"
+            items={Therapists?.data || []}
+            value={groupData.groupTherapists}
+            onChange={(e) => {
+              setGroupData({
+                ...groupData,
+                groupTherapists: e.target.value,
+              });
+            }}
+            placeholder="Select a Therapist"
+            labelPlacement="outside"
+            classNames={{
+              base: "w-full",
+              trigger: "h-12",
+            }}
+            renderValue={(items) => {
+              return (
+                <div className="flex flex-wrap gap-2">
+                  {items.map((item: any) => (
+                    <Chip key={item.key}>{item.data.user_name}</Chip>
+                  ))}
+                </div>
+              );
+            }}
+          >
+            {(user: any) => (
+              <SelectItem key={user.id} textValue={user.user_name}>
+                <div className="flex gap-2 items-center">
+                  <Avatar
+                    alt={user.user_name}
+                    className="flex-shrink-0"
+                    size="sm"
+                    src={
+                      process.env.NEXT_PUBLIC_BASE_URL +
+                      "files/static_assets/male-av.jpg"
+                    }
+                  />
+                  <div className="flex flex-col">
+                    <span className="text-small">{user.user_name}</span>
+                  </div>
+                </div>
+              </SelectItem>
+            )}
+          </Select>
+        </Grid>
+
+        <Grid item xs={12} sx={{ mt: 2 }}>
+          <Select
+            items={Assistants?.data}
+            label="Group Assistant (you can select multiple Assistants)"
+            variant="bordered"
+            isMultiline={true}
+            value={groupData.groupAssistant}
+            onChange={(e) => {
+              setGroupData({ ...groupData, groupAssistant: e.target.value });
+            }}
+            selectionMode="multiple"
+            placeholder="Select Assistants"
+            labelPlacement="outside"
+            classNames={{
+              base: "w-full",
+              trigger: "min-h-unit-12 py-2",
+            }}
+            renderValue={(items) => {
+              return (
+                <div className="flex flex-wrap gap-2">
+                  {items.map((item: any) => (
+                    <Chip key={item.key}>{item.data.user_name}</Chip>
+                  ))}
+                </div>
+              );
+            }}
+          >
+            {(user: any) => (
+              <SelectItem key={user.id} textValue={user.user_name}>
+                <div className="flex gap-2 items-center">
+                  <Avatar
+                    alt={user?.user_name}
+                    className="flex-shrink-0"
+                    size="sm"
+                    src={
+                      process.env.NEXT_PUBLIC_BASE_URL +
+                      "files/static_assets/male-av.jpg"
+                    }
+                  />
+                  <div className="flex flex-col">
+                    <span className="text-small">{user.user_name}</span>
+                    <span className="text-tiny text-default-400">
+                      {"Assistant"}
+                    </span>
+                  </div>
+                </div>
+              </SelectItem>
+            )}
+          </Select>
         </Grid>
 
         <Grid

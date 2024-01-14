@@ -65,7 +65,7 @@ export default function UserMenu() {
             }}
             className="transition-transform"
             description={`${isLoading ? "Loading..." : `@${user?.user_name}`}`}
-            name={UserData?.data?.full_name}
+            name={user?.user_name?.toUpperCase()}
           />
         </DropdownTrigger>
         <DropdownMenu>

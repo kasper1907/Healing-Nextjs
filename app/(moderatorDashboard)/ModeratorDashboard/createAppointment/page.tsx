@@ -15,6 +15,7 @@ import {
   AutocompleteItem,
   Avatar,
   Button,
+  Chip,
   CircularProgress,
   Input,
   Select,
@@ -28,6 +29,7 @@ import useSWR from "swr";
 
 const Page = () => {
   const [Groups, setGroups] = React.useState([]);
+  const [GroupAssistants, setGroupAssistants] = React.useState([]);
   const { data: Courses, isLoading } = useSWR(`Courses/`, getOne);
   const { data: Assistants } = useSWR(`Users/GetByUserStatus/4`, getOne);
   const { data: Therapists } = useSWR(`Dashboard/GetTherapists/`, getOne);
@@ -49,7 +51,6 @@ const Page = () => {
 
   const handleGetGroups = async (e: any) => {
     const res = await getOne(`Groups/GetByCourseID/${e.target.value}`);
-    console.log(res);
     if (res.status == "success") {
       setGroups(res.data);
     } else {
@@ -88,6 +89,22 @@ const Page = () => {
       toast.error(res?.data?.message);
     }
     setLoading(false);
+  };
+
+  const handleGetGroupAssistants = async (id: any) => {
+    const res = await getOne(`Dashboard/GetGroupAssistants/${id}`);
+    if (res.status == "success") {
+      let arrayWithKeys = res.data.map((item: any) => {
+        return {
+          key: item.assistantId,
+          ...item,
+        };
+      });
+
+      setGroupAssistants(arrayWithKeys);
+    } else {
+      setGroupAssistants([]);
+    }
   };
 
   if (isLoading || LoadingClients)
@@ -164,10 +181,11 @@ const Page = () => {
             items={Groups}
             value={appointment.group_id}
             onChange={(e) => {
-              setAppointment({
-                ...appointment,
-                group_id: e.target.value,
-              });
+              handleGetGroupAssistants(e.target.value),
+                setAppointment({
+                  ...appointment,
+                  group_id: e.target.value,
+                });
             }}
             placeholder="Select A Group"
             labelPlacement="outside"
@@ -205,6 +223,84 @@ const Page = () => {
                 <div className="flex gap-2 items-center font-[Tajawal]">
                   <div className="flex flex-col">
                     <span className="text-small">{user.group_name}</span>
+                  </div>
+                </div>
+              </SelectItem>
+            )}
+          </Select>
+        </Grid>
+
+        <Grid item xs={12} md={12} sx={{ mt: 3 }}>
+          <Select
+            isMultiline={true}
+            selectionMode="multiple"
+            items={GroupAssistants || []}
+            value={appointment.assistant_id}
+            onChange={(e) => {
+              setAppointment({
+                ...appointment,
+                assistant_id: e.target.value,
+              });
+            }}
+            placeholder={
+              GroupAssistants?.length
+                ? "Select An Assistant"
+                : "No Assistants Found"
+            }
+            labelPlacement="outside"
+            classNames={{
+              base: "w-full",
+              trigger: "h-12",
+            }}
+            // renderValue={(items) => {
+            //   return items.map((item: any) => (
+            //     <div key={item.key} className="flex items-center gap-2">
+            //       {appointment.assistant_id?.length > 0 ? (
+            //         <>
+            //           <Avatar
+            //             alt={item.data.user_name}
+            //             className="flex-shrink-0"
+            //             size="sm"
+            //             src={
+            //               process.env.NEXT_PUBLIC_BASE_URL +
+            //               "files/static_assets/male-av.jpg"
+            //             }
+            //           />
+            //           <div className="flex flex-col">
+            //             <span>{item.data.user_name}</span>
+            //           </div>
+            //         </>
+            //       ) : (
+            //         "Please Select An Assistant"
+            //       )}
+            //     </div>
+            //   ));
+            // }}
+
+            renderValue={(items) => {
+              return (
+                <div className="flex flex-wrap gap-2">
+                  {items.map((item: any) => (
+                    <Chip key={item.key}>{item.data.user_name}</Chip>
+                  ))}
+                </div>
+              );
+            }}
+          >
+            {(user: any) => (
+              <SelectItem key={user.id}>
+                <div className="flex gap-2 items-center">
+                  <Avatar
+                    alt={user.user_name}
+                    className="flex-shrink-0"
+                    size="sm"
+                    src={
+                      process.env.NEXT_PUBLIC_BASE_URL +
+                      "files/static_assets/male-av.jpg"
+                    }
+                  />
+                  <div className="flex flex-col">
+                    <span className="text-small">{user.user_name}</span>
                   </div>
                 </div>
               </SelectItem>
@@ -255,67 +351,6 @@ const Page = () => {
           >
             {(user: any) => (
               <SelectItem key={user.id} textValue={user.user_name}>
-                <div className="flex gap-2 items-center">
-                  <Avatar
-                    alt={user.user_name}
-                    className="flex-shrink-0"
-                    size="sm"
-                    src={
-                      process.env.NEXT_PUBLIC_BASE_URL +
-                      "files/static_assets/male-av.jpg"
-                    }
-                  />
-                  <div className="flex flex-col">
-                    <span className="text-small">{user.user_name}</span>
-                  </div>
-                </div>
-              </SelectItem>
-            )}
-          </Select>
-        </Grid>
-        <Grid item xs={12} md={12} sx={{ mt: 3 }}>
-          <Select
-            items={Assistants?.data}
-            value={appointment.assistant_id}
-            onChange={(e) => {
-              setAppointment({
-                ...appointment,
-                assistant_id: e.target.value,
-              });
-            }}
-            placeholder="Select An Assistant"
-            labelPlacement="outside"
-            classNames={{
-              base: "w-full",
-              trigger: "h-12",
-            }}
-            renderValue={(items) => {
-              return items.map((item: any) => (
-                <div key={item.key} className="flex items-center gap-2">
-                  {appointment.assistant_id?.length > 0 ? (
-                    <>
-                      <Avatar
-                        alt={item.data.user_name}
-                        className="flex-shrink-0"
-                        size="sm"
-                        src={
-                          process.env.NEXT_PUBLIC_BASE_URL +
-                          "files/static_assets/male-av.jpg"
-                        }
-                      />
-                      <div className="flex flex-col">
-                        <span>{item.data.user_name}</span>
-                      </div>
-                    </>
-                  ) : (
-                    "Please Select An Assistant"
-                  )}
-                </div>
-              ));
-            }}
-          >
-            {(user: any) => (
-              <SelectItem key={user.id}>
                 <div className="flex gap-2 items-center">
                   <Avatar
                     alt={user.user_name}

@@ -218,7 +218,8 @@ export default function LayoutWrapper({
           {topItems.map((item, index) => (
             <ListItem
               style={{
-                background: pathname == item?.url ? "#F4F4F5" : "transparent",
+                background: pathname == item?.url ? "#10458C" : "transparent",
+                color: pathname == item?.url ? "#FFF" : "",
               }}
               key={index}
               disablePadding
@@ -238,8 +239,10 @@ export default function LayoutWrapper({
           {bottomItems.map((item, index) => (
             <ListItem
               style={{
-                background: pathname == item?.url ? "#F4F4F5" : "transparent",
+                background: pathname == item?.url ? "#10458C" : "transparent",
+                color: pathname == item?.url ? "#FFF" : "",
               }}
+              className="hover:bg-red"
               key={index}
               disablePadding
               onClick={() => {

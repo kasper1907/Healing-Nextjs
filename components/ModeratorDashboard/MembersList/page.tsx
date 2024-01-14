@@ -10,6 +10,7 @@ import {
   TableCell,
   Pagination,
   getKeyValue,
+  CircularProgress,
 } from "@nextui-org/react";
 import { users } from "./data";
 import { Tooltip, Typography } from "@mui/material";
@@ -18,6 +19,7 @@ import useSWR from "swr";
 import { FcHighPriority, FcOk } from "react-icons/fc";
 import ActionsMenu from "./Actions";
 import Image from "next/image";
+import { isArabic } from "@/utils/checkLanguage";
 
 export default function App() {
   const [page, setPage] = React.useState(1);
@@ -41,7 +43,6 @@ export default function App() {
 
     return membersList?.slice(start, end);
   }, [page, membersList]);
-
   return (
     <>
       <Typography
@@ -82,7 +83,18 @@ export default function App() {
           <TableColumn key="bct">BCT</TableColumn>
           <TableColumn key="Actions">Actions</TableColumn>
         </TableHeader>
-        <TableBody items={items}>
+        <TableBody
+          emptyContent={
+            isLoading ? (
+              <div className="w-full flex justify-center items-center">
+                <CircularProgress size="sm" /> Getting Users...
+              </div>
+            ) : (
+              "No users found"
+            )
+          }
+          items={items}
+        >
           {(item: any) => (
             <TableRow
               style={{
@@ -91,8 +103,30 @@ export default function App() {
               }}
               key={item.name}
             >
-              <TableCell>{item.key}</TableCell>
-              <TableCell>{item.full_name}</TableCell>
+              <TableCell>{item.id}</TableCell>
+              <TableCell
+                style={{
+                  fontFamily: isArabic(item?.full_name) ? "Tajawal" : "inherit",
+                }}
+              >
+                <div className="w-full flex flex-row-reverse justify-end gap-2 items-center">
+                  <span>{item.full_name}</span>
+                  <Image
+                    src={process.env.NEXT_PUBLIC_BASE_URL + item?.image}
+                    width={30}
+                    height={30}
+                    alt="Course Logo"
+                    style={{
+                      width: "30px",
+                      height: "30px",
+                      objectFit: "cover",
+                      background: "#fff",
+                      borderRadius: "50%",
+                      boxShadow: "0px 0px 5px #0000001A",
+                    }}
+                  />
+                </div>
+              </TableCell>
               <TableCell>{item.phone}</TableCell>
               <TableCell>{item.email}</TableCell>
               <TableCell style={{ fontFamily: "Tajawal" }}>
