@@ -25,14 +25,16 @@ type Group = {
 const Home = () => {
   const { LoggedInUser }: any = React.useContext(UserContext);
   const UserRole = LoggedInUser?.role;
-  console.log(LoggedInUser);
 
   const loggedInUserPHash = LoggedInUser?.passwordHash;
+  let endpointName =
+    LoggedInUser?.role == "Assistant"
+      ? `getAssistantGroups/${LoggedInUser?.user_id}`
+      : LoggedInUser?.role == "Therapist"
+      ? `getTherapistGroups/${LoggedInUser?.user_id}`
+      : "NULL";
 
-  const { data, error, isLoading } = useSWR(
-    `Groups/getThirapistGroups/${loggedInUserPHash}`,
-    getOne
-  );
+  const { data, error, isLoading } = useSWR(`Groups/${endpointName}`, getOne);
 
   const Groups: any = data?.data;
   if (error) {

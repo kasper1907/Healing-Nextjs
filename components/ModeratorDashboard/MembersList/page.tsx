@@ -93,7 +93,7 @@ export default function App() {
               "No users found"
             )
           }
-          items={items}
+          items={items || []}
         >
           {(item: any) => (
             <TableRow

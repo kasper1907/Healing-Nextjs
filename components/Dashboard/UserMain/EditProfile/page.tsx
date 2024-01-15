@@ -29,6 +29,11 @@ import jwt from "jsonwebtoken";
 import Dropzone from "@/utils/Dropzone";
 import { toast } from "sonner";
 import useCookie from "react-use-cookie";
+import { Controller, useForm } from "react-hook-form";
+import { boolean, number, object, string } from "yup";
+//@ts-ignore
+import { yupResolver } from "@hookform/resolvers/yup";
+
 export const CssTextField: any = styled(TextField as any)({
   "& label.Mui-focused": {
     color: "#10458c",
@@ -92,6 +97,17 @@ export const StyledDatePicker: any = styled(DatePicker as any)({
   },
 });
 
+interface FormData {
+  fullName: string;
+  email: string;
+  country: string;
+  weight: number;
+  jobTitle: string;
+  maritalStatus: string;
+  boysNumber: number;
+  girlsNumber: number;
+}
+
 const EditProfile = () => {
   const [userToken, setUserToken] = useCookie("SID", "0");
   const { userTabsValue, setUserTabsValue }: any = useTabsContext();
@@ -143,7 +159,7 @@ const EditProfile = () => {
     } as UserDetails);
   }, [user]);
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit2 = async (e: any) => {
     e.preventDefault();
     setLoading(true);
     const formData = new FormData();
@@ -173,9 +189,60 @@ const EditProfile = () => {
     }
     setLoading(false);
   };
+
+  const validationSchema = object().shape({
+    fullName: string()
+      .required("Full Name is required")
+      .matches(
+        /^[^$%!@#^&*()_+{}\[\]:;<>,.?~\\/-]+$/,
+        "Invalid characters in the name"
+      )
+      .min(3, "Username must be at least 3 characters"),
+    email: string()
+      .required("Email is required")
+      .email("Invalid email address"),
+
+    country: string()
+      .required("Country is required")
+      .min(1, "Invalid Country Name"),
+    weight: number()
+      .required("weight is required")
+      .integer("weight must be an integer")
+      .positive("weight must be a positive number")
+      .max(120, "weight must be less than or equal to 120"),
+    jobTitle: string().required("Job Title is required").min(1, "Invalid Job"),
+    maritalStatus: string().required("Marital Status is required"),
+    boysNumber: number()
+      .required("Boys Number is required")
+      .integer("Boys Number must be an integer")
+      .positive("Boys Number must be a positive number")
+      .max(120, "Boys Number must be less than or equal to 120"),
+    girlsNumber: number()
+      .required("Number of Girls is required")
+      .min(1, "Invalid Number"),
+  });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    control,
+  } = useForm<FormData>({
+    resolver: yupResolver(validationSchema),
+    defaultValues: {
+      fullName: userData.full_name,
+    },
+  });
+
+  // Form submission handler
+  const onSubmit = (data: any) => {
+    console.log(data);
+    // Do something with the form data
+  };
+
   return (
     <div data-aos="fade-right" className={styles.EditProfilePage}>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <Typography
           sx={{
             gap: 1,
@@ -204,14 +271,9 @@ const EditProfile = () => {
               Full Name
             </InputLabel>
             <CssTextField
-              value={userData?.full_name}
-              onChange={(e: any) => {
-                setUserData((prev) => ({
-                  ...prev,
-                  full_name: e.target.value,
-                }));
-              }}
+              {...register("fullName")}
               fullWidth
+              defaultValue={userData?.full_name}
               placeholder="Enter First Name"
               id="custom-css-outlined-input"
               sx={{
@@ -221,6 +283,11 @@ const EditProfile = () => {
                 },
               }}
             />
+            {errors.fullName && (
+              <p className="text-xs  text-red-500 mt-2 ml-2">
+                *{errors.fullName.message}
+              </p>
+            )}
           </Grid>
 
           <Grid item xs={12} md={6}>
@@ -301,13 +368,8 @@ const EditProfile = () => {
               Email
             </InputLabel>
             <CssTextField
-              value={userData?.email}
-              onChange={(e: any) => {
-                setUserData((prev) => ({
-                  ...prev,
-                  email: e.target.value,
-                }));
-              }}
+              defaultValue={userData?.email}
+              {...register("email")}
               fullWidth
               placeholder="Enter Email"
               id="custom-css-outlined-input"
@@ -318,6 +380,11 @@ const EditProfile = () => {
                 },
               }}
             />
+            {errors.email && (
+              <p className="text-xs  text-red-500 mt-2 ml-2">
+                *{errors.email.message}
+              </p>
+            )}
           </Grid>
 
           <Grid item xs={12} md={6}>
@@ -325,13 +392,8 @@ const EditProfile = () => {
               Country
             </InputLabel>
             <CssTextField
-              value={userData?.country}
-              onChange={(e: any) => {
-                setUserData((prev) => ({
-                  ...prev,
-                  country: e.target.value,
-                }));
-              }}
+              defaultValue={userData?.country}
+              {...register("country")}
               fullWidth
               placeholder="Enter Country"
               id="custom-css-outlined-input"
@@ -342,19 +404,19 @@ const EditProfile = () => {
                 },
               }}
             />
+            {errors.country && (
+              <p className="text-xs  text-red-500 mt-2 ml-2">
+                *{errors.country.message}
+              </p>
+            )}
           </Grid>
           <Grid item xs={12} md={6}>
             <InputLabel sx={{ fontSize: "0.9rem", ml: 1, mb: 1 }}>
               Weight
             </InputLabel>
             <CssTextField
-              value={userData?.weight}
-              onChange={(e: any) => {
-                setUserData((prev) => ({
-                  ...prev,
-                  weight: e.target.value,
-                }));
-              }}
+              {...register("weight")}
+              defaultValue={userData?.weight}
               fullWidth
               type="number"
               placeholder="Enter Weight"
@@ -366,6 +428,11 @@ const EditProfile = () => {
                 },
               }}
             />
+            {errors.weight && (
+              <p className="text-xs  text-red-500 mt-2 ml-2">
+                *{errors.weight.message}
+              </p>
+            )}
           </Grid>
 
           <Grid item xs={12} md={6}>
@@ -373,13 +440,8 @@ const EditProfile = () => {
               Marital Status
             </InputLabel>
             <CssTextField
-              value={userData?.social_status}
-              onChange={(e: any) => {
-                setUserData((prev) => ({
-                  ...prev,
-                  social_status: e.target.value,
-                }));
-              }}
+              {...register("maritalStatus")}
+              defaultValue={userData?.social_status}
               fullWidth
               placeholder="Enter Marital Status"
               id="custom-css-outlined-input"
@@ -390,6 +452,11 @@ const EditProfile = () => {
                 },
               }}
             />
+            {errors.maritalStatus && (
+              <p className="text-xs  text-red-500 mt-2 ml-2">
+                *{errors.maritalStatus.message}
+              </p>
+            )}
           </Grid>
 
           <Grid item xs={12} md={6}>
@@ -397,13 +464,8 @@ const EditProfile = () => {
               Job Title
             </InputLabel>
             <CssTextField
-              value={userData?.job_title}
-              onChange={(e: any) => {
-                setUserData((prev) => ({
-                  ...prev,
-                  job_title: e.target.value,
-                }));
-              }}
+              {...register("jobTitle")}
+              defaultValue={userData?.job_title}
               fullWidth
               placeholder="Enter Job Title"
               id="custom-css-outlined-input"
@@ -413,7 +475,12 @@ const EditProfile = () => {
                   borderRadius: "12px",
                 },
               }}
-            />
+            />{" "}
+            {errors.jobTitle && (
+              <p className="text-xs  text-red-500 mt-2 ml-2">
+                *{errors.jobTitle.message}
+              </p>
+            )}
           </Grid>
 
           <Grid item xs={12} md={6}>
@@ -421,13 +488,8 @@ const EditProfile = () => {
               Boys Number
             </InputLabel>
             <CssTextField
-              value={userData?.number_of_boys}
-              onChange={(e: any) => {
-                setUserData((prev) => ({
-                  ...prev,
-                  number_of_boys: e.target.value,
-                }));
-              }}
+              {...register("boysNumber")}
+              defaultValue={userData?.number_of_boys}
               fullWidth
               placeholder="Enter Boys Number"
               id="custom-css-outlined-input"
@@ -438,6 +500,12 @@ const EditProfile = () => {
                 },
               }}
             />
+
+            {errors.boysNumber && (
+              <p className="text-xs  text-red-500 mt-2 ml-2">
+                *{errors.boysNumber.message}
+              </p>
+            )}
           </Grid>
 
           <Grid item xs={12} md={6}>
@@ -445,13 +513,8 @@ const EditProfile = () => {
               Girls Number
             </InputLabel>
             <CssTextField
-              value={userData?.number_of_girls}
-              onChange={(e: any) => {
-                setUserData((prev) => ({
-                  ...prev,
-                  number_of_girls: e.target.value,
-                }));
-              }}
+              {...register("girlsNumber")}
+              defaultValue={userData?.number_of_girls}
               fullWidth
               placeholder="Enter Girls Number"
               id="custom-css-outlined-input"
@@ -462,6 +525,11 @@ const EditProfile = () => {
                 },
               }}
             />
+            {errors.girlsNumber && (
+              <p className="text-xs  text-red-500 mt-2 ml-2">
+                *{errors.girlsNumber.message}
+              </p>
+            )}
           </Grid>
           <Grid item xs={12}>
             <div className={dropZoneStyles.dropZoneWrapper}>

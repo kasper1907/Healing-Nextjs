@@ -30,6 +30,7 @@ import useSWR from "swr";
 const Page = () => {
   const [Groups, setGroups] = React.useState([]);
   const [GroupAssistants, setGroupAssistants] = React.useState([]);
+  const [GroupTherapists, setGroupTherapists] = React.useState([]);
   const { data: Courses, isLoading } = useSWR(`Courses/`, getOne);
   const { data: Assistants } = useSWR(`Users/GetByUserStatus/4`, getOne);
   const { data: Therapists } = useSWR(`Dashboard/GetTherapists/`, getOne);
@@ -47,6 +48,7 @@ const Page = () => {
     session_date: dayjs(),
     session_time: dayjs(),
     meeting_link: "",
+    isMultipleAssistants: false,
   });
 
   const handleGetGroups = async (e: any) => {
@@ -72,6 +74,7 @@ const Page = () => {
       toast.warning("Please Fill All Fields");
       return;
     }
+
     setLoading(true);
     const res = await postRequest(`Dashboard/createAppointment`, appointment);
     if (res.status == 201) {
@@ -83,6 +86,8 @@ const Page = () => {
         session_date: dayjs(),
         session_time: dayjs(),
         meeting_link: "",
+        isMultipleAssistants:
+          appointment.assistant_id?.split(",")?.length > 1 ? true : false,
       });
       toast.success("Appointment Created Successfully");
     } else {
@@ -104,6 +109,21 @@ const Page = () => {
       setGroupAssistants(arrayWithKeys);
     } else {
       setGroupAssistants([]);
+    }
+  };
+  const handleGetGroupTherapists = async (id: any) => {
+    const res = await getOne(`Dashboard/getGroupTherapists/${id}`);
+    if (res.status == "success") {
+      let arrayWithKeys = res.data.map((item: any) => {
+        return {
+          key: item.therapistId,
+          ...item,
+        };
+      });
+
+      setGroupTherapists(arrayWithKeys);
+    } else {
+      setGroupTherapists([]);
     }
   };
 
@@ -182,6 +202,7 @@ const Page = () => {
             value={appointment.group_id}
             onChange={(e) => {
               handleGetGroupAssistants(e.target.value),
+                handleGetGroupTherapists(e.target.value),
                 setAppointment({
                   ...appointment,
                   group_id: e.target.value,
@@ -310,7 +331,7 @@ const Page = () => {
 
         <Grid item xs={12} md={12} sx={{ mt: 3 }}>
           <Select
-            items={Therapists?.data}
+            items={GroupTherapists}
             value={appointment.therapist_id}
             onChange={(e) => {
               setAppointment({
@@ -412,6 +433,11 @@ const Page = () => {
         <Grid item xs={12} sx={{ mt: 2 }}>
           <Input
             type="text"
+            style={{
+              fontFamily: isArabic(appointment.meeting_link)
+                ? "Tajawal"
+                : "Roboto",
+            }}
             value={appointment.meeting_link}
             onChange={(e) => {
               setAppointment({

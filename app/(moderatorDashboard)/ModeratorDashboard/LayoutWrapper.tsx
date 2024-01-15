@@ -135,6 +135,12 @@ export default function LayoutWrapper({
       icon: <IoIosPersonAdd style={{ color: "rgb(154 154 154)" }} size={21} />,
       url: "/ModeratorDashboard/addMemberToGroup",
     },
+    {
+      id: 6,
+      name: "Test",
+      icon: <IoIosPersonAdd style={{ color: "rgb(154 154 154)" }} size={21} />,
+      url: "/ModeratorDashboard/Test",
+    },
   ];
   const bottomItems = [
     {

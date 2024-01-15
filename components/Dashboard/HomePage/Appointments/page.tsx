@@ -8,24 +8,27 @@ import { getOne } from "@/services/service";
 import jwt from "jsonwebtoken";
 import { usePathname } from "next/navigation";
 import useCookie from "react-use-cookie";
+import { UserContext } from "@/contexts/mainContext";
 
 const Appointments = () => {
   const pathname = usePathname();
 
   const [userToken, setUserToken] = useCookie("SID");
+  const { LoggedInUser }: any = React.useContext(UserContext);
 
   const decodedToken = jwt.decode(userToken?.toString()) as any;
 
-  const getAppointmentsEndPoint = () => {
-    if (pathname == "/dashboard") {
-      return `appointments/getByUser/${decodedToken?.data?.passwordHash}`;
-    } else {
-      return `appointments/`;
-    }
-  };
+  const UserRole = LoggedInUser?.role;
+
+  let endpointName =
+    LoggedInUser?.role == "Assistant"
+      ? `GetAssistantAppointments/${LoggedInUser?.user_id}`
+      : LoggedInUser?.role == "Therapist"
+      ? `GetTherapistAppointments/${LoggedInUser?.user_id}`
+      : "NULL";
 
   const { data: AppointmentsData, isLoading: AppointmentsLoading } = useSWR(
-    getAppointmentsEndPoint(),
+    `appointments/${endpointName}`,
     getOne
   );
 
@@ -47,7 +50,7 @@ const Appointments = () => {
           }}
           className={styles.Appointments_header}
         >
-          Your upcoming sessions
+          Your upcoming Appointments
         </Typography>
         <Box
           sx={{
