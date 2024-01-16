@@ -11,46 +11,49 @@ import {
   Pagination,
   getKeyValue,
   CircularProgress,
+  AvatarGroup,
+  Avatar,
 } from "@nextui-org/react";
-import { users } from "./data";
 import { Tooltip, Typography } from "@mui/material";
 import { getOne } from "@/services/service";
 import useSWR from "swr";
 import { FcHighPriority, FcOk } from "react-icons/fc";
-import ActionsMenu from "./Actions";
+import ActionsMenu from "@/components/ModeratorDashboard/MembersList/Actions";
 import Image from "next/image";
 import { isArabic } from "@/utils/checkLanguage";
+import GroupsTableActions from "@/components/ModeratorDashboard/MembersList/GroupsTableActions";
 
-export default function App() {
+export default function Page() {
   const [page, setPage] = React.useState(1);
-  const [membersList, setMembersList] = React.useState([]);
-  const { data: Members, isLoading } = useSWR(`Dashboard`, getOne, {
+  const [groupsList, setGroupsList] = React.useState([]);
+  const { data, isLoading } = useSWR(`Groups/GetAllGroups`, getOne, {
     onSuccess: (data) => {
       let dataWithKey = data?.data?.map((item: any, idx: any) => {
         return { ...item, key: idx + 1 };
       });
-      setMembersList(dataWithKey);
+      setGroupsList(dataWithKey);
     },
   });
 
   const rowsPerPage = 11;
 
-  const pages = Math.ceil(membersList?.length / rowsPerPage);
+  const pages = Math.ceil(groupsList?.length / rowsPerPage);
 
   const items = React.useMemo(() => {
     const start = (page - 1) * rowsPerPage;
     const end = start + rowsPerPage;
 
-    return membersList?.slice(start, end);
-  }, [page, membersList]);
+    return groupsList?.slice(start, end);
+  }, [page, groupsList]);
   return (
     <>
+      {/* <img src=" https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=sdsd" /> */}
       <Typography
         color={"primary"}
         variant="h6"
         sx={{ mb: 2, ml: 2, fontWeight: "400" }}
       >
-        Members List
+        Therapy Groups
       </Typography>
       <Table
         aria-label="Example table with client side pagination"
@@ -73,22 +76,21 @@ export default function App() {
       >
         <TableHeader>
           <TableColumn key="id">ID</TableColumn>
-          <TableColumn key="name">Client Name</TableColumn>
-          <TableColumn key="phone">Phone</TableColumn>
-          <TableColumn key="email">Email</TableColumn>
+          <TableColumn key="name">Group Name</TableColumn>
+          <TableColumn key="number">Group Number</TableColumn>
           <TableColumn key="course">Course</TableColumn>
-          <TableColumn key="status">Status</TableColumn>
-          <TableColumn key="bct">BCT</TableColumn>
+          <TableColumn key="therapists">Therapists</TableColumn>
+          <TableColumn key="assistants">Assistants</TableColumn>
           <TableColumn key="Actions">Actions</TableColumn>
         </TableHeader>
         <TableBody
           emptyContent={
             isLoading ? (
               <div className="w-full flex justify-center items-center">
-                <CircularProgress size="sm" /> Getting Users...
+                <CircularProgress size="sm" /> Fetching Groups...
               </div>
             ) : (
-              "No users found"
+              "No Groups found"
             )
           }
           items={items || []}
@@ -104,32 +106,21 @@ export default function App() {
               <TableCell>{item.id}</TableCell>
               <TableCell
                 style={{
-                  fontFamily: isArabic(item?.full_name) ? "Tajawal" : "inherit",
+                  fontFamily: isArabic(item?.group_name)
+                    ? "Tajawal"
+                    : "inherit",
                 }}
               >
                 <div className="w-full flex flex-row-reverse justify-end gap-2 items-center">
-                  <span>{item.full_name}</span>
-                  <Image
-                    src={process.env.NEXT_PUBLIC_BASE_URL + item?.image}
-                    width={30}
-                    height={30}
-                    alt="Course Logo"
-                    style={{
-                      width: "30px",
-                      height: "30px",
-                      objectFit: "cover",
-                      background: "#fff",
-                      borderRadius: "50%",
-                      boxShadow: "0px 0px 5px #0000001A",
-                    }}
-                  />
+                  <span>{item?.group_name}</span>
                 </div>
               </TableCell>
-              <TableCell>{item.phone}</TableCell>
-              <TableCell>{item.email}</TableCell>
+              <TableCell>
+                {item.group_number ? item.group_number : "No Name Found"}
+              </TableCell>
               <TableCell style={{ fontFamily: "Tajawal" }}>
                 <div className="w-full flex flex-row-reverse justify-end gap-2 items-center">
-                  <span>{item.CourseName}</span>
+                  <span>{item.course_name}</span>
                   <Image
                     src={process.env.NEXT_PUBLIC_BASE_URL2 + item?.logo}
                     width={30}
@@ -146,36 +137,40 @@ export default function App() {
                   />
                 </div>
               </TableCell>
-              {/* <TableCell>{item.UserName}</TableCell>
-              <TableCell>{item.Password}</TableCell> */}
+
               <TableCell>
-                {item.Aceeptby == 0
-                  ? "Not Accepted"
-                  : "Accepted By " + item?.Aceeptby}
-              </TableCell>
-              <TableCell>
-                {item?.BCTS ? (
-                  <Tooltip title="Uploaded The BCT Scan">
-                    <Image
-                      src={"/images/success.svg"}
-                      width={15}
-                      height={15}
-                      alt="success"
-                    />
-                  </Tooltip>
+                {item?.therapists?.length > 0 ? (
+                  <AvatarGroup isBordered>
+                    {item?.therapists?.map((el: any, idx: number) => (
+                      <Tooltip key={idx} title={el?.user_name}>
+                        <Avatar
+                          src={`${process.env.NEXT_PUBLIC_BASE_URL}files/static_assets/male-av.jpg`}
+                        />
+                      </Tooltip>
+                    ))}
+                  </AvatarGroup>
                 ) : (
-                  <Tooltip title="Client Doesn't Uploaded The BCT Scan">
-                    <Image
-                      src={"/images/error.svg"}
-                      width={15}
-                      height={15}
-                      alt="success"
-                    />
-                  </Tooltip>
+                  "No Therapists"
+                )}
+              </TableCell>
+
+              <TableCell>
+                {item?.assistants?.length > 0 ? (
+                  <AvatarGroup isBordered>
+                    {item?.assistants?.map((el: any, idx: number) => (
+                      <Tooltip key={idx} title={el?.user_name}>
+                        <Avatar
+                          src={`${process.env.NEXT_PUBLIC_BASE_URL}files/static_assets/male-av.jpg`}
+                        />
+                      </Tooltip>
+                    ))}
+                  </AvatarGroup>
+                ) : (
+                  <div style={{ fontFamily: "Roboto" }}>N/A</div>
                 )}
               </TableCell>
               <TableCell>
-                <ActionsMenu item={item} />
+                <GroupsTableActions item={item} />
               </TableCell>
             </TableRow>
           )}

@@ -22,7 +22,7 @@ import MailIcon from "@mui/icons-material/Mail";
 import Image from "next/image";
 import MembersList from "@/components/ModeratorDashboard/MembersList/page";
 import { LuUsers2 } from "react-icons/lu";
-import { TbReport } from "react-icons/tb";
+import { TbChecklist, TbReport } from "react-icons/tb";
 import { HiOutlineRectangleGroup } from "react-icons/hi2";
 import { BiLogoZoom } from "react-icons/bi";
 import { IoIosCloudUpload, IoIosPersonAdd } from "react-icons/io";
@@ -114,6 +114,12 @@ export default function LayoutWrapper({
     },
     {
       id: 3,
+      name: "All Groups",
+      icon: <TbChecklist style={{ color: "rgb(154 154 154)" }} size={21} />,
+      url: "/ModeratorDashboard/allGroups",
+    },
+    {
+      id: 4,
       name: "Create Group",
       icon: (
         <HiOutlineRectangleGroup
@@ -124,19 +130,19 @@ export default function LayoutWrapper({
       url: "/ModeratorDashboard/createGroup",
     },
     {
-      id: 4,
+      id: 5,
       name: "Create Appointment",
       icon: <BiLogoZoom style={{ color: "rgb(154 154 154)" }} size={21} />,
       url: "/ModeratorDashboard/createAppointment",
     },
     {
-      id: 5,
+      id: 6,
       name: "Add Member",
       icon: <IoIosPersonAdd style={{ color: "rgb(154 154 154)" }} size={21} />,
       url: "/ModeratorDashboard/addMemberToGroup",
     },
     {
-      id: 6,
+      id: 7,
       name: "Test",
       icon: <IoIosPersonAdd style={{ color: "rgb(154 154 154)" }} size={21} />,
       url: "/ModeratorDashboard/Test",

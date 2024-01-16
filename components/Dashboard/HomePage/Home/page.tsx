@@ -12,9 +12,11 @@ import { Error } from "@/components/shared/Error/page";
 import { getOne } from "@/services/service";
 import { UserContext } from "@/contexts/mainContext";
 import Image from "next/image";
+import { isArabic } from "@/utils/checkLanguage";
 
 type Group = {
   id: number;
+  groupId: string;
   name: string;
   group_name: string;
   course_id: string;
@@ -30,12 +32,12 @@ const Home = () => {
   let endpointName =
     LoggedInUser?.role == "Assistant"
       ? `getAssistantGroups/${LoggedInUser?.user_id}`
-      : LoggedInUser?.role == "Therapist"
-      ? `getTherapistGroups/${LoggedInUser?.user_id}`
-      : "NULL";
+      : (LoggedInUser?.role == "Therapist" &&
+          `getTherapistGroups/${LoggedInUser?.user_id}`) ||
+        (LoggedInUser?.role == "Therapist" &&
+          `getTherapistGroups/${LoggedInUser?.user_id}`);
 
   const { data, error, isLoading } = useSWR(`Groups/${endpointName}`, getOne);
-
   const Groups: any = data?.data;
   if (error) {
     return <Error />;
@@ -75,7 +77,19 @@ const Home = () => {
                       }}
                     />
                   </div>
-                  <h3>{group?.group_name}</h3>
+
+                  <h3
+                    style={{
+                      fontFamily: isArabic(group?.group_name)
+                        ? "Tajawal !important"
+                        : "Roboto",
+                    }}
+                    className={`${
+                      isArabic(group?.group_name) && styles.groupNameArabic
+                    }`}
+                  >
+                    {group?.group_name}
+                  </h3>
                   <div className={styles.groupButtons}>
                     <Button variant="contained">
                       <Link
@@ -84,7 +98,7 @@ const Home = () => {
                           height: "100%",
                         }}
                         className="flex items-center justify-center gap-1"
-                        href={`/dashboard/Groups/${group?.id}`}
+                        href={`/dashboard/Groups/${group?.groupId}`}
                       >
                         <AiOutlineEye />
                         View

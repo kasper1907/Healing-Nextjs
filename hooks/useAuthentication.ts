@@ -51,6 +51,7 @@ export const useAuthentication = ({ redirectTo }: Props): ReturnData => {
       "/ModeratorDashboard/createReport",
       "/ModeratorDashboard/createAppointment",
       "/ModeratorDashboard/createGroup",
+      "/ModeratorDashboard/allGroups",
       "/ModeratorDashboard/addMemberToGroup",
       "/ModeratorDashboard/sendNotification",
       "/ModeratorDashboard/UploadSession",

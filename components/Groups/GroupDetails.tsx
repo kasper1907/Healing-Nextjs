@@ -56,7 +56,7 @@ const GroupDetails = ({ ID }: { ID: string }) => {
 
   return (
     <div className={styles.PageWrapper}>
-      <Container maxWidth={"lg"} sx={{ mt: 10 }}>
+      <Container maxWidth={"xl"} sx={{ mt: 10 }}>
         <Typography sx={{ mb: 7, ml: 2 }} color={"primary"}>
           Dashboard / All Groups / Group Users
         </Typography>

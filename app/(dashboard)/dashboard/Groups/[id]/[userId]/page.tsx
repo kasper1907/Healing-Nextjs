@@ -16,10 +16,18 @@ const Page = async ({ params }: any) => {
   const GroupUsers = await getOne(
     endPoints.getGroupUsers(id, loggedInUserCourseId)
   );
+  console.log(GroupUsers);
+  console.log(userId);
 
-  const userGroups = await getOne(
-    `Groups/getThirapistGroups/${loggedInUserPHash}`
-  );
+  let endpointName =
+    decodedToken?.data?.role == "Assistant"
+      ? `getAssistantGroups/${decodedToken?.data?.user_id}`
+      : (decodedToken?.data?.role == "Therapist" &&
+          `getTherapistGroups/${decodedToken?.data?.user_id}`) ||
+        (decodedToken?.data?.role == "Therapist" &&
+          `getTherapistGroups/${decodedToken?.data?.user_id}`);
+
+  const userGroups = await getOne(`Groups/${endpointName}`);
 
   const isThisGroupAllowedToThisUser = await userGroups?.data?.some(
     (group: any) => group.id === id
@@ -30,8 +38,8 @@ const Page = async ({ params }: any) => {
   );
 
   if (
-    (!isThisUserExistInThisGroup && decodedToken?.data?.role != "Doctor") ||
-    (!isThisGroupAllowedToThisUser && decodedToken?.data?.role != "Doctor")
+    (!isThisUserExistInThisGroup && decodedToken?.data?.role == "User") ||
+    (!isThisGroupAllowedToThisUser && decodedToken?.data?.role == "User")
   ) {
     return <NotAuthorized />;
   }

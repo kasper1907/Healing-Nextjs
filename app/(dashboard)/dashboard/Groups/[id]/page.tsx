@@ -7,17 +7,22 @@ import React from "react";
 import jwt from "jsonwebtoken";
 const Page = async ({ params }: { params: { id: string } }) => {
   const { id } = params;
+  console.log(id);
   const accessToken = cookies().get("SID")?.value;
   const decodedToken: any = await jwt.decode(accessToken?.toString() || "");
 
-  const loggedInUserPHash = decodedToken?.data?.passwordHash;
+  let endpointName =
+    decodedToken?.data?.role == "Assistant"
+      ? `getAssistantGroups/${decodedToken?.data?.user_id}`
+      : (decodedToken?.data?.role == "Therapist" &&
+          `getTherapistGroups/${decodedToken?.data?.user_id}`) ||
+        (decodedToken?.data?.role == "Therapist" &&
+          `getTherapistGroups/${decodedToken?.data?.user_id}`);
 
-  const userGroups = await getOne(
-    `Groups/getThirapistGroups/${loggedInUserPHash}`
-  );
+  const userGroups = await getOne(`Groups/${endpointName}`);
 
-  const isThisGroupAllowedToThisUser = await userGroups?.data?.some(
-    (group: any) => group.id === id
+  const isThisGroupAllowedToThisUser: boolean = await userGroups?.data?.some(
+    (group: any) => group.groupId == id
   );
 
   if (!isThisGroupAllowedToThisUser && decodedToken?.data?.role != "Doctor") {
