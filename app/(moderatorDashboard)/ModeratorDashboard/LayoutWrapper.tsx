@@ -29,6 +29,7 @@ import { IoIosCloudUpload, IoIosPersonAdd } from "react-icons/io";
 import { AiOutlineNotification } from "react-icons/ai";
 import { usePathname, useRouter } from "next/navigation";
 import UserMenu from "@/components/ModeratorDashboard/UserMenu/UserMenu";
+import { BsClock } from "react-icons/bs";
 
 const drawerWidth = 240;
 
@@ -102,7 +103,7 @@ export default function LayoutWrapper({
   const topItems = [
     {
       id: 1,
-      name: "Members",
+      name: "Clients",
       icon: <LuUsers2 style={{ color: "rgb(154 154 154)" }} size={21} />,
       url: "/ModeratorDashboard",
     },
@@ -128,6 +129,12 @@ export default function LayoutWrapper({
         />
       ),
       url: "/ModeratorDashboard/createGroup",
+    },
+    {
+      id: 5,
+      name: "All Appointments",
+      icon: <BsClock style={{ color: "rgb(154 154 154)" }} size={21} />,
+      url: "/ModeratorDashboard/allAppointments",
     },
     {
       id: 5,

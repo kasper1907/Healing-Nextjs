@@ -188,7 +188,21 @@ const Page = () => {
             {(user: any) => (
               <SelectItem key={user.id} textValue={user.course_name}>
                 <div className="flex gap-2 items-center font-[Tajawal]">
-                  <div className="flex flex-col">
+                  <div className="flex flex-row items-center gap-2">
+                    <Image
+                      src={process.env.NEXT_PUBLIC_BASE_URL2 + user?.logo}
+                      width={30}
+                      height={30}
+                      alt="Course Logo"
+                      style={{
+                        width: "30px",
+                        height: "30px",
+                        objectFit: "cover",
+                        background: "#fff",
+                        borderRadius: "50%",
+                        boxShadow: "0px 0px 5px #0000001A",
+                      }}
+                    />
                     <span className="text-small">{user.course_name}</span>
                   </div>
                 </div>
