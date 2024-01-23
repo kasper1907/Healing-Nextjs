@@ -23,7 +23,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import jwt from "jsonwebtoken";
 import useCookie from "react-use-cookie";
 import { CircularProgress } from "@mui/material";
-
+import MentionComponent from "./MentionComponent";
 export const StyledTextField = styled(TextField)`
   input {
     font-size: 17px; // Set your desired font size
@@ -68,7 +68,6 @@ const VideoSection = ({
     endPoints.getUser(userData?.user_id),
     getOne
   );
-
 
   useEffect(() => {
     VideoComments?.data?.length > 0 &&
@@ -126,7 +125,7 @@ const VideoSection = ({
 
     // Trigger a re-fetch after the POST request is completed
     const res = await postRequest(`Comments/createComment`, postData);
-
+    console.log(res);
     if (res.status == 201) {
       handleSuccess(res?.data?.data);
     }
@@ -347,6 +346,8 @@ const VideoSection = ({
                     }}
                     inputRef={commentInputRef}
                   />
+                  {/* <MentionComponent /> */}
+
                   {text?.length > 0 ? (
                     <button
                       type="submit"

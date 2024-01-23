@@ -52,7 +52,7 @@ export default async function RootLayout({
         style={{
           padding: "0",
           margin: "0",
-          background: "#F8F8F8",
+          background: "#FFF",
           overflowX: "hidden",
           minHeight: "100vh",
           height: "fit-content",

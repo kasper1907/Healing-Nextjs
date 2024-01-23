@@ -31,7 +31,8 @@ export default function ClientCredentials({
     password: "",
   });
   const decodedToken = jwt.decode(userToken) as any;
-  const handleLogIn = async () => {
+  const handleLogIn = async (event: any) => {
+    event?.preventDefault();
     setLoading(true);
     const res = await postRequest("Auth/login", data);
     if (res.status == 400) {
@@ -66,7 +67,7 @@ export default function ClientCredentials({
                   <p>Password: {clientData?.Password}</p>
                 </div>
               ) : (
-                <>
+                <form onSubmit={handleLogIn}>
                   <ModalHeader className="flex flex-col gap-1">
                     Enter Your Email & Password To View Client Credentials
                   </ModalHeader>
@@ -74,6 +75,7 @@ export default function ClientCredentials({
                     <Input
                       autoFocus
                       label="Email"
+                      isRequired
                       placeholder="Enter your email"
                       variant="bordered"
                       value={data?.username}
@@ -86,6 +88,7 @@ export default function ClientCredentials({
                     />
                     <Input
                       label="Password"
+                      isRequired
                       placeholder="Enter your password"
                       type="password"
                       variant="bordered"
@@ -105,24 +108,17 @@ export default function ClientCredentials({
                       >
                         Remember me
                       </Checkbox>
-                      <Link color="primary" href="#" size="sm">
-                        Forgot password?
-                      </Link>
                     </div>
                   </ModalBody>
                   <ModalFooter>
                     <Button color="danger" variant="flat" onPress={onClose}>
                       Close
                     </Button>
-                    <Button
-                      isLoading={loading}
-                      color="primary"
-                      onClick={handleLogIn}
-                    >
-                      Sign in
+                    <Button isLoading={loading} color="primary" type="submit">
+                      Submit
                     </Button>
                   </ModalFooter>
-                </>
+                </form>
               )}
             </>
           )}

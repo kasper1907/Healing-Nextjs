@@ -59,7 +59,7 @@ export const useAuthentication = ({ redirectTo }: Props): ReturnData => {
       "/ModeratorDashboard/Test",
     ],
 
-    User: ["/Profile"],
+    User: ["/Profile", "/Profile/Report"],
   };
 
   // I want to check if the user is not authorized to view the current page, return false

@@ -1,10 +1,8 @@
 "use client";
 import { CircularProgress } from "@nextui-org/react";
 import React from "react";
-import { useTranslation } from "react-i18next";
 
 const LoadingScreen = () => {
-  const { t, i18n } = useTranslation();
   return (
     <div
       style={{
@@ -23,10 +21,7 @@ const LoadingScreen = () => {
       }}
     >
       <CircularProgress size="sm" aria-label="Loading..." />
-      {/* <CircularProgress size={20} /> */}
       Loading...
-      {/* {i18n?.resolvedLanguage == "en" && "Loading..."} */}
-      {/* {i18n?.resolvedLanguage == "ar" && "جاري التحميل..."} */}
     </div>
   );
 };

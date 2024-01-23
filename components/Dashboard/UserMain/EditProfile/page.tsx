@@ -98,8 +98,9 @@ export const StyledDatePicker: any = styled(DatePicker as any)({
 });
 
 interface FormData {
-  fullName: string;
+  full_name: string;
   email: string;
+  phone: string;
   country: string;
   weight: number;
   jobTitle: string;
@@ -191,35 +192,26 @@ const EditProfile = () => {
   };
 
   const validationSchema = object().shape({
-    fullName: string()
-      .required("Full Name is required")
+    full_name: string()
+      .min(3, "Name must be at least 3 characters")
       .matches(
         /^[^$%!@#^&*()_+{}\[\]:;<>,.?~\\/-]+$/,
         "Invalid characters in the name"
-      )
-      .min(3, "Username must be at least 3 characters"),
-    email: string()
-      .required("Email is required")
-      .email("Invalid email address"),
-
-    country: string()
-      .required("Country is required")
-      .min(1, "Invalid Country Name"),
+      ),
+    email: string().email("Invalid email address"),
+    phone: string().min(11, "Phone Number Cant Be Less Than 11 Number"),
+    country: string().min(1, "Invalid Country Name"),
     weight: number()
-      .required("weight is required")
       .integer("weight must be an integer")
       .positive("weight must be a positive number")
       .max(120, "weight must be less than or equal to 120"),
-    jobTitle: string().required("Job Title is required").min(1, "Invalid Job"),
-    maritalStatus: string().required("Marital Status is required"),
+    jobTitle: string().min(1, "Invalid Job"),
+    maritalStatus: string(),
     boysNumber: number()
-      .required("Boys Number is required")
       .integer("Boys Number must be an integer")
       .positive("Boys Number must be a positive number")
       .max(120, "Boys Number must be less than or equal to 120"),
-    girlsNumber: number()
-      .required("Number of Girls is required")
-      .min(1, "Invalid Number"),
+    girlsNumber: number().min(1, "Invalid Number"),
   });
 
   const {
@@ -230,7 +222,15 @@ const EditProfile = () => {
   } = useForm<FormData>({
     resolver: yupResolver(validationSchema),
     defaultValues: {
-      fullName: userData.full_name,
+      full_name: user?.full_name || "",
+      country: user?.country || "",
+      email: user?.email || "",
+      weight: +user?.weight || 0,
+      jobTitle: user?.job_title || "",
+      maritalStatus: user?.social_status || "",
+      boysNumber: +user?.number_of_boys || 0,
+      girlsNumber: +user?.number_of_girls || 0,
+      phone: user?.phone || "",
     },
   });
 
@@ -271,9 +271,11 @@ const EditProfile = () => {
               Full Name
             </InputLabel>
             <CssTextField
-              {...register("fullName")}
+              {...register("full_name")}
               fullWidth
-              defaultValue={userData?.full_name}
+              name="full_name"
+              // defaultValue={userData.full_name}
+              // autoFocus={true}
               placeholder="Enter First Name"
               id="custom-css-outlined-input"
               sx={{
@@ -283,9 +285,9 @@ const EditProfile = () => {
                 },
               }}
             />
-            {errors.fullName && (
+            {errors.full_name && (
               <p className="text-xs  text-red-500 mt-2 ml-2">
-                *{errors.fullName.message}
+                *{errors.full_name.message}
               </p>
             )}
           </Grid>
@@ -330,15 +332,9 @@ const EditProfile = () => {
               Phone
             </InputLabel>
             <CssTextField
-              value={userData?.phone}
-              onChange={(e: any) => {
-                setUserData((prev) => ({
-                  ...prev,
-                  phone: e.target.value,
-                }));
-              }}
+              {...register("phone")}
               fullWidth
-              type="tel"
+              type="text"
               placeholder="Enter Phone Number"
               id="custom-css-outlined-input"
               sx={{
@@ -348,6 +344,11 @@ const EditProfile = () => {
                 },
               }}
             />
+            {errors.phone && (
+              <p className="text-xs  text-red-500 mt-2 ml-2">
+                *{errors.phone.message}
+              </p>
+            )}
           </Grid>
 
           <Grid item xs={12} sx={{ position: "relative" }}>
@@ -392,7 +393,6 @@ const EditProfile = () => {
               Country
             </InputLabel>
             <CssTextField
-              defaultValue={userData?.country}
               {...register("country")}
               fullWidth
               placeholder="Enter Country"

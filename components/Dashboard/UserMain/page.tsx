@@ -3,7 +3,6 @@ import { fetcher } from "@/utils/swr";
 import {
   Box,
   Button,
-  CircularProgress,
   Container,
   Tooltip,
   Typography,
@@ -31,7 +30,7 @@ import { endPoints } from "@/services/endpoints";
 import jwt from "jsonwebtoken";
 import { UserContext } from "@/contexts/mainContext";
 import useCookie from "react-use-cookie";
-import { Spinner } from "@nextui-org/react";
+import { CircularProgress, Spinner } from "@nextui-org/react";
 import { FaArrowLeft } from "react-icons/fa";
 
 const UserMain = ({ ID }: { ID?: string }) => {
@@ -80,7 +79,6 @@ const UserMain = ({ ID }: { ID?: string }) => {
     { revalidateIfStale: false, revalidateOnFocus: false }
   );
 
-
   const {
     userTabsValue,
     setUserTabsValue,
@@ -98,6 +96,7 @@ const UserMain = ({ ID }: { ID?: string }) => {
     AOS.init();
   }, []);
 
+  console.log(Group);
   // if (LoadingUser) return <UserMainSkelton />;
 
   if (ViewVideoOnly) {
@@ -146,7 +145,6 @@ const UserMain = ({ ID }: { ID?: string }) => {
                   fontSize: "12px",
                 }}
                 onClick={() => {
-                  //set the current tab value to 7 which is the edit profile tab
                   setUserTabsValue(7);
                 }}
               >
@@ -218,30 +216,31 @@ const UserMain = ({ ID }: { ID?: string }) => {
             {LoadingGroup ? (
               <CircularProgress color="primary" />
             ) : (
-              <Tooltip
-                title={
-                  isInProfilePage
-                    ? Group?.group_name
-                    : CurrentGroup?.data?.group_name
-                }
-              >
-                <Image
-                  // src={`${
-                  //   Group?.logo
-                  //     ? process.env.NEXT_PUBLIC_BASE_URL2 + Group?.logo
-                  //     : "/images/Dashboard/therapy-group.svg"
-                  // }`}
-                  src={`${
-                    isInProfilePage
-                      ? process.env.NEXT_PUBLIC_BASE_URL2 + Group?.logo
-                      : process.env.NEXT_PUBLIC_BASE_URL2 +
-                        CurrentGroup?.data?.logo
-                  }`}
-                  width={50}
-                  height={50}
-                  alt="TherapyGroup"
-                />
-              </Tooltip>
+              <>
+                {!Group ? (
+                  "You Don't Have Any Groups"
+                ) : (
+                  <Tooltip
+                    title={
+                      isInProfilePage
+                        ? Group?.group_name
+                        : CurrentGroup?.data?.group_name
+                    }
+                  >
+                    <Image
+                      src={`${
+                        isInProfilePage
+                          ? process.env.NEXT_PUBLIC_BASE_URL2 + Group?.logo
+                          : process.env.NEXT_PUBLIC_BASE_URL2 +
+                            CurrentGroup?.data?.logo
+                      }`}
+                      width={50}
+                      height={50}
+                      alt="TherapyGroup"
+                    />
+                  </Tooltip>
+                )}
+              </>
             )}
           </div>
 
@@ -347,7 +346,7 @@ const UserMain = ({ ID }: { ID?: string }) => {
             {RecommendedVideosLoading ? (
               // <CircularProgress color="primary" />
               <div className="flex flex-row items-center justify-center">
-                <Spinner />
+                <CircularProgress size="sm" />
                 Loading...
               </div>
             ) : (

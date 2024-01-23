@@ -46,16 +46,10 @@ const Page = () => {
     password: "m93120",
   });
 
-  // const []
-
   const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
-    if (!userData.username || !userData.password)
-      // return toast.warning("Please fill all fields");
-      setLoading(true);
+    if (!userData.username || !userData.password) setLoading(true);
     const { status, data } = await postRequest(endPoints.auth, userData);
-    // if (status == 200) {
-    //   toast.success("Login Successfully");
 
     if (status != 200) {
       toast.error(data?.message);
@@ -78,6 +72,7 @@ const Page = () => {
     setLoading(false);
     return;
   };
+
   return (
     <AuthProvider>
       <Grid
@@ -110,12 +105,14 @@ const Page = () => {
             alignItems: "center",
           }}
         >
-          <Image
-            src={"/images/healing-logo.svg"}
-            alt="healing logo"
-            width={153}
-            height={74}
-          />
+          <Link href={"/"}>
+            <Image
+              src={"/images/healing-logo.svg"}
+              alt="healing logo"
+              width={153}
+              height={74}
+            />
+          </Link>
 
           <div style={{ width: "100%" }}>
             <Container>

@@ -25,6 +25,9 @@ export const Appointments = () => {
     }
   );
 
+  console.log(AppointmentsData);
+  console.log(LoggedInUser?.group_id);
+
   const [loading, setLoading] = React.useState(true);
 
   useEffect(() => {

@@ -58,10 +58,7 @@ export default function UserMenu() {
             as="button"
             avatarProps={{
               isBordered: true,
-              src: UserData?.data?.image
-                ? process.env.NEXT_PUBLIC_BASE_URL + UserData?.data?.image
-                : process.env.NEXT_PUBLIC_BASE_URL +
-                  "files/static_assets/male-av.jpg",
+              src: "/images/8380015.jpg",
             }}
             className="transition-transform"
             description={`${isLoading ? "Loading..." : `@${user?.user_name}`}`}

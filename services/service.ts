@@ -83,7 +83,7 @@ export const deleteRequest: any = async ({ id, endpoint }: any) => {
     return { status: e?.response?.status, data: e?.response?.data };
   }
 };
-export const getOne: any = async (endPoint: any) => {
+export const getOne: any = async (endPoint: any, body: any) => {
   const accessToken = cookies().get("SID")?.value;
   try {
     const res = await axios.get(`${baseUrl}${endPoint}`, {

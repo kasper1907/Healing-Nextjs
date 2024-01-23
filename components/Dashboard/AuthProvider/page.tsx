@@ -69,7 +69,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   return (
     <div
       style={{
-        minHeight: "calc(100vh - 260px)",
+        minHeight: "100vh",
       }}
     >
       {children}

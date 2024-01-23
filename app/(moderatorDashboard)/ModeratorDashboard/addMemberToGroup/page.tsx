@@ -22,10 +22,12 @@ import {
 import dayjs from "dayjs";
 import Image from "next/image";
 import React from "react";
+import { toast } from "sonner";
 import useSWR from "swr";
 
 const Page = () => {
   const [Groups, setGroups] = React.useState([]);
+  const [Course, setCourse] = React.useState<any>({});
   const [loading, setLoading] = React.useState(false);
   const { data: Courses, isLoading } = useSWR(`Courses/`, getOne);
   const { data: Assistants } = useSWR(`Users/GetByUserStatus/4`, getOne);
@@ -56,7 +58,9 @@ const Page = () => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    toggleLoading();
+    if (!Member.user_id || !Member.group_id)
+      return toast.error("Please Fill All Fields");
+    setLoading(true);
     console.log(
       `Dashboard/AddMemberToGroup/${Member.user_id}/${Member.group_id}`
     );
@@ -64,11 +68,32 @@ const Page = () => {
       `Dashboard/AddMemberToGroup/${Member.user_id}/${Member.group_id}`,
       { courseId: Member.course_id }
     );
-    console.log(res);
-    if (res.status == "success") {
-      // window.location.reload();
+
+    if (res.status == "201") {
+      toast.success("Member Added Successfully");
+      setLoading(false);
+    } else {
+      console.log(res);
+      toast.error(res.data.message || "Something Went Wrong");
+      setLoading(false);
     }
-    toggleLoading();
+  };
+
+  const handleUsesCourseAndCourseGroups = async (e: any) => {
+    const User = await getOne(`Users/getOne/${e}`);
+    const CourseId = User?.data?.course_id;
+
+    let Groups = await getOne(`Groups/GetByCourseID/${CourseId}`);
+    Groups = Groups?.data;
+
+    let Course = await getOne(`Courses/getOne/${CourseId}`);
+    Course = Course?.data;
+
+    setCourse(Course);
+
+    setGroups(Groups);
+
+    setMember({ ...Member, course_id: CourseId });
   };
 
   if (isLoading || LoadingClients)
@@ -91,50 +116,42 @@ const Page = () => {
           </Typography>{" "}
         </Grid>
 
-        <Grid item xs={12} md={12}>
-          <Select
-            items={Courses?.data}
-            value={Member?.course_id}
-            aria-label="Select Course"
-            onChange={(e) => {
-              handleGetGroups(e),
-                setMember({ ...Member, course_id: e.target.value });
-            }}
-            placeholder="Select Course"
-            labelPlacement="outside"
-            classNames={{
-              base: "w-full",
-              trigger: "h-12",
-            }}
-            renderValue={(items) => {
-              return items.map((item: any) => (
-                <div
-                  key={item.key}
-                  className="flex items-center gap-2 font-[Tajawal]"
-                >
-                  <div className="flex flex-col">
-                    <span>{item.data.course_name}</span>
-                  </div>
-                </div>
-              ));
-            }}
-          >
-            {(user: any) => (
-              <SelectItem key={user.id} textValue={user.course_name}>
-                <div className="flex gap-2 items-center font-[Tajawal]">
-                  <div className="flex flex-col">
-                    <span className="text-small">{user.course_name}</span>
-                  </div>
-                </div>
-              </SelectItem>
-            )}
-          </Select>
+        <Grid item xs={12} md={12} sx={{ mt: 3 }}>
+          <div className="h-12 flex w-full flex-wrap md:flex-nowrap gap-4">
+            <Autocomplete
+              value={Member?.user_id}
+              onSelectionChange={(e) => {
+                setMember({ ...Member, user_id: e as string }),
+                  handleUsesCourseAndCourseGroups(e);
+              }}
+              className="h-12"
+              classNames={{}}
+              placeholder="Search for a Client"
+              defaultItems={Clients?.data}
+            >
+              {(item: any) => (
+                <AutocompleteItem key={item.id}>
+                  {item.full_name}
+                </AutocompleteItem>
+              )}
+            </Autocomplete>
+          </div>
         </Grid>
+        <Grid item xs={12} md={12} sx={{ mt: 3 }}>
+          <Input
+            style={{
+              fontFamily: "Tajawal",
+            }}
+            readOnly
+            value={Course?.course_name || "برجاء اختيار العميل اولا"}
+          />
+        </Grid>
+
         <Grid item xs={12} md={12} sx={{ mt: 3 }}>
           <Select
             value={Member?.group_id}
             onChange={(e) => setMember({ ...Member, group_id: e.target.value })}
-            items={Groups}
+            items={Groups || []}
             placeholder={
               Groups?.length > 0
                 ? "Select A Group"
@@ -169,27 +186,6 @@ const Page = () => {
               </SelectItem>
             )}
           </Select>
-        </Grid>
-
-        <Grid item xs={12} md={12} sx={{ mt: 3 }}>
-          <div className="h-12 flex w-full flex-wrap md:flex-nowrap gap-4">
-            <Autocomplete
-              value={Member?.user_id}
-              onChange={(e) =>
-                setMember({ ...Member, user_id: e.target.value })
-              }
-              className="h-12"
-              classNames={{}}
-              placeholder="Search for a Client"
-              defaultItems={Clients?.data}
-            >
-              {(item: any) => (
-                <AutocompleteItem key={item.full_name}>
-                  {item.full_name}
-                </AutocompleteItem>
-              )}
-            </Autocomplete>
-          </div>
         </Grid>
 
         <Grid

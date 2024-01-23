@@ -33,7 +33,6 @@ import { isArabic } from "@/utils/checkLanguage";
 import GroupsTableActions from "@/components/ModeratorDashboard/MembersList/GroupsTableActions";
 import { HiDotsVertical } from "react-icons/hi";
 import UpdateDialog from "@/components/shared/UpdateDialog/UpdateDialog";
-import DeleteDialog from "@/components/ModeratorDashboard/GroupsList/Delete";
 import moment from "moment";
 import {
   DatePicker,
@@ -44,127 +43,78 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import dayjs from "dayjs";
 import { toast } from "sonner";
+import DeleteDialog from "@/components/ModeratorDashboard/Appointments/Delete";
+import Actions from "@/components/ModeratorDashboard/Appointments/Actionst";
 
-export const Actions = ({
-  item,
-  openDialog,
-  isOpenDialog,
-  closeDialog,
-  openDeleteDialog,
-  isOpenDeleteDialog,
-  closeDeleteDialog,
-}: any) => {
-  // const { isOpen, onOpen, onClose } = useDisclosure();
-
-  return (
-    <Dropdown>
-      <DropdownTrigger>
-        <Button
-          style={{
-            userSelect: "none",
-            background: "transparent",
-            minWidth: 0,
-            width: "fit-content",
-            padding: 0,
-          }}
-          variant="light"
-        >
-          <HiDotsVertical />
-        </Button>
-      </DropdownTrigger>
-      <DropdownMenu aria-label="Action event example">
-        <DropdownItem
-          key="edit"
-          onClick={() => {
-            openDialog();
-          }}
-        >
-          Edit
-        </DropdownItem>
-
-        <DropdownItem
-          onClick={() => {
-            openDeleteDialog();
-          }}
-          key="deny"
-          className="text-danger"
-          color="danger"
-        >
-          Delete
-        </DropdownItem>
-      </DropdownMenu>
-    </Dropdown>
-  );
-};
-
-export const UpdateForm = ({ item, values, setValues }: any) => {
-  return (
-    <>
-      <Input
-        type="text"
-        label="Meeting Link"
-        defaultValue={item?.meeting_link}
-        value={values?.meeting_link}
-        onChange={(e) => {
-          setValues({ ...values, meeting_link: e.target.value });
-        }}
-        placeholder="Enter Meeting Link"
-      />
-
-      <InputLabel sx={{ fontSize: "0.9rem", ml: 1, mb: "-10px" }}>
-        Select Appointment Date
-      </InputLabel>
-
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DemoContainer components={["DatePicker"]}>
-          <DatePicker
-            value={dayjs(values?.session_date)}
-            onChange={(e: any) => {
-              setValues({
-                ...values,
-                session_date: e,
-              });
-            }}
-            sx={{ width: "100%", mt: "-10px" }}
-          />
-        </DemoContainer>
-      </LocalizationProvider>
-      <InputLabel sx={{ fontSize: "0.9rem", ml: 1, mb: "-10px" }}>
-        Select Appointment Time
-      </InputLabel>
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DemoContainer components={["TimePicker"]}>
-          <TimePicker
-            value={dayjs(values.session_time)}
-            onChange={(e: any) => {
-              setValues({
-                ...values,
-                session_time: e,
-              });
-            }}
-            sx={{ width: "100%", mb: 2 }}
-          />
-        </DemoContainer>
-      </LocalizationProvider>
-
-      <Input
-        isReadOnly
-        type="text"
-        label="Group Name"
-        variant="bordered"
-        defaultValue={item?.group_name}
-        className="w-full mt-2"
-      />
-    </>
-  );
-};
 export default function Page() {
+  const UpdateForm = ({ item, values, setValues }: any) => {
+    return (
+      <>
+        <Input
+          type="text"
+          label="Meeting Link"
+          defaultValue={item?.meeting_link}
+          value={values?.meeting_link}
+          onChange={(e) => {
+            setValues({ ...values, meeting_link: e.target.value });
+          }}
+          placeholder="Enter Meeting Link"
+        />
+
+        <InputLabel sx={{ fontSize: "0.9rem", ml: 1, mb: "-10px" }}>
+          Select Appointment Date
+        </InputLabel>
+
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DemoContainer components={["DatePicker"]}>
+            <DatePicker
+              value={dayjs(values?.session_date)}
+              onChange={(e: any) => {
+                setValues({
+                  ...values,
+                  session_date: e,
+                });
+              }}
+              sx={{ width: "100%", mt: "-10px" }}
+            />
+          </DemoContainer>
+        </LocalizationProvider>
+        <InputLabel sx={{ fontSize: "0.9rem", ml: 1, mb: "-10px" }}>
+          Select Appointment Time
+        </InputLabel>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DemoContainer components={["TimePicker"]}>
+            <TimePicker
+              value={dayjs(values.session_time)}
+              onChange={(e: any) => {
+                setValues({
+                  ...values,
+                  session_time: e,
+                });
+              }}
+              sx={{ width: "100%", mb: 2 }}
+            />
+          </DemoContainer>
+        </LocalizationProvider>
+
+        <Input
+          isReadOnly
+          type="text"
+          label="Group Name"
+          variant="bordered"
+          defaultValue={item?.group_name}
+          className="w-full mt-2"
+        />
+      </>
+    );
+  };
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [currentRow, setCurrentRow] = React.useState({} as any);
   const {
     isOpen: isOpenDeleteDialog,
     onOpen: openDeleteDialog,
-    onClose: closeDeleteDialog,
+    onOpenChange: closeDeleteDialog,
   } = useDisclosure();
 
   const [page, setPage] = React.useState(1);
@@ -362,11 +312,11 @@ export default function Page() {
                   openDialog={() => {
                     handleClickActions(item);
                   }}
-                  isOpenDialog={isOpen}
-                  closeDialog={onClose}
+                  openDeleteDialog={() => {
+                    setCurrentRow(item);
+                    openDeleteDialog();
+                  }}
                   item={item}
-                  values={values}
-                  setValues={setValues}
                 />
               </TableCell>
             </TableRow>
@@ -385,9 +335,10 @@ export default function Page() {
         handleSubmit={handleSubmit}
       />
       <DeleteDialog
+        item={currentRow}
         isOpen={isOpenDeleteDialog}
         onOpen={openDeleteDialog}
-        onClose={closeDeleteDialog}
+        onOpenChange={closeDeleteDialog}
       />
     </>
   );

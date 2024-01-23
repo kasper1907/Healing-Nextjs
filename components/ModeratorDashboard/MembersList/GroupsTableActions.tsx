@@ -15,9 +15,15 @@ import useCookie from "react-use-cookie";
 import DeleteDialog from "../GroupsList/Delete";
 import AssignTherapist from "../GroupsList/AssignTherapist";
 import AssignAssistant from "../GroupsList/AssignAssitant";
+import GroupUsers from "../GroupsList/GroupUsers";
 
 export default function GroupsTableActions({ item }: any) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const {
+    isOpen: isOpen3,
+    onOpen: onOpen3,
+    onOpenChange: onOpenChange3,
+  } = useDisclosure();
   const {
     isOpen: isOpenAssignTherapist,
     onOpen: OpenAssignTherapist,
@@ -81,6 +87,15 @@ export default function GroupsTableActions({ item }: any) {
 
           <DropdownItem
             onClick={() => {
+              onOpen3();
+              setCurrentAction("suspend");
+            }}
+            key="show_users"
+          >
+            Show Users
+          </DropdownItem>
+          <DropdownItem
+            onClick={() => {
               onOpen2();
               setCurrentAction("suspend");
             }}
@@ -111,6 +126,13 @@ export default function GroupsTableActions({ item }: any) {
         isOpen={isOpenAssignAssistant}
         onOpen={OpenAssignAssistant}
         onOpenChange={onOpenChangeAssignAssistant}
+      />
+
+      <GroupUsers
+        item={item}
+        isOpen={isOpen3}
+        onOpen={onOpen3}
+        onOpenChange={onOpenChange3}
       />
     </>
   );

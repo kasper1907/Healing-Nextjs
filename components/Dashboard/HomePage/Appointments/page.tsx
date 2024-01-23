@@ -23,7 +23,7 @@ const Appointments = () => {
   let endpointName =
     LoggedInUser?.role == "Assistant"
       ? `GetAssistantAppointments/${LoggedInUser?.user_id}`
-      : LoggedInUser?.role == "Therapist"
+      : LoggedInUser?.role == "Therapist" || "Doctor"
       ? `GetTherapistAppointments/${LoggedInUser?.user_id}`
       : "NULL";
 

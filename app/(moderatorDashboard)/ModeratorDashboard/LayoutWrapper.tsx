@@ -30,8 +30,10 @@ import { AiOutlineNotification } from "react-icons/ai";
 import { usePathname, useRouter } from "next/navigation";
 import UserMenu from "@/components/ModeratorDashboard/UserMenu/UserMenu";
 import { BsClock } from "react-icons/bs";
+import { UserContext } from "@/contexts/mainContext";
+import Link from "next/link";
 
-const drawerWidth = 240;
+const drawerWidth = 300;
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
   open?: boolean;
@@ -88,7 +90,8 @@ export default function LayoutWrapper({
   children: React.ReactNode;
 }) {
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
+  const { LoggedInUser }: any = React.useContext(UserContext);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -100,7 +103,7 @@ export default function LayoutWrapper({
 
   const pathname = usePathname();
   const router = useRouter();
-  const topItems = [
+  const SidebarItems = [
     {
       id: 1,
       name: "Clients",
@@ -148,14 +151,7 @@ export default function LayoutWrapper({
       icon: <IoIosPersonAdd style={{ color: "rgb(154 154 154)" }} size={21} />,
       url: "/ModeratorDashboard/addMemberToGroup",
     },
-    {
-      id: 7,
-      name: "Test",
-      icon: <IoIosPersonAdd style={{ color: "rgb(154 154 154)" }} size={21} />,
-      url: "/ModeratorDashboard/Test",
-    },
-  ];
-  const bottomItems = [
+
     {
       id: 1,
       name: "Upload Session",
@@ -178,7 +174,7 @@ export default function LayoutWrapper({
   ];
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: "flex", zIndex: "2", position: "relative" }}>
       <CssBaseline />
       <AppBar position="fixed" open={open}>
         <Toolbar className="flex justify-between">
@@ -220,7 +216,7 @@ export default function LayoutWrapper({
         anchor="left"
         open={open}
       >
-        <DrawerHeader>
+        {/* <DrawerHeader>
           <Typography variant="h6" noWrap>
             Healing Center
           </Typography>
@@ -274,9 +270,125 @@ export default function LayoutWrapper({
               </ListItemButton>
             </ListItem>
           ))}
-        </List>
+        </List> */}
+        <>
+          <div
+            className="group/sidebar w-[300px] flex flex-col shrink-0   m-0 fixed z-40 inset-y-0 left-0 bg-white border-r border-r-dashed border-r-neutral-200 sidenav fixed-start loopple-fixed-start"
+            id="sidenav-main"
+          >
+            <div className="hidden border-b border-dashed lg:block dark:border-neutral-700/70 border-neutral-200"></div>
+
+            <div className="flex items-center justify-between px-8 py-5">
+              <div className="flex items-center mr-5">
+                <div className="mr-5">
+                  <div className="inline-block relative shrink-0 cursor-pointer rounded-[.95rem]">
+                    <Image
+                      className="w-[40px] h-[40px] shrink-0 inline-block rounded-[.95rem]"
+                      src={"/images/8380015.jpg"}
+                      alt="avatar image"
+                      width={100}
+                      height={100}
+                    />
+                  </div>
+                </div>
+                <div className="mr-2 ">
+                  <a
+                    href="javascript:void(0)"
+                    className="dark:hover:text-primary hover:text-primary transition-colors duration-200 ease-in-out text-[1.075rem] font-medium dark:text-neutral-400/90 text-secondary-inverse"
+                  >
+                    {LoggedInUser?.user_name?.slice(0, 1)?.toUpperCase() +
+                      LoggedInUser?.user_name?.slice(
+                        1,
+                        LoggedInUser?.user_name?.length
+                      )}
+                  </a>
+                  <span className="text-secondary-dark dark:text-stone-500 font-medium block text-[0.85rem]">
+                    {LoggedInUser?.role}
+                  </span>
+                </div>
+              </div>
+              <a
+                className="inline-flex relative items-center group justify-end text-base font-medium leading-normal text-center align-middle cursor-pointer rounded-[.95rem] transition-colors duration-150 ease-in-out text-dark bg-transparent shadow-none border-0"
+                href="javascript:void(0)"
+              >
+                <span
+                  onClick={() => {
+                    handleDrawerClose();
+                  }}
+                  className="leading-none transition-colors duration-200 ease-in-out peer shrink-0 group-hover:text-primary text-secondary-dark"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="w-6 h-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M6 18 18 6M6 6l12 12"
+                    />
+                  </svg>
+                </span>
+              </a>
+            </div>
+
+            <div className="hidden border-b border-dashed lg:block dark:border-neutral-700/70 border-neutral-200"></div>
+
+            <div className="relative  my-5 ">
+              <div className="flex flex-col w-full font-medium">
+                {SidebarItems?.map((item, idx) => {
+                  return (
+                    <div key={idx}>
+                      <span
+                        className={`${
+                          item?.url == pathname
+                            ? "border-[#10458C]"
+                            : "border-transparent"
+                        } select-none pl-3 flex items-center px-4 py-[.775rem] transition-all duration-75 ease-in-out border-l-4  hover:border-[#10458C] cursor-pointer my-[.4rem]`}
+                      >
+                        <Link
+                          href={item?.url}
+                          className="flex items-center flex-grow text-[1rem] dark:text-neutral-400/75 text-stone-500 hover:text-dark"
+                        >
+                          {item?.name}
+                        </Link>
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-wrap ml-9 my-5">
+            <div className="w-full max-w-full sm:w-1/4 mx-auto text-center">
+              <p className="text-lg text-slate-500 py-1">
+                Tailwind CSS Component from{" "}
+                <a
+                  href="https://www.loopple.com/theme/riva-dashboard-tailwind?ref=tailwindcomponents"
+                  className="text-slate-700 hover:text-slate-900"
+                  target="_blank"
+                >
+                  Riva Dashboard Library
+                </a>{" "}
+                by{" "}
+                <a
+                  href="https://www.loopple.com"
+                  className="text-slate-700 hover:text-slate-900"
+                  target="_blank"
+                >
+                  Loopple Builder
+                </a>
+                .
+              </p>
+            </div>
+          </div>
+        </>
+        <div>Hello</div>
       </Drawer>
-      <Main open={open}>
+      <Main sx={{ background: "#FFF" }} open={open}>
         <DrawerHeader />
         {/* <MembersList /> */}
         {children}

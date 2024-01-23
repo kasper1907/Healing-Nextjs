@@ -110,3 +110,19 @@ button{
   text-align: center;
   font-family: Tajawal, Arial, sans-serif !important;
 }
+
+.text-area-parent div{
+  width: 100%;
+  /* border: 1px solid #10458c;
+  padding: 10px */
+
+}
+.text-area-parent textarea{
+  width: 100%;
+  border: 1px solid #10458c;
+  padding: 10px
+}
+
+.p-blockui {
+  backdrop-filter: blur(4px) !important;
+}

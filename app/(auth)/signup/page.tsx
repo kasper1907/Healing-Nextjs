@@ -418,30 +418,6 @@ export default function Page() {
               </Button>
             </Container>
           </Box>
-          {/* <button
-            style={{
-              background: "#FFF",
-              padding: "20px",
-            }}
-            onClick={() => handleLangItemClick("ar")}
-          >
-            العربية
-          </button> */}
-          {/* {Object.keys(Languages).map((lang) => (
-            <button
-              key={lang}
-              style={{
-                fontWeight: i18n.language === lang ? "bold" : "normal",
-              }}
-              type="submit"
-              onClick={() => {
-                i18n.changeLanguage(lang);
-              }}
-              disabled={i18n.resolvedLanguage === lang}
-            >
-              {Languages[lang].nativeName}
-            </button>
-          ))} */}
 
           <Typography
             variant="h4"
@@ -460,8 +436,7 @@ export default function Page() {
             {currentStep?.sectionText ? t(currentStep?.sectionText) : ""}
           </Typography>
         </div>
-        {activeStep === steps2.length ? (
-          // <React.Fragment data-aos="fade-right">
+        {activeStep === steps2.length ? (          // <React.Fragment data-aos="fade-right">
           //   <Typography sx={{ mt: 2, mb: 1 }}>
           //     All steps completed - you&apos;re finished
           //   </Typography>
@@ -470,6 +445,7 @@ export default function Page() {
           //     <Button onClick={handleReset}>Reset</Button>
           //   </Box>
           // </React.Fragment>
+
           <div
             data-aos="zoom-in"
             className="flex items-center flex-col gap-2 w-full h-full"

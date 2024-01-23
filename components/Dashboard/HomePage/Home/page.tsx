@@ -34,7 +34,7 @@ const Home = () => {
       ? `getAssistantGroups/${LoggedInUser?.user_id}`
       : (LoggedInUser?.role == "Therapist" &&
           `getTherapistGroups/${LoggedInUser?.user_id}`) ||
-        (LoggedInUser?.role == "Therapist" &&
+        (LoggedInUser?.role == "Doctor" &&
           `getTherapistGroups/${LoggedInUser?.user_id}`);
 
   const { data, error, isLoading } = useSWR(`Groups/${endpointName}`, getOne);

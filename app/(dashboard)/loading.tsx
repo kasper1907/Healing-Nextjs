@@ -1,3 +1,4 @@
+"use client";
 import LoadingScreen from "@/components/Dashboard/Loading/LoadingScreen";
 import { CircularProgress } from "@mui/material";
 import React from "react";

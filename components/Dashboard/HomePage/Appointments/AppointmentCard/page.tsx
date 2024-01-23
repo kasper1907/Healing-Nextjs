@@ -37,14 +37,9 @@ const AppointmentCard = ({ appointment }: any) => {
     <div className="flex flex-col w-full">
       <div className={styles.appointmentCard}>
         <div className={styles.left}>
-          <span>
-            {moment(appointment?.session_time).format("MM-DD hh:mm A")}
-          </span>
+          <span>{moment(appointment?.session_time).format("MM-DD")}</span>
           <span>To</span>
-          <span>
-            {parseInt(appointment?.session_time?.split(":")[0]) + 2}
-            {":00"} {appointment?.session_time?.includes("AM") ? "AM" : "PM "}
-          </span>
+          <span>{moment(appointment?.session_time).format("hh:mm A")}</span>
         </div>
         <div className={styles.right}>
           <Grid rowSpacing={2} container className={styles.rightGrid}>
