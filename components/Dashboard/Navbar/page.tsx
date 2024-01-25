@@ -93,8 +93,13 @@ export default function DashboardNavbar(props: Props) {
   const isLargeScreen = useMediaQuery("(min-width:765px)");
   const isInProfilePage =
     pathname == "/Profile" ||
+    pathname == "/Profile/Report" ||
+    pathname == "/dashboard/AssistantReport/" ||
     pathname == "/dashboard/Groups" ||
     (pathname.startsWith("/dashboard/Groups/") &&
+      pathname.split("/")?.length < 5);
+  pathname == "/dashboard/Groups" ||
+    (pathname.startsWith("/dashboard/AssistantReport/") &&
       pathname.split("/")?.length < 5);
   useEffect(() => {
     typeof localStorage !== "undefined" &&

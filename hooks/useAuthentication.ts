@@ -42,7 +42,12 @@ export const useAuthentication = ({ redirectTo }: Props): ReturnData => {
       "/Profile",
     ],
 
-    Assistant: ["/dashboard/Groups", "/dashboard/Users", "/report/create"],
+    Assistant: [
+      "/dashboard/Groups",
+      "/dashboard/Users",
+      "/report/create",
+      "/dashboard/AssistantReport",
+    ],
     Moderator: [
       // "/dashboard/Groups",
       // "/dashboard/Users",
@@ -53,6 +58,8 @@ export const useAuthentication = ({ redirectTo }: Props): ReturnData => {
       "/ModeratorDashboard/createGroup",
       "/ModeratorDashboard/allGroups",
       "/ModeratorDashboard/allAppointments",
+      "/ModeratorDashboard/allReports",
+      "/ModeratorDashboard/allQuestions",
       "/ModeratorDashboard/addMemberToGroup",
       "/ModeratorDashboard/sendNotification",
       "/ModeratorDashboard/UploadSession",

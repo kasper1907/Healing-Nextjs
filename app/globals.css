@@ -126,3 +126,11 @@ button{
 .p-blockui {
   backdrop-filter: blur(4px) !important;
 }
+
+.answers span{
+  font-family: Tajawal !important;
+}
+
+.answers textarea{
+  font-family: Tajawal !important;
+}

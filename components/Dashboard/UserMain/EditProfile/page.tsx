@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useTabsContext } from "../../TabsContext";
 import Aos from "aos";
 import "aos/dist/aos.css";
@@ -33,6 +33,7 @@ import { Controller, useForm } from "react-hook-form";
 import { boolean, number, object, string } from "yup";
 //@ts-ignore
 import { yupResolver } from "@hookform/resolvers/yup";
+import moment from "moment";
 
 export const CssTextField: any = styled(TextField as any)({
   "& label.Mui-focused": {
@@ -103,10 +104,10 @@ interface FormData {
   phone: string;
   country: string;
   weight: number;
-  jobTitle: string;
-  maritalStatus: string;
-  boysNumber: number;
-  girlsNumber: number;
+  job_title: string;
+  social_status: string;
+  number_of_boys: number;
+  number_of_girls: number;
 }
 
 const EditProfile = () => {
@@ -116,6 +117,7 @@ const EditProfile = () => {
   const [newData, setNewData] = React.useState({} as UserDetails);
   const [files, setFiles] = React.useState([] as any);
   const [loading, setLoading] = React.useState(false);
+  const [birthDate, setBirthDate] = useState<any>(dayjs());
   const searchParams = useSearchParams();
   const decodedToken = jwt.decode(userToken?.toString()) as any;
   const { data, isLoading } = useSWR(
@@ -144,6 +146,7 @@ const EditProfile = () => {
   }, []);
 
   useEffect(() => {
+    setBirthDate(dayjs(userData?.date_of_birth));
     setUserData({
       full_name: user?.full_name || "",
       email: user?.email || "",
@@ -158,8 +161,8 @@ const EditProfile = () => {
       number_of_boys: user?.number_of_boys || "",
       number_of_girls: user?.number_of_girls || "",
     } as UserDetails);
-  }, [user]);
-
+  }, [user, userData?.date_of_birth]);
+  // console.log(birthDate);
   const handleSubmit2 = async (e: any) => {
     e.preventDefault();
     setLoading(true);
@@ -203,15 +206,16 @@ const EditProfile = () => {
     country: string().min(1, "Invalid Country Name"),
     weight: number()
       .integer("weight must be an integer")
-      .positive("weight must be a positive number")
+      // .positive("weight must be a positive number")
       .max(120, "weight must be less than or equal to 120"),
-    jobTitle: string().min(1, "Invalid Job"),
-    maritalStatus: string(),
-    boysNumber: number()
+    job_title: string().min(1, "Invalid Job"),
+    social_status: string(),
+    number_of_boys: number()
       .integer("Boys Number must be an integer")
-      .positive("Boys Number must be a positive number")
       .max(120, "Boys Number must be less than or equal to 120"),
-    girlsNumber: number().min(1, "Invalid Number"),
+    number_of_girls: number()
+      .integer("Boys Number must be an integer")
+      .max(120, "Boys Number must be less than or equal to 120"),
   });
 
   const {
@@ -226,18 +230,54 @@ const EditProfile = () => {
       country: user?.country || "",
       email: user?.email || "",
       weight: +user?.weight || 0,
-      jobTitle: user?.job_title || "",
-      maritalStatus: user?.social_status || "",
-      boysNumber: +user?.number_of_boys || 0,
-      girlsNumber: +user?.number_of_girls || 0,
+      job_title: user?.job_title || "",
+      social_status: user?.social_status || "",
+      number_of_boys: +user?.number_of_boys || 0,
+      number_of_girls: +user?.number_of_girls || 0,
       phone: user?.phone || "",
     },
   });
 
   // Form submission handler
-  const onSubmit = (data: any) => {
-    console.log(data);
+  const onSubmit = async (data: any) => {
     // Do something with the form data
+    setLoading(true);
+    const formData = new FormData();
+    Object.entries(data).forEach(([key, value]: any) => {
+      formData.append(key, value);
+    });
+
+    if (files[0]) {
+      formData.append("file", files[0]);
+    }
+
+    if (birthDate) {
+      // console.log(birthDate);
+      formData.append("date_of_birth", birthDate);
+    }
+
+    // for (var pair of formData.entries()) {
+    //   console.log(pair[0] + ", " + pair[1]);
+    // }
+    const res = await postRequest(
+      endPoints.updateUser(decodedToken?.data?.user_id),
+      formData
+    );
+
+    if (res.status == 200 || res.status == 204 || res.status == 201) {
+      toast.success("Your Data Updated Successfully");
+      let mutateEndPoint = endPoints.getUser(decodedToken?.data?.user_id);
+      mutate(mutateEndPoint);
+    }
+    let test = await res?.data?.accessToken;
+
+    // console.log(res);
+    if (res.status == "201") {
+      if (test != undefined) {
+        setUserToken(test?.toString());
+      }
+    }
+    setLoading(false);
   };
 
   return (
@@ -299,12 +339,9 @@ const EditProfile = () => {
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DemoContainer components={["DatePicker"]}>
                 <StyledDatePicker
-                  value={dayjs(userData?.date_of_birth)}
+                  value={birthDate}
                   onChange={(e: any) => {
-                    setUserData((prev) => ({
-                      ...prev,
-                      date_of_birth: e,
-                    }));
+                    setBirthDate(e);
                   }}
                   sx={{ width: "100%" }}
                   fullWidth
@@ -440,7 +477,7 @@ const EditProfile = () => {
               Marital Status
             </InputLabel>
             <CssTextField
-              {...register("maritalStatus")}
+              {...register("social_status")}
               defaultValue={userData?.social_status}
               fullWidth
               placeholder="Enter Marital Status"
@@ -452,9 +489,9 @@ const EditProfile = () => {
                 },
               }}
             />
-            {errors.maritalStatus && (
+            {errors.social_status && (
               <p className="text-xs  text-red-500 mt-2 ml-2">
-                *{errors.maritalStatus.message}
+                *{errors.social_status.message}
               </p>
             )}
           </Grid>
@@ -464,7 +501,7 @@ const EditProfile = () => {
               Job Title
             </InputLabel>
             <CssTextField
-              {...register("jobTitle")}
+              {...register("job_title")}
               defaultValue={userData?.job_title}
               fullWidth
               placeholder="Enter Job Title"
@@ -476,9 +513,9 @@ const EditProfile = () => {
                 },
               }}
             />{" "}
-            {errors.jobTitle && (
+            {errors.job_title && (
               <p className="text-xs  text-red-500 mt-2 ml-2">
-                *{errors.jobTitle.message}
+                *{errors.job_title.message}
               </p>
             )}
           </Grid>
@@ -488,7 +525,7 @@ const EditProfile = () => {
               Boys Number
             </InputLabel>
             <CssTextField
-              {...register("boysNumber")}
+              {...register("number_of_boys")}
               defaultValue={userData?.number_of_boys}
               fullWidth
               placeholder="Enter Boys Number"
@@ -501,9 +538,9 @@ const EditProfile = () => {
               }}
             />
 
-            {errors.boysNumber && (
+            {errors.number_of_boys && (
               <p className="text-xs  text-red-500 mt-2 ml-2">
-                *{errors.boysNumber.message}
+                *{errors.number_of_boys.message}
               </p>
             )}
           </Grid>
@@ -513,7 +550,7 @@ const EditProfile = () => {
               Girls Number
             </InputLabel>
             <CssTextField
-              {...register("girlsNumber")}
+              {...register("number_of_girls")}
               defaultValue={userData?.number_of_girls}
               fullWidth
               placeholder="Enter Girls Number"
@@ -525,9 +562,9 @@ const EditProfile = () => {
                 },
               }}
             />
-            {errors.girlsNumber && (
+            {errors.number_of_girls && (
               <p className="text-xs  text-red-500 mt-2 ml-2">
-                *{errors.girlsNumber.message}
+                *{errors.number_of_girls.message}
               </p>
             )}
           </Grid>

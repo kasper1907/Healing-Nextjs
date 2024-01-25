@@ -1,6 +1,13 @@
 import React from "react";
 import styles from "@/styles/sass/Dashboard/HomePage/HomePage.module.scss";
-import { Button, Container, Grid, Skeleton, Typography } from "@mui/material";
+import {
+  Button,
+  Container,
+  Grid,
+  Skeleton,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 // import { groups } from "@/constants/Groups";
 import { GrView } from "react-icons/gr";
 import { AiOutlineEdit, AiOutlineEye } from "react-icons/ai";
@@ -13,6 +20,8 @@ import { getOne } from "@/services/service";
 import { UserContext } from "@/contexts/mainContext";
 import Image from "next/image";
 import { isArabic } from "@/utils/checkLanguage";
+import { FcAbout } from "react-icons/fc";
+import { useRouter } from "next/navigation";
 
 type Group = {
   id: number;
@@ -23,11 +32,13 @@ type Group = {
   users: any[];
   image: string;
   logo: string;
+  report_num: any;
+  ReportId: any;
 };
 const Home = () => {
   const { LoggedInUser }: any = React.useContext(UserContext);
   const UserRole = LoggedInUser?.role;
-
+  const router = useRouter();
   const loggedInUserPHash = LoggedInUser?.passwordHash;
   let endpointName =
     LoggedInUser?.role == "Assistant"
@@ -39,6 +50,8 @@ const Home = () => {
 
   const { data, error, isLoading } = useSWR(`Groups/${endpointName}`, getOne);
   const Groups: any = data?.data;
+
+  console.log(Groups);
   if (error) {
     return <Error />;
   }
@@ -48,7 +61,7 @@ const Home = () => {
         <Typography sx={{ mb: 7, ml: 2 }} color={"primary"}>
           Dashboard / All Groups
         </Typography>
-        <Grid container rowSpacing={7}>
+        <Grid container spacing={2} rowSpacing={7}>
           {isLoading ? (
             <CardsSkeleton />
           ) : (
@@ -63,6 +76,34 @@ const Home = () => {
                 sx={{ display: "flex", justifyContent: "center" }}
               >
                 <div className={styles.groupCard}>
+                  <span>
+                    {group?.report_num ? (
+                      <div
+                        style={{
+                          position: "absolute",
+                          top: "0",
+                          right: "0",
+                        }}
+                      >
+                        <Tooltip
+                          style={{ zIndex: "222222222" }}
+                          title="There is a report that should be completed"
+                        >
+                          <Link
+                            href={`/dashboard/AssistantReport/${group?.ReportId}`}
+                            target="_blank"
+                          >
+                            <FcAbout
+                              size={30}
+                              style={{
+                                cursor: "pointer",
+                              }}
+                            />
+                          </Link>
+                        </Tooltip>
+                      </div>
+                    ) : null}
+                  </span>
                   <div className={styles.img_place}>
                     <Image
                       src={`https://mtnhealingcenter.com/healing-center/${group?.logo}`}

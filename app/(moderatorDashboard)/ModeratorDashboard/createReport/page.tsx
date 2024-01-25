@@ -8,8 +8,10 @@ import {
   AutocompleteItem,
   Avatar,
   Button,
+  Chip,
   Select,
   SelectItem,
+  SelectedItems,
 } from "@nextui-org/react";
 import e from "express";
 import Image from "next/image";
@@ -22,6 +24,8 @@ const Page = () => {
   const [loading, setLoading] = React.useState(false);
   const [groupAssistants, setGroupAssistants] = React.useState<any>([]);
   const [groupUsers, setGroupUsers] = React.useState<any>([]);
+  const [clientQuestions, setClientQuestions] = React.useState<any>([]);
+  const [assistantQuestions, setAssistantQuestions] = React.useState<any>([]);
   const [report, setReport] = React.useState<any>({
     user_id: "",
     group_id: "",
@@ -34,6 +38,7 @@ const Page = () => {
     getOne
   );
   const { data: Assistants } = useSWR(`Users/GetByUserStatus/4`, getOne);
+  const { data: Questions } = useSWR(`Dashboard/getQuestions`, getOne);
 
   const { data: Clients, isLoading: LoadingClients } = useSWR(
     `Dashboard/`,
@@ -71,8 +76,42 @@ const Page = () => {
   };
   const handleCreateReport = async (e: any) => {
     e.preventDefault();
+    if (!report?.user_id || !report?.group_id || !report?.assistant_id) {
+      toast.error("Please Fill All Fields");
+      return;
+    }
+
+    if (!clientQuestions.length || !assistantQuestions.length) {
+      toast.error("Please Select Questions");
+      return;
+    }
+    let modifiedClientQuestions = clientQuestions.map((item: any) => {
+      return {
+        id: item,
+        question_for: "client",
+      };
+    });
+
+    let modifiedAssistantQuestions = assistantQuestions.map((item: any) => {
+      return {
+        id: item,
+        question_for: "assistant",
+      };
+    });
+
+    let combinedQuestions = [
+      ...modifiedClientQuestions,
+      ...modifiedAssistantQuestions,
+    ];
+
+    // return;
+
     setLoading(true);
-    const res = await postRequest(`Dashboard/create_report`, report);
+    const res = await postRequest(`Dashboard/create_report`, {
+      ...report,
+      questions_ids: combinedQuestions,
+    });
+
     if (res.status == "201") {
       toast.success("Report Created Successfully");
       setReport(null);
@@ -101,6 +140,8 @@ const Page = () => {
         <Grid item xs={12} md={12} sx={{ mt: 3 }}>
           <Autocomplete
             className="h-12"
+            label="Select a Group"
+            labelPlacement="outside"
             aria-label="Search By Group Name..."
             classNames={{}}
             placeholder="Search By Group Name..."
@@ -191,7 +232,9 @@ const Page = () => {
               className="h-12"
               aria-label="Search for a Client"
               classNames={{}}
+              labelPlacement="outside"
               placeholder="Search for a Client"
+              label="Search for a Client"
               defaultItems={groupUsers}
               value={report?.user_id || ""}
               onSelectionChange={(e) => {
@@ -216,23 +259,93 @@ const Page = () => {
 
         <Grid item xs={12} md={12} sx={{ mt: 3 }}>
           <Select
-            items={[
-              { id: 1, key: 1, value: "1" },
-              { id: 2, key: 2, value: "2" },
-            ]}
-            aria-label="Select A Report Number"
-            placeholder="Select Report Number"
+            items={Questions?.data}
+            aria-label="Select Client Questions"
+            placeholder="Select Client Questions"
+            label="Select Client Questions"
             labelPlacement="outside"
+            isMultiline={true}
+            value={clientQuestions}
+            onSelectionChange={(e) => {
+              setClientQuestions(Array.from(new Set(e)));
+            }}
+            selectionMode="multiple"
             classNames={{
               base: "w-full",
               trigger: "h-12",
             }}
+            renderValue={(items: SelectedItems<any>) => {
+              return (
+                <div className="flex flex-wrap gap-2">
+                  {items.map((item: any) => (
+                    <Chip
+                      style={{
+                        fontFamily: "Tajawal",
+                      }}
+                      key={item.key}
+                    >
+                      {item.data.title}
+                    </Chip>
+                  ))}
+                </div>
+              );
+            }}
           >
-            {(user: any) => (
-              <SelectItem key={user.id} textValue={user.value}>
+            {(question: any) => (
+              <SelectItem key={question.id} textValue={question.title}>
                 <div className="flex gap-2 items-center">
                   <div className="flex flex-col">
-                    <span className="text-small">{user.value}</span>
+                    <span className="text-small !font-[Tajawal]">
+                      {question.title}
+                    </span>
+                  </div>
+                </div>
+              </SelectItem>
+            )}
+          </Select>
+        </Grid>
+
+        <Grid item xs={12} md={12} sx={{ mt: 3 }}>
+          <Select
+            items={Questions?.data}
+            aria-label="Select Assistant Questions"
+            placeholder="Select Assistant Questions"
+            label="Select Assistant Questions"
+            labelPlacement="outside"
+            isMultiline={true}
+            value={assistantQuestions}
+            onSelectionChange={(e) => {
+              setAssistantQuestions(Array.from(new Set(e)));
+            }}
+            selectionMode="multiple"
+            classNames={{
+              base: "w-full",
+              trigger: "h-12",
+            }}
+            renderValue={(items: SelectedItems<any>) => {
+              return (
+                <div className="flex flex-wrap gap-2">
+                  {items.map((item: any) => (
+                    <Chip
+                      style={{
+                        fontFamily: "Tajawal",
+                      }}
+                      key={item.key}
+                    >
+                      {item.data.title}
+                    </Chip>
+                  ))}
+                </div>
+              );
+            }}
+          >
+            {(question: any) => (
+              <SelectItem key={question.id} textValue={question.title}>
+                <div className="flex gap-2 items-center">
+                  <div className="flex flex-col">
+                    <span className="text-small !font-[Tajawal]">
+                      {question.title}
+                    </span>
                   </div>
                 </div>
               </SelectItem>

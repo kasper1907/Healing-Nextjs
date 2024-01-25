@@ -58,6 +58,7 @@ const Page = () => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+    console.log(Member);
     if (!Member.user_id || !Member.group_id)
       return toast.error("Please Fill All Fields");
     setLoading(true);
@@ -150,7 +151,14 @@ const Page = () => {
         <Grid item xs={12} md={12} sx={{ mt: 3 }}>
           <Select
             value={Member?.group_id}
-            onChange={(e) => setMember({ ...Member, group_id: e.target.value })}
+            isMultiline={false}
+            selectionMode="single"
+            onSelectionChange={(e) => {
+              setMember({
+                ...Member,
+                group_id: Array.from(new Set(e))[0] as string,
+              });
+            }}
             items={Groups || []}
             placeholder={
               Groups?.length > 0

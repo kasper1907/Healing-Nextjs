@@ -14,6 +14,7 @@ import {
   AvatarGroup,
   Avatar,
   Input,
+  Chip,
 } from "@nextui-org/react";
 import { Tooltip, Typography } from "@mui/material";
 import { getOne } from "@/services/service";
@@ -23,6 +24,7 @@ import ActionsMenu from "@/components/ModeratorDashboard/MembersList/Actions";
 import Image from "next/image";
 import { isArabic } from "@/utils/checkLanguage";
 import GroupsTableActions from "@/components/ModeratorDashboard/MembersList/GroupsTableActions";
+import AllReportsActionsMenu from "@/components/ModeratorDashboard/AllReports/TableActions";
 
 type IconSvgProps = SVGProps<SVGSVGElement> & {
   size?: number;
@@ -59,7 +61,7 @@ export default function Page() {
   const [filterValue, setFilterValue] = React.useState("");
   const [page, setPage] = React.useState(1);
   const [groupsList, setGroupsList] = React.useState([]);
-  const { data, isLoading } = useSWR(`Groups/GetAllGroups`, getOne, {
+  const { data, isLoading } = useSWR(`Dashboard/getAllReports`, getOne, {
     onSuccess: (data) => {
       let dataWithKey = data?.data?.map((item: any, idx: any) => {
         return { ...item, key: idx + 1 };
@@ -89,10 +91,8 @@ export default function Page() {
     let filteredUsers = [...groupsList];
 
     if (hasSearchFilter) {
-      filteredUsers = filteredUsers.filter(
-        (user: any) =>
-          user?.group_name.toLowerCase().includes(filterValue.toLowerCase()) ||
-          user?.course_name?.toLowerCase().includes(filterValue.toLowerCase())
+      filteredUsers = filteredUsers.filter((user: any) =>
+        user?.client_name.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
 
@@ -107,8 +107,6 @@ export default function Page() {
   }, [page, filteredItems]);
 
   const pages = Math.ceil(filteredItems?.length / rowsPerPage);
-
-  // console.log("filteredItems", filteredItems);
 
   const bottomContent = React.useMemo(() => {
     return (
@@ -133,12 +131,12 @@ export default function Page() {
         variant="h6"
         sx={{ mb: 2, ml: 2, fontWeight: "400" }}
       >
-        Therapy Groups
+        Client Reports
       </Typography>
       <Input
         isClearable
         className="w-full sm:max-w-[44%] mb-4"
-        placeholder="Search by group name or by course name..."
+        placeholder="Search by Client Name..."
         startContent={<SearchIcon />}
         value={filterValue}
         style={{
@@ -157,11 +155,13 @@ export default function Page() {
       >
         <TableHeader>
           <TableColumn key="id">ID</TableColumn>
-          <TableColumn key="name">Group Name</TableColumn>
-          <TableColumn key="number">Group Number</TableColumn>
-          <TableColumn key="course">Course</TableColumn>
-          <TableColumn key="therapists">Therapists</TableColumn>
-          <TableColumn key="assistants">Assistants</TableColumn>
+          <TableColumn key="report_num">Report Number</TableColumn>
+          <TableColumn key="client_name">Client</TableColumn>
+          <TableColumn key="Therapist">Assistant</TableColumn>
+          <TableColumn key="is_completed">Client Status</TableColumn>
+          <TableColumn key="is_completed_by_assistant">
+            Assistant Status
+          </TableColumn>
           <TableColumn key="Actions">Actions</TableColumn>
         </TableHeader>
         <TableBody
@@ -186,23 +186,42 @@ export default function Page() {
               <TableCell>{item.id}</TableCell>
               <TableCell
                 style={{
-                  fontFamily: isArabic(item?.group_name)
+                  fontFamily: isArabic(item?.report_num)
                     ? "Tajawal"
                     : "inherit",
                 }}
               >
                 <div className="w-full flex flex-row-reverse justify-end gap-2 items-center">
-                  <span>{item?.group_name}</span>
+                  <span>{item?.report_num}</span>
                 </div>
-              </TableCell>
-              <TableCell>
-                {item.group_number ? item.group_number : "No Name Found"}
               </TableCell>
               <TableCell style={{ fontFamily: "Tajawal" }}>
                 <div className="w-full flex flex-row-reverse justify-end gap-2 items-center">
-                  <span>{item.course_name}</span>
+                  <span>{item.client_name}</span>
                   <Image
-                    src={process.env.NEXT_PUBLIC_BASE_URL2 + item?.logo}
+                    src={process.env.NEXT_PUBLIC_BASE_URL + item?.client_image}
+                    width={30}
+                    height={30}
+                    alt="Course Logo"
+                    style={{
+                      width: "30px",
+                      height: "30px",
+                      objectFit: "cover",
+                      background: "#fff",
+                      borderRadius: "50%",
+                      boxShadow: "0px 0px 5px #0000001A",
+                    }}
+                  />
+                </div>
+              </TableCell>
+              <TableCell style={{ fontFamily: "Tajawal" }}>
+                <div className="w-full flex flex-row-reverse justify-end gap-2 items-center">
+                  <span>{item?.Therapist}</span>
+                  <Image
+                    src={
+                      process.env.NEXT_PUBLIC_BASE_URL +
+                      "files/static_assets/male-av.jpg"
+                    }
                     width={30}
                     height={30}
                     alt="Course Logo"
@@ -219,38 +238,38 @@ export default function Page() {
               </TableCell>
 
               <TableCell>
-                {item?.therapists?.length > 0 ? (
-                  <AvatarGroup isBordered>
-                    {item?.therapists?.map((el: any, idx: number) => (
-                      <Tooltip key={idx} title={el?.user_name}>
-                        <Avatar
-                          src={`${process.env.NEXT_PUBLIC_BASE_URL}files/static_assets/male-av.jpg`}
-                        />
-                      </Tooltip>
-                    ))}
-                  </AvatarGroup>
-                ) : (
-                  "No Therapists"
-                )}
+                <Chip
+                  variant="flat"
+                  style={{
+                    fontSize: "12px",
+                  }}
+                  color={item?.is_completed == "true" ? "success" : "danger"}
+                >
+                  {item?.is_completed == "true"
+                    ? "Completed By Assistant"
+                    : "Not Completed"}
+                </Chip>
               </TableCell>
 
               <TableCell>
-                {item?.assistants?.length > 0 ? (
-                  <AvatarGroup isBordered>
-                    {item?.assistants?.map((el: any, idx: number) => (
-                      <Tooltip key={idx} title={el?.user_name}>
-                        <Avatar
-                          src={`${process.env.NEXT_PUBLIC_BASE_URL}files/static_assets/male-av.jpg`}
-                        />
-                      </Tooltip>
-                    ))}
-                  </AvatarGroup>
-                ) : (
-                  <div style={{ fontFamily: "Roboto" }}>N/A</div>
-                )}
+                <Chip
+                  variant="flat"
+                  style={{
+                    fontSize: "12px",
+                  }}
+                  color={
+                    item?.is_completed_by_assistant == "true"
+                      ? "success"
+                      : "danger"
+                  }
+                >
+                  {item?.is_completed_by_assistant == "true"
+                    ? "Completed By Assistant"
+                    : "Not Completed"}
+                </Chip>
               </TableCell>
               <TableCell>
-                <GroupsTableActions item={item} />
+                <AllReportsActionsMenu item={item} />
               </TableCell>
             </TableRow>
           )}

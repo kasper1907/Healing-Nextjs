@@ -13,21 +13,35 @@ import { Button } from "primereact/button";
 import { Message } from "primereact/message";
 import Link from "next/link";
 
-const ProfileMain = ({ params }: any) => {
+const ProfileMain = ({ blockProfile }: any) => {
   const { userTabsValue, setUserTabsValue }: any = useTabsContext();
   const currentTab = userTabs.find((tab) => tab.value == userTabsValue);
   const [blocked, setBlocked] = React.useState(false);
+
   const renderMessage = () => {
     return (
-      <div className="flex items-center">
-        <p>You Have A Report That Must </p>
-        <Link href={"/Profile/Report"}> Complete Now!</Link>
+      <div className="flex items-center flex-col gap-2">
+        <div>
+          <p>You Have A Report That Should Be Completed Firstly, </p>
+          <Link
+            href={"/Profile/Report"}
+            target="_blank"
+            style={{
+              textDecoration: "underline",
+            }}
+            className="ml-2 text-underline"
+          >
+            {" "}
+            Complete Now!
+          </Link>
+        </div>
       </div>
     );
   };
+
   return (
     <>
-      <BlockUI blocked={true} fullScreen />
+      <BlockUI blocked={blockProfile == false ? false : true} fullScreen />
       <div
         style={{
           position: "absolute",
@@ -41,6 +55,7 @@ const ProfileMain = ({ params }: any) => {
         <Message
           className="text-[12px]"
           severity="info"
+          hidden={!blockProfile}
           text={renderMessage()}
         />
       </div>
