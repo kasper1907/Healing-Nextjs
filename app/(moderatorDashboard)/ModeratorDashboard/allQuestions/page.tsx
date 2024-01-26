@@ -15,6 +15,12 @@ import {
   Avatar,
   Input,
   Chip,
+  Button,
+  useDisclosure,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+  Dropdown,
 } from "@nextui-org/react";
 import { Tooltip, Typography } from "@mui/material";
 import { getOne } from "@/services/service";
@@ -25,6 +31,9 @@ import Image from "next/image";
 import { isArabic } from "@/utils/checkLanguage";
 import GroupsTableActions from "@/components/ModeratorDashboard/MembersList/GroupsTableActions";
 import AllReportsActionsMenu from "@/components/ModeratorDashboard/AllReports/TableActions";
+import { HiDotsVertical } from "react-icons/hi";
+import EditQuestion from "@/components/ModeratorDashboard/Question/EditQuestion";
+import CreateQuestion from "@/components/ModeratorDashboard/Question/CreateQuestion";
 
 type IconSvgProps = SVGProps<SVGSVGElement> & {
   size?: number;
@@ -58,7 +67,14 @@ const SearchIcon = (props: IconSvgProps) => (
 );
 
 export default function Page() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isOpen2,
+    onOpen: onOpen2,
+    onClose: onClose2,
+  } = useDisclosure();
   const [filterValue, setFilterValue] = React.useState("");
+  const [currentItem, setCurrentItem] = React.useState({});
   const [page, setPage] = React.useState(1);
   const [groupsList, setGroupsList] = React.useState([]);
   const { data, isLoading } = useSWR(`Dashboard/getQuestions`, getOne, {
@@ -88,15 +104,15 @@ export default function Page() {
   const rowsPerPage = 11;
 
   const filteredItems = React.useMemo(() => {
-    let filteredUsers = [...groupsList];
+    let filteredQuestions = [...groupsList];
 
     if (hasSearchFilter) {
-      filteredUsers = filteredUsers.filter((user: any) =>
-        user?.client_name.toLowerCase().includes(filterValue.toLowerCase())
+      filteredQuestions = filteredQuestions.filter((question: any) =>
+        question?.title.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
 
-    return filteredUsers;
+    return filteredQuestions;
   }, [groupsList, filterValue, hasSearchFilter]);
 
   const items = React.useMemo(() => {
@@ -133,22 +149,56 @@ export default function Page() {
       >
         All Questions
       </Typography>
-      <Input
-        isClearable
-        className="w-full sm:max-w-[44%] mb-4"
-        placeholder="Search by Client Name..."
-        startContent={<SearchIcon />}
-        value={filterValue}
-        style={{
-          fontFamily: isArabic(filterValue) ? "Tajawal" : "Roboto",
-        }}
-        onClear={() => onClear()}
-        onValueChange={onSearchChange}
-      />
+      <div className="flex flex-col md:flex-row justify-between items-center mb-0 md:mb-4">
+        <Input
+          isClearable
+          className="w-full sm:max-w-[44%] mb-4"
+          placeholder="Search by Question Title..."
+          startContent={<SearchIcon />}
+          value={filterValue}
+          style={{
+            fontFamily: isArabic(filterValue) ? "Tajawal" : "Roboto",
+          }}
+          onClear={() => onClear()}
+          onValueChange={onSearchChange}
+        />
+
+        <div>
+          {" "}
+          <Button
+            color={undefined}
+            style={{
+              borderColor: "#10458C",
+              color: "#10458C",
+            }}
+            onClick={() => {
+              onOpen2();
+            }}
+            variant="bordered"
+            startContent={
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M13.5 16.875h3.375m0 0h3.375m-3.375 0V13.5m0 3.375v3.375M6 10.5h2.25a2.25 2.25 0 0 0 2.25-2.25V6a2.25 2.25 0 0 0-2.25-2.25H6A2.25 2.25 0 0 0 3.75 6v2.25A2.25 2.25 0 0 0 6 10.5Zm0 9.75h2.25A2.25 2.25 0 0 0 10.5 18v-2.25a2.25 2.25 0 0 0-2.25-2.25H6a2.25 2.25 0 0 0-2.25 2.25V18A2.25 2.25 0 0 0 6 20.25Zm9.75-9.75H18a2.25 2.25 0 0 0 2.25-2.25V6A2.25 2.25 0 0 0 18 3.75h-2.25A2.25 2.25 0 0 0 13.5 6v2.25a2.25 2.25 0 0 0 2.25 2.25Z"
+                />
+              </svg>
+            }
+          >
+            Add New Question
+          </Button>
+        </div>
+      </div>
       <Table
         isStriped
         aria-label="Example table with client side pagination"
-        // bottomContent={bottomContent}
         classNames={{
           wrapper: "min-h-[222px]",
         }}
@@ -163,7 +213,7 @@ export default function Page() {
           emptyContent={
             isLoading ? (
               <div className="w-full flex justify-center items-center">
-                <CircularProgress size="sm" /> Loading Questions...
+                <CircularProgress size="sm" /> Loading data...
               </div>
             ) : (
               "No Groups found"
@@ -199,12 +249,64 @@ export default function Page() {
               </TableCell>
 
               <TableCell>
-                <AllReportsActionsMenu item={item} />
+                <Dropdown>
+                  <DropdownTrigger>
+                    <Button
+                      style={{
+                        userSelect: "none",
+                        background: "transparent",
+                        minWidth: 0,
+                        width: "fit-content",
+                        padding: 0,
+                      }}
+                      variant="light"
+                    >
+                      <HiDotsVertical />
+                    </Button>
+                  </DropdownTrigger>
+                  <DropdownMenu
+                    disabledKeys={["delete"]}
+                    aria-label="Action event example"
+                  >
+                    <DropdownItem
+                      key="edit"
+                      onClick={() => {
+                        onOpen();
+                        setCurrentItem(item);
+                      }}
+                    >
+                      Edit Questions
+                    </DropdownItem>
+
+                    <DropdownItem
+                      onClick={() => {
+                        onOpen();
+                      }}
+                      key="delete"
+                      className="text-danger"
+                      color="danger"
+                    >
+                      Delete
+                    </DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
               </TableCell>
             </TableRow>
           )}
         </TableBody>
       </Table>
+      <EditQuestion
+        item={currentItem}
+        isOpen={isOpen}
+        onOpen={onOpen}
+        onClose={onClose}
+      />
+      <CreateQuestion
+        item={currentItem}
+        isOpen={isOpen2}
+        onOpen={onOpen2}
+        onClose={onClose2}
+      />
     </>
   );
 }
