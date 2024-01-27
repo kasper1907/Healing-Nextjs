@@ -12,6 +12,7 @@ type ButtonProps = {
   isLink: boolean;
   url?: string;
   query?: any;
+  type?: "button" | "submit";
 };
 const StyledButton = ({
   label,
@@ -21,9 +22,11 @@ const StyledButton = ({
   isLink,
   url,
   query,
+  type,
 }: ButtonProps) => {
   return (
     <Button
+      type={type || "button"}
       onClick={() => onClick && onClick()}
       className={`${styles.NavBarLink} ${isPrimary ? styles.first : ""} ${
         fullWidth ? styles.fullWidth : ""

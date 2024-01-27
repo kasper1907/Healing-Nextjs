@@ -11,6 +11,7 @@ import "aos/dist/aos.css";
 import "./signup.css";
 import {
   Nationalities,
+  Nationalities2,
   customLabels,
   placeOfBirthObject,
 } from "@/constants/Countries";
@@ -41,7 +42,6 @@ const BirthInfo = ({
   }, []);
 
   const handleSubmit = () => {
-
     if (
       formData.dateOfBirth !== ""
       //  &&
@@ -167,7 +167,7 @@ const BirthInfo = ({
                 setSelectedNationality(el);
                 setFormData({ ...formData, Nationality: nationality });
               }}
-              countries={["US", "GB", "FR", "DE", "IT", "ES"]}
+              countries={Nationalities2}
               searchable={true}
               placeholder={t("Select Your Nationality")}
               showOptionLabel={true}

@@ -6,12 +6,11 @@ import { MiddlewareFactory } from "./types";
 export const withAuthorization: MiddlewareFactory = (next) => {
   return async (request: NextRequest, _next: NextFetchEvent) => {
     const pathname = request.nextUrl.pathname;
-    const isPublicPath =
-      pathname == "/login" || pathname == "/signup" || pathname == "/";
+    const isPublicPath = pathname == "/login" || pathname == "/";
     const token = request.cookies.get("SID");
     const decodedToken: any = await jwt.decode(token?.value?.toString() || "");
     const userRole = decodedToken?.data?.role;
-    if (!isPublicPath && !token?.value) {
+    if (!isPublicPath && !token?.value && pathname != "/signup") {
       return NextResponse.redirect(new URL("/login", request.url));
     }
     if (pathname == "/dashboard" && userRole == "User") {

@@ -55,10 +55,10 @@ const Page = () => {
   const toggleLoading = () => {
     setLoading(!loading);
   };
+  console.log(Member);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    console.log(Member);
     if (!Member.user_id || !Member.group_id)
       return toast.error("Please Fill All Fields");
     setLoading(true);
@@ -74,7 +74,6 @@ const Page = () => {
       toast.success("Member Added Successfully");
       setLoading(false);
     } else {
-      console.log(res);
       toast.error(res.data.message || "Something Went Wrong");
       setLoading(false);
     }
@@ -89,12 +88,9 @@ const Page = () => {
 
     let Course = await getOne(`Courses/getOne/${CourseId}`);
     Course = Course?.data;
-
     setCourse(Course);
-
     setGroups(Groups);
-
-    setMember({ ...Member, course_id: CourseId });
+    setMember({ ...Member, course_id: CourseId, user_id: e });
   };
 
   if (isLoading || LoadingClients)

@@ -47,6 +47,10 @@ const NotificationsMenu = ({ accessToken }: { accessToken: string }) => {
       revalidateOnFocus: false,
     }
   );
+
+  // console.log("Notifications", Notifications);
+  // console.log("UnReadNotifications", UnReadNotifications);
+  // console.log("ReadNotifications", ReadNotifications);
   <Dropdown>
     <DropdownTrigger>
       <Button

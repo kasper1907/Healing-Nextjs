@@ -355,14 +355,16 @@ export default function LayoutWrapper({
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" noWrap component="div">
-              <Image
-                src={"/images/Dashboard/white.png"}
-                alt="White Logo"
-                width={120}
-                height={40}
-                loading="lazy"
-                objectFit="contain"
-              />
+              <Link href="/">
+                <Image
+                  src={"/images/Dashboard/white.png"}
+                  alt="White Logo"
+                  width={120}
+                  height={40}
+                  loading="lazy"
+                  objectFit="contain"
+                />
+              </Link>
             </Typography>
           </Box>
 
@@ -439,7 +441,7 @@ export default function LayoutWrapper({
         </List> */}
         <>
           <div
-            className="group/sidebar w-[300px] flex flex-col shrink-0   m-0 fixed z-40 inset-y-0 left-0 bg-white border-r border-r-dashed border-r-neutral-200 sidenav fixed-start loopple-fixed-start"
+            className="overflow-y-scroll group/sidebar dashboard-sidebar w-[300px] flex flex-col shrink-0   m-0 fixed z-40 inset-y-0 left-0 bg-white border-r border-r-dashed border-r-neutral-200 sidenav fixed-start loopple-fixed-start"
             id="sidenav-main"
           >
             <div className="hidden border-b border-dashed lg:block dark:border-neutral-700/70 border-neutral-200"></div>
@@ -530,27 +532,7 @@ export default function LayoutWrapper({
             </div>
           </div>
           <div className="flex flex-wrap ml-9 my-5">
-            <div className="w-full max-w-full sm:w-1/4 mx-auto text-center">
-              <p className="text-lg text-slate-500 py-1">
-                Tailwind CSS Component from{" "}
-                <a
-                  href="https://www.loopple.com/theme/riva-dashboard-tailwind?ref=tailwindcomponents"
-                  className="text-slate-700 hover:text-slate-900"
-                  target="_blank"
-                >
-                  Riva Dashboard Library
-                </a>{" "}
-                by{" "}
-                <a
-                  href="https://www.loopple.com"
-                  className="text-slate-700 hover:text-slate-900"
-                  target="_blank"
-                >
-                  Loopple Builder
-                </a>
-                .
-              </p>
-            </div>
+            <div className="w-full max-w-full sm:w-1/4 mx-auto text-center"></div>
           </div>
         </>
         <div>Hello</div>

@@ -40,8 +40,8 @@ export default function Page({ isOpen, onOpen, onOpenChange, user }: any) {
     e.preventDefault();
     setLoading(true);
     const res = await postRequest(`Notifications/Send`, Notification);
+    console.log(res);
     if (res.status == 201) {
-      onOpenChange();
       setNotification({
         header: "",
         body: "",

@@ -20,8 +20,16 @@ import { getOne, postRequest } from "@/services/service";
 import { toast } from "sonner";
 import useCookie from "react-use-cookie";
 import jwt from "jsonwebtoken";
-import { Box, Typography } from "@mui/material";
+import { Box, InputLabel, Typography } from "@mui/material";
 import { isArabic } from "@/utils/checkLanguage";
+import {
+  DatePicker,
+  DateTimePicker,
+  LocalizationProvider,
+} from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import dayjs from "dayjs";
 export default function Page({ isOpen, onOpen, onOpenChange, user }: any) {
   const [userToken, setUserToken] = useCookie("SID");
 
@@ -31,8 +39,8 @@ export default function Page({ isOpen, onOpen, onOpenChange, user }: any) {
   const [loading, setLoading] = useState(false);
   const [Session, setSession] = useState({
     title: "",
-    date: "",
-    group_id: "",
+    date: dayjs(),
+    group_id: 0,
     link: "",
   });
 
@@ -40,11 +48,12 @@ export default function Page({ isOpen, onOpen, onOpenChange, user }: any) {
     e.preventDefault();
     setLoading(true);
     const res = await postRequest(`Videos/uploadSessionVideo`, Session);
+
     if (res.status == 200) {
       setSession({
         title: "",
-        date: "",
-        group_id: "",
+        date: dayjs(),
+        group_id: 0,
         link: "",
       });
       toast.success("Session Saved Successfully");
@@ -81,19 +90,30 @@ export default function Page({ isOpen, onOpen, onOpenChange, user }: any) {
             });
           }}
         />
-        <Input
-          autoFocus
-          label="Video Date"
-          placeholder="Enter Video Date"
-          variant="bordered"
-          value={Session?.date}
-          onChange={(e) => {
-            setSession({
-              ...Session,
-              date: e.target.value,
-            });
-          }}
-        />
+        <InputLabel>Session Date</InputLabel>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DemoContainer components={["DateTimePicker"]}>
+            <DateTimePicker
+              value={dayjs(Session?.date)}
+              onChange={(e) => {
+                setSession({
+                  ...Session,
+                  date: e as any,
+                });
+              }}
+              sx={{
+                width: "100%",
+                mt: "-15px",
+                "& .MuiInputBase-root": {
+                  borderRadius: "10px",
+                  marginTop: "-8px",
+                  border: "1px solid #EEE",
+                },
+              }}
+            />
+          </DemoContainer>
+        </LocalizationProvider>
+        <InputLabel>Video Link</InputLabel>
         <Input
           autoFocus
           label="Video Link"
@@ -107,6 +127,7 @@ export default function Page({ isOpen, onOpen, onOpenChange, user }: any) {
             });
           }}
         />
+        <InputLabel>Related Group</InputLabel>
         <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
           <Select
             label={
@@ -114,12 +135,12 @@ export default function Page({ isOpen, onOpen, onOpenChange, user }: any) {
                 ? ModeratorGroups?.message
                 : "Choose A Group"
             }
-            className=""
+            className="!font-[Tajawal]"
             value={Session?.group_id}
             onChange={(e) => {
               setSession({
                 ...Session,
-                group_id: e.target.value,
+                group_id: +e.target.value,
               });
             }}
           >

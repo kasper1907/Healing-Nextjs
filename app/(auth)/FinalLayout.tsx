@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import "../i18n";
 import { useTranslation } from "react-i18next";
 import { ThemeProvider } from "@mui/material";
@@ -10,24 +10,31 @@ import Link from "next/link";
 import "./main.css";
 
 const FinalLayout = ({ children }: { children: React.ReactNode }) => {
+  const [direction, setDirection] = React.useState<"ltr" | "rtl">("ltr");
+  const [font, setFont] = React.useState<"Roboto" | "Tajawal">("Roboto");
   const { i18n }: any = useTranslation();
-  const languagesFonts: any = {
-    ar: "Tajawal, sans-serif !important",
-    en: "Roboto, sans-serif !important",
-  };
+
+  useEffect(() => {
+    const languagesFonts: any = {
+      ar: "Tajawal, sans-serif !important",
+      en: "Roboto, sans-serif !important",
+    };
+
+    const languagesDirection: any = {
+      ar: "rtl",
+      en: "ltr",
+    };
+
+    setDirection(languagesDirection[i18n.resolvedLanguage]);
+    setFont(languagesFonts[i18n.resolvedLanguage]);
+  }, [i18n.resolvedLanguage]);
 
   return (
     <html
       lang={i18n.resolvedLanguage}
-      dir={
-        i18n.resolvedLanguage == "en"
-          ? "ltr"
-          : i18n.resolvedLanguage == "ar"
-          ? "rtl"
-          : ""
-      }
+      dir={direction}
       style={{
-        fontFamily: languagesFonts[i18n.resolvedLanguage],
+        fontFamily: font,
       }}
     >
       <head>

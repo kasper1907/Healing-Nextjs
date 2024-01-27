@@ -23,7 +23,9 @@ import useCookie from "react-use-cookie";
 import { getCookie } from "@/utils/getCookies";
 import { Logout as LogoutHandler } from "@/utils/Logout";
 import { useRouter } from "next/navigation";
-
+import jwt from "jsonwebtoken";
+import { Avatar } from "@material-tailwind/react";
+import { Tooltip } from "@mui/material";
 interface Props {
   /**
    * Injected by the documentation to work in an iframe.
@@ -42,22 +44,53 @@ const handleContactUs = () => {
   });
 };
 const drawerWidth = 300;
-const navItems = [
-  { id: 1, title: "جلساتي", url: "/Profile" },
-  { id: 2, title: "المدونه", url: "#" },
-  { id: 3, title: "تواصل معنا", url: "#", onclick: handleContactUs },
-];
 
 export default function Navbar(props: Props) {
   const { window, accessToken } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [dashboardLink, setDashboardLink] = React.useState("/Profile");
   const [userToken, setUserToken] = useCookie("SID");
   const router = useRouter();
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
 
-  console.log(userToken);
+  const decodedToken: any = jwt.decode(accessToken as any);
+  React.useEffect(() => {
+    const userRedirectionLinks: any = {
+      Moderator: "/ModeratorDashboard",
+      User: "/Profile",
+      Assistant: "/dashboard/Groups",
+      Doctor: "/dashboard/Groups",
+    };
+    setDashboardLink(userRedirectionLinks[decodedToken?.data?.role]);
+  }, [decodedToken]);
+
+  // const navItems = [
+  //   { id: 1, title: "جلساتي", url: dashboardLink || "#" },
+  //   { id: 2, title: "المدونه", url: "#" },
+  //   { id: 3, title: "تواصل معنا", url: "#", onclick: handleContactUs },
+  // ];
+
+  const navItems = React.useMemo(() => {
+    return [
+      {
+        id: 1,
+        title: "جلساتي",
+        url:
+          decodedToken?.data?.role == "User"
+            ? "/Profile"
+            : decodedToken?.data?.role == "Moderator"
+            ? "/ModeratorDashboard"
+            : decodedToken?.data?.role == "Doctor" ||
+              decodedToken?.data?.role == "Therapist"
+            ? "/dashboard/Groups"
+            : "/login",
+      },
+      { id: 2, title: "المدونه", url: "#" },
+      { id: 3, title: "تواصل معنا", url: "#", onclick: handleContactUs },
+    ];
+  }, []);
 
   const handleLogout = () => {
     LogoutHandler();
@@ -159,18 +192,29 @@ export default function Navbar(props: Props) {
                 display: { xs: "none", sm: "flex" },
               }}
             >
-              <Button className={styles.NavBarLink}>English</Button>
               {accessToken == undefined ? (
                 <Button className={styles.NavBarLink}>
                   <Link href={"/login"}>تسجيل الدخول</Link>
                 </Button>
               ) : (
-                <Button
-                  onClick={handleLogout}
-                  className={styles.NavBarLinkLogout}
-                >
-                  تسجيل الخروج
-                </Button>
+                <>
+                  <Button
+                    onClick={handleLogout}
+                    className={styles.NavBarLinkLogout}
+                  >
+                    تسجيل الخروج
+                  </Button>
+                  <Tooltip title={decodedToken?.data?.full_name}>
+                    <Avatar
+                      className="cursor-pointer"
+                      size="sm"
+                      src={`${process.env.NEXT_PUBLIC_BASE_URL}${
+                        decodedToken ? decodedToken?.data?.image : ""
+                      }`}
+                      alt="avatar"
+                    />
+                  </Tooltip>
+                </>
               )}
             </Box>
 
@@ -185,13 +229,14 @@ export default function Navbar(props: Props) {
             >
               {navItems.map((item: NavbarItems, index: number) => (
                 <Link
-                  href={item.url}
+                  href={item?.url}
+                  className={`${styles.navLink} ${index == 0 && styles.active}`}
                   onClick={(e) => {
                     e.preventDefault();
+                    console.log(item?.url);
                     item?.onclick && item?.onclick();
                     item?.url ? router.push(item?.url) : null;
                   }}
-                  className={`${styles.navLink} ${index == 0 && styles.active}`}
                   key={index}
                   style={{ color: "#000" }}
                 >

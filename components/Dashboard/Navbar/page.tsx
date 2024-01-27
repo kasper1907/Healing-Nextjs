@@ -66,7 +66,6 @@ export default function DashboardNavbar(props: Props) {
   const PageParams = useParams();
   const { id, userId } = PageParams;
   const [userImg, setUserImg] = useState("");
-
   const [userToken, setUserToken] = useCookie("SID");
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [userData, setUserData] = React.useState<any>({});
@@ -369,10 +368,8 @@ export default function DashboardNavbar(props: Props) {
                 </Typography>
                 <div className="gap-4 flex flex-row items-center">
                   {" "}
-                  {/* <NotificationsMenu accessToken={accessToken} /> */}
-                  {/* <NotificationsMenu accessToken={accessToken} /> */}
-                  <Notifications accessToken={accessToken} />
                   {isLargeScreen ? <UserMenu /> : null}
+                  <Notifications accessToken={accessToken} />
                 </div>
                 <IconButton
                   color="inherit"

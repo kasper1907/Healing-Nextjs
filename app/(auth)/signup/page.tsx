@@ -39,6 +39,7 @@ import { TfiWorld } from "react-icons/tfi";
 import ColorTest from "../../../components/Signup/ColorTest";
 import { endPoints } from "@/services/endpoints";
 import { getOne } from "@/services/service";
+import Loading from "@/app/(dashboard)/loading";
 
 type Session = {
   ar_name: string;
@@ -57,6 +58,7 @@ export default function Page() {
     en: { nativeName: "English" },
     ar: { nativeName: "Arabic" },
   };
+  const [loadingChangeLang, setLoadingChangeLang] = React.useState(false);
   const searchParams = useSearchParams();
   const sessionId: string | any = searchParams.get("sessionId");
   const [steps2, setSteps2] = React.useState<any>([]);
@@ -88,6 +90,10 @@ export default function Page() {
   }, []);
 
   const handleLangItemClick = (lang: "en" | "ar") => {
+    setLoadingChangeLang(true);
+    setTimeout(() => {
+      setLoadingChangeLang(false);
+    }, 1000);
     i18n.changeLanguage(lang);
   };
 
@@ -115,7 +121,7 @@ export default function Page() {
       }
     }
   };
-  console.log(sessionData);
+  // console.log(sessionData);
   React.useEffect(() => {
     const steps = [
       {
@@ -313,6 +319,9 @@ export default function Page() {
         <CircularProgress />
       </Box>
     );
+  if (loadingChangeLang) {
+    return <Loading />;
+  }
 
   if (!sessionId || !currentSession) {
     return (
@@ -436,7 +445,7 @@ export default function Page() {
             {currentStep?.sectionText ? t(currentStep?.sectionText) : ""}
           </Typography>
         </div>
-        {activeStep === steps2.length ? (          // <React.Fragment data-aos="fade-right">
+        {activeStep === steps2.length ? ( // <React.Fragment data-aos="fade-right">
           //   <Typography sx={{ mt: 2, mb: 1 }}>
           //     All steps completed - you&apos;re finished
           //   </Typography>
