@@ -7,7 +7,6 @@ import { Message } from "primereact/message";
 import React from "react";
 
 const Page = async ({ params }: { params: { id: string } }) => {
-  console.log(params);
   const AssistantReport: any = await getOne(
     `Dashboard/getAssistantReport/${params.id}`
   );

@@ -96,10 +96,9 @@ export default function DashboardNavbar(props: Props) {
     pathname == "/dashboard/AssistantReport/" ||
     pathname == "/dashboard/Groups" ||
     (pathname.startsWith("/dashboard/Groups/") &&
-      pathname.split("/")?.length < 5);
-  pathname == "/dashboard/Groups" ||
-    (pathname.startsWith("/dashboard/AssistantReport/") &&
-      pathname.split("/")?.length < 5);
+      pathname.split("/")?.length < 5) ||
+    pathname.startsWith("/dashboard/AssistantReport/");
+
   useEffect(() => {
     typeof localStorage !== "undefined" &&
       setUserData(JSON.parse(localStorage.getItem("userData") || "{}"));

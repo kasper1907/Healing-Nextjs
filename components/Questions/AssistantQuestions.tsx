@@ -1,7 +1,8 @@
 "use client";
 import { postRequest } from "@/services/service";
-import { Box, Container, Typography } from "@mui/material";
-import { Button, Radio, RadioGroup, Textarea } from "@nextui-org/react";
+import { Box, Container, Grid, Typography } from "@mui/material";
+import { Button, Chip, Radio, RadioGroup, Textarea } from "@nextui-org/react";
+import moment from "moment";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
@@ -67,13 +68,79 @@ const AssistantQuestions: any = ({ report, questions }: any) => {
   return (
     <>
       <Container sx={{ mt: 4, mb: 4 }}>
-        <Typography
-          color={"primary"}
-          variant="h6"
-          className="text-right w-full !font-[Tajawal] !mb-4 !mr-2"
+        <Grid
+          container
+          direction={"row-reverse"}
+          style={{ fontFamily: "Tajawal" }}
         >
-          التقرير رقم #{report?.report_num}
-        </Typography>
+          <Grid
+            item
+            xs={12}
+            md={3}
+            style={{
+              display: "flex",
+              flexDirection: "row-reverse",
+            }}
+          >
+            <Typography
+              color={"primary"}
+              variant="h6"
+              className="text-right w-full !font-[Tajawal] !mb-4 !mr-2"
+            >
+              التقرير رقم #{report?.report_num}
+            </Typography>
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            md={3}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "flex-end",
+            }}
+          >
+            <Chip variant="flat" color="primary">
+              {moment(report?.created_at).format("YYYY-MM-DD hh:mm A")}
+            </Chip>
+            <Typography
+              color={"primary"}
+              variant="h6"
+              className="text-right w-fit !font-[Tajawal] "
+            >
+              : التاريخ
+            </Typography>
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            md={3}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "flex-end",
+            }}
+          >
+            <Chip
+              variant="flat"
+              color="primary"
+              className={"!font-[Tajawal]"}
+              style={{
+                fontFamily: "Tajawal !important",
+              }}
+            >
+              {report?.is_completed ? "مكتمل" : "غير مكتمل"}
+            </Chip>
+            <Typography
+              color={"primary"}
+              variant="h6"
+              className="text-right w-fit !font-[Tajawal] "
+            >
+              : الحاله
+            </Typography>
+          </Grid>
+        </Grid>
+
         <Typography
           color={"primary"}
           variant="h6"

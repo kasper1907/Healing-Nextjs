@@ -11,10 +11,10 @@ import { HiDotsVertical } from "react-icons/hi";
 
 import useDownloader from "react-use-downloader";
 import useCookie from "react-use-cookie";
-import DeleteDialog from "../GroupsList/Delete";
 import AssignTherapist from "../GroupsList/AssignTherapist";
 import AssignAssistant from "../GroupsList/AssignAssitant";
 import GroupUsers from "../GroupsList/GroupUsers";
+import DeleteDialog from "./DeleteDialog";
 
 export default function AllReportsActionsMenu({ item }: any) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -88,25 +88,6 @@ export default function AllReportsActionsMenu({ item }: any) {
         onOpen={onOpen2}
         onOpenChange={onOpenChange2}
         action={currentAction}
-      />
-      <AssignTherapist
-        item={item}
-        isOpen={isOpenAssignTherapist}
-        onOpen={OpenAssignTherapist}
-        onOpenChange={onOpenChangeAssignTherapist}
-      />
-      <AssignAssistant
-        item={item}
-        isOpen={isOpenAssignAssistant}
-        onOpen={OpenAssignAssistant}
-        onOpenChange={onOpenChangeAssignAssistant}
-      />
-
-      <GroupUsers
-        item={item}
-        isOpen={isOpen3}
-        onOpen={onOpen3}
-        onOpenChange={onOpenChange3}
       />
     </>
   );
