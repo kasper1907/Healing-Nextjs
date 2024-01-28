@@ -115,6 +115,10 @@ const BrainCTQuestions = ({
                     borderRadius: "10px",
                   },
                 }}
+                value={formData.expectations}
+                onChange={(e) => {
+                  setFormData({ ...formData, expectations: e.target.value });
+                }}
                 multiline
                 rows={5}
                 label={t(

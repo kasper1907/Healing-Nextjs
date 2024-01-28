@@ -40,6 +40,7 @@ import ColorTest from "../../../components/Signup/ColorTest";
 import { endPoints } from "@/services/endpoints";
 import { getOne } from "@/services/service";
 import Loading from "@/app/(dashboard)/loading";
+import { Progress } from "@nextui-org/react";
 
 type Session = {
   ar_name: string;
@@ -250,9 +251,9 @@ export default function Page() {
     date_of_Organic_Psychological_complaint: dayjs(),
     medical_diagnosis: "",
     type_of_complaint: "",
-    // description_of_complaint: "",
-    // symptoms_of_complaint: "",
-    // complaint_start_date: "",
+    problem_desc: "",
+    date_of_problem: dayjs(),
+    sideEffects: "",
   });
   const isStepOptional = (step: number) => {
     return false;
@@ -302,6 +303,17 @@ export default function Page() {
     setCurrentStep(steps2[0]);
   };
 
+  const stepperProgress: any = {
+    0: 15,
+    1: 30,
+    2: 45,
+    3: 60,
+    4: 75,
+    5: 90,
+    6: 95,
+    7: 100,
+  };
+
   if (isLoading)
     return (
       <Box
@@ -319,6 +331,7 @@ export default function Page() {
         <CircularProgress />
       </Box>
     );
+
   if (loadingChangeLang) {
     return <Loading />;
   }
@@ -337,29 +350,37 @@ export default function Page() {
         // padding: "60px",
         background: "#F8F8F8",
         minHeight: "100vh",
-        height: "fit-content",
+        height: "calc(100vh - 96px)",
       }}
     >
-      <Box sx={{ width: "100%" }}>
+      <Box sx={{ width: "100%", background: "#f8f8f8" }}>
         <Stepper
+          className="stepper"
           sx={{
             "& .MuiStepLabel-root ": {
               gap: "5px",
             },
+            "& .MuiStep-root ": {
+              minWidth: "100px",
+            },
+            border: "0 solid",
+            boxShadow:
+              i18n.resolvedLanguage == "en"
+                ? "inset -3px -2px 6px 0px #cfcdcd"
+                : "inset 3px -2px 6px 0px #cfcdcd",
             background: `#FFF`,
-            position: "fixed",
+            position: "relative",
             left: "0",
             top: "0",
             padding: "20px 0px",
             maxWidth: "100vw",
-            boxShadow: "0px 0px 20px #10458c1f",
             zIndex: "2",
-
-            overflow: { xs: "scroll", md: "unset" },
+            overflowX: "auto",
+            overflowY: "hidden",
+            alignItems: "center",
             display: "flex",
-            flexDirection: { xs: "column", md: "row" },
+            flexDirection: "row",
             width: "100%",
-            alignItems: { xs: "flex-start", md: "center" },
             gap: { xs: "3px", md: "" },
           }}
           activeStep={activeStep}
@@ -384,6 +405,15 @@ export default function Page() {
             );
           })}
         </Stepper>
+        <Progress
+          aria-label="Downloading..."
+          size="md"
+          value={stepperProgress[activeStep]}
+          color="primary"
+          radius="none"
+          showValueLabel={false}
+          className="w-full"
+        />
 
         <div
           style={{
@@ -393,12 +423,13 @@ export default function Page() {
             justifyContent: "center",
             textAlign: "center",
             width: "100%",
+            height: "260px",
+            // marginTop: "95px",
           }}
         >
           <Box sx={{ width: "100%" }}>
             <Container
               sx={{
-                marginTop: { xs: "250px", md: "115px" },
                 position: "relative",
                 width: "100%",
                 display: "flex",
@@ -457,12 +488,15 @@ export default function Page() {
 
           <div
             data-aos="zoom-in"
-            className="flex items-center flex-col gap-2 w-full h-full"
+            className="flex items-center flex-col gap-2 w-full h-full mt-6 "
           >
             <Typography sx={{ mt: 1, mb: 2 }} color={"primary"}>
-              {t("Registeration Completed!")}
+              {t("Registration Completed!")}
             </Typography>
-            <Typography sx={{ mt: 1, mb: 2 }} color={"primary"}>
+            <Typography
+              sx={{ mt: 1, mb: 2, textAlign: "center" }}
+              color={"primary"}
+            >
               {t(
                 "You will Receive A Whatsapp Message Soon With Your Username and Password"
               )}

@@ -200,7 +200,7 @@ export const columns2 = [
   { name: "Email", uid: "email", sortable: true },
   { name: "Status", uid: "status", sortable: true },
   { name: "Course", uid: "course", sortable: true },
-  { name: "BCT", uid: "bct", sortable: true },
+  { name: "Attachment", uid: "bct", sortable: true },
   { name: "Actions", uid: "actions", sortable: true },
 ];
 

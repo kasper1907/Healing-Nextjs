@@ -6,7 +6,6 @@ import styles from "@/styles/sass/Pages/Login/Login.module.scss";
 // import styles from "styles/sass/Pages";
 import TextField from "@mui/material/TextField";
 import { styled } from "@mui/material/styles";
-import Button from "@mui/material/Button";
 import Link from "next/link";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
@@ -20,6 +19,7 @@ import { useCookies } from "react-cookie";
 import useCookie from "react-use-cookie";
 import AuthProvider from "@/components/Dashboard/AuthProvider/page";
 import { Elsie_Swash_Caps } from "next/font/google";
+import { Button } from "@nextui-org/react";
 
 const ONE_DAY_IN_MS = 24 * 60 * 60 * 1000;
 const AUTHENTICATION_COOKIE_NAME = "SID";
@@ -42,13 +42,15 @@ const Page = () => {
   //   password: "ahmed1234",
   // });
   const [userData, setUserData] = React.useState({
-    username: "Michael_micheal",
-    password: "m93120",
+    username: "",
+    password: "",
   });
 
   const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
-    if (!userData.username || !userData.password) setLoading(true);
+    if (!userData.username || !userData.password)
+      return toast.warning("Please Fill All Fields");
+    setLoading(true);
     const { status, data } = await postRequest(endPoints.auth, userData);
 
     if (status != 200) {
@@ -56,7 +58,7 @@ const Page = () => {
       setLoading(false);
       return;
     }
-    toast.success("Login Successfully");
+    toast.success("Login Successfully, Redirecting...");
     const userRole = await data?.data?.role;
     if (userRole == "User") {
       // router.push(
@@ -133,7 +135,7 @@ const Page = () => {
                       }
                       fullWidth
                       autoFocus
-                      label="Email"
+                      label="Username"
                       id="custom-css-outlined-input1"
                       sx={{
                         "& .MuiInputBase-root": {
@@ -198,8 +200,21 @@ const Page = () => {
                   </Grid>
 
                   <Grid item xs={12}>
-                    <Button type="submit" className={styles.signInBtn}>
+                    {/* <Button type="submit" className={styles.signInBtn}>
                       {loading ? "Loading ..." : "Sign in"}
+                    </Button> */}
+                    <Button
+                      type="submit"
+                      isLoading={loading}
+                      variant="flat"
+                      className="w-full"
+                      color="primary"
+                      style={{
+                        backgroundColor: "#c0f8e0",
+                        color: "rgb(86 86 86)",
+                      }}
+                    >
+                      Login
                     </Button>
                   </Grid>
 

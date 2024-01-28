@@ -26,7 +26,7 @@ export default function UploadVideo({ isOpen2, onOpenChange2, user }: any) {
   const decodedToken = jwt.decode(userToken) as any;
 
   const { data: ModeratorGroups, isLoading } = useSWR(
-    `Groups/getThirapistGroups/${decodedToken?.data?.passwordHash}`,
+    `Groups/getTherapistGroups/${decodedToken?.data?.user_id}`,
     getOne
   );
   const [loading, setLoading] = useState(false);

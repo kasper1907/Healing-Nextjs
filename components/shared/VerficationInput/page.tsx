@@ -63,7 +63,6 @@ const VerificationCodeInput = ({
   ) => {
     // Move to the previous input on backspace
     if (event.key === "Backspace") {
-
       //@ts-ignore
       if (event.target.value == "") {
         // Focus on the previous input
@@ -108,7 +107,7 @@ const VerificationCodeInput = ({
       {code?.map((value: any, index: any) => (
         <input
           key={index}
-          type="text"
+          type="tel"
           maxLength={1}
           value={value}
           onChange={(e: ChangeEvent<HTMLInputElement>) => {
@@ -127,6 +126,7 @@ const VerificationCodeInput = ({
             height: "45px",
             border: "1px solid #c6c6c6",
             borderRadius: "8px",
+            color: "#000 !important",
           }}
         />
       ))}

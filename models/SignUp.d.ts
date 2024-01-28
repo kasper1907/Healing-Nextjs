@@ -32,4 +32,7 @@ type SignUpForm = {
   date_of_Organic_Psychological_complaint: dayjs;
   medical_diagnosis: string;
   type_of_complaint: string;
+  problem_desc: string;
+  date_of_problem: dayjs | any;
+  sideEffects: string;
 };

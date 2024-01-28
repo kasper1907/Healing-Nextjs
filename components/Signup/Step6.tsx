@@ -102,11 +102,11 @@ const Step6 = ({
               fullWidth
               variant="outlined"
               placeholder={t("Enter Your Organic / Psychological Complaint")}
-              value={formData.medical_diagnosis}
+              value={formData.organic_Psychological_complaint}
               onChange={(e: any) => {
                 setFormData({
                   ...formData,
-                  medical_diagnosis: e.target.value,
+                  organic_Psychological_complaint: e.target.value,
                 });
               }}
             />

@@ -72,7 +72,7 @@ const BirthInfo = ({
   }, [formData]);
 
   return (
-    <div data-aos="fade-right" className={styles.main}>
+    <div data-aos="fade-right" className={`!bg-[#f8f8f8] ${styles.main}`}>
       <Grid
         alignContent={"center"}
         rowSpacing={4}
@@ -80,6 +80,7 @@ const BirthInfo = ({
         container
         sx={{
           margin: "0 !important",
+          marginBottom: "70px",
           maxWidth: "100%",
         }}
       >
@@ -146,7 +147,7 @@ const BirthInfo = ({
               showSecondaryOptionLabel={true}
               showSecondarySelectedLabel={true}
               customLabels={placeOfBirthObject}
-              className="NationalitiesSelect"
+              className="NationalitiesSelect !color-[#000]"
             />
           </div>
         </Grid>
@@ -174,7 +175,7 @@ const BirthInfo = ({
               showSecondaryOptionLabel={true}
               showSecondarySelectedLabel={true}
               customLabels={Nationalities}
-              className="NationalitiesSelect"
+              className="NationalitiesSelect !color-[#000]"
             />
           </div>
         </Grid>

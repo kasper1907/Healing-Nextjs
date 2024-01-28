@@ -53,6 +53,7 @@
     background-color: #FFF;
     outline: none;
     padding: 0px 20px;
+    color: #000;
 }
 
 .verification-input:focus{

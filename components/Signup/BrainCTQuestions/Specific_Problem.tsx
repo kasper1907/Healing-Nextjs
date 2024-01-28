@@ -79,9 +79,9 @@ const Specific_Problem = ({
             </InputLabel>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <StyledDatePicker
-                value={formData?.dateOfBirth}
+                value={formData?.date_of_problem}
                 onChange={(e: any) => {
-                  setFormData({ ...formData, dateOfBirth: e });
+                  setFormData({ ...formData, date_of_problem: e });
                 }}
                 sx={{
                   width: "100%",
@@ -104,6 +104,10 @@ const Specific_Problem = ({
                   borderRadius: "10px",
                 },
               }}
+              value={formData.problem_desc}
+              onChange={(e) => {
+                setFormData({ ...formData, problem_desc: e.target.value });
+              }}
               multiline
               rows={5}
               fullWidth
@@ -122,10 +126,14 @@ const Specific_Problem = ({
                   borderRadius: "10px",
                 },
               }}
+              value={formData.sideEffects}
+              onChange={(e) => {
+                setFormData({ ...formData, sideEffects: e.target.value });
+              }}
               multiline
               fullWidth
               rows={5}
-              label={t("Symptoms of complaint")}
+              label={t("Side Effects of the complaint")}
             />
           </Grid>
 
@@ -138,9 +146,15 @@ const Specific_Problem = ({
                   borderRadius: "12px",
                   border: "none !important",
                   "& .MuiOutlinedInput-notchedOutline": {
-                    // border: "none !important",
                     borderRadius: "10px",
                   },
+                }}
+                value={formData.medical_diagnosis}
+                onChange={(e) => {
+                  setFormData({
+                    ...formData,
+                    medical_diagnosis: e.target.value,
+                  });
                 }}
                 multiline
                 rows={2}

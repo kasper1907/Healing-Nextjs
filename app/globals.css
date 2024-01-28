@@ -156,3 +156,47 @@ button{
 .dashboard-sidebar::-webkit-scrollbar-thumb:hover {
   background: #10468c62;
 }
+
+
+.stepper::-webkit-scrollbar {
+  width: 0px; 
+  height: 0px !important;
+}
+
+/* Track */
+.stepper::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+.stepper::-webkit-scrollbar-thumb {
+  background: #cbcbcb;
+  border-radius: 3px;
+
+}
+
+/* Handle on hover */
+.stepper::-webkit-scrollbar-thumb:hover {
+  background: #10468c62;
+}
+
+.codeSelect ul{
+  color: #000 !important;
+}
+
+.NationalitiesSelect ul{
+  color: #000 !important;
+}
+
+#react-aria2216473840 div {
+  border-radius: 0px;
+}
+
+.h-full.bg-primary.rounded-none.transition-transform{
+  border-radius: 10px;
+  background-color: #10458c;
+}
+
+#react-select-3-listbox{
+color: #000 !important;
+}

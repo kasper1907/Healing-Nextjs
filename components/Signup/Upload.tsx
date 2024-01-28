@@ -31,15 +31,16 @@ const Upload = ({
     // steps[currentIndex].isCompleted = true;
     // handleNext();
 
-    delete formData["countryCode"];
+    // delete formData["countr"];
     delete formData["countryOfLiving"];
     const formDataObj: any = new FormData();
     for (let key in formData) {
       if (key == "phone") {
-        formDataObj.append(key, `${formData["countryCode"]} ${formData[key]} `);
+        formDataObj.append(key, `${formData["countryCode"]}${formData[key]}`);
+        delete formData["countryCode"];
+      } else {
+        formDataObj.append(key, formData[key]);
       }
-
-      formDataObj.append(key, formData[key]);
     }
 
     if (files.length > 0) {
@@ -47,6 +48,10 @@ const Upload = ({
         formDataObj.append("file", files[i]);
       }
     }
+
+    // for (var pair of formDataObj.entries()) {
+    //   console.log(pair[0] + ", " + pair[1]);
+    // }
 
     formDataObj.append("courseId", searchParams.get("sessionId")!);
 

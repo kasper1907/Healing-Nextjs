@@ -30,28 +30,28 @@ export default function SendNotification({
   const [Notification, setNotification] = useState({
     header: "",
     body: "",
-    groupId: "",
-    courseId: user?.course_id,
+    groupId: 0,
   });
 
   const decodedToken = jwt.decode(userToken) as any;
 
   const { data: ModeratorGroups, isLoading } = useSWR(
-    `Groups/getThirapistGroups/${decodedToken?.data?.passwordHash}`,
+    `Groups/getTherapistGroups/${decodedToken?.data?.user_id}`,
     getOne
   );
 
   const handleSendNotification = async (e: any) => {
     e.preventDefault();
     setLoading(true);
-    const res = await postRequest(`Notifications/Send`, Notification);
+    const res = await postRequest(`notifications/Send`, Notification);
+    console.log(Notification);
+    console.log(res);
     if (res.status == 201) {
       onOpenChange();
       setNotification({
         header: "",
         body: "",
-        groupId: "",
-        courseId: user?.course_id,
+        groupId: 0,
       });
       toast.success("Notification Sent Successfully");
     } else {
@@ -121,12 +121,12 @@ export default function SendNotification({
                     onChange={(e) => {
                       setNotification({
                         ...Notification,
-                        groupId: e.target.value,
+                        groupId: +e.target.value,
                       });
                     }}
                   >
                     {ModeratorGroups?.data?.map((group: any) => (
-                      <SelectItem key={group.id} value={group.id}>
+                      <SelectItem key={group.groupId} value={group.groupId}>
                         {group?.group_name}
                       </SelectItem>
                     ))}

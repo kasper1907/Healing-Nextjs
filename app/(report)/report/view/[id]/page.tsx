@@ -34,10 +34,10 @@ const ViewReportPage = async ({
     (LoggedInUserToken as string) || ""
   );
   const LoggedInUser = decodedToken?.data;
-  const loggedInUserPHash = decodedToken?.data?.passwordHash;
+  const loggedInUserPHash = decodedToken?.data?.user_id;
 
   const userAllowedGroups = await getOne(
-    `Groups/getThirapistGroups/${loggedInUserPHash?.course_id}`
+    `Groups/getTherapistGroups/${loggedInUserPHash}`
   );
 
   const GroupUsers = await getOne(

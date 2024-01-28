@@ -24,6 +24,7 @@ const ContactInfo = ({
 }: any) => {
   const [selected, setSelected] = useState<any>("");
   const [phone, setPhone] = useState("");
+  const [countryCode, setCountryCode] = useState("");
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage;
   useEffect(() => {
@@ -56,11 +57,15 @@ const ContactInfo = ({
   };
 
   const handleSelect = (code: any) => {
-    // Access the customLabels object and print the secondary property
-    const secondaryLabel: any = customLabels[code]?.secondary || "";
-    setSelected(code);
-    setFormData({ ...formData, countryCode: secondaryLabel });
+    setCountryCode(code);
   };
+  useEffect(() => {
+    if (countryCode) {
+      const secondaryLabel: any = customLabels[countryCode]?.secondary;
+      setSelected(countryCode);
+      setFormData({ ...formData, countryCode: secondaryLabel });
+    }
+  }, [countryCode, selected]);
 
   return (
     <div data-aos="fade-right" className={styles.main}>
@@ -171,7 +176,7 @@ const ContactInfo = ({
               showSecondaryOptionLabel={true}
               showSecondarySelectedLabel={true}
               customLabels={customLabels}
-              className="codeSelect"
+              className="codeSelect !color-[#000]"
               placeholder={t("Select Country")}
             />
             {/* <CountryCodeSelect /> */}

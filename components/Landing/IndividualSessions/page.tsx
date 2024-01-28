@@ -30,7 +30,7 @@ const IndividualSessions = () => {
               text={
                 "هي جلسة فردية تسطتيع من خلالها الإفصاح ومشاعرك بكل حرية وإنطلاق وبدون حرج ويساعدك دكتور أحمد على "
               }
-              sessionId={1}
+              sessionId={14}
             />
           </Grid>
           <Grid
@@ -46,7 +46,7 @@ const IndividualSessions = () => {
               text={
                 "هي جلسة فردية تسطتيع من خلالها الإفصاح ومشاعرك بكل حرية وإنطلاق وبدون حرج ويساعدك دكتور أحمد على "
               }
-              sessionId={2}
+              sessionId={15}
             />
           </Grid>
         </Grid>
