@@ -32,7 +32,12 @@ export const useAuthentication = ({ redirectTo }: Props): ReturnData => {
   const currentUrl = `${pathname}?id=${searchParams.get("id")}`;
 
   const RolePages: any = {
-    Doctor: ["/dashboard", "/dashboard/Groups", "/dashboard/Users"],
+    Doctor: [
+      "/dashboard",
+      "/dashboard/Groups",
+      "/dashboard/Users",
+      "/dashboard/ViewReport",
+    ],
 
     Therapist: [
       "/dashboard",
@@ -114,6 +119,7 @@ export const useAuthentication = ({ redirectTo }: Props): ReturnData => {
     pathname.split("/")[1] +
     "/" +
     pathname.split("/")[2];
+  console.log(trimmedURL);
   let isAuthorizedUser =
     RolePages[userData?.role]?.includes(pathname) ||
     RolePages[userData?.role]?.includes(trimmedURL);

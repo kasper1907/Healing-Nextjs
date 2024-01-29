@@ -20,8 +20,9 @@ import { getOne } from "@/services/service";
 import { UserContext } from "@/contexts/mainContext";
 import Image from "next/image";
 import { isArabic } from "@/utils/checkLanguage";
-import { FcAbout } from "react-icons/fc";
+import { FcAbout, FcDocument } from "react-icons/fc";
 import { useRouter } from "next/navigation";
+import { Badge } from "@nextui-org/react";
 
 type Group = {
   id: number;
@@ -51,7 +52,6 @@ const Home = () => {
   const { data, error, isLoading } = useSWR(`Groups/${endpointName}`, getOne);
   const Groups: any = data?.data;
 
-  console.log(Groups);
   if (error) {
     return <Error />;
   }
@@ -66,93 +66,115 @@ const Home = () => {
             <CardsSkeleton />
           ) : (
             Groups?.length > 0 &&
-            Groups.map((group: Group, idx: any) => (
-              <Grid
-                item
-                xs={12}
-                md={6}
-                lg={4}
-                key={idx}
-                sx={{ display: "flex", justifyContent: "center" }}
-              >
-                <div className={styles.groupCard}>
-                  <span>
-                    {group?.report_num ? (
-                      <div
-                        style={{
-                          position: "absolute",
-                          top: "0",
-                          right: "0",
-                        }}
-                      >
-                        <Tooltip
-                          style={{ zIndex: "222222222" }}
-                          title="There is a report that should be completed"
-                        >
-                          <Link
-                            href={`/dashboard/AssistantReport/${group?.ReportId}`}
-                            target="_blank"
+            Groups.map((group: Group | any, idx: any) => {
+              let uncompletedReportsLength = group?.reports?.filter(
+                (item: any) => {
+                  return item?.is_completed_by_assistant == "false";
+                }
+              ).length;
+              return (
+                <Grid
+                  item
+                  xs={12}
+                  md={6}
+                  lg={4}
+                  key={idx}
+                  sx={{ display: "flex", justifyContent: "center" }}
+                >
+                  <div className={styles.groupCard}>
+                    {UserRole == "Assistant" || UserRole == "Doctor" ? (
+                      <span>
+                        {group?.report_num ? (
+                          <div
+                            style={{
+                              position: "absolute",
+                              top: "0",
+                              right: "0",
+                            }}
                           >
-                            <FcAbout
-                              size={30}
-                              style={{
-                                cursor: "pointer",
-                              }}
-                            />
-                          </Link>
-                        </Tooltip>
-                      </div>
+                            <Tooltip
+                              style={{ zIndex: "222222222" }}
+                              title={
+                                UserRole == "Assistant"
+                                  ? "There is a report that should be completed"
+                                  : "You Have Reports, Click To View"
+                              }
+                            >
+                              <Link
+                                href={
+                                  UserRole == "Assistant"
+                                    ? `/dashboard/AssistantReport/${group?.groupId}`
+                                    : `/dashboard/ViewReport/${group?.groupId}`
+                                }
+                                target="_blank"
+                              >
+                                <Badge
+                                  content={uncompletedReportsLength || 0}
+                                  color="danger"
+                                >
+                                  <FcDocument
+                                    size={30}
+                                    style={{
+                                      cursor: "pointer",
+                                    }}
+                                  />
+                                </Badge>
+                              </Link>
+                            </Tooltip>
+                          </div>
+                        ) : null}
+                      </span>
                     ) : null}
-                  </span>
-                  <div className={styles.img_place}>
-                    <Image
-                      src={`https://mtnhealingcenter.com/healing-center/${group?.logo}`}
-                      fill
-                      alt="group image"
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover",
-                        background: "#fff",
-                        borderRadius: "50%",
-                      }}
-                    />
-                  </div>
-
-                  <h3
-                    style={{
-                      fontFamily: isArabic(group?.group_name)
-                        ? "Tajawal !important"
-                        : "Roboto",
-                    }}
-                    className={`${
-                      isArabic(group?.group_name) && styles.groupNameArabic
-                    }`}
-                  >
-                    {group?.group_name}
-                  </h3>
-                  <div className={styles.groupButtons}>
-                    <Button variant="contained">
-                      <Link
+                    <div className={styles.img_place}>
+                      <Image
+                        src={`https://mtnhealingcenter.com/healing-center/${group?.logo}`}
+                        fill
+                        alt="group image"
                         style={{
                           width: "100%",
                           height: "100%",
+                          objectFit: "cover",
+                          background: "#fff",
+                          borderRadius: "50%",
                         }}
-                        className="flex items-center justify-center gap-1"
-                        href={`/dashboard/Groups/${group?.groupId}`}
-                      >
-                        <AiOutlineEye />
-                        View
-                      </Link>
-                    </Button>
-                    <Button variant="outlined">
-                      <AiOutlineEdit />
-                      Note
-                    </Button>
+                      />
+                    </div>
+
+                    <h3
+                      style={{
+                        fontFamily: isArabic(group?.group_name)
+                          ? "Tajawal !important"
+                          : "Roboto",
+                      }}
+                      className={`${
+                        isArabic(group?.group_name) && styles.groupNameArabic
+                      }`}
+                    >
+                      {group?.group_name}
+                    </h3>
+                    <div className={styles.groupButtons}>
+                      <Button variant="contained">
+                        <Link
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                          }}
+                          className="flex items-center justify-center gap-1"
+                          href={`/dashboard/Groups/${group?.groupId}`}
+                        >
+                          <AiOutlineEye />
+                          View
+                        </Link>
+                      </Button>
+                      <Button variant="outlined">
+                        <AiOutlineEdit />
+                        Note
+                      </Button>
+                    </div>
                   </div>
-                </div>
-              </Grid>
-            ))
+                </Grid>
+              );
+            })
           )}
         </Grid>
       </Container>

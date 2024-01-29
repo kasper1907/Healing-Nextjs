@@ -17,8 +17,11 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import useSWR from "swr";
 import { getOne } from "@/services/service";
 import moment from "moment";
+import { AvatarGroup, User } from "@nextui-org/react";
+import Image from "next/image";
 
 const AppointmentCard = ({ appointment }: any) => {
+  console.log(appointment);
   const [expanded, setExpanded] = React.useState<boolean>(false);
   const handleChange = () => {
     setExpanded((prev: any) => !prev);
@@ -35,10 +38,38 @@ const AppointmentCard = ({ appointment }: any) => {
 
   return (
     <div className="flex flex-col w-full">
+      <Grid
+        sx={{
+          mt: {
+            xs: 2,
+            md: 4,
+          },
+          ml: {
+            xs: 0,
+            md: 4,
+          },
+        }}
+        item
+        xs={12}
+      >
+        <div className="flex items-center gap-2">
+          <Image
+            src={process.env.NEXT_PUBLIC_BASE_URL2 + appointment?.logo}
+            alt="course_logo"
+            width={50}
+            height={100}
+            className="rounded-full border-2 border-[#F2F2F2]"
+          />
+          <h2>
+            {appointment?.group_name} -{" "}
+            <span className="!font-[Tajawal]">{appointment?.course_name}</span>
+          </h2>
+        </div>
+      </Grid>
       <div className={styles.appointmentCard}>
         <div className={styles.left}>
-          <span>{moment(appointment?.session_time).format("MM-DD")}</span>
-          <span>To</span>
+          <span>{moment(appointment?.session_time).format("DD-MM-YYYY")}</span>
+          <span>--</span>
           <span>{moment(appointment?.session_time).format("hh:mm A")}</span>
         </div>
         <div className={styles.right}>
@@ -52,7 +83,15 @@ const AppointmentCard = ({ appointment }: any) => {
                 Therapist: <span>{appointment?.Therapist}</span>
               </span>
               <span>
-                Assistant: <span>{appointment?.Assistant}</span>
+                Assistant:{" "}
+                {appointment?.Assistants?.map((el: any, idx: any) => {
+                  return (
+                    <span key={idx}>
+                      {el}
+                      {idx !== appointment?.Assistants?.length - 1 && ", "}
+                    </span>
+                  );
+                })}
               </span>
             </Grid>
             <Grid

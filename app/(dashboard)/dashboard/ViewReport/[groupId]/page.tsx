@@ -22,7 +22,7 @@ const Page = ({ params }: { params: { groupId: string } }) => {
   const [currentReport, setCurrentReport] = useState<any>({});
 
   const loggedInUserPHash = LoggedInUser?.passwordHash;
-  let endpointName = `getGroupReports/${groupId}`;
+  let endpointName = `getGroupCompletedReports/${groupId}`;
   const { data, error, isLoading } = useSWR(`Groups/${endpointName}`, getOne, {
     onSuccess: async (data) => {
       let test = data?.data[0]?.reports?.map((item: any, idx: any) => {
@@ -35,7 +35,12 @@ const Page = ({ params }: { params: { groupId: string } }) => {
           client_status: item?.is_completed,
         };
       });
-      setTabs(test?.filter((item: any) => item?.assistant_status == "false"));
+      setTabs(
+        test?.filter(
+          (item: any) =>
+            item?.assistant_status == "true" && item?.client_status == "true"
+        )
+      );
 
       const AssistantReport: any = await getOne(
         `Dashboard/getAssistantReport/${data?.data[0]?.reports[0]?.ReportId}`
