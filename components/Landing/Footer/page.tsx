@@ -74,7 +74,7 @@ const Footer = () => {
               style={{ direction: "ltr", color: "#616161" }}
               className="w-full flex justify-center mt-4 mb-4"
             >
-              © 2023 All Rights Reserved.
+              © 2024 All Rights Reserved.
             </span>
           </Grid>
         </Grid>

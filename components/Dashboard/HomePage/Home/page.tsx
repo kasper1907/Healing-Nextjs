@@ -72,6 +72,12 @@ const Home = () => {
                   return item?.is_completed_by_assistant == "false";
                 }
               ).length;
+              let completedReports = group?.reports?.filter((item: any) => {
+                return (
+                  item?.is_completed_by_assistant == "true" &&
+                  item?.is_completed == "true"
+                );
+              }).length;
               return (
                 <Grid
                   item
@@ -84,7 +90,7 @@ const Home = () => {
                   <div className={styles.groupCard}>
                     {UserRole == "Assistant" || UserRole == "Doctor" ? (
                       <span>
-                        {group?.report_num ? (
+                        {group?.reports?.length > 0 ? (
                           <div
                             style={{
                               position: "absolute",
@@ -109,7 +115,11 @@ const Home = () => {
                                 target="_blank"
                               >
                                 <Badge
-                                  content={uncompletedReportsLength || 0}
+                                  content={
+                                    (UserRole == "Assistant" &&
+                                      uncompletedReportsLength) ||
+                                    (UserRole == "Doctor" && completedReports)
+                                  }
                                   color="danger"
                                 >
                                   <FcDocument

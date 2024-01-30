@@ -203,3 +203,14 @@ color: #000 !important;
 .chrome-tab-favicon{
   border-radius: 10px;
 }
+.chrome-tabs{
+      z-index: 0;
+      background: transparent;
+}
+.swiper-pagination{
+  position: relative !important;
+}
+
+.chrome-tabs .chrome-tabs-bottom-bar{
+  background-color: #e2e2e2;
+}

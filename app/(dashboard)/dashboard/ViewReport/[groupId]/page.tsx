@@ -11,7 +11,11 @@ import "@sinm/react-chrome-tabs/css/chrome-tabs.css";
 import "@sinm/react-chrome-tabs/css/chrome-tabs-dark-theme.css";
 import AssistantQuestions from "@/components/Questions/AssistantQuestions";
 import { toast } from "sonner";
-import { CircularProgress } from "@nextui-org/react";
+import { Button, CircularProgress } from "@nextui-org/react";
+import DoctorQuestions_View from "@/components/Questions/DoctorQuestions_View";
+import { Divider, Grid } from "@mui/material";
+import ReportsTable from "@/components/Questions/ReportsTable";
+import Image from "next/image";
 
 const Page = ({ params }: { params: { groupId: string } }) => {
   //   let id = 1;
@@ -20,71 +24,36 @@ const Page = ({ params }: { params: { groupId: string } }) => {
   const { LoggedInUser }: any = React.useContext(UserContext);
   const [tabs, setTabs] = useState<TabProperties[]>([]);
   const [currentReport, setCurrentReport] = useState<any>({});
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const loggedInUserPHash = LoggedInUser?.passwordHash;
   let endpointName = `getGroupCompletedReports/${groupId}`;
   const { data, error, isLoading } = useSWR(`Groups/${endpointName}`, getOne, {
-    onSuccess: async (data) => {
-      let test = data?.data[0]?.reports?.map((item: any, idx: any) => {
-        return {
-          id: item?.ReportId,
-          title: item?.client_name,
-          favicon: `${process.env.NEXT_PUBLIC_BASE_URL}${item?.clientImage}`,
-          active: idx == 0 ? true : false,
-          assistant_status: item?.is_completed_by_assistant,
-          client_status: item?.is_completed,
-        };
-      });
-      setTabs(
-        test?.filter(
-          (item: any) =>
-            item?.assistant_status == "true" && item?.client_status == "true"
-        )
-      );
-
-      const AssistantReport: any = await getOne(
-        `Dashboard/getAssistantReport/${data?.data[0]?.reports[0]?.ReportId}`
-      );
-      setCurrentReport(AssistantReport?.data);
-    },
+    revalidateIfStale: false,
+    revalidateOnFocus: false,
   });
   const Reports: any = data?.data;
 
   const active = async (id: string) => {
     setTabs(tabs.map((tab) => ({ ...tab, active: id == tab.id })));
     const AssistantReport: any = await getOne(
-      `Dashboard/getAssistantReport/${id}`
+      `Dashboard/getCompleteReport/${id}`
     );
     setCurrentReport(AssistantReport?.data);
   };
 
-  const close = (id: string) => {
-    console.log();
-    const currentTab = tabs.find((tab) => tab.id == id);
-    if (!currentTab) {
-      return;
+  const close = async (id: string) => {
+    let newTabs = tabs.filter((tab) => {
+      return tab.id !== id;
+    });
+
+    setTabs(newTabs);
+
+    console.log(newTabs);
+
+    if (newTabs?.length == 0) {
+      setCurrentReport({});
     }
-    if (
-      currentTab.assistant_status == false ||
-      currentTab.assistant_status == "false"
-    ) {
-      toast.error("Please Complete The Report Firstly");
-      return;
-    } else {
-      setTabs(tabs.filter((tab) => tab.id !== id));
-    }
-    // setTabs(
-    // tabs.filter((tab) => {
-    // console.log(tab);
-    // if (tab.assistant_status) {
-    //   toast.error(
-    //     "You can't close this tab because it is completed by assistant"
-    //   );
-    // } else {
-    //   return tab.id !== id;
-    // }
-    // })
-    // );
   };
 
   const reorder = (tabId: string, fromIndex: number, toIndex: number) => {
@@ -98,6 +67,39 @@ const Page = ({ params }: { params: { groupId: string } }) => {
   };
   const closeAll = () => setTabs([]);
 
+  const handleAddTab = async (ReportId: number) => {
+    const AssistantReport: any = await getOne(
+      `Dashboard/getCompleteReport/${ReportId}`
+    );
+    let newTab = {
+      id: ReportId,
+      title: `#${ReportId} - ${AssistantReport?.data?.client_name}`,
+      favicon: `${process.env.NEXT_PUBLIC_BASE_URL}${AssistantReport?.data?.client_image}`,
+      active: true,
+    };
+    setCurrentReport(AssistantReport?.data);
+    addTab(newTab);
+  };
+
+  const addTab = (newTab: any) => {
+    // check if tab already exists
+
+    setTabs((prev) => {
+      const exists = prev.find((tab) => tab.id == newTab.id);
+      if (exists) {
+        // return prev;
+        return prev.map((tab) => {
+          if (tab.id == newTab.id) {
+            return { ...tab, active: true };
+          } else {
+            return { ...tab, active: false };
+          }
+        });
+      }
+      return [...prev, newTab];
+    });
+  };
+
   if (isLoading)
     return (
       <div className="w-full h-full mt-8 flex items-center justify-center">
@@ -108,20 +110,78 @@ const Page = ({ params }: { params: { groupId: string } }) => {
 
   return (
     <>
-      <div className="mt-6">
-        <Tabs
-          darkMode={false}
-          onTabClose={close}
-          onTabReorder={reorder}
-          onTabActive={active}
-          tabs={tabs || []}
-        ></Tabs>
-      </div>
+      {Reports?.length == 0 ? (
+        <div className="w-full h-full mt-8 flex items-center justify-center">
+          <h1>No Reports Found</h1>
+        </div>
+      ) : (
+        <>
+          <Grid container>
+            <Grid item xs={12} md={isExpanded ? 12 : 6} sx={{ pr: 2 }}>
+              {currentReport && Object?.keys(currentReport)?.length > 0 ? (
+                <>
+                  <div className="mt-6">
+                    <Tabs
+                      darkMode={false}
+                      onTabClose={close}
+                      // onTabReorder={reorder}
+                      onTabActive={active}
+                      tabs={tabs || []}
+                    ></Tabs>
+                  </div>
+                  <DoctorQuestions_View
+                    isExpanded={isExpanded}
+                    report={currentReport}
+                    questions={currentReport?.questions}
+                  />
+                </>
+              ) : (
+                <div className="w-full h-full flex flex-col items-center justify-center">
+                  <Image
+                    src={"/images/chooseReport.svg"}
+                    alt="chooseReport"
+                    width={200}
+                    height={200}
+                  />
+                  <span className="!font-[Tajawal] mt-4">
+                    برجاء اختيار تقرير لعرضه
+                  </span>
+                </div>
+              )}
+            </Grid>
 
-      <AssistantQuestions
-        report={currentReport}
-        questions={currentReport?.questions}
-      />
+            {/* <Divider orientation="vertical//> */}
+            <Grid
+              item
+              xs={12}
+              md={isExpanded ? 12 : 6}
+              sx={{ borderLeft: isExpanded ? "none" : "5px solid #BBB", pl: 2 }}
+            >
+              <h2
+                className="!font-[Tajawal] mt-4 mr-4"
+                style={{ direction: "rtl" }}
+              >
+                تقارير المجموعه -
+                <span className="!font-[Roboto]">
+                  {" "}
+                  {Reports[0]?.group_name}
+                </span>
+              </h2>
+
+              <Button
+                onPress={() => {
+                  setIsExpanded(!isExpanded);
+                }}
+              >
+                <span className="!font-[Tajawal]">
+                  {isExpanded ? "عرض القائمه" : "عرض التقارير"}
+                </span>
+              </Button>
+              <ReportsTable Reports={Reports} handleAddTab={handleAddTab} />
+            </Grid>
+          </Grid>
+        </>
+      )}
     </>
   );
 };

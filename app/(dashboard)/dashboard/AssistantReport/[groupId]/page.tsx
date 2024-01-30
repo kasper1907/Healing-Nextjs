@@ -37,8 +37,14 @@ const Page = ({ params }: { params: { groupId: string } }) => {
       });
       setTabs(test?.filter((item: any) => item?.assistant_status == "false"));
 
+      const unCompletedReports = test?.filter(
+        (item: any) => item?.assistant_status == "false"
+      );
+
+      console.log(unCompletedReports);
+
       const AssistantReport: any = await getOne(
-        `Dashboard/getAssistantReport/${data?.data[0]?.reports[0]?.ReportId}`
+        `Dashboard/getAssistantReport/${unCompletedReports[0]?.id}`
       );
       setCurrentReport(AssistantReport?.data);
     },

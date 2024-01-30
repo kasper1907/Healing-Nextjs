@@ -66,15 +66,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
       );
     }
   }
-  return (
-    <div
-      style={{
-        minHeight: "100vh",
-      }}
-    >
-      {children}
-    </div>
-  );
+  return <div>{children}</div>;
 };
 
 export default AuthProvider;

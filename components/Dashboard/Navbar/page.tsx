@@ -54,6 +54,8 @@ interface Props {
   window?: () => Window;
 }
 export default function DashboardNavbar(props: Props) {
+  const { window } = props;
+
   const {
     dashboardTabsValue,
     setDashboardTabsValue,
@@ -69,6 +71,7 @@ export default function DashboardNavbar(props: Props) {
   const [userToken, setUserToken] = useCookie("SID");
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [userData, setUserData] = React.useState<any>({});
+
   const { isAuthenticated, isLoading: MainLoading, isAuthorized } =
     //@ts-ignore
     useAuthentication("/login");
@@ -117,7 +120,6 @@ export default function DashboardNavbar(props: Props) {
   const isDashboard = pagePath == "/dashboard";
   const isGroupUsers = pagePath.includes("/dashboard/GroupUsers");
   const isUserPage = pagePath.includes("/Profile");
-  const { window } = props;
 
   const renderDashboardTabs = (
     <div className={styles.dashboard_sidebar_Tabs}>
@@ -256,6 +258,7 @@ export default function DashboardNavbar(props: Props) {
 
   const container =
     window !== undefined ? () => window().document.body : undefined;
+
   if (!MainLoading) {
     return (
       <Box
@@ -345,7 +348,21 @@ export default function DashboardNavbar(props: Props) {
                 </div>
               </Box>
             ) : null}
-            <Container sx={{ position: "relative" }}>
+            <Container
+              sx={{
+                position: "fixed",
+                background: "#F8F6EF",
+                zIndex: "34 !important",
+                width: "100%",
+                margin: "auto",
+                marginLeft: "auto",
+                left: "50%",
+                transform: "translateX(-50%)",
+                borderBottomRightRadius: "20px",
+                borderBottomLeftRadius: "20px",
+                boxShadow: "1px 1px 12px 3px #ddd",
+              }}
+            >
               <Toolbar>
                 <Typography
                   variant="h6"

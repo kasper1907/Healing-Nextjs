@@ -113,10 +113,10 @@ const HomeTabs = (props: any) => {
       <TabList
         onChange={handleChange}
         sx={{
-          "&.MuiTabs-root .MuiTabs-scroller": {
-            zIndex: 33,
+          "& .MuiTabs-root .MuiTabs-scroller": {
+            // zIndex: 33,
           },
-          "&. MuiTabs-root  MuiTabs-scroller": {
+          "& .MuiTabs-root  MuiTabs-scroller": {
             zIndex: 3333,
           },
           "& .MuiTabs-root": {
