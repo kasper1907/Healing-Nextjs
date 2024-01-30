@@ -88,7 +88,8 @@ const Home = () => {
                   sx={{ display: "flex", justifyContent: "center" }}
                 >
                   <div className={styles.groupCard}>
-                    {UserRole == "Assistant" || UserRole == "Doctor" ? (
+                    {(UserRole == "Assistant" && uncompletedReportsLength) ||
+                    (UserRole == "Doctor" && completedReports) ? (
                       <span>
                         {group?.reports?.length > 0 ? (
                           <div

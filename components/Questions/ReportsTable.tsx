@@ -52,7 +52,7 @@ export default function ReportsTable({ Reports, handleAddTab }: any) {
         </div>
       }
       classNames={{
-        wrapper: "w-full h-full mt-4",
+        wrapper: "w-full  mt-4",
       }}
     >
       <TableHeader>

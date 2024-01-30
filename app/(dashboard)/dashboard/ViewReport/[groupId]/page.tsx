@@ -43,13 +43,21 @@ const Page = ({ params }: { params: { groupId: string } }) => {
   };
 
   const close = async (id: string) => {
+    // Make the previous tab active firstly , then close the tab
+    const index = tabs.findIndex((tab) => tab.id == id);
+    if (index == 0) {
+      if (tabs.length > 1) {
+        active(tabs[1].id);
+      }
+    } else {
+      active(tabs[index - 1].id);
+    }
+
     let newTabs = tabs.filter((tab) => {
       return tab.id !== id;
     });
 
     setTabs(newTabs);
-
-    console.log(newTabs);
 
     if (newTabs?.length == 0) {
       setCurrentReport({});
@@ -136,7 +144,11 @@ const Page = ({ params }: { params: { groupId: string } }) => {
                   />
                 </>
               ) : (
-                <div className="w-full h-full flex flex-col items-center justify-center">
+                <div
+                  className={`w-full h-full flex flex-col items-center justify-center ${
+                    isExpanded ? "mt-4" : ""
+                  }`}
+                >
                   <Image
                     src={"/images/chooseReport.svg"}
                     alt="chooseReport"

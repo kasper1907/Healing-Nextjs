@@ -67,7 +67,7 @@ const Notifications = (props: any) => {
       revalidateIfStale: true,
       revalidateOnFocus: true,
       onSuccess: (data) => {
-        data?.sort((a: any, b: any) => {
+        data?.data?.sort((a: any, b: any) => {
           const timestampA = new Date(a.createdAt).getTime();
           const timestampB = new Date(b.createdAt).getTime();
 
@@ -167,7 +167,7 @@ const Notifications = (props: any) => {
             </IconButton>
           </Badge>
         </MenuHandler>
-        <MenuList className="flex flex-col gap-2 !font-[Roboto]">
+        <MenuList className="NotificationsMenu !max-h-[390px] flex flex-col gap-2 !font-[Roboto]">
           {Notifications?.data?.map((notification: any, idx: any) => {
             let isReadByMe =
               notification?.read_by?.filter(
@@ -209,6 +209,12 @@ const Notifications = (props: any) => {
               </MenuItem>
             );
           })}
+
+          {Notifications?.data?.length == 0 && (
+            <div className="!font-[Tajawal] w-full h-12 flex items-center justify-center border-none">
+              ! لا يوجد اي اشعارات حتي الان
+            </div>
+          )}
         </MenuList>
       </Menu>
     </>
