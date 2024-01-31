@@ -15,24 +15,10 @@ import AssignTherapist from "../GroupsList/AssignTherapist";
 import AssignAssistant from "../GroupsList/AssignAssitant";
 import GroupUsers from "../GroupsList/GroupUsers";
 import DeleteDialog from "./DeleteDialog";
+import ViewQuestions from "./ViewQuestions";
 
 export default function AllReportsActionsMenu({ item }: any) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const {
-    isOpen: isOpen3,
-    onOpen: onOpen3,
-    onOpenChange: onOpenChange3,
-  } = useDisclosure();
-  const {
-    isOpen: isOpenAssignTherapist,
-    onOpen: OpenAssignTherapist,
-    onOpenChange: onOpenChangeAssignTherapist,
-  } = useDisclosure();
-  const {
-    isOpen: isOpenAssignAssistant,
-    onOpen: OpenAssignAssistant,
-    onOpenChange: onOpenChangeAssignAssistant,
-  } = useDisclosure();
   const [currentAction, setCurrentAction] = React.useState("");
   const [userToken, setUserToken] = useCookie("SID");
   const {
@@ -81,6 +67,14 @@ export default function AllReportsActionsMenu({ item }: any) {
           </DropdownItem>
         </DropdownMenu>
       </Dropdown>
+
+      <ViewQuestions
+        clientData={item}
+        isOpen={isOpen}
+        onOpen={onOpen}
+        onOpenChange={onOpenChange}
+        action={currentAction}
+      />
 
       <DeleteDialog
         clientData={item}

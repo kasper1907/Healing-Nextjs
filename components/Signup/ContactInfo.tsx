@@ -18,6 +18,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 //@ts-ignore
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button } from "@nextui-org/react";
+import { getOne } from "@/services/service";
 
 const ContactInfo = ({
   handleNext,
@@ -32,6 +33,7 @@ const ContactInfo = ({
   const [countryCode, setCountryCode] = useState("");
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage;
+  const { data: numbers } = useSWR("users/checkPhoneNumber/", getOne);
   useEffect(() => {
     Aos.init();
   }, []);
@@ -63,6 +65,7 @@ const ContactInfo = ({
     }
   }, [countryCode, selected]);
 
+  console.log(numbers);
   const validationSchema = object().shape({
     firstName: string()
       .required("First Name is required")
@@ -76,10 +79,8 @@ const ContactInfo = ({
     phone: number()
       .typeError("Phone must be a number")
       .required("Enter Phone Number.")
-      .min(11, "Too little"),
-    // .max(12, "Large Phone Number!"),
-    // selectOption: string().required("Please select an option"),
-    // agreeToTerms: boolean().oneOf([true], "Please agree to terms"),
+      .min(11, "Too little")
+      .notOneOf(numbers, "This Number is Used Before"),
   });
 
   const {
