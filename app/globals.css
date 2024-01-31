@@ -214,3 +214,9 @@ color: #000 !important;
 .chrome-tabs .chrome-tabs-bottom-bar{
   background-color: #e2e2e2;
 }
+
+.css-13cymwt-control{
+  border: 1px solid transparent;
+    height: 55px !important;
+    border-radius: 10px;
+}

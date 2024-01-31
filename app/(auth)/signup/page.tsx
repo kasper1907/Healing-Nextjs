@@ -304,13 +304,13 @@ export default function Page() {
   };
 
   const stepperProgress: any = {
-    0: 15,
-    1: 30,
-    2: 45,
-    3: 60,
-    4: 75,
-    5: 90,
-    6: 95,
+    0: 5,
+    1: 15,
+    2: 30,
+    3: 45,
+    4: 60,
+    5: 75,
+    6: 90,
     7: 100,
   };
 
@@ -423,7 +423,7 @@ export default function Page() {
             justifyContent: "center",
             textAlign: "center",
             width: "100%",
-            height: "260px",
+            height: "180px",
             // marginTop: "95px",
           }}
         >

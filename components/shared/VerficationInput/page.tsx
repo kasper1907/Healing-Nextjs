@@ -23,7 +23,7 @@ const VerificationCodeInput = ({
 
   const handleChange = (index: number, value: string) => {
     if (!allowedNumbers.includes(value)) {
-      return toast.warning("Please enter a number between 0 and 4");
+      return toast.info("Please enter a number between 0 and 4");
     }
 
     if (code.includes(value)) {

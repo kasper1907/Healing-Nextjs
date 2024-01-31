@@ -23,7 +23,7 @@ const InputForShapeTest = ({
 
   const handleChange = (index: number, value: string) => {
     if (!allowedNumbers.includes(value)) {
-      return toast.warning("Please enter a number between 0 and 4");
+      return toast.info("Please enter a number between 0 and 6");
     }
 
     if (code.includes(value)) {
@@ -59,7 +59,6 @@ const InputForShapeTest = ({
   ) => {
     // Move to the previous input on backspace
     if (event.key === "Backspace") {
-
       //@ts-ignore
       if (event.target.value == "") {
         // Focus on the previous input

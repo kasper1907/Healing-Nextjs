@@ -49,24 +49,34 @@ const PersonalInfo = ({
     Aos.init();
   }, []);
 
+  // useEffect(() => {
+  //   if (formData?.placeOfBirth !== "") {
+  //     const country = Object.keys(placeOfBirthObject).find(
+  //       (key) => placeOfBirthObject[key] === formData?.placeOfBirth
+  //     );
+  //     setSelected(country);
+  //   }
+  //   if (formData?.Nationality !== "") {
+  //     const nationality = Object.keys(Nationalities).find(
+  //       (key) => Nationalities[key] === formData?.Nationality
+  //     );
+  //     setSelectedNationality(nationality);
+  //   }
+  // }, [formData]);
+
   const handleSubmit = () => {
-    if (
-      formData.gender !== ""
-      //&&
-      // formData.hand !== "" &&
-      // formData.height !== "" &&
-      // formData.weight !== "" &&
-      // formData.maritalStatus !== "" &&
-      // formData.jobTitle !== "" &&
-      // formData.countryOfLiving !== "" &&
-      // formData.boys !== "" &&
-      // formData.girls !== ""
-    ) {
-      steps[currentIndex].isCompleted = true;
-      handleNext();
-    } else {
-      toast.warning(t("Please fill all fields"));
-    }
+    if (!formData.gender) return toast.info("Please Select your gender");
+    if (!formData.hand) return toast.info("Please Select your special hand");
+    if (!formData.height) return toast.info("Please Enter your height");
+    if (!formData.weight) return toast.info("Please Enter your weight");
+    if (!formData.maritalStatus)
+      return toast.info("Please Select your marital status");
+    if (!formData.jobTitle) return toast.info("Please Enter your job title");
+    if (!formData.country)
+      return toast.info("Please Select your country of living");
+
+    steps[currentIndex].isCompleted = true;
+    handleNext();
   };
 
   return (
@@ -81,7 +91,7 @@ const PersonalInfo = ({
           maxWidth: "100%",
         }}
       >
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={4}>
           <div className={styles.inputWrapper}>
             <FormControl fullWidth>
               <InputLabel id="select-label">
@@ -94,6 +104,9 @@ const PersonalInfo = ({
                   border: "none !important",
                   "&. MuiOutlinedInput-notchedOutline": {
                     border: "none",
+                  },
+                  "& .MuiOutlinedInput-notchedOutline": {
+                    border: "1px solid transparent;",
                   },
                 }}
                 labelId="select-label"
@@ -114,7 +127,7 @@ const PersonalInfo = ({
             </FormControl>
           </div>
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={4}>
           <div className={styles.inputWrapper}>
             <FormControl fullWidth>
               <InputLabel id="select-label">
@@ -127,6 +140,9 @@ const PersonalInfo = ({
                   border: "none !important",
                   "&. MuiOutlinedInput-notchedOutline": {
                     border: "none",
+                  },
+                  "& .MuiOutlinedInput-notchedOutline": {
+                    border: "1px solid transparent;",
                   },
                 }}
                 labelId="select-label"
@@ -147,6 +163,48 @@ const PersonalInfo = ({
             </FormControl>
           </div>{" "}
         </Grid>
+        <Grid item xs={12} md={4}>
+          <div className={styles.inputWrapper}>
+            {/* <InputLabel sx={{ fontSize: "0.9rem", ml: 1, mb: 1 }}>
+              {t("Marital Status")}
+            </InputLabel> */}
+            <FormControl fullWidth>
+              <InputLabel id="select-label">
+                {t("Select Your Marital Status")}
+              </InputLabel>
+              <Select
+                sx={{
+                  backgroundColor: "#FFF !important",
+                  borderRadius: "12px",
+                  border: "none !important",
+                  "&. MuiOutlinedInput-notchedOutline": {
+                    border: "none",
+                  },
+                  "& .MuiOutlinedInput-notchedOutline": {
+                    border: "1px solid transparent;",
+                  },
+                }}
+                labelId="select-label"
+                id="demo-simple-select-autowidth"
+                value={formData?.maritalStatus}
+                onChange={(e: any) => {
+                  setFormData({ ...formData, maritalStatus: e.target.value });
+                }}
+                autoWidth
+                label={t("Select Your Marital Status")}
+              >
+                <MenuItem value="">
+                  <em>{t("None")}</em>
+                </MenuItem>
+                <MenuItem value={"Single"}>{t("Single")}</MenuItem>
+                <MenuItem value={"Engaged"}>{t("Engaged")}</MenuItem>
+                <MenuItem value={"Married"}>{t("Married")}</MenuItem>
+                <MenuItem value={"Divorced"}>{t("Divorced")}</MenuItem>
+              </Select>
+            </FormControl>
+          </div>
+        </Grid>
+
         <Grid item xs={12} md={6}>
           <div className={styles.inputWrapper}>
             <InputLabel sx={{ fontSize: "0.9rem", ml: 1, mb: 1 }}>
@@ -207,45 +265,6 @@ const PersonalInfo = ({
         </Grid>
 
         <Grid item xs={12} md={6}>
-          <div className={styles.inputWrapper}>
-            <InputLabel sx={{ fontSize: "0.9rem", ml: 1, mb: 1 }}>
-              {t("Marital Status")}
-            </InputLabel>
-            <FormControl fullWidth>
-              <InputLabel id="select-label">
-                {t("Select Your Marital Status")}
-              </InputLabel>
-              <Select
-                sx={{
-                  backgroundColor: "#FFF !important",
-                  borderRadius: "12px",
-                  border: "none !important",
-                  "&. MuiOutlinedInput-notchedOutline": {
-                    border: "none",
-                  },
-                }}
-                labelId="select-label"
-                id="demo-simple-select-autowidth"
-                value={formData?.maritalStatus}
-                onChange={(e: any) => {
-                  setFormData({ ...formData, maritalStatus: e.target.value });
-                }}
-                autoWidth
-                label={t("Select Your Marital Status")}
-              >
-                <MenuItem value="">
-                  <em>{t("None")}</em>
-                </MenuItem>
-                <MenuItem value={"Single"}>{t("Single")}</MenuItem>
-                <MenuItem value={"Engaged"}>{t("Engaged")}</MenuItem>
-                <MenuItem value={"Married"}>{t("Married")}</MenuItem>
-                <MenuItem value={"Divorced"}>{t("Divorced")}</MenuItem>
-              </Select>
-            </FormControl>
-          </div>
-        </Grid>
-
-        <Grid item xs={12} md={6}>
           <div
             style={{
               position: "relative",
@@ -278,7 +297,7 @@ const PersonalInfo = ({
           </div>
         </Grid>
 
-        <Grid item xs={12}>
+        <Grid item xs={12} md={6}>
           <div
             style={{
               position: "relative",

@@ -42,18 +42,16 @@ const BirthInfo = ({
   }, []);
 
   const handleSubmit = () => {
-    if (
-      formData.dateOfBirth !== ""
-      //  &&
-      // formData.timeOfBirth !== "" &&
-      // formData.placeOfBirth !== "" &&
-      // formData.Nationality !== ""
-    ) {
-      steps[currentIndex].isCompleted = true;
-      handleNext();
-    } else {
-      toast.warning("Please fill all fields");
-    }
+    if (!formData.dateOfBirth)
+      return toast.info("Please Choose Your BirthDate");
+    if (!formData.timeOfBirth)
+      return toast.info("Please Choose Your BirthTime");
+    if (!formData.placeOfBirth)
+      return toast.info("Please Choose Your BirthPlace");
+    if (!formData.Nationality)
+      return toast.info("Please Choose Your nationality");
+    steps[currentIndex].isCompleted = true;
+    handleNext();
   };
 
   useEffect(() => {
