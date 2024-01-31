@@ -94,6 +94,24 @@ const InputForShapeTest = ({
     }
   };
 
+  useEffect(() => {
+    if (code?.length > 0) {
+      code?.forEach((value: any, index: any) => {
+        if (value) {
+          inputRefs[index]?.current?.removeAttribute("disabled");
+        }
+      });
+
+      console.log(code);
+      // check if all inputs are filled and the length of code is 5
+      if (code?.length === 7 && code?.every((value: any) => value)) {
+        setShowNext(true);
+      } else {
+        setShowNext(false);
+      }
+    }
+  }, [code, inputRefs, setShowNext]);
+
   return (
     <div>
       {code?.map((value: any, index: any) => (

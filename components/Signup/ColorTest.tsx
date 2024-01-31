@@ -53,7 +53,9 @@ const ColorTest = ({
           fontSize: "20px",
         }}
       >
-        رتب أرقام المربعات من المفضل للأقل تفضيلاً
+        {t(
+          "Arrange the numbers of the squares from favorite to least favorite"
+        )}
       </Typography>
       <Image
         src={"/images/Dashboard/color_test.jpg"}

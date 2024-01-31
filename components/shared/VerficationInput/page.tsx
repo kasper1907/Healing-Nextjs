@@ -102,6 +102,24 @@ const VerificationCodeInput = ({
     }
   };
 
+  useEffect(() => {
+    if (code?.length > 0) {
+      code?.forEach((value: any, index: any) => {
+        if (value) {
+          inputRefs[index]?.current?.removeAttribute("disabled");
+        }
+      });
+
+      console.log(code);
+      // check if all inputs are filled and the length of code is 5
+      if (code?.length === 5 && code?.every((value: any) => value)) {
+        setShowNext(true);
+      } else {
+        setShowNext(false);
+      }
+    }
+  }, [code, inputRefs, setShowNext]);
+
   return (
     <div>
       {code?.map((value: any, index: any) => (
@@ -120,7 +138,7 @@ const VerificationCodeInput = ({
           }
           ref={inputRefs[index]}
           className="verification-input"
-          disabled={index !== 0}
+          disabled={index !== 0 && !code[index - 1]}
           style={{
             width: "50px",
             height: "45px",
