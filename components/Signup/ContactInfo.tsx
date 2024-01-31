@@ -79,8 +79,8 @@ const ContactInfo = ({
     phone: number()
       .typeError("Phone must be a number")
       .required("Enter Phone Number.")
-      .min(11, "Too little")
-      .notOneOf(numbers, "This Number is Used Before"),
+      .min(11, "Too little"),
+    // .notOneOf(numbers, "This Number is Used Before"),
   });
 
   const {
