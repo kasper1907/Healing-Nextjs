@@ -207,11 +207,14 @@ export default function App() {
     let filteredUsers = [...membersList];
 
     if (hasSearchFilter) {
-      filteredUsers = filteredUsers.filter(
-        (user: UserProps) =>
-          user.full_name.toLowerCase().includes(filterValue.toLowerCase()) ||
-          user.CourseName.toLowerCase().includes(filterValue.toLowerCase())
-      );
+      const searchRegex = new RegExp(filterValue, "i");
+      const filteredRows = filteredUsers.filter((row: any) => {
+        return Object.keys(row).some((field) => {
+          // @ts-ignore
+          return searchRegex.test(row[field].toString());
+        });
+      });
+      filteredUsers = filteredRows;
     }
     if (
       statusFilter !== "all" &&

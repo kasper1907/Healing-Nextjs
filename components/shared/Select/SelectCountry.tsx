@@ -65,7 +65,8 @@ const CountrySelect = ({ formData, setFormData }: any) => {
         setFormData({ ...formData, country: e?.label });
       }}
       value={selected}
-      className="!color-[#000] countrySelectAB"
+      className="countrySelectAB"
+      // menuIsOpen={true}
       cacheOptions
       defaultOptions={memoizedCountries}
       loadOptions={loadOptions}

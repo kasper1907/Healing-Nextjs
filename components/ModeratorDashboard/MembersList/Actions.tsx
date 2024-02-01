@@ -89,14 +89,14 @@ export default function ActionsMenu({ item }: any) {
             Show Client Credentials
           </DropdownItem>
 
-          <DropdownItem
+          {/* <DropdownItem
             onClick={(e) => {
               handleDownloadFile(item?.file);
             }}
             key="download"
           >
-            Download BCT Scan
-          </DropdownItem>
+            Download Attachment
+          </DropdownItem> */}
         </DropdownMenu>
       </Dropdown>
 

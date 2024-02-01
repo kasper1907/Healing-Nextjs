@@ -19,6 +19,7 @@ import { getOne } from "@/services/service";
 import moment from "moment";
 import { AvatarGroup, User } from "@nextui-org/react";
 import Image from "next/image";
+import { UserContext } from "@/contexts/mainContext";
 
 const AppointmentCard = ({ appointment }: any) => {
   console.log(appointment);
@@ -26,6 +27,8 @@ const AppointmentCard = ({ appointment }: any) => {
   const handleChange = () => {
     setExpanded((prev: any) => !prev);
   };
+
+  const { LoggedInUser }: any = React.useContext(UserContext);
 
   const { data: AppointmentUsers, isLoading: AppointmentUsersLoading } = useSWR(
     `Appointments/getAppointmentUsers/${appointment?.id}`,
@@ -103,9 +106,14 @@ const AppointmentCard = ({ appointment }: any) => {
               sm={6}
               className={styles.right_RightGrid}
             >
-              <Button sx={{ width: "200px !important" }} onClick={handleChange}>
-                {expanded ? "Hide Members" : "Show Members"}
-              </Button>
+              {LoggedInUser?.role != "User" && (
+                <Button
+                  sx={{ width: "200px !important" }}
+                  onClick={handleChange}
+                >
+                  {expanded ? "Hide Members" : "Show Members"}
+                </Button>
+              )}
               <Button>
                 <Link target="_blank" href={appointment.meeting_link}>
                   Join

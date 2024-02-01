@@ -59,13 +59,19 @@ export default function ClientCredentials({
           {(onClose) => (
             <>
               {showClientCredentials ? (
-                <div className="p-10">
+                <>
                   <ModalHeader className="flex ">
                     Client Credentials
                   </ModalHeader>
-                  <p>Username: {clientData?.UserName}</p>
-                  <p>Password: {clientData?.Password}</p>
-                </div>
+                  <p className="px-8 mb-4 text-danger text-sm">
+                    *Please Do Not Share These Credentials With Anyone Else The
+                    Client.
+                  </p>
+                  <div className="px-8 py-6">
+                    <p>Username: {clientData?.UserName}</p>
+                    <p>Password: {clientData?.Password}</p>
+                  </div>
+                </>
               ) : (
                 <form onSubmit={handleLogIn}>
                   <ModalHeader className="flex flex-col gap-1">
@@ -100,7 +106,7 @@ export default function ClientCredentials({
                         });
                       }}
                     />
-                    <div className="flex py-2 px-1 justify-between">
+                    {/* <div className="flex py-2 px-1 justify-between">
                       <Checkbox
                         classNames={{
                           label: "text-small",
@@ -108,7 +114,7 @@ export default function ClientCredentials({
                       >
                         Remember me
                       </Checkbox>
-                    </div>
+                    </div> */}
                   </ModalBody>
                   <ModalFooter>
                     <Button color="danger" variant="flat" onPress={onClose}>
